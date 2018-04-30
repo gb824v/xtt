@@ -1,0 +1,900 @@
+<test>
+    <configuration>configXSAM.xml</configuration>
+    <name>XML.TEST</name>
+    
+    <div comment="Remove Services XTT1-500 - XTT1-509">
+    <loop name="interrogationLEVEL" start="0" stop="10" step="1">
+        <function name="createDocument" module="XML">
+            <parameter>serviceDeleteSoap</parameter>
+            <parameter>
+            <parameter>&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://messagebroker.intf.mobilgw.com/"&gt;
+  &lt;soap:Body&gt;
+    &lt;tns:deleteService&gt;
+      &lt;serviceName&gt;XTT</parameter>
+            <configuration>xsam/serviceGroupNoSMS</configuration>
+            <parameter>-</parameter>
+            <configuration>xsam/serviceNoSMS</configuration>
+            <variable>interrogationLEVEL</variable>
+            <parameter>&lt;/serviceName&gt;
+    &lt;/tns:deleteService&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</parameter>
+            </parameter>
+        </function>
+        <function name="setHeader" module="XML">
+            <parameter>serviceDeleteSoap</parameter>
+            <parameter>content-type</parameter>
+            <parameter>text/xml</parameter>
+        </function>
+
+    	<function name="sendPostRequest" module="XML">
+    	    <parameter>serviceDeleteSoap</parameter>
+     	    <parameter>serviceDeleteSoapResp</parameter>
+     	    <parameter>
+     	        <configuration>xsam/provisioningURL</configuration>
+     	    </parameter>
+        </function>    
+        <!--function name="checkResponseCode" module="XML">
+            <parameter>serviceDeleteSoapResp</parameter>
+            <parameter>200</parameter>
+        </function-->
+        
+    	<function name="documentToVariable" module="XML">
+    	    <parameter>serviceDeleteSoapResp</parameter>
+     	    <parameter>serviceDeleteSoapResp</parameter>
+        </function>    
+    	<function name="info" module="Basic">
+    	    <variable>serviceDeleteSoapResp</variable>
+        </function>
+    </loop>
+    </div>
+    
+    <div comment="Remove Services XTT2-400 - XTT2-409">
+    <loop name="interrogationLEVEL" start="0" stop="10" step="1">
+        <function name="createDocument" module="XML">
+            <parameter>serviceDeleteSoap</parameter>
+            <parameter>
+            <parameter>&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://messagebroker.intf.mobilgw.com/"&gt;
+  &lt;soap:Body&gt;
+    &lt;tns:deleteService&gt;
+      &lt;serviceName&gt;XTT</parameter>
+            <configuration>xsam/serviceGroupNoMMS</configuration>
+            <parameter>-</parameter>
+            <configuration>xsam/serviceNoMMS</configuration>
+            <variable>interrogationLEVEL</variable>
+            <parameter>&lt;/serviceName&gt;
+    &lt;/tns:deleteService&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</parameter>
+            </parameter>
+        </function>
+        <function name="setHeader" module="XML">
+            <parameter>serviceDeleteSoap</parameter>
+            <parameter>content-type</parameter>
+            <parameter>text/xml</parameter>
+        </function>
+
+    	<function name="sendPostRequest" module="XML">
+    	    <parameter>serviceDeleteSoap</parameter>
+     	    <parameter>serviceDeleteSoapResp</parameter>
+     	    <parameter>
+     	        <configuration>xsam/provisioningURL</configuration>
+     	    </parameter>
+        </function>    
+        <!--function name="checkResponseCode" module="XML">
+            <parameter>serviceDeleteSoapResp</parameter>
+            <parameter>200</parameter>
+        </function-->
+        
+    	<function name="documentToVariable" module="XML">
+    	    <parameter>serviceDeleteSoapResp</parameter>
+     	    <parameter>serviceDeleteSoapResp</parameter>
+        </function>    
+    	<function name="info" module="Basic">
+    	    <variable>serviceDeleteSoapResp</variable>
+        </function>
+    </loop>
+    </div>
+
+    <!-- -->
+    <loop name="DDFH" start="0" stop="2" step="1">
+        <function name="createDocument" module="XML">
+            <parameter>serviceDeleteSoap</parameter>
+            <parameter>
+            <parameter>&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://messagebroker.intf.mobilgw.com/"&gt;
+  &lt;soap:Body&gt;
+    &lt;tns:deleteService&gt;
+      &lt;serviceName&gt;XTT</parameter>
+            <configuration>xsam/serviceGroupNoSMSDDFH</configuration>
+            <parameter>-</parameter>
+            <configuration>xsam/serviceNoSMSDDFH</configuration>
+            <variable>DDFH</variable>
+            <parameter>&lt;/serviceName&gt;
+    &lt;/tns:deleteService&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</parameter>
+            </parameter>
+        </function>
+        <function name="setHeader" module="XML">
+            <parameter>serviceDeleteSoap</parameter>
+            <parameter>content-type</parameter>
+            <parameter>text/xml</parameter>
+        </function>
+
+    	<function name="sendPostRequest" module="XML">
+    	    <parameter>serviceDeleteSoap</parameter>
+     	    <parameter>serviceDeleteSoapResp</parameter>
+     	    <parameter>
+     	        <configuration>xsam/provisioningURL</configuration>
+     	    </parameter>
+        </function>    
+        <!--function name="checkResponseCode" module="XML">
+            <parameter>serviceDeleteSoapResp</parameter>
+            <parameter>200</parameter>
+        </function-->
+        
+    	<function name="documentToVariable" module="XML">
+    	    <parameter>serviceDeleteSoapResp</parameter>
+     	    <parameter>serviceDeleteSoapResp</parameter>
+        </function>    
+    	<function name="info" module="Basic">
+    	    <variable>serviceDeleteSoapResp</variable>
+        </function>
+    </loop>
+
+    <!-- -->
+    <loop name="DDFH" start="0" stop="2" step="1">
+        <function name="createDocument" module="XML">
+            <parameter>serviceDeleteSoap</parameter>
+            <parameter>
+            <parameter>&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://messagebroker.intf.mobilgw.com/"&gt;
+  &lt;soap:Body&gt;
+    &lt;tns:deleteService&gt;
+      &lt;serviceName&gt;XTT</parameter>
+            <configuration>xsam/serviceGroupNoSMSDDFH</configuration>
+            <parameter>-</parameter>
+            <configuration>xsam/serviceNoSMSDDFH2</configuration>
+            <variable>DDFH</variable>
+            <parameter>&lt;/serviceName&gt;
+    &lt;/tns:deleteService&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</parameter>
+            </parameter>
+        </function>
+        <function name="setHeader" module="XML">
+            <parameter>serviceDeleteSoap</parameter>
+            <parameter>content-type</parameter>
+            <parameter>text/xml</parameter>
+        </function>
+
+    	<function name="sendPostRequest" module="XML">
+    	    <parameter>serviceDeleteSoap</parameter>
+     	    <parameter>serviceDeleteSoapResp</parameter>
+     	    <parameter>
+     	        <configuration>xsam/provisioningURL</configuration>
+     	    </parameter>
+        </function>    
+        <!--function name="checkResponseCode" module="XML">
+            <parameter>serviceDeleteSoapResp</parameter>
+            <parameter>200</parameter>
+        </function-->
+        
+    	<function name="documentToVariable" module="XML">
+    	    <parameter>serviceDeleteSoapResp</parameter>
+     	    <parameter>serviceDeleteSoapResp</parameter>
+        </function>    
+    	<function name="info" module="Basic">
+    	    <variable>serviceDeleteSoapResp</variable>
+        </function>
+    </loop>
+
+    <!-- -->
+    <loop name="DDFHMMS" start="0" stop="2" step="1">
+        <function name="createDocument" module="XML">
+            <parameter>serviceDeleteSoap</parameter>
+            <parameter>
+            <parameter>&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://messagebroker.intf.mobilgw.com/"&gt;
+  &lt;soap:Body&gt;
+    &lt;tns:deleteService&gt;
+      &lt;serviceName&gt;XTT</parameter>
+            <configuration>xsam/serviceGroupNoMMSDDFH</configuration>
+            <parameter>-</parameter>
+            <configuration>xsam/serviceNoMMSDDFH</configuration>
+            <variable>DDFHMMS</variable>
+            <parameter>&lt;/serviceName&gt;
+    &lt;/tns:deleteService&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</parameter>
+            </parameter>
+        </function>
+        <function name="setHeader" module="XML">
+            <parameter>serviceDeleteSoap</parameter>
+            <parameter>content-type</parameter>
+            <parameter>text/xml</parameter>
+        </function>
+
+    	<function name="sendPostRequest" module="XML">
+    	    <parameter>serviceDeleteSoap</parameter>
+     	    <parameter>serviceDeleteSoapResp</parameter>
+     	    <parameter>
+     	        <configuration>xsam/provisioningURL</configuration>
+     	    </parameter>
+        </function>    
+        <!--function name="checkResponseCode" module="XML">
+            <parameter>serviceDeleteSoapResp</parameter>
+            <parameter>200</parameter>
+        </function-->
+        
+    	<function name="documentToVariable" module="XML">
+    	    <parameter>serviceDeleteSoapResp</parameter>
+     	    <parameter>serviceDeleteSoapResp</parameter>
+        </function>    
+    	<function name="info" module="Basic">
+    	    <variable>serviceDeleteSoapResp</variable>
+        </function>
+    </loop>
+    
+    <!-- -->
+    <loop name="DDFHMMS" start="0" stop="2" step="1">
+        <function name="createDocument" module="XML">
+            <parameter>serviceDeleteSoap</parameter>
+            <parameter>
+            <parameter>&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://messagebroker.intf.mobilgw.com/"&gt;
+  &lt;soap:Body&gt;
+    &lt;tns:deleteService&gt;
+      &lt;serviceName&gt;XTT</parameter>
+            <configuration>xsam/serviceGroupNoMMSDDFH</configuration>
+            <parameter>-</parameter>
+            <configuration>xsam/serviceNoMMSDDFH2</configuration>
+            <variable>DDFHMMS</variable>
+            <parameter>&lt;/serviceName&gt;
+    &lt;/tns:deleteService&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</parameter>
+            </parameter>
+        </function>
+        <function name="setHeader" module="XML">
+            <parameter>serviceDeleteSoap</parameter>
+            <parameter>content-type</parameter>
+            <parameter>text/xml</parameter>
+        </function>
+
+    	<function name="sendPostRequest" module="XML">
+    	    <parameter>serviceDeleteSoap</parameter>
+     	    <parameter>serviceDeleteSoapResp</parameter>
+     	    <parameter>
+     	        <configuration>xsam/provisioningURL</configuration>
+     	    </parameter>
+        </function>    
+        <!--function name="checkResponseCode" module="XML">
+            <parameter>serviceDeleteSoapResp</parameter>
+            <parameter>200</parameter>
+        </function-->
+        
+    	<function name="documentToVariable" module="XML">
+    	    <parameter>serviceDeleteSoapResp</parameter>
+     	    <parameter>serviceDeleteSoapResp</parameter>
+        </function>    
+    	<function name="info" module="Basic">
+    	    <variable>serviceDeleteSoapResp</variable>
+        </function>
+    </loop>
+    
+    <div comment="Remove Services XTT5-500">
+        <function name="createDocument" module="XML">
+            <parameter>serviceDeleteSoap</parameter>
+            <parameter>
+            <parameter>&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://messagebroker.intf.mobilgw.com/"&gt;
+  &lt;soap:Body&gt;
+    &lt;tns:deleteService&gt;
+      &lt;serviceName&gt;XTT</parameter>
+            <configuration>xsam/serviceGroupNoMMSMO</configuration>
+            <parameter>-</parameter>
+            <configuration>xsam/serviceNoMMS</configuration>
+            <parameter>0</parameter>
+            <parameter>&lt;/serviceName&gt;
+    &lt;/tns:deleteService&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</parameter>
+            </parameter>
+        </function>
+        <function name="setHeader" module="XML">
+            <parameter>serviceDeleteSoap</parameter>
+            <parameter>content-type</parameter>
+            <parameter>text/xml</parameter>
+        </function>
+
+    	<function name="sendPostRequest" module="XML">
+    	    <parameter>serviceDeleteSoap</parameter>
+     	    <parameter>serviceDeleteSoapResp</parameter>
+     	    <parameter>
+     	        <configuration>xsam/provisioningURL</configuration>
+     	    </parameter>
+        </function>    
+        <!--function name="checkResponseCode" module="XML">
+            <parameter>serviceDeleteSoapResp</parameter>
+            <parameter>200</parameter>
+        </function-->
+        
+    	<function name="documentToVariable" module="XML">
+    	    <parameter>serviceDeleteSoapResp</parameter>
+     	    <parameter>serviceDeleteSoapResp</parameter>
+        </function>    
+    	<function name="info" module="Basic">
+    	    <variable>serviceDeleteSoapResp</variable>
+        </function>
+    </div>
+    <div comment="Remove Services XTT5-501">
+        <function name="createDocument" module="XML">
+            <parameter>serviceDeleteSoap</parameter>
+            <parameter>
+            <parameter>&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://messagebroker.intf.mobilgw.com/"&gt;
+  &lt;soap:Body&gt;
+    &lt;tns:deleteService&gt;
+      &lt;serviceName&gt;XTT</parameter>
+            <configuration>xsam/serviceGroupNoMMSMO</configuration>
+            <parameter>-</parameter>
+            <configuration>xsam/serviceNoMMS</configuration>
+            <parameter>1</parameter>
+            <parameter>&lt;/serviceName&gt;
+    &lt;/tns:deleteService&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</parameter>
+            </parameter>
+        </function>
+        <function name="setHeader" module="XML">
+            <parameter>serviceDeleteSoap</parameter>
+            <parameter>content-type</parameter>
+            <parameter>text/xml</parameter>
+        </function>
+
+    	<function name="sendPostRequest" module="XML">
+    	    <parameter>serviceDeleteSoap</parameter>
+     	    <parameter>serviceDeleteSoapResp</parameter>
+     	    <parameter>
+     	        <configuration>xsam/provisioningURL</configuration>
+     	    </parameter>
+        </function>    
+        <!--function name="checkResponseCode" module="XML">
+            <parameter>serviceDeleteSoapResp</parameter>
+            <parameter>200</parameter>
+        </function-->
+        
+    	<function name="documentToVariable" module="XML">
+    	    <parameter>serviceDeleteSoapResp</parameter>
+     	    <parameter>serviceDeleteSoapResp</parameter>
+        </function>    
+    	<function name="info" module="Basic">
+    	    <variable>serviceDeleteSoapResp</variable>
+        </function>
+    </div>
+    <div comment="Remove Services XTT5-502">
+        <function name="createDocument" module="XML">
+            <parameter>serviceDeleteSoap</parameter>
+            <parameter>
+            <parameter>&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://messagebroker.intf.mobilgw.com/"&gt;
+  &lt;soap:Body&gt;
+    &lt;tns:deleteService&gt;
+      &lt;serviceName&gt;XTT</parameter>
+            <configuration>xsam/serviceGroupNoMMSMO</configuration>
+            <parameter>-</parameter>
+            <configuration>xsam/serviceNoMMS</configuration>
+            <parameter>2</parameter>
+            <parameter>&lt;/serviceName&gt;
+    &lt;/tns:deleteService&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</parameter>
+            </parameter>
+        </function>
+        <function name="setHeader" module="XML">
+            <parameter>serviceDeleteSoap</parameter>
+            <parameter>content-type</parameter>
+            <parameter>text/xml</parameter>
+        </function>
+
+    	<function name="sendPostRequest" module="XML">
+    	    <parameter>serviceDeleteSoap</parameter>
+     	    <parameter>serviceDeleteSoapResp</parameter>
+     	    <parameter>
+     	        <configuration>xsam/provisioningURL</configuration>
+     	    </parameter>
+        </function>    
+        <!--function name="checkResponseCode" module="XML">
+            <parameter>serviceDeleteSoapResp</parameter>
+            <parameter>200</parameter>
+        </function-->
+        
+    	<function name="documentToVariable" module="XML">
+    	    <parameter>serviceDeleteSoapResp</parameter>
+     	    <parameter>serviceDeleteSoapResp</parameter>
+        </function>    
+    	<function name="info" module="Basic">
+    	    <variable>serviceDeleteSoapResp</variable>
+        </function>
+    </div>
+    <div comment="Remove Services XTT5-503">
+        <function name="createDocument" module="XML">
+            <parameter>serviceDeleteSoap</parameter>
+            <parameter>
+            <parameter>&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://messagebroker.intf.mobilgw.com/"&gt;
+  &lt;soap:Body&gt;
+    &lt;tns:deleteService&gt;
+      &lt;serviceName&gt;XTT</parameter>
+            <configuration>xsam/serviceGroupNoMMSMO</configuration>
+            <parameter>-</parameter>
+            <configuration>xsam/serviceNoMMS</configuration>
+            <parameter>3</parameter>
+            <parameter>&lt;/serviceName&gt;
+    &lt;/tns:deleteService&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</parameter>
+            </parameter>
+        </function>
+        <function name="setHeader" module="XML">
+            <parameter>serviceDeleteSoap</parameter>
+            <parameter>content-type</parameter>
+            <parameter>text/xml</parameter>
+        </function>
+
+    	<function name="sendPostRequest" module="XML">
+    	    <parameter>serviceDeleteSoap</parameter>
+     	    <parameter>serviceDeleteSoapResp</parameter>
+     	    <parameter>
+     	        <configuration>xsam/provisioningURL</configuration>
+     	    </parameter>
+        </function>    
+        <!--function name="checkResponseCode" module="XML">
+            <parameter>serviceDeleteSoapResp</parameter>
+            <parameter>200</parameter>
+        </function-->
+        
+    	<function name="documentToVariable" module="XML">
+    	    <parameter>serviceDeleteSoapResp</parameter>
+     	    <parameter>serviceDeleteSoapResp</parameter>
+        </function>    
+    	<function name="info" module="Basic">
+    	    <variable>serviceDeleteSoapResp</variable>
+        </function>
+    </div>
+    
+    <div comment="Remove Services XTT6-400">
+        <function name="createDocument" module="XML">
+            <parameter>serviceDeleteSoap</parameter>
+            <parameter>
+            <parameter>&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://messagebroker.intf.mobilgw.com/"&gt;
+  &lt;soap:Body&gt;
+    &lt;tns:deleteService&gt;
+      &lt;serviceName&gt;XTT</parameter>
+            <configuration>xsam/serviceGroupNoSMSMO</configuration>
+            <parameter>-</parameter>
+            <configuration>xsam/serviceNoSMS</configuration>
+            <parameter>0</parameter>
+            <parameter>&lt;/serviceName&gt;
+    &lt;/tns:deleteService&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</parameter>
+            </parameter>
+        </function>
+        <function name="setHeader" module="XML">
+            <parameter>serviceDeleteSoap</parameter>
+            <parameter>content-type</parameter>
+            <parameter>text/xml</parameter>
+        </function>
+
+    	<function name="sendPostRequest" module="XML">
+    	    <parameter>serviceDeleteSoap</parameter>
+     	    <parameter>serviceDeleteSoapResp</parameter>
+     	    <parameter>
+     	        <configuration>xsam/provisioningURL</configuration>
+     	    </parameter>
+        </function>    
+        <!--function name="checkResponseCode" module="XML">
+            <parameter>serviceDeleteSoapResp</parameter>
+            <parameter>200</parameter>
+        </function-->
+        
+    	<function name="documentToVariable" module="XML">
+    	    <parameter>serviceDeleteSoapResp</parameter>
+     	    <parameter>serviceDeleteSoapResp</parameter>
+        </function>    
+    	<function name="info" module="Basic">
+    	    <variable>serviceDeleteSoapResp</variable>
+        </function>
+    </div>
+    <div comment="Remove Services XTT6-401">
+        <function name="createDocument" module="XML">
+            <parameter>serviceDeleteSoap</parameter>
+            <parameter>
+            <parameter>&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://messagebroker.intf.mobilgw.com/"&gt;
+  &lt;soap:Body&gt;
+    &lt;tns:deleteService&gt;
+      &lt;serviceName&gt;XTT</parameter>
+            <configuration>xsam/serviceGroupNoSMSMO</configuration>
+            <parameter>-</parameter>
+            <configuration>xsam/serviceNoSMS</configuration>
+            <parameter>1</parameter>
+            <parameter>&lt;/serviceName&gt;
+    &lt;/tns:deleteService&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</parameter>
+            </parameter>
+        </function>
+        <function name="setHeader" module="XML">
+            <parameter>serviceDeleteSoap</parameter>
+            <parameter>content-type</parameter>
+            <parameter>text/xml</parameter>
+        </function>
+
+    	<function name="sendPostRequest" module="XML">
+    	    <parameter>serviceDeleteSoap</parameter>
+     	    <parameter>serviceDeleteSoapResp</parameter>
+     	    <parameter>
+     	        <configuration>xsam/provisioningURL</configuration>
+     	    </parameter>
+        </function>    
+        <!--function name="checkResponseCode" module="XML">
+            <parameter>serviceDeleteSoapResp</parameter>
+            <parameter>200</parameter>
+        </function-->
+        
+    	<function name="documentToVariable" module="XML">
+    	    <parameter>serviceDeleteSoapResp</parameter>
+     	    <parameter>serviceDeleteSoapResp</parameter>
+        </function>    
+    	<function name="info" module="Basic">
+    	    <variable>serviceDeleteSoapResp</variable>
+        </function>
+    </div>
+    <div comment="Remove Services XTT6-402">
+        <function name="createDocument" module="XML">
+            <parameter>serviceDeleteSoap</parameter>
+            <parameter>
+            <parameter>&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://messagebroker.intf.mobilgw.com/"&gt;
+  &lt;soap:Body&gt;
+    &lt;tns:deleteService&gt;
+      &lt;serviceName&gt;XTT</parameter>
+            <configuration>xsam/serviceGroupNoSMSMO</configuration>
+            <parameter>-</parameter>
+            <configuration>xsam/serviceNoSMS</configuration>
+            <parameter>2</parameter>
+            <parameter>&lt;/serviceName&gt;
+    &lt;/tns:deleteService&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</parameter>
+            </parameter>
+        </function>
+        <function name="setHeader" module="XML">
+            <parameter>serviceDeleteSoap</parameter>
+            <parameter>content-type</parameter>
+            <parameter>text/xml</parameter>
+        </function>
+
+    	<function name="sendPostRequest" module="XML">
+    	    <parameter>serviceDeleteSoap</parameter>
+     	    <parameter>serviceDeleteSoapResp</parameter>
+     	    <parameter>
+     	        <configuration>xsam/provisioningURL</configuration>
+     	    </parameter>
+        </function>    
+        <!--function name="checkResponseCode" module="XML">
+            <parameter>serviceDeleteSoapResp</parameter>
+            <parameter>200</parameter>
+        </function-->
+        
+    	<function name="documentToVariable" module="XML">
+    	    <parameter>serviceDeleteSoapResp</parameter>
+     	    <parameter>serviceDeleteSoapResp</parameter>
+        </function>    
+    	<function name="info" module="Basic">
+    	    <variable>serviceDeleteSoapResp</variable>
+        </function>
+    </div>
+    <div comment="Remove Services XTT6-403">
+        <function name="createDocument" module="XML">
+            <parameter>serviceDeleteSoap</parameter>
+            <parameter>
+            <parameter>&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://messagebroker.intf.mobilgw.com/"&gt;
+  &lt;soap:Body&gt;
+    &lt;tns:deleteService&gt;
+      &lt;serviceName&gt;XTT</parameter>
+            <configuration>xsam/serviceGroupNoSMSMO</configuration>
+            <parameter>-</parameter>
+            <configuration>xsam/serviceNoSMS</configuration>
+            <parameter>3</parameter>
+            <parameter>&lt;/serviceName&gt;
+    &lt;/tns:deleteService&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</parameter>
+            </parameter>
+        </function>
+        <function name="setHeader" module="XML">
+            <parameter>serviceDeleteSoap</parameter>
+            <parameter>content-type</parameter>
+            <parameter>text/xml</parameter>
+        </function>
+
+    	<function name="sendPostRequest" module="XML">
+    	    <parameter>serviceDeleteSoap</parameter>
+     	    <parameter>serviceDeleteSoapResp</parameter>
+     	    <parameter>
+     	        <configuration>xsam/provisioningURL</configuration>
+     	    </parameter>
+        </function>    
+        <!--function name="checkResponseCode" module="XML">
+            <parameter>serviceDeleteSoapResp</parameter>
+            <parameter>200</parameter>
+        </function-->
+        
+    	<function name="documentToVariable" module="XML">
+    	    <parameter>serviceDeleteSoapResp</parameter>
+     	    <parameter>serviceDeleteSoapResp</parameter>
+        </function>    
+    	<function name="info" module="Basic">
+    	    <variable>serviceDeleteSoapResp</variable>
+        </function>
+    </div>
+        
+    <div comment="Remove Group 4001">
+        <function name="createDocument" module="XML">
+            <parameter>groupDeleteSoap</parameter>
+            <parameter>
+            <parameter>&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://messagebroker.intf.mobilgw.com/"&gt;
+  &lt;soap:Body&gt;
+    &lt;tns:deleteServiceGroup&gt;
+      &lt;serviceGroupName&gt;</parameter>
+            <configuration>xsam/serviceGroupPrefix</configuration>
+            <configuration>xsam/serviceGroupNoMMS</configuration>
+            <parameter>&lt;/serviceGroupName&gt;
+    &lt;/tns:deleteServiceGroup&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</parameter>
+            </parameter>
+        </function>
+
+        <function name="setHeader" module="XML">
+            <parameter>groupDeleteSoap</parameter>
+            <parameter>content-type</parameter>
+            <parameter>text/xml</parameter>
+        </function>
+
+    	<function name="sendPostRequest" module="XML">
+    	    <parameter>groupDeleteSoap</parameter>
+     	    <parameter>groupDeleteSoapResp</parameter>
+     	    <parameter>
+     	        <configuration>xsam/provisioningURL</configuration>
+     	    </parameter>
+        </function>    
+        <!--function name="checkResponseCode" module="XML">
+     	    <parameter>groupDeleteSoapResp</parameter>
+            <parameter>200</parameter>
+        </function-->
+        
+    	<function name="documentToVariable" module="XML">
+    	    <parameter>groupDeleteSoapResp</parameter>
+     	    <parameter>groupDeleteSoapResp</parameter>
+        </function>    
+    	<function name="info" module="Basic">
+    	    <variable>groupDeleteSoapResp</variable>
+        </function>
+    </div>
+    
+    <div comment="Remove Group 4002">
+        <function name="createDocument" module="XML">
+            <parameter>groupDeleteSoap</parameter>
+            <parameter>
+            <parameter>&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://messagebroker.intf.mobilgw.com/"&gt;
+  &lt;soap:Body&gt;
+    &lt;tns:deleteServiceGroup&gt;
+      &lt;serviceGroupName&gt;</parameter>
+            <configuration>xsam/serviceGroupPrefix</configuration>
+            <configuration>xsam/serviceGroupNoSMS</configuration>
+            <parameter>&lt;/serviceGroupName&gt;
+    &lt;/tns:deleteServiceGroup&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</parameter>
+            </parameter>
+        </function>
+
+        <function name="setHeader" module="XML">
+            <parameter>groupDeleteSoap</parameter>
+            <parameter>content-type</parameter>
+            <parameter>text/xml</parameter>
+        </function>
+
+    	<function name="sendPostRequest" module="XML">
+    	    <parameter>groupDeleteSoap</parameter>
+     	    <parameter>groupDeleteSoapResp</parameter>
+     	    <parameter>
+     	        <configuration>xsam/provisioningURL</configuration>
+     	    </parameter>
+        </function>    
+        <!--function name="checkResponseCode" module="XML">
+     	    <parameter>groupDeleteSoapResp</parameter>
+            <parameter>200</parameter>
+        </function-->
+        
+    	<function name="documentToVariable" module="XML">
+    	    <parameter>groupDeleteSoapResp</parameter>
+     	    <parameter>groupDeleteSoapResp</parameter>
+        </function>    
+    	<function name="info" module="Basic">
+    	    <variable>groupDeleteSoapResp</variable>
+        </function>
+    </div>
+    
+    <div comment="Remove Group 4003">
+        <function name="createDocument" module="XML">
+            <parameter>groupDeleteSoap</parameter>
+            <parameter>
+            <parameter>&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://messagebroker.intf.mobilgw.com/"&gt;
+  &lt;soap:Body&gt;
+    &lt;tns:deleteServiceGroup&gt;
+      &lt;serviceGroupName&gt;</parameter>
+            <configuration>xsam/serviceGroupPrefix</configuration>
+            <configuration>xsam/serviceGroupNoSMSDDFH</configuration>
+            <parameter>&lt;/serviceGroupName&gt;
+    &lt;/tns:deleteServiceGroup&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</parameter>
+            </parameter>
+        </function>
+
+        <function name="setHeader" module="XML">
+            <parameter>groupDeleteSoap</parameter>
+            <parameter>content-type</parameter>
+            <parameter>text/xml</parameter>
+        </function>
+
+    	<function name="sendPostRequest" module="XML">
+    	    <parameter>groupDeleteSoap</parameter>
+     	    <parameter>groupDeleteSoapResp</parameter>
+     	    <parameter>
+     	        <configuration>xsam/provisioningURL</configuration>
+     	    </parameter>
+        </function>    
+        <!--function name="checkResponseCode" module="XML">
+     	    <parameter>groupDeleteSoapResp</parameter>
+            <parameter>200</parameter>
+        </function-->
+        
+    	<function name="documentToVariable" module="XML">
+    	    <parameter>groupDeleteSoapResp</parameter>
+     	    <parameter>groupDeleteSoapResp</parameter>
+        </function>    
+    	<function name="info" module="Basic">
+    	    <variable>groupDeleteSoapResp</variable>
+        </function>
+    </div>
+
+    <div comment="Remove Group 4004">
+        <function name="createDocument" module="XML">
+            <parameter>groupDeleteSoap</parameter>
+            <parameter>
+            <parameter>&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://messagebroker.intf.mobilgw.com/"&gt;
+  &lt;soap:Body&gt;
+    &lt;tns:deleteServiceGroup&gt;
+      &lt;serviceGroupName&gt;</parameter>
+            <configuration>xsam/serviceGroupPrefix</configuration>
+            <configuration>xsam/serviceGroupNoMMSDDFH</configuration>
+            <parameter>&lt;/serviceGroupName&gt;
+    &lt;/tns:deleteServiceGroup&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</parameter>
+            </parameter>
+        </function>
+
+        <function name="setHeader" module="XML">
+            <parameter>groupDeleteSoap</parameter>
+            <parameter>content-type</parameter>
+            <parameter>text/xml</parameter>
+        </function>
+
+    	<function name="sendPostRequest" module="XML">
+    	    <parameter>groupDeleteSoap</parameter>
+     	    <parameter>groupDeleteSoapResp</parameter>
+     	    <parameter>
+     	        <configuration>xsam/provisioningURL</configuration>
+     	    </parameter>
+        </function>    
+        <!--function name="checkResponseCode" module="XML">
+     	    <parameter>groupDeleteSoapResp</parameter>
+            <parameter>200</parameter>
+        </function-->
+        
+    	<function name="documentToVariable" module="XML">
+    	    <parameter>groupDeleteSoapResp</parameter>
+     	    <parameter>groupDeleteSoapResp</parameter>
+        </function>    
+    	<function name="info" module="Basic">
+    	    <variable>groupDeleteSoapResp</variable>
+        </function>
+   </div>
+
+    <div comment="Remove Group 4005">
+        <function name="createDocument" module="XML">
+            <parameter>groupDeleteSoap</parameter>
+            <parameter>
+            <parameter>&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://messagebroker.intf.mobilgw.com/"&gt;
+  &lt;soap:Body&gt;
+    &lt;tns:deleteServiceGroup&gt;
+      &lt;serviceGroupName&gt;</parameter>
+            <configuration>xsam/serviceGroupPrefix</configuration>
+            <configuration>xsam/serviceGroupNoMMSMO</configuration>
+            <parameter>&lt;/serviceGroupName&gt;
+    &lt;/tns:deleteServiceGroup&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</parameter>
+            </parameter>
+        </function>
+
+        <function name="setHeader" module="XML">
+            <parameter>groupDeleteSoap</parameter>
+            <parameter>content-type</parameter>
+            <parameter>text/xml</parameter>
+        </function>
+
+    	<function name="sendPostRequest" module="XML">
+    	    <parameter>groupDeleteSoap</parameter>
+     	    <parameter>groupDeleteSoapResp</parameter>
+     	    <parameter>
+     	        <configuration>xsam/provisioningURL</configuration>
+     	    </parameter>
+        </function>    
+        <!--function name="checkResponseCode" module="XML">
+     	    <parameter>groupDeleteSoapResp</parameter>
+            <parameter>200</parameter>
+        </function-->
+        
+    	<function name="documentToVariable" module="XML">
+    	    <parameter>groupDeleteSoapResp</parameter>
+     	    <parameter>groupDeleteSoapResp</parameter>
+        </function>    
+    	<function name="info" module="Basic">
+    	    <variable>groupDeleteSoapResp</variable>
+        </function>
+    </div>
+    
+    <div comment="Remove Group 4006">
+        <function name="createDocument" module="XML">
+            <parameter>groupDeleteSoap</parameter>
+            <parameter>
+            <parameter>&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://messagebroker.intf.mobilgw.com/"&gt;
+  &lt;soap:Body&gt;
+    &lt;tns:deleteServiceGroup&gt;
+      &lt;serviceGroupName&gt;</parameter>
+            <configuration>xsam/serviceGroupPrefix</configuration>
+            <configuration>xsam/serviceGroupNoSMSMO</configuration>
+            <parameter>&lt;/serviceGroupName&gt;
+    &lt;/tns:deleteServiceGroup&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</parameter>
+            </parameter>
+        </function>
+
+        <function name="setHeader" module="XML">
+            <parameter>groupDeleteSoap</parameter>
+            <parameter>content-type</parameter>
+            <parameter>text/xml</parameter>
+        </function>
+
+    	<function name="sendPostRequest" module="XML">
+    	    <parameter>groupDeleteSoap</parameter>
+     	    <parameter>groupDeleteSoapResp</parameter>
+     	    <parameter>
+     	        <configuration>xsam/provisioningURL</configuration>
+     	    </parameter>
+        </function>    
+        <!--function name="checkResponseCode" module="XML">
+     	    <parameter>groupDeleteSoapResp</parameter>
+            <parameter>200</parameter>
+        </function-->
+        
+    	<function name="documentToVariable" module="XML">
+    	    <parameter>groupDeleteSoapResp</parameter>
+     	    <parameter>groupDeleteSoapResp</parameter>
+        </function>    
+    	<function name="info" module="Basic">
+    	    <variable>groupDeleteSoapResp</variable>
+        </function>
+    </div>
+</test>

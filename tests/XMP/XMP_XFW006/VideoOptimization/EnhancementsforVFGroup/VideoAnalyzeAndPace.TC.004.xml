@@ -1,0 +1,165 @@
+<test>
+
+	<function name="testName" module="Basic">
+		<parameter>VideoAnalyzeAndPace.TC.004</parameter>
+	</function>
+
+	<description>Validate PACE and VAN are skipped if IM_ContentType header broken unknown(very long unsupported characters)</description>
+
+	<!-- Start Web Server -->
+	<function name="startWebServer" module="HTTP"/>
+
+	<function name="setClientTimeout" module="HTTP">
+		<parameter>120000</parameter>
+	</function>
+
+	<function name="disableKeepAlive" module="HTTP"/>
+
+	<!-- Set header value very long unknown-->
+	<function name="setHeader" module="HTTP">
+		<parameter>Content-Type</parameter>
+		<parameter>010100xxxxx10101010100xxxxx10101010100xxxxx10101</parameter>
+	</function>
+
+	<function name="setServerReturnCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<!-- Delete Message Store -->
+	<subtest>deleteMediaStoreAll.xml</subtest>
+
+	<!-- Query the name of the active MEDIA-STORE process -->
+	<function name="activeProcessToVar" module="Remote">
+		<parameter>MEDIA-STORE</parameter>
+		<parameter>Media_Store_Process_Name</parameter>
+	</function>
+
+	<!-- Prepare the Request Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>vo_reqmod_online_opt.xml</parameter>
+		<xml>
+		<requestModifications xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="requestmodifications.xsd">
+		<table name="DisableThings" phase="httpRequest">
+			<selector>
+				<modifyContext name="Skip_CACHE" value="'true'"/>
+				<modifyContext name="Skip_VIRUSSCANNER" value="'true'"/>
+				<modifyContext name="FTR_HtmlTidyDisable" value="'true'"/>
+				<modifyContext name="Skip_COOKIE" value="'true'"/>
+				<modifyContext name="Skip_ICC" value="'true'"/>
+				<modifyContext name="FTR_MultipartCompose_Disable" value="'true'"/>
+				<modifyContext name="FTR_Prefetch_Disable" value="'true'"/>
+				<modifyContext name="FTR_Deflate_Disable" value="'true'"/>
+				<modifyContext name="FTR_Gzip_Disable" value="'true'"/>
+			</selector>
+		</table>
+		<table name="Add Category to the HTTP Header" phase="httpResponse" >
+			<selector>
+			<modifyContext name="HTA_RespHdr_PACE_Bitrate" value="PACE_Bitrate" />
+			<modifyContext name="HTA_RespHdr_IM_ContentType" value="IM_ContentType" />
+			<modifyContext name="HTA_RespHdr_FTR_PaceVideo" value="FTR_PaceVideo" />
+			</selector>
+		</table>
+		<table name="XTT_videoOptimization" phase="httpRequest">
+			<selector urlPattern="http://*/videos/{.*\.flv}">
+				<modifyContext name="FTR_PaceVideo" value="'true'"/>
+			</selector>
+		</table>
+		</requestModifications>
+		</xml>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>vo_reqmod_online_opt.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded requestmodifications.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Radius Login -->
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+	<!-- Send the video retrieval request -->
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>
+			<parameter>http://</parameter>
+			<configuration>system/ip</configuration>
+			<parameter>/videos/Ddspringle1-OpenOceanTorrus105.flv</parameter>
+		</parameter>
+	</function>
+
+	<!-- Validate Response Code Send by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<!-- Media Store should not contain items, since the video is directly sent-->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>run command amocli -k count TI:F.CEE.</parameter>
+			<variable>Media_Store_Process_Name</variable>
+			<parameter>:AMO</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>amocli: 0 items counted</parameter>
+		<parameter>response</parameter>
+	</function>
+
+	<!-- Checking Response headers of PACE_Bitrate, it should have null value due to skipping PACE-->
+	<function name="queryText" module="BASIC">
+		<variable>HTTP/HEADER/PACE_Bitrate</variable>
+		<parameter>dev/null</parameter>
+		<parameter></parameter>
+	</function>
+
+	<!-- Checking Response headers of IM_ContentType -->
+	<function name="queryText" module="BASIC">
+		<variable>HTTP/HEADER/IM_ContentType</variable>
+		<parameter>dev/null</parameter>
+		<parameter>unknown/unknown</parameter>
+	</function>
+
+	<!-- Checking Response headers of FTR_PaceVideo -->
+	<function name="queryText" module="BASIC">
+		<variable>HTTP/HEADER/FTR_PaceVideo</variable>
+		<parameter>dev/null</parameter>
+		<parameter>true</parameter>
+	</function>
+
+	<!-- Radius Logoff -->
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+	<!-- Purge the Request Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>REQMOD_EmptyRules.xml</parameter>
+		<parameter>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;requestModifications&gt;&lt;/requestModifications&gt;</parameter>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>REQMOD_EmptyRules.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded requestmodifications.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Stop Web Server -->
+	<function name="stopWebServer" module="HTTP"/>
+
+</test>

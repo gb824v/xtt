@@ -1,0 +1,33 @@
+<test>
+<name>NewTest</name>
+<qcid>33</qcid>
+<description>
+???
+</description>
+<steps>
+HTTP/startWebServer
+HTTP/sendGetRequestLimited
+HTTP/checkResponseCode
+</steps>
+<designer>guyb </designer>
+<creationdate>2012-04-16 15:29:12 </creationdate>
+<testlevel>Integration</testlevel>
+<xfwVersion>XMP_XFW006</xfwVersion>
+<mandatory>false</mandatory>
+<stepname>HTTP/startWebServer</stepname>
+<stepid>1</stepid>
+<function name="startWebServer" module="HTTP"/>
+<mandatory>false</mandatory>
+<stepname>HTTP/sendGetRequestLimited</stepname>
+<stepid>2</stepid>
+<function name="sendGetRequestLimited" module="HTTP">
+<parameter>http://127.0.0.1/videos/Titanium.flv</parameter>
+<parameter>1</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/checkResponseCode</stepname>
+<stepid>3</stepid>
+<function name="checkResponseCode" module="HTTP">
+<parameter>200</parameter>
+</function>
+</test>

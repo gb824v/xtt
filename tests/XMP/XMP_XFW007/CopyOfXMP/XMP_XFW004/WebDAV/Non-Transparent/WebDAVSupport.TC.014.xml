@@ -1,0 +1,86 @@
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+WebDAVSupport.TC.014  - Validate XMP passes error responses from server.
+
+Test Description:
+ 1. Radius Logon
+ 2. Send PROPFIND Request
+ 3. Check Response 
+ 4. Radius Logoff
+ 
+Expected Result:
+ -  XMP should process the PROPFIND request and response through Non Transperant Proxy.
+
+XTT Commands:
+
+1. -  startWebServer
+     
+2.  - Radius log-ON
+
+3. -  setTextPostData
+
+4.  - sendFreeRequest 		"HTTP" PROPFIND method to SERVER/IP {configure in XTT config.xml}
+
+5.  - checkResponseCode
+
+6.  - Radius log-OFF
+
+7.  - stopWebServer
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- Test Start  -->
+
+<test>
+    <name>WebDAVSupport.TC.014</name>
+
+    <description>Validate XMP passes error responses from server</description>
+
+	<function name="startWebServer" module="HTTP"/>
+
+	<function name="radiusLogon" module="Radius">
+	    <parameter>xttuser</parameter>
+	    <parameter>12346</parameter>
+    </function>
+
+<!-- Send request to XMP using setTextPostData -->
+
+    <function name="setTextPostData" module="HTTP">
+        <file>TC013Request.xml</file>
+    </function>
+
+    <function name="setHeader" module="HTTP">
+        <parameter>Content-Type</parameter>
+        <parameter>text/xml; charset="utf-8"</parameter>
+    </function>
+
+    <function name="setHeader" module="HTTP">
+        <parameter>Content-Length</parameter>
+        <parameter>25</parameter>
+    </function>
+
+    <!-- Send PROPFIND request to XMP -->
+
+    <function name="sendFreeRequest" module="HTTP">
+        <parameter>PROPFIND</parameter>
+        <parameter>true</parameter>
+        <parameter>
+            <parameter>http://!!!!!!!!!!!!!!!!!!!!!!!!!!</parameter>
+            <configuration>SYSTEM/IP</configuration>
+            <parameter>:</parameter>
+            <configuration>WEBSERVER/PORT</configuration>
+            <parameter>/file</parameter>
+        </parameter>
+        <parameter>response</parameter>
+    </function>
+
+    
+    <function name="checkResponseCode" module="HTTP">
+        <parameter>400</parameter>
+    </function>
+
+	<function name="radiusLogoff" module="Radius">
+	    <parameter>xttuser</parameter>
+	    <parameter>12346</parameter>
+    </function>
+
+	  <function name="stopWebServer" module="HTTP"/>
+
+</test>

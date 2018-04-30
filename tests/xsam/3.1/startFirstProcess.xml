@@ -1,0 +1,12 @@
+<test>
+    <name>XSAM.PROCESS1</name>
+    <configuration>configXSAM.xml</configuration>
+    <description>Stop all billing processes and then start the first Process (default for tests)</description>
+
+    <function name="stopProcesses" module="Remote">
+        <configuration>XSAM/BILLINGPROCESS/ALL</configuration>
+    </function>
+    <function name="startProcess" module="Remote">
+        <configuration>XSAM/BILLINGPROCESS/FIRST</configuration>
+    </function>
+</test>

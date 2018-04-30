@@ -1,0 +1,32 @@
+<LDAP>
+    <logins>
+        <login>
+            <name>cn=Manager,o=wap_ext</name>
+            <password>secret</password>
+        </login>
+        <login>
+            <name>null</name>
+            <password>null</password>
+        </login>
+    </logins>
+    <directory>
+        <entry>
+		   <baseDN>cn=sis,o=wap_ext</baseDN>
+            <data>
+                <filter>login-ip=IPADDRESSTOKEN</filter>
+                <dn>login-ip=IPADDRESSTOKEN,cn=sis,o=wap_ext</dn>
+				<attribute>
+                    <name>msisdn</name>
+					<type>0x04</type>
+                    <value></value>
+                </attribute>
+                     <attribute>
+						<name>login-ip</name>
+						<type>0x04</type>
+						<value>IPADDRESSTOKEN</value>
+					</attribute>
+		        <oid>2.16.840.1.113730.3.4.2</oid>
+            </data>
+        </entry>
+    </directory>
+</LDAP>

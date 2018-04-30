@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<security>
+    
+    <!-- Test security between XMG and content providers -->
+        <contentProviders>
+                <https allowWeakEncryption="true">
+         <clientCertificate privateKeyFile="demo_inet_client_private_key.der"
+                            privateKeyPassword="IW8vbu/GbitotG+vHjU9q5tjIFWwA3f2TYsxBzyvKaGZ37tTGsNyGIZG1xtIDSdvwQ2Um5Fmr5A=" >
+                                <certificateChain>
+                                        <certificate name="demo_inet_client_certificate.der"/>
+                                        <certificate name="demo_inet_client_ca_certificate.der"/>                                        
+                                </certificateChain>
+                        </clientCertificate>
+                </https>
+        </contentProviders>
+
+    <!-- Test security settings -->
+        <devices>
+                <wtls allowWeakEncryption="true" keyRefresh="4">
+                        <rsa allowAnonymousKeyExchange="true">
+            <serverCertificate certificate="demo_wap1_server_certificate.wtls"
+                               privateKeyFile="demo_wap1_server_private_key.der"
+                               privateKeyPassword="81yBU6QGHEJs8m30KYbEwKc1Uh6dIQlPFjQLv17l30d6NVE7198bs+dbs8o6k/I89ucS6BC7e98=" />
+                        </rsa>
+                        <diffieHellman allowWeakParameters="false"/>
+                </wtls>
+        </devices>
+        
+        <managementGuis>
+                <https allowWeakEncryption="true">
+         <serverCertificate privateKeyFile="demo_inet_server_private_key.der"
+                            privateKeyPassword="81yBU6QGHEJs8m30KYbEwKc1Uh6dIQlPFjQLv17l30d6NVE7198bs+dbs8o6k/I89ucS6BC7e98=" >
+                                <certificateChain>
+                                        <certificate name="demo_inet_server_certificate.der"/>
+                                        <certificate name="demo_inet_server_ca_certificate.der"/>
+                                </certificateChain>
+                        </serverCertificate>
+                </https>
+        </managementGuis>
+        
+    <!-- Test PI security -->
+        <pushInitiators>
+                <https allowWeakEncryption="false">
+         <serverCertificate privateKeyFile="demo_inet_server_private_key.der"
+                            privateKeyPassword="81yBU6QGHEJs8m30KYbEwKc1Uh6dIQlPFjQLv17l30d6NVE7198bs+dbs8o6k/I89ucS6BC7e98=" >
+                                <certificateChain>
+                                        <certificate name="demo_inet_server_certificate.der"/>
+                                        <certificate name="demo_inet_server_ca_certificate.der"/>
+                                </certificateChain>
+                        </serverCertificate>
+                </https>
+        </pushInitiators>
+
+    <!-- Test Certificates (with and without Crl Checking) -->
+        <trustedAuthorities>
+                <certificate name="demo_inet_server_ca_certificate.der"/>
+                <certificate name="demo_inet_client_ca_certificate.der"/>
+                <certificate name="Swisskey_Root_CA.cer"/>
+                <certificate name="VeriSign_Class3_Public_Primary_CA-2028.cer"/>
+                <certificate name="Thawte_Personal_Premium_CA.cer"/>
+        </trustedAuthorities>
+</security>

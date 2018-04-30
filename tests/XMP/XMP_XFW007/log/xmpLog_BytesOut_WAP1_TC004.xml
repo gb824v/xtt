@@ -1,0 +1,165 @@
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Description: 
+This scenario will end up showing the context element HTG_BytesOut in the log and with the right value.
+It requires a simple request which will not end up getting the media from the cache or the media-store.
+
+Test steps:
+1. Start session
+2. Upload reqmod.
+3. Send GET request
+4. Spill the logscan into x.log (temp file)
+5. grep HTG_BytesOut x.log
+6. Verify the correct response (by queryResponse function)
+7. Remove temp files
+8. Close session
+
+Wrote by Oren Bodner at 25/01/2011
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+
+<!-- start test -->
+<test>
+    <function name="testName" module="Basic">
+        <parameter>xmpLog_HTG_BytesOut_WAP1</parameter>
+    </function>
+<description>HTG_BytesOut_WAP1</description>
+
+    <function name="startWebServer" module="HTTP"/>
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+    <function name="connectGateway" module="WAP"> </function>
+
+	<!-- Prepare the Request Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>REQMOD_LogICC_TC001.xml</parameter>
+		<xml>
+<requestModifications xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="requestmodifications.xsd">
+<table name="authentication" phase="authentication">
+        <selector urlPattern="*://*/*" >
+                <modifyContext name="FTR_AuthenticationType" value="'radius'" />
+                <modifyContext name="FTR_SubscriberId" value="TCP_RemoteIpAddress" />
+        </selector>
+</table>
+<table name="DisableThings" phase="httpRequest">
+<selector>
+<modifyContext name="Skip_CACHE" value="'true'" />
+<modifyContext name="FTR_RemoveInterlacing" value="'true'" />
+<modifyContext name="Skip_VIRUSSCANNER" value="'true'" />
+<modifyContext name="FTR_HtmlTidyDisable" value="'true'" />
+<modifyContext name="Skip_COOKIE" value="'true'" />
+<modifyContext name="Skip_ICC" value="'false'" />
+<modifyContext name="FTR_MultipartCompose_Disable" value="'true'" />
+<modifyContext name="FTR_Prefetch_Disable" value="'true'" />
+<modifyContext name="FTR_Deflate_Disable" value="'false'" />
+<modifyContext name="FTR_Gzip_Disable" value="'false'" />
+<modifyContext name="TCP_HideSourceAddress" value="'false'"/>
+</selector>
+</table>
+</requestModifications>
+		</xml>
+    </function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>REQMOD_LogICC_TC001.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded requestmodifications.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<function name="restartProcess" module="Remote">
+		<parameter>LOGGER.*</parameter>
+	</function>
+
+    <function name="sendGetRequest" module="WAP">
+        <parameter>
+            <parameter>http://</parameter>
+            <configuration>SYSTEM/IP</configuration>
+            <parameter>:</parameter>
+            <configuration>WEBSERVER/PORT</configuration>
+            <parameter>/</parameter>
+            <parameter>my_new_wolf.html</parameter>
+        </parameter>
+    </function>
+
+    <function name="checkResponseCode" module="WAP">
+        <parameter>200</parameter>
+    </function>
+
+    <function name="queryBody" module="WAP">
+        <parameter>dev/null</parameter>
+        <parameter>puppies</parameter>
+    </function>
+
+    <function name="sleep" module="Basic">
+        <parameter>7000</parameter>
+    </function>
+
+  <!--  save the latest logscan into temp log file  -->
+    <function name="getNewestRemoteFileName" module="Remote">
+        <parameter>newestlogfile</parameter>
+	    <configuration>remote/logpath</configuration>
+        <parameter>XMP</parameter>
+    </function>
+    <function name="executeRemoteXMSCommand" module="Remote">
+    	<parameter>
+            <configuration>remote/command</configuration>
+    	    <parameter>logscan -in </parameter>
+    	    <variable>newestlogfile</variable>
+            <parameter> -out x.log</parameter>
+    	</parameter>
+    </function>
+
+  <!-- verify ICC_Rsp_COMPRESSION_TypeOut param is exist -->
+    <function name="executeRemoteCommand" module="Remote">
+        <parameter>/bin/grep HTG_BytesOut x.log | tail -1 | awk -F' ' '{ print $2 }'</parameter>
+        <parameter>10000</parameter>
+        <parameter>fileSize</parameter>
+    </function>
+
+  <!-- check the value of ICC_Rsp_COMPRESSION_TypeOut param -->
+<!--
+	<function name="queryResponse" module="Remote">
+		<parameter>HTG_BytesOut: 196</parameter>
+		<parameter>data</parameter>
+	</function>
+-->
+<function name="lessThan" module="Basic">
+<variable>fileSize</variable>
+<parameter>220</parameter>
+</function>
+<function name="greaterThan" module="Basic">
+<variable>fileSize</variable>
+<parameter>180</parameter>
+</function>
+
+  <!-- Removing the log files -->
+    <function name="executeRemoteCommand" module="Remote">
+        <parameter>
+		<parameter>rm -f x.log </parameter>
+    		<variable>newestlogfile</variable>
+	</parameter>
+    </function>
+
+	<function name="removeVariables" module="Basic">
+		<parameter>.*</parameter>
+	</function>	
+
+    <function name="disconnectGateway" module="WAP" />
+
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+  <function name="stopWebServer" module="HTTP"/>
+
+</test>
+

@@ -1,0 +1,128 @@
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+KasperskyVirusScanningIntegration.TC.0014  -WAP GET / Virus Check is disabled / Requested web page contains virus / XMP allows the use case to continue.
+
+Test Description:
+ 1. Radius Logon
+ 2. Prepare and load the Request Modification File to disablethe Kaspersky Virus Check feature.
+ 3. Send virus Infected data in WAP Get Proxy Request
+ 4. Check Response Code
+ 5. Purge the Request Modification File.
+ 6. Radius Logoff
+ 
+Expected Result:
+ -  XMP should allow the use case to continue and sends the web page responded by the Target Web Server to the HTTP Client UA.
+
+XTT Commands:
+      startWebServer
+ 1. - Radius log-ON
+
+ 2. - Prepare and load the Request Modification File. 
+ 
+ 3.   - sendGetRequest 		"WAP" "http://SYSTEM-IP/viruspage.html"
+
+ 4.   - checkResponseCode	"HTTP" "200"
+
+ 5. - Purge the Request Modification File
+ 
+ 6. - Radius log-OFF
+      stopWebServer
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- Test Start  -->
+<test>
+
+	<name>KasperskyVirusScanningIntegration.TC.014</name>
+
+	<description>WAP GET / Virus Check is disabled / Requested web page contains virus / XMP allows the use case to continue</description>
+
+	<!-- Start Web Server -->
+	<function name="startWebServer" module="HTTP" />
+
+	<!-- Radius Login -->
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+	<function name="connectGateway" module="WAP"> </function>
+
+	<!-- Prepare the Request Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>REQMOD_KasperskyVirusScanningTC0014.xml</parameter>
+		<xml>
+		<requestModifications xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="requestmodifications.xsd">
+			<table name="authentication" phase="authentication" >
+			        <selector urlPattern="*://*/*" >
+			                <modifyContext name="FTR_AuthenticationType" value="'none'" />
+			                <modifyContext name="FTR_SubscriberId" value="TCP_RemoteIpAddress" />
+			        </selector>
+			</table>
+			<table name="HttpAndWapRequest" phase="httpRequest" >
+				<selector urlPattern="http://*/virus.bin">
+					<modifyContext name="Skip_VIRUSSCANNER " value="'true'"  />
+				</selector>
+			</table>
+		</requestModifications>
+		</xml>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>REQMOD_KasperskyVirusScanningTC0014.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded requestmodifications.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<function name="setCacheFileBase64" module="HTTP">
+		<parameter>virus.bin</parameter>
+		<base64decode><file>base64virus.bin</file></base64decode>
+	</function>
+
+	<!-- Send virus Infected data in WAP POST Proxy Request -->
+	<function name="sendGetRequest" module="WAP">
+		<parameter>
+			<parameter>http://</parameter>
+			<configuration>SYSTEM/IP</configuration>
+			<parameter>/virus.bin</parameter>
+		</parameter>
+	</function>
+
+	<!-- Validate Response Code Send by XMP -->
+	<function name="checkResponseCode" module="WAP">
+		<parameter>200</parameter>
+	</function>
+
+	<!-- Purge the Request Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>REQMOD_EmptyRules.xml</parameter>
+		<parameter>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;requestModifications&gt;&lt;/requestModifications&gt;</parameter>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>REQMOD_EmptyRules.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded requestmodifications.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+			
+	<function name="disconnectGateway" module="WAP" />
+
+	<!-- Radius Logoff -->
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+	<!-- Stop Web Server -->
+	<function name="stopWebServer" module="HTTP"/>
+
+</test>

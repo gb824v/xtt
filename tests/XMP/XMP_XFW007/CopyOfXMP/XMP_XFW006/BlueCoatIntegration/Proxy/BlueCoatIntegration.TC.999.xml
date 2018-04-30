@@ -1,0 +1,58 @@
+<test>
+	<name>BlueCoatIntegration.TC.999</name>
+	<description>Rollback BlueCoat test Environment</description>
+
+	<!-- Load Empty Request Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>reqmodTCemptyrules.xml</parameter>
+		<parameter>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;requestModifications&gt;&lt;/requestModifications&gt;</parameter>
+	</function>
+	
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>load data reqmodTCemptyrules.xml</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>Loaded requestmodifications</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	
+	
+	<!-- Remove illegalbluecoatcategories.url -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>delete file </parameter>
+			<parameter>illegalbluecoatcategories.url</parameter>
+		</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>Deleted file '/url/illegalbluecoatcategories.url'</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	
+	
+	<!-- Remove sensitivebluecoatcategories.url -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>delete file </parameter>
+			<parameter>sensitivebluecoatcategories.url</parameter>
+		</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>Deleted file '/url/sensitivebluecoatcategories.url'</parameter>
+		<parameter>dev/null</parameter>
+	</function>    
+	
+  
+  <!-- Load BlueCoat_pre_WorkflowConstants.xml -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>load data BlueCoat_pre_WorkflowConstants.xml</parameter>
+	</function>
+		
+	<function name="queryResponse" module="Remote">
+		<parameter>Loaded workflowconstants</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+</test>

@@ -1,0 +1,29 @@
+<test>
+ 
+      <!-- [xmpAddAdminCommunitiesTC003] Communities_addAdmin -->
+       
+      <description> SOAP-API: Communities : Communities_addAdmin</description>
+
+	 <function name="testName" module="Basic">
+		<parameter>xmpAddAdminCommunitiesTC003</parameter>
+	</function>
+      
+	<function name="SOAPClient" module="SOAP_API" >
+		<parameter>
+			 <parameter>http://</parameter>
+			 <configuration>XSN/IP</configuration>
+			 <parameter>:</parameter>
+			 <configuration>XSN/PORT</configuration>
+			 <parameter>/jaxws-policy-communities/communities</parameter>
+		</parameter>
+		<file>Communities_addAdmin.xml</file>
+		<parameter>Body/return</parameter>
+	</function>
+
+    
+
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+        
+ </test>

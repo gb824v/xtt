@@ -1,0 +1,82 @@
+<test>  
+    <name>XTT.TC.IMAP.027</name>
+    <description>Test IMAP Server</description>
+<function name="startIMAPServer" module="IMAP">
+	<parameter>3333</parameter>
+	<parameter>2222</parameter>
+	<configuration>SYSTEM/IP</configuration>
+	<parameter>30000</parameter>
+</function> 
+ <function name="connectMailServer" module="IMAP">
+	<configuration>SYSTEM/IP</configuration>
+    <parameter>2222</parameter>
+    <parameter>3333</parameter>
+	<parameter>30000</parameter>
+</function>
+
+<!-- Its not a IMAP Command just to create the user at server -->
+<function name="sendCREATEUSER" module="IMAP">
+	<parameter>anil.wadhai@xoriant.com</parameter>
+	<parameter>anil.wadhai@xoriant.com</parameter>
+</function>
+
+<function name="sendLOGIN" module="IMAP">
+	<parameter>anil.wadhai@xoriant.com</parameter>
+	<parameter>anil.wadhai@xoriant.com</parameter>
+</function>
+
+<function name="sendSETQUOTA" module="IMAP">
+	<parameter>INBOX</parameter>
+	<parameter>123456</parameter>
+</function>
+
+<function name="sendTextEmail" module="IMAP">
+	<parameter>anil.wadhai@xoriant.com</parameter>
+    <parameter>anil.wadhai@xoriant.com</parameter>
+	<parameter>s-u-b-j-e-c-t</parameter>
+	<parameter>This is a text body sending by Anil</parameter>
+</function>
+
+<function name="sendTextEmail" module="IMAP">
+	<parameter>anil.wadhai@xoriant.com</parameter>
+    <parameter>anil.wadhai@xoriant.com</parameter>
+	<parameter>s-u-b-j-e-c-t</parameter>
+	<parameter>This is a text body sending by Anil</parameter>
+</function>
+
+<!--
+<function name="sendAttachmentEmail" module="IMAP">
+	<parameter>anil.wadhai@xoriant.com</parameter>
+    <parameter>anil.wadhai@xoriant.com</parameter>
+	<parameter>s-u-b-j-e-c-t-1</parameter>
+	<parameter>Body sending by Anil-1</parameter>
+	<base64file>xttTC018.jpg</base64file>
+	<parameter>image/gif</parameter>
+	<parameter>testimage_filename</parameter>
+	<parameter>testimage_description</parameter>
+</function> -->
+
+<!-- function name="sendSTARTTLS" module="IMAP"/ -->
+
+<function name="sendLIST" module="IMAP">
+	<parameter></parameter>
+	<parameter>INBOX</parameter>
+</function>
+
+<function name="sendGETQUOTAROOT" module="IMAP">
+	<parameter>INBOX</parameter>
+</function>
+
+<function name="sendCREATE" module="IMAP">
+	<parameter>ANILINBOX</parameter>
+</function>
+
+
+<function name="sendRENAME" module="IMAP">
+	<parameter>ANILINBOX</parameter>
+	<parameter>NEWANILINBOX</parameter>
+</function>
+
+<function name="stopIMAPServer" module="IMAP"/> 
+
+</test> 

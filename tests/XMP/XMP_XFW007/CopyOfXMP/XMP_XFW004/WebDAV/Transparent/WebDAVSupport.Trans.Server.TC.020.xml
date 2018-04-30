@@ -1,0 +1,140 @@
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+WebDAVSupport.Trans.Server.TC.020  - Validate XMP handles excessively lengthy request body during Transperant Proxy.
+
+Test Description:
+ 1. Start Web-Server.
+ 2. Set Catch file for HTTP Response.
+ 3. Compair string for request.
+ 4. Stop Web-Server.
+ 
+Expected Result:
+ -  XMP should Validate excessively lengthy request body through Transperant Proxy.
+
+Main XTT Commands:
+      
+ 1.  - startWebServer
+
+ 2.  - setCacheFile 		
+
+ 3.  - compareString
+
+ 4. - stopWebServer
+      
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- Test Start  -->
+
+<test>
+    <name>WebDAVSupport.TC.020</name>
+
+    <description>Start the Webserver to Validate XMP handles excessively lengthy request body during transparent proxy</description>
+	
+	<function name="setVariable" module="Basic">
+        <parameter>WebDAV/TC020/Request</parameter>
+        <parameter>
+            <parameter>
+                <crlf>&lt;?xml version="1.0" encoding="utf-8" ?&gt;</crlf>
+                <crlf>&lt;D:propfind xmlns:D="DAV:"&gt;</crlf>
+                <crlf>  &lt;D:prop xmlns:R="http://www.foo.bar/boxschema/"&gt;</crlf>
+                <crlf>       &lt;R:bigbox&gt;</crlf>
+            </parameter>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+            <file>Request_BIG.txt</file>
+			<parameter>
+                <crlf>       &lt;/R:bigbox&gt;</crlf>
+                <crlf>       &lt;R:author/&gt;</crlf>
+                <crlf>       &lt;R:DingALing/&gt;</crlf>
+                <crlf>       &lt;R:Random/&gt;</crlf>
+                <crlf>  &lt;/D:prop&gt;</crlf>
+                <crlf>&lt;/D:propfind&gt;</crlf>
+            </parameter>
+        </parameter>
+    </function>
+
+    <function name="startWebServer" module="HTTP"/>
+
+    <function name="setServerHeader" module="HTTP">
+        <parameter>content-type</parameter>
+        <parameter>text/xml; charset="utf-8"</parameter>
+    </function>
+
+    <function name="setServerReturnCode" module="HTTP">
+        <parameter>207</parameter>
+    </function>
+
+    <function name="setServerReturnMessage" module="HTTP">
+        <parameter> Multi-Status</parameter>
+    </function>
+
+    <function name="setCacheFile" module="HTTP">
+        <parameter>/file</parameter>
+        <file>Response_BIG.xml</file>
+    </function>
+		
+	<function name="sleep" module="Basic">
+        <parameter>150000</parameter>
+    </function> 
+    	
+	 <function name="waitForRequests" module="HTTP">
+        <parameter>1</parameter>
+    </function>
+
+    <!-- Compare the request sended by XMP to server with actual request -->
+    <function name="compareString" module="Basic">
+        <stringlength><variable>webserver/post/text/xml</variable></stringlength>
+        <stringlength><variable>WebDAV/TC020/Request</variable></stringlength>
+    </function>
+
+    <function name="removeVariables" module="Basic">
+        <parameter>webserver/post/text/xml</parameter>
+    </function>
+
+	<function name="stopWebServer" module="HTTP"/>
+
+</test>

@@ -1,0 +1,81 @@
+<test>
+    <function name="writeRemoteFile" module="Remote">
+        <parameter>icapREQMOD.xml</parameter>
+        <xml><requestModifications xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="requestmodifications.xsd">
+    <table name="SetMobileAccelerationDefaults">
+        <selector>
+            <modifyContext name="FTR_MultipartCompose_Disable" value="'true'"/>
+            <modifyContext name="FTR_Prefetch_Disable" value="'true'"/>
+            <modifyContext name="FTR_Gzip_Disable" value="'false'"/>
+            <modifyContext name="FTR_Deflate_Disable" value="'false'"/>
+            <modifyContext name="FTR_HtmlTidyDisable" value="'true'"/>
+            <modifyContext name="FTR_RemoveInterlacing" value="'false'"/>
+        </selector>
+    </table>
+    <table name="ICAPOptions-Request">
+        <selector urlPattern="*://icap1.xtt724.com/*">
+            <modifyContext name="ICAP_ReqmodServer" value="'xttreqmod'"/>
+            <modifyContext name="ICAP_RespmodServer" value="'xttrespmod'"/>
+        </selector>
+        <selector urlPattern="*://icap2.xtt724.com/*">
+            <modifyContext name="ICAP_ReqmodServer" value="'xttreqmod'"/>
+        </selector>
+        <selector urlPattern="*://icap3.xtt724.com/*">
+            <modifyContext name="ICAP_RespmodServer" value="'xttrespmod'"/>
+        </selector>
+        <selector urlPattern="*://icap4.xtt724.com/*">
+        </selector>
+        <selector urlPattern="*://icap1204.xtt724.com/*">
+            <modifyContext name="ICAP_ReqmodServer" value="'xttreqmod'"/>
+            <modifyContext name="ICAP_RespmodServer" value="'xttrespmod'"/>
+            <modifyContext name="ICAP_addAllow204ToReqModRequest" value="'true'"/>
+            <modifyContext name="ICAP_addAllow204ToRespModRequest" value="'true'"/>
+        </selector>
+        <selector urlPattern="*://icap2204.xtt724.com/*">
+            <modifyContext name="ICAP_ReqmodServer" value="'xttreqmod'"/>
+            <modifyContext name="ICAP_addAllow204ToReqModRequest" value="'true'"/>
+        </selector>
+        <selector urlPattern="*://icap3204.xtt724.com/*">
+            <modifyContext name="ICAP_RespmodServer" value="'xttrespmod'"/>
+            <modifyContext name="ICAP_addAllow204ToRespModRequest" value="'true'"/>
+        </selector>
+        <selector urlPattern="*://icapextension.xtt724.com/*">
+            <modifyContext name="ICAP_ReqmodServer" value="'xttreqmod'"/>
+            <modifyContext name="ICAP_RespmodServer" value="'xttrespmod'"/>
+            <modifyHeader name="X-XTT-Extension" value="'true'"/>
+        </selector>
+    </table>
+    <table name="ICAPOptions-Response" phase="response">
+        <selector urlPattern="*://icapextension.xtt724.com/*">
+            <modifyContext name="HTA_RespHdr_X-XTT-Extension" value="'true'"/>
+            <modifyContext name="HTA_RespHdr_RESP-X-Attribute"        value="ICAP_respMod_X_Attribute"/>
+            <modifyContext name="HTA_RespHdr_RESP-X-ICAP-Profile"     value="ICAP_respMod_X_ICAP_PROFILE"/>
+            <modifyContext name="HTA_RespHdr_RESP-X-Attribute-Prefix" value="ICAP_respMod_X_Attribute_Prefix"/>
+            <modifyContext name="HTA_RespHdr_RESP-X-Infection-Found"  value="ICAP_respMod_X_Infection_Found"/>
+            <modifyContext name="HTA_RespHdr_RESP-X-Violations-Found" value="ICAP_respMod_X_Violations_Found"/>
+            <modifyContext name="HTA_RespHdr_RESP-X-Virus-ID"         value="ICAP_respMod_X_Virus_ID"/>
+            <modifyContext name="HTA_RespHdr_RESP-X-Response-Info"    value="ICAP_respMod_X_Response_Info"/>
+            <modifyContext name="HTA_RespHdr_RESP-X-Response-Desc"    value="ICAP_respMod_X_Response_Desc"/>
+            <modifyContext name="HTA_RespHdr_REQ-X-Attribute"         value="ICAP_reqMod_X_Attribute"/>
+            <modifyContext name="HTA_RespHdr_REQ-X-ICAP-Profile"      value="ICAP_reqMod_X_ICAP_PROFILE"/>
+            <modifyContext name="HTA_RespHdr_REQ-X-Attribute-Prefix"  value="ICAP_reqMod_X_Attribute_Prefix"/>
+            <modifyContext name="HTA_RespHdr_REQ-X-Infection-Found"   value="ICAP_reqMod_X_Infection_Found"/>
+            <modifyContext name="HTA_RespHdr_REQ-X-Violations-Found"  value="ICAP_reqMod_X_Violations_Found"/>
+            <modifyContext name="HTA_RespHdr_REQ-X-Virus-ID"          value="ICAP_reqMod_X_Virus_ID"/>
+            <modifyContext name="HTA_RespHdr_REQ-X-Response-Info"     value="ICAP_reqMod_X_Response_Info"/>
+            <modifyContext name="HTA_RespHdr_REQ-X-Response-Desc"     value="ICAP_reqMod_X_Response_Desc"/>
+        </selector>
+    </table>
+</requestModifications></xml>
+    </function>
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>
+            <parameter>load data icapREQMOD.xml</parameter>
+        </parameter>
+    </function>
+    <function name="queryResponse" module="Remote">
+        <parameter>^Loaded requestmodifications.*</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+</test>

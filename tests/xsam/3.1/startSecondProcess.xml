@@ -1,0 +1,9 @@
+<test>
+    <name>XSAM.PROCESS2</name>
+    <configuration>configXSAM.xml</configuration>
+    <description>Start the second Billing process assuming the first one is running</description>
+
+    <function name="startProcess" module="Remote">
+        <configuration>XSAM/BILLINGPROCESS/SECOND</configuration>
+    </function>
+</test>

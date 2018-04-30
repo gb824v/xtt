@@ -1,0 +1,72 @@
+<test>
+    <name>MBSPPB.ErrorScenarios.MT.TC.005</name>
+    <configuration>../configXSAM.xml</configuration>
+
+    <description>[TPI->MM7] Switching from primary ISCP connection to backup ISCP connection on each MBS machine after a successful switching (MBSPPB_ErrorScenarios_MT_TC.003)</description>
+
+    <subtest>../startSecondProcess.xml</subtest>
+    <function name="setVariable" module="Basic">
+        <parameter>AMOUNT</parameter>
+        <parameter>3.456</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+         <parameter>SKIP_DIAMETER</parameter>
+         <parameter>true</parameter>
+    </function>
+
+    <function name="startDiameterServer" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT</configuration>
+    </function>
+    <function name="startDiameterServer" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT2</configuration>
+    </function>
+    <function name="waitForSpecificRequests" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT</configuration>
+        <parameter>CAPABILITIES_EXCHANGE_REQUEST</parameter>
+        <parameter>1</parameter>
+    </function>
+     <function name="waitForSpecificRequests" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT2</configuration>
+        <parameter>CAPABILITIES_EXCHANGE_REQUEST</parameter>
+        <parameter>1</parameter>
+    </function>
+
+    <function name="stopProcess" module="Remote">
+        <configuration>XSAM/BILLINGPROCESS/SECOND</configuration>
+    </function>
+    <subtest>sendMMS.xml</subtest>
+    <function name="waitForSpecificRequests" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT</configuration>
+        <parameter>CREDIT_CONTROL_REQUEST</parameter>
+        <parameter>1</parameter>
+    </function>
+
+    <function name="startProcess" module="Remote">
+        <configuration>XSAM/BILLINGPROCESS/SECOND</configuration>
+    </function>
+    <function name="stopProcess" module="Remote">
+        <configuration>XSAM/BILLINGPROCESS/FIRST</configuration>
+    </function>
+    <subtest>sendMMS.xml</subtest>
+    <function name="waitForSpecificRequests" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT2</configuration>
+        <parameter>CREDIT_CONTROL_REQUEST</parameter>
+        <parameter>1</parameter>
+    </function>
+
+    <function name="startProcess" module="Remote">
+        <configuration>XSAM/BILLINGPROCESS/FIRST</configuration>
+    </function>
+    <function name="stopProcess" module="Remote">
+        <configuration>XSAM/BILLINGPROCESS/SECOND</configuration>
+    </function>
+    <subtest>sendMMS.xml</subtest>
+    <function name="waitForSpecificRequests" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT</configuration>
+        <parameter>CREDIT_CONTROL_REQUEST</parameter>
+        <parameter>2</parameter>
+    </function>
+
+    <function name="stopDiameterServer" module="Diameter"/>
+    <subtest>../startFirstProcess.xml</subtest>
+</test>

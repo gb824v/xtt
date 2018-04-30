@@ -1,0 +1,54 @@
+<!--
+InterstitialAdvertisement.TC.007  - Validate the example workflow does not insert an interstitial advert if the target URL is not a main page.
+
+Test Description:
+ 1. Radius Logon.
+ 2. Start Web Server for http request.
+ 3. Send Get request to http://872381.xtt724.com/index.html?var1=data1.
+ 4. Stop Web Server.
+ 5. Radius Logoff.
+ 
+Expected Result:
+ -  XMP should not insert an interstitial advert if the target URL is not a main page.
+
+XTT Main Commands:
+
+ 1.  - Radius log-ON
+ 2.  - startWebServer
+ 3.  - sendGetRequest
+ 4.  - stopWebServer
+ 5.  - Radius log-OFF
+-->
+
+<test>
+	<function name="testName" module="Basic">
+		<parameter>InterstitialAdvertisement.TC.007 </parameter>
+	</function>
+
+	<description>Validate the example workflow does not insert an interstitial advert if the target URL is not a main page.</description>
+
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12345</parameter>
+	</function>
+
+	<function name="startWebServer" module="HTTP"/>
+
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>
+		<parameter>http://872381.xtt724.com/index.html?var1=data1</parameter>
+		</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<function name="stopWebServer" module="HTTP"/>
+
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12345</parameter>
+	</function>
+
+</test>

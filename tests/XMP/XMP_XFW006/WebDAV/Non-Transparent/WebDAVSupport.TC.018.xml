@@ -1,0 +1,137 @@
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+WebDAVSupport.TC.018  - Validate XMP handles absent request body although Content-Length > 0.
+
+Test Description:
+ 1. Radius Logon
+ 2. Send PROPFIND Request
+ 3. Check Response 
+ 4. Radius Logoff
+ 
+Expected Result:
+ -  XMP should process thePROPFIND request and response through Non Transperant Proxy.
+
+XTT Commands:
+
+1. -  startWebServer
+     
+2.  - Radius log-on
+
+3.  - setCacheFile
+
+4. -  setVariableLines "HTTP" PROPFIND method to SERVER/IP {configure in XTT config.xml}
+
+5.  - sendTextPacket 		
+
+6.  -queryTextResponse
+
+7.  - Radius log-OFF
+
+8.  - stopWebServer
+
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- Test Start  -->
+
+<test>
+    <name>WebDAVSupport.TC.018</name>
+
+    <description>Validate XMP handles absent request body although Content-Length > 0</description>
+
+    <function name="startWebServer" module="HTTP">
+        <configuration>HTTPPROXY/DEFAULT/PORT</configuration>
+        <configuration>WEBSERVER/ROOT</configuration>
+        <configuration>WEBSERVER/TIMEOUT</configuration>
+    </function>
+
+
+<function name="radiusLogon" module="Radius">
+	<parameter>xttuser</parameter>
+	<parameter>12346</parameter>
+    </function>
+
+   
+    <function name="setServerHeader" module="HTTP">
+        <parameter>date</parameter>
+        <parameter>Mon, 16 Feb 2009 14:10:14 GMT</parameter>
+    </function>
+
+    <function name="setServerReturnCode" module="HTTP">
+        <parameter>207</parameter>
+    </function>
+
+    <function name="setServerReturnMessage" module="HTTP">
+        <parameter> Multi-Status</parameter>
+    </function>
+ 
+ <!-- Received response from server using setCacheFile -->
+
+    <function name="setCacheFile" module="HTTP">
+        <parameter>/file</parameter>
+        <parameter>
+            <crlf>&lt;?xml version="1.0" encoding="utf-8" ?&gt;</crlf>
+            <crlf>&lt;D:multistatus xmlns:D="DAV:"&gt;</crlf>
+            <crlf>  &lt;D:response&gt;</crlf>
+            <crlf>       &lt;D:href&gt;http://www.foo.bar/file&lt;/D:href&gt;</crlf>
+            <crlf>       &lt;D:propstat&gt;</crlf>
+            <crlf>            &lt;D:prop xmlns:R="http://www.foo.bar/boxschema/"&gt;</crlf>
+            <crlf>                 &lt;R:bigbox&gt;</crlf>
+            <crlf>                      &lt;R:BoxType&gt;Box type A&lt;/R:BoxType&gt;</crlf>
+            <crlf>                 &lt;/R:bigbox&gt;</crlf>
+            <crlf>                 &lt;R:author&gt;</crlf>
+            <crlf>                      &lt;R:Name&gt;J.J. Johnson&lt;/R:Name&gt;</crlf>
+            <crlf>                 &lt;/R:author&gt;</crlf>
+            <crlf>            &lt;/D:prop&gt;</crlf>
+            <crlf>            &lt;D:status&gt;HTTP/1.1 200 OK&lt;/D:status&gt;</crlf>
+            <crlf>       &lt;/D:propstat&gt;</crlf>
+            <crlf>       &lt;D:propstat&gt;</crlf>
+            <crlf>            &lt;D:prop&gt;&lt;R:DingALing/&gt;&lt;R:Random/&gt;&lt;/D:prop&gt;</crlf>
+            <crlf>            &lt;D:status&gt;HTTP/1.1 403 Forbidden&lt;/D:status&gt;</crlf>
+            <crlf>            &lt;D:responsedescription&gt; The user does not have access to the DingALing property.
+            </crlf>
+            <crlf>            &lt;/D:responsedescription&gt;</crlf>
+            <crlf>       &lt;/D:propstat&gt;</crlf>
+            <crlf>  &lt;/D:response&gt;</crlf>
+            <crlf>  &lt;D:responsedescription&gt; There has been an access violation error.</crlf>
+            <crlf>  &lt;/D:responsedescription&gt;</crlf>
+            <crlf>&lt;/D:multistatus&gt;</crlf>
+        </parameter>
+    </function>
+
+  
+   <function name="setVariableLines" module="Basic">
+        <parameter>2</parameter>
+        <parameter>headers</parameter>
+        <parameter>PROPFIND http://</parameter>         <parameter> HTTP/1.1</parameter>
+        <parameter>host: </parameter>                   <parameter></parameter>
+        <parameter>proxy-connection: </parameter>       <parameter>keep-alive</parameter>
+        <parameter>accept: </parameter>                 <parameter>*/*</parameter>
+        <parameter>User-Agent: </parameter>             <parameter>XTT/2.0.0134</parameter>
+        <parameter>content-length: </parameter>         <parameter>100</parameter>
+        <parameter>content-type: </parameter>           <parameter>text/xml; charset="utf-8"</parameter>
+        <parameter></parameter>                         <parameter></parameter>
+    </function> 
+
+    <!-- Send PROPFIND request to XMP -->
+    <function name="sendTextPacket" module="TCP">
+        <configuration>HTTPPROXY/ip</configuration>
+        <configuration>HTTPPROXY/Port</configuration>
+        <parameter>
+            <variable>headers</variable>
+            <parameter>
+            </parameter>
+        </parameter>
+    </function>
+
+     <function name="queryTextResponse" module="TCP">
+        <parameter>response-code</parameter>
+        <parameter>HTTP/1.1 404 Document not found.</parameter>
+    </function>
+
+     <function name="radiusLogoff" module="Radius">
+	    <parameter>xttuser</parameter>
+	    <parameter>12346</parameter>
+    </function>
+
+    <function name="stopWebServer" module="HTTP"/>
+    
+
+</test>

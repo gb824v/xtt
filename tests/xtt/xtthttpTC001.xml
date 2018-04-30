@@ -1,0 +1,93 @@
+<test>
+    <name>XTT.ICAP-TC.001</name>
+    <description>ICAP server, REQMOD GET</description>
+
+	<function name="startWebServer" module="HTTP"/>
+
+	<function name="openConnection" module="TCP">
+		<configuration>HTTPPROXY/IP</configuration>
+		<configuration>HTTPPROXY/PORT</configuration>
+    </function>
+
+	<!--function name="openConnection" module="TCP">
+		<parameter>127.0.0.1</parameter>
+		<configuration>WEBSERVER/PORT</configuration>
+    </function-->
+
+	<function name="sendTextPacketPart" module="TCP">
+		<parameter>POST http://www.xtt7</parameter>
+	</function>
+	<function name="sendTextPacketPart" module="TCP">
+		<parameter>24.com/ HTTP/1.1
+</parameter>
+	</function>
+
+	<function name="sendTextPacketPart" module="TCP">
+		<parameter>User-Agent: Java/1.5.0_08
+Host: www.xtt724.com
+Accept: text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2
+Proxy-Connection: keep-alive
+Content-type: text/plain
+Transfer-Encoding: chunked
+
+</parameter>
+	</function>
+
+	<function name="sendTextPacket" module="TCP">
+		<file>xtthttpTC001.txt</file>
+	</function>
+
+
+    <function name="queryTextResponse" module="TCP">
+    	<parameter>dev/null</parameter>
+    	<parameter>HTTP</parameter>
+    </function>
+    <function name="responseToVariable" module="TCP">
+    	<parameter>HTTP</parameter>
+    </function>
+
+    <function name="info" module="Basic">
+    	<parameter>
+</parameter>
+    	<variable>HTTP</variable>
+    </function>
+
+	<function name="sendTextPacketPart" module="TCP">
+		<parameter>GET http://www.xtt724.com/ HTTP/1.1
+</parameter>
+	</function>
+
+	<function name="sleep" module="Basic">
+		<parameter>200</parameter>
+	</function>
+
+	<function name="sendTextPacketPart" module="TCP">
+		<parameter>User-Agent: Java/1.5.0_08
+Host: www.xtt724.com
+Accept: text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2
+Connection: keep-alive
+
+</parameter>
+	</function>
+
+    <function name="queryTextResponse" module="TCP">
+    	<parameter>dev/null</parameter>
+    	<parameter>HTTP</parameter>
+    </function>
+    <function name="responseToVariable" module="TCP">
+    	<parameter>HTTP</parameter>
+    </function>
+
+    <function name="info" module="Basic">
+    	<parameter>
+</parameter>
+    	<variable>HTTP</variable>
+    </function>
+
+
+	<function name="closeConnection" module="TCP">
+	</function>
+
+
+	<function name="stopWebServer" module="HTTP"/>
+</test>

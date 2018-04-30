@@ -1,0 +1,82 @@
+<test>
+
+	<name>PCRF_ReqId-1005.TC.007.xml</name>
+	<description>Validate WebService when no session for given user available</description>
+
+	<!--
+	1. Start XTT, SMSC Server and wait for SMSC binding.
+	2. Send PCRF Soap Request with subscriber id of an existing subscriber.
+	3. Start XTT DIAMETER Server.
+	4. Wait for CER and WDR request. 
+	5. Stop  DIAMETER Server, SMSC Server.
+	-->
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<configuration>remote/command</configuration>
+			<parameter>uname -n</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>(.*)</parameter>
+		<parameter>response</parameter>
+	</function>
+
+	<function name="queryText" module="Basic">
+		<variable>response</variable>
+		<parameter>hostname</parameter>
+		<parameter>\w++.</parameter>
+	</function>
+
+      <function name="setVariable" module="Basic">
+		<parameter>UserID</parameter>
+		<xml>
+		<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://pcrf.intf.mobilgw.com/">
+		<soap:Body>
+			<tns:updateRules>
+				<subscriberId>0787367401</subscriberId>
+			</tns:updateRules>
+		</soap:Body>
+		</soap:Envelope>
+		</xml>
+	</function>
+
+
+    <function name="SOAPClient" module="SOAP_API">
+        <parameter>
+            <parameter>http://</parameter>
+            <configuration>XMP/IP</configuration>
+            <parameter>:</parameter>
+            <configuration>XMP/PORT</configuration>
+            <parameter>/jaxws-pcrf/pcrf?wsdl</parameter>
+        </parameter>
+        <variable>UserID</variable>
+        <parameter>Body/return</parameter>
+    </function>
+
+    <function name="checkResponseCode" module="SOAP_API">
+        <parameter>200</parameter>
+    </function>
+
+	<function name="startDiameterServer" module="Diameter">
+		<configuration>DiameterServer/PORT</configuration>
+	</function>
+
+	<!-- Wait for CER from PCRF-->
+	<function name="waitForSpecificRequests" module="Diameter">
+		<parameter>6868</parameter>
+		<parameter>257</parameter>
+		<parameter>1</parameter>
+	</function>
+
+	<!-- Wait for WDR from PCRF-->
+	<function name="waitForSpecificRequests" module="Diameter">
+		<parameter>6868</parameter>
+		<parameter>280</parameter>
+		<parameter>1</parameter>
+	</function>
+
+	<!-- Stopping Diameter Server -->
+		<function name="stopDiameterServer" module="Diameter" />
+</test>

@@ -1,0 +1,509 @@
+<test>
+
+	<name>PCRF_ReqId-1005.TC.018-B.xml</name>
+
+	<description>Validate SMS NOTIFICATION parameters (i.e. message text) configurable in Workflow Constants file and set correctly in the SMS NOTIFICATION - Subtest case 2: edit pcrfSmsSourceAddress and make sure it is sent to SMSC</description>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<configuration>remote/command</configuration>
+			<parameter>uname -n</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>(.*)</parameter>
+		<parameter>response</parameter>
+	</function>
+
+	<function name="queryText" module="Basic">
+		<variable>response</variable>
+		<parameter>hostname</parameter>
+		<parameter>\w++.</parameter>
+	</function>
+
+	<!--  Back up of default workflow constant file -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>extract data </parameter>
+			<parameter>workflowconstants default_workflowconstants.xml</parameter>
+		</parameter>
+	</function>
+
+	<!--  Read the workflow contsnts in a variable from the Backed Up workflow constant file -->
+	<function name="readRemoteFile" module="Remote">
+		<parameter>default_workflowconstants.xml</parameter>
+		<parameter>test_workflowconstants</parameter>
+	</function>
+
+	<!--  Replace the Value of the constant "pcrfSmsSourceAddress" in the variable specific to the test -->
+	<function name="replace" module="Basic">
+		<parameter>test_workflowconstants</parameter>
+		<parameter>&lt;workflowConstant name="pcrfSmsSourceAddress"&gt;079123456&lt;/workflowConstant&gt;</parameter>
+		<parameter>&lt;workflowConstant name="pcrfSmsSourceAddress"&gt;079123457&lt;/workflowConstant&gt;</parameter>
+	</function>
+
+	<!-- Write a remote file with the chaged values in the variable -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>loadworkflowconstants.xml</parameter>
+		<variable>test_workflowconstants</variable>
+	</function>
+
+	<!-- Load the updated workflow file specific to the test -->  
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>load data loadworkflowconstants.xml</parameter>
+	</function>
+
+	<!-- Check for the success of the loading  -->
+	<function name="queryResponse" module="Remote">
+		<parameter>Loaded workflowconstants</parameter>
+		<parameter>dev/null</parameter>
+	</function> 
+
+	<!-- Start SMSC and wait for SMSNOTIFICATION in a separate thread. -->
+	<function name="startSMSCServer" module="SMS"/>
+
+	<function name="waitForBind" module="SMS"/>
+
+	<thread>
+		<!-- Wait for the SMS-OUT Notification for 0787367400 with information about OUT-OF-CREDIT condition -->
+		<function name="waitForMessages" module="SMS">
+			<parameter>1</parameter>
+		</function>
+
+		<conditional configuration="SMSCSERVER/PROTOCOL" targetValue="UCP">
+			
+			<!-- Print MS Headers Address code recipient; value of SUBSCRIPTION_ID_DATA -->
+			<function name="info" module="Basic">
+				<parameter>smsc/ucp/Adc: </parameter><variable><parameter>smsc/ucp/0787367400/Adc</parameter></variable>
+			</function>
+			<!-- Check SMS Headers Address code recipient; value of SUBSCRIPTION_ID_DATA -->
+			<function name="queryText" module="Basic">
+				<variable><parameter>smsc/ucp/0787367400/Adc</parameter></variable>
+				<parameter>temp</parameter>
+				<parameter>0787367400</parameter>
+			</function>
+			
+			<!-- Print SMS Headers Address code originator; value of workflowConstant pcrfSmsLimitedSubscription -->
+			<function name="info" module="Basic">
+				<parameter>smsc/ucp/TMsg: </parameter><variable><parameter>smsc/ucp/0787367400/TMsg</parameter></variable>
+			</function>   
+			<!-- Check SMS Headers Address code originator; value of workflowConstant pcrfSmsSourceAddress -->
+			<function name="queryText" module="Basic">
+				<variable><parameter>smsc/ucp/0787367400/OAdc</parameter></variable>
+				<parameter>temp</parameter>
+				<parameter>079123457</parameter>
+			</function>
+			
+			<!-- Print SMS Headers TMsg; value of workflowConstant pcrfSmsLimitedSubscription -->
+			<function name="info" module="Basic">
+				<parameter>smsc/ucp/TMsg: </parameter>
+				<variable>
+					<parameter>smsc/ucp/0787367400/TMsg</parameter>
+				</variable>
+			</function>   
+			<!-- Check SMS Headers TMsg; value of workflowConstant pcrfSmsLimitedSubscription -->
+			<function name="queryText" module="Basic">
+				<parameter><bytestringdecode><variable>smsc/ucp/0787367400/TMsg</variable></bytestringdecode></parameter>
+				<parameter>temp</parameter>
+				<parameter>You need to upgrade to a Gold subscription.</parameter>
+			</function>
+			
+		</conditional>
+
+		<conditional configuration="SMSCSERVER/PROTOCOL" targetValue="SMPP">
+			
+			<!-- Print SMS Headers source_addr -->
+			<function name="info" module="Basic">
+				<parameter>smsc/smpp/0787367400/source_addr: </parameter><variable><parameter>smsc/smpp/0787367400/source_addr</parameter></variable>
+			</function>
+			<!-- Check SMS Headers source_addr -->
+			<function name="queryText" module="Basic">
+				<parameter><variable>smsc/smpp/0787367400/source_addr</variable></parameter>
+				<parameter>temp</parameter>
+				<parameter>079123457</parameter>
+			</function>
+
+			<!-- Print SMS Headers destination_addr -->
+			<function name="info" module="Basic">
+				<parameter>smsc/smpp/0787367400/destination_addr: </parameter><variable><parameter>smsc/smpp/0787367400/destination_addr</parameter></variable>
+			</function>
+			<!-- Check SMS Headers destination_addr -->
+			<function name="queryText" module="Basic">
+				<parameter><variable>smsc/smpp/0787367400/destination_addr</variable></parameter>
+				<parameter>temp</parameter>
+				<parameter>0787367400</parameter>
+			</function>
+
+			<!-- Print SMS Headers MESSAGE_PAYLOAD -->
+			<function name="info" module="Basic">
+				<parameter>smsc/smpp/0787367400/MESSAGE_PAYLOAD: </parameter><variable><parameter>smsc/smpp/0787367400/MESSAGE_PAYLOAD</parameter></variable>
+			</function>
+			<!-- Check SMS Headers MESSAGE_PAYLOAD -->
+			<function name="queryText" module="Basic">
+				<parameter><base64decode><variable>smsc/smpp/0787367400/MESSAGE_PAYLOAD</variable></base64decode></parameter>
+				<parameter>temp</parameter>
+				<parameter>You need to upgrade to a Gold subscription.</parameter>
+			</function>
+
+		</conditional>
+
+		<!-- Stopping SMSC Server -->
+		<function name="stopSMSCServer" module="SMS"/>
+	</thread>
+
+	<!-- start DIAMETER Server -->
+	<!--  Exchange of CER/CEA: CER initiated by DIAMETER-OUT PCRF and automatically responded with CEA by XTT Server. -->
+	<!--  Exchange of DWR/DWA: DWR initiated by DIAMETER-OUT PCRF and automatically responded with DWA by XTT Server. -->
+	<function name="startDiameterServer" module="Diameter">
+		<configuration>DiameterServer/PORT</configuration>
+		<xml>
+			<Diameter>
+				<response>
+					<DEVICE_WATCHDOG_REQUEST proxiable="true" error="false" tretr="false">
+						<RESULT_CODE        value="DIAMETER_SUCCESS"    mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<ORIGIN_REALM           value="ORIGIN_REALM"        mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+					</DEVICE_WATCHDOG_REQUEST>
+					<CAPABILITIES_EXCHANGE_REQUEST proxiable="true" error="false" tretr="false">
+						<RESULT_CODE            value="DIAMETER_SUCCESS"    mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<ORIGIN_REALM           value="ORIGIN_REALM"        mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<VENDOR_ID              request="VENDOR_ID" />
+						<PRODUCT_NAME           request="PRODUCT_NAME" />
+						<SUPPORTED_VENDOR_ID    request="SUPPORTED_VENDOR_ID" />
+						<AUTH_APPLICATION_ID    request="AUTH_APPLICATION_ID" />
+					</CAPABILITIES_EXCHANGE_REQUEST>
+					<RE_AUTH_REQUEST proxiable="true" error="false" tretr="false">
+						<SESSION_ID             request="SESSION_ID"/>
+						<AUTH_APPLICATION_ID    value="16777238"                   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<RESULT_CODE            value="DIAMETER_SUCCESS"    mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<ORIGIN_REALM           value="ORIGIN_REALM"        mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+					</RE_AUTH_REQUEST> 
+				</response>
+			</Diameter>
+		</xml>
+		<parameter>120000</parameter>
+	</function>
+
+	<!-- Wait for CER from PCRF-->
+	<function name="waitForSpecificRequests" module="Diameter">
+		<parameter>6868</parameter>
+		<parameter>257</parameter>
+		<parameter>1</parameter>
+	</function>
+
+	<!-- New Thread: -->
+	<!-- Wait for RAR. Exchange of RAR/RAA: RAR initiated by DIAMETER-OUT (PCRF) triggered by WebService profile update call. RAR automatically responded with RAA. Validate RAR -->
+	<!-- After RAR/RAA exchanged succesfully send CER TERMINATION_REQUST and receive CCA response. Validate CCA -->
+	<!-- Make sure the session information has been removed from PRESENCE-STORE -->
+	<thread>
+		<!-- Wait for RAR Message -->
+		<function name="waitForSpecificRequests" module="Diameter">
+			<parameter>6868</parameter>
+			<parameter>258</parameter>
+			<parameter>1</parameter>
+		</function>
+
+		<!-- Headers validation of RAR commandcode 258 -->
+		<function name="compareString" module="Basic">
+			<variable>DIAMETER/HEADER/commandcode</variable >
+			<parameter>258</parameter>
+		</function>
+
+		<!-- AVP validation of RAR -->
+		<function name="compareString" module="Basic">
+				<variable>DIAMETER/AVP/ORIGIN_HOST</variable>
+				<parameter>
+				<variable>hostname</variable>
+				<parameter>originalRealm</parameter>
+				</parameter>
+		</function>
+
+		<function name="compareString" module="Basic">
+			<variable>DIAMETER/AVP/ORIGIN_REALM</variable>
+			<parameter>originalRealm</parameter>
+		</function>
+
+		<function name="compareString" module="Basic">
+			<variable>DIAMETER/AVP/DESTINATION_REALM</variable>
+			<parameter>ORIGIN_REALM</parameter>
+		</function>
+
+		<function name="compareString" module="Basic">
+			<variable>DIAMETER/AVP/DESTINATION_HOST</variable>
+			<parameter>diameter.xtt724.com</parameter>
+		</function>
+
+		<function name="compareString" module="Basic">
+			<variable>DIAMETER/AVP/PRODUCT_NAME</variable>
+			<parameter>XMP</parameter>
+		</function>
+
+		<function name="compareString" module="Basic">
+			<variable>DIAMETER/AVP/AUTH_APPLICATION_ID</variable>
+			<parameter>16777238</parameter>
+		</function>
+
+		<function name="compareString" module="Basic">
+			<variable>DIAMETER/AVP/RE_AUTH_REQUEST_TYPE</variable>
+			<parameter>AUTHORIZE_ONLY</parameter>
+		</function>
+
+		<!-- AVP validation of RAR -->
+		<function name="queryText" module="Basic">
+			<variable>DIAMETER/AVP/Unknown(1002)</variable> //Charging-Rule-Remove
+			<parameter>var1</parameter>
+			<parameter>000003EDC0000018000028AF44656661756C745F52756C65</parameter> //matches the Charging-Rule-Name AVP with value: 44656661756C745F52756C65 = Default_Rule 
+		</function>
+
+		<!-- AVP validation of RAR -->
+		<function name="queryText" module="Basic">
+			<variable>DIAMETER/AVP/Unknown(1001)</variable> //Charging-Rule-Install
+			<parameter>var1</parameter>
+			<parameter>000003EDC000001A000028AF436F6E74726F6C6C65645F516F530000</parameter> //matches the Charging-Rule-Name AVP with value: 436F6E74726F6C6C65645F516F530000 = Controlled_Qos
+		</function>
+
+        <!-- Wait for 2nd RAR Message -->
+		<function name="waitForSpecificRequests" module="Diameter">
+			<parameter>6868</parameter>
+			<parameter>258</parameter>
+			<parameter>2</parameter>
+		</function>
+
+		<!-- catch possible DWR before sending CCR -->
+		<function name="readDiameterRequest" module="Diameter">
+			<parameter>one</parameter>
+			<parameter>var</parameter>
+		</function>
+
+		<!-- Exchange of CCR/CCA to TERMINATE the session; make sure session deleted from the store -->
+		<function name="sendDiameterRequest" module="Diameter">
+			<parameter>one</parameter>
+			<xml>
+				<CREDIT_CONTROL_REQUEST version="1" overrideCommandCode="272" applicationID="16777238" hopbyhopID="456" endtoendID="789" proxiable="true" error="false" tretr="false">
+					<SESSION_ID             value="SESSION_ID;xtt@724.com;A1_B"/>
+					<ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+					<ORIGIN_REALM           value="ORIGIN_REALM" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+					<DESTINATION_REALM           value="DESTINATION_REALM" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+					<AUTH_APPLICATION_ID    value="16777238" mandatory="true" protected="false" vendorspecific="false"  vendorID="" />
+					<CC_REQUEST_TYPE        value="TERMINATION_REQUEST"   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+					<CC_REQUEST_NUMBER      value="2" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+					<FRAMED_IP_ADDRESS      value="0a043c34" overrideavpcode="8" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>                   
+					<SUBSCRIPTION_ID         mandatory="true" protected="false" vendorspecific="false"  vendorID="">
+						<SUBSCRIPTION_ID_TYPE  value="00000000"   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<SUBSCRIPTION_ID_DATA  value="0787367400"       mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+					</SUBSCRIPTION_ID>
+				</CREDIT_CONTROL_REQUEST>
+			</xml>
+			<parameter>STORERESULT</parameter>
+		</function>
+
+		<!-- Headers validation of CCA commandcode 272 -->
+		<function name="compareString" module="Basic">
+			<variable>DIAMETER/one/HEADER/commandcode</variable >
+			<parameter>272</parameter>
+		</function>
+
+		<!-- AVP validation of CCA -->
+		<function name="queryText" module="Basic">
+			<variable>DIAMETER/one/AVP/RESULT_CODE</variable>
+			<parameter>var1</parameter>
+			<parameter>2001</parameter>
+		</function>
+
+		<function name="queryText" module="Basic">
+			<variable>DIAMETER/one/AVP/CC_REQUEST_NUMBER</variable>
+			<parameter>var1</parameter>
+			<parameter>2</parameter>
+		</function>
+
+		<function name="queryText" module="Basic">
+			<variable>DIAMETER/one/AVP/CC_REQUEST_TYPE</variable>
+			<parameter>var1</parameter>
+			<parameter>TERMINATION_REQUEST</parameter>
+		</function>
+
+		<function name="closeConnection" module="Diameter">
+			<parameter>one</parameter>
+		</function>
+
+		<!-- Stopping Diameter Server -->
+		<function name="stopDiameterServer" module="Diameter" />
+
+		<!-- Make sure the session information has been removed from PRESENCE-STORE. -->
+		<function name="executeRemoteXMSCommand" module="Remote">
+			<parameter>
+				<configuration>remote/command</configuration>
+				<parameter>pse3cli -a 0787367400 -t SubscriberId rba TI:F.CEE.PRESENCE-STORE.1:PSE3</parameter>
+			</parameter>
+		</function>
+
+		<function name="queryResponseNegative" module="Remote">
+			<parameter>&lt;addressType&gt;GxSessionId&lt;/addressType&gt;</parameter>
+		</function>
+	</thread>
+
+	<!-- XTT DIAMETER Client opens connection "one" to PCRF listetning port. -->
+	<function name="createConnection" module="Diameter">
+		<parameter>one</parameter>
+		<configuration>DIAMETERCLIENT/IP</configuration>
+		<configuration>DIAMETERCLIENT/PORT</configuration>
+	</function>
+
+	<!--  XTT DIAMETER Client sends CER and receives CEA -->
+	<function name="sendDiameterRequest" module="Diameter">
+		<parameter>one</parameter>
+		<xml>
+			<CAPABILITIES_EXCHANGE_REQUEST version="1"  overrideCommandCode="257" applicationID="16777238" hopbyhopID="456" endtoendID="789" proxiable="true" error="false" tretr="false">
+				<SESSION_ID overrideAVPCode="" value="SESSION_ID;xtt@724.com;A1_B" mandatory="true" protected="false" vendorspecific="false" vendorID="" />
+				<VENDOR_ID  value="10415" mandatory="true" protected="false" vendorspecific="false" vendorID="" />
+				<ORIGIN_REALM           value="ORIGIN_REALM"        mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<HOST_IP_ADDRESS        value="0001AC140983" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<PRODUCT_NAME           value="PRODUCT_NAME" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<SUPPORTED_VENDOR_ID    value="10415" mandatory="true" protected="false" vendorspecific="false"  vendorID="" />
+				<AUTH_APPLICATION_ID    value="16777238" mandatory="true" protected="false" vendorspecific="false"  vendorID="" />              
+			</CAPABILITIES_EXCHANGE_REQUEST>
+		</xml>
+		<parameter>STORERESULT</parameter>
+	</function>
+
+	<!-- Headers validation of CEA commandcode 257, commandflags 64 -->
+	<function name="compareString" module="Basic">
+		<variable>DIAMETER/one/HEADER/commandcode</variable >
+		<parameter>257</parameter>
+	</function>
+
+	<!-- AVP validation of CEA -->
+	<function name="compareString" module="Basic">
+		<variable>DIAMETER/one/AVP/RESULT_CODE</variable>
+		<parameter>2001</parameter>
+	</function>
+
+	<!-- XTT DIAMETER Client sends CCR and receives CCA. -->
+	<function name="sendDiameterRequest" module="Diameter">
+		<parameter>one</parameter>
+		<xml>
+			<CREDIT_CONTROL_REQUEST version="1" overrideCommandCode="272" applicationID="16777238" hopbyhopID="456" endtoendID="789" proxiable="true" error="false" tretr="false">
+				<SESSION_ID             value="SESSION_ID;xtt@724.com;A1_B"/>
+				<ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<ORIGIN_REALM           value="ORIGIN_REALM" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<DESTINATION_REALM      value="DESTINATION_REALM" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<AUTH_APPLICATION_ID    value="16777238" mandatory="true" protected="false" vendorspecific="false"  vendorID="" />
+				<CC_REQUEST_TYPE        value="INITIAL_REQUEST"   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<CC_REQUEST_NUMBER      value="0" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<IP_CAN_TYPE            value="00000000" overrideavpcode="1027" mandatory="false" protected="false" vendorspecific="true"  vendorID="10415"/>
+				<RAT_TYPE               value="00010000" overrideavpcode="1032" mandatory="false" protected="false" vendorspecific="true"  vendorID="10415"/>
+				<FRAMED_IP_ADDRESS      value="0a043c34" overrideavpcode="8" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<SUBSCRIPTION_ID         mandatory="true" protected="false" vendorspecific="false"  vendorID="">
+					<SUBSCRIPTION_ID_TYPE  value="00000000"   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>  //END_USER_E164=0   END_USER_IMSI=1   END_USER_SIP_URI=2   END_USER_NAI=3   END_USER_PRIVATE=4
+					<SUBSCRIPTION_ID_DATA  value="0787367400"       mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				</SUBSCRIPTION_ID>
+			</CREDIT_CONTROL_REQUEST>
+		</xml>
+		<parameter>STORERESULT</parameter>
+	</function>
+
+	<!-- Headers validation of CCA commandcode 272 -->
+	<function name="compareString" module="Basic">
+		<variable>DIAMETER/one/HEADER/commandcode</variable >
+		<parameter>272</parameter>
+	</function>
+
+	<!-- AVP validation of CCA -->
+	<function name="compareString" module="Basic">
+		<variable>DIAMETER/one/AVP/RESULT_CODE</variable>
+		<parameter>2001</parameter>
+	</function>
+
+	<!-- AVP validation of CCA -->
+	<function name="queryText" module="Basic">
+		<variable>DIAMETER/one/AVP/Unknown(1001)</variable>
+		<parameter>var1</parameter>
+		<parameter>000003EDC0000018000028AF44656661756C745F52756C65</parameter> //matches the Charging-Rule-Name AVP with value: 44656661756C745F52756C65 = Default_Rule 
+	</function>
+
+	<!-- Make sure the session information has been added to PRESENCE-STORE. -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<configuration>remote/command</configuration>
+			<parameter>pse3cli -a 0787367400 -t SubscriberId rba TI:F.CEE.PRESENCE-STORE:PSE3</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>&lt;addressType&gt;GxSessionId&lt;/addressType&gt;</parameter>
+		<parameter>response</parameter>
+	</function>
+
+	<!-- Update User Profile infomration. SubscriberClass from GOLD to SILVER. -->
+	<!-- when executing xms load db APP-SERVICESS calls DIAMETER-IN automatycally; SMS Notification will be sent if enabled and SubscriberClass <> GOLD -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>updateSubscriberProfile.xml</parameter>
+		<xml>
+		<dbupdates>
+			<subscribers>
+				<modify subscriber="0787367400">
+					<attribute name="Class" value="SILVER"/>
+				</modify>
+			</subscribers>
+		</dbupdates>
+		</xml>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load db </parameter>
+			<parameter>updateSubscriberProfile.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>SUCCESS: XML upload completed</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- put a delay between profile updates -->
+	<function name="sleep" module="Basic">
+		<parameter>2000</parameter>
+	</function>
+
+	<!-- Update Subscriber Profile back from SILVER to GOLD -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>updateSubscriberProfile.xml</parameter>
+		<xml>
+		<dbupdates>
+			<subscribers>
+				<modify subscriber="0787367400">
+					<attribute name="Class" value="GOLD"/>
+				</modify>
+			</subscribers>
+		</dbupdates>
+		</xml>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load db </parameter>
+			<parameter>updateSubscriberProfile.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>SUCCESS: XML upload completed</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Load the default workflow to undo the workflow constants changes done specific to the test -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>load data default_workflowconstants.xml</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>Loaded workflowconstants</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+</test>

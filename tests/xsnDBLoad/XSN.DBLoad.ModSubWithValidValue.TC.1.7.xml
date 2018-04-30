@@ -1,0 +1,33 @@
+<test>
+	<function name="testName" module="Basic">
+	
+	<parameter>XSN.DBLoad.ModSubWithValidValue.TC.1.7.xml</parameter>
+	</function>
+	
+	<description>Modify Subscriber with valid Subscriber Profile </description>
+   
+    <function name="sendRemoteCommand" module="Remote">
+    
+    	<parameter>writeFile ModifySubWithValidValues.xml </parameter>
+         
+        <file>ModifySubWithValidValues.xml</file>
+    
+    </function>
+    
+    <function name="sendRemoteCommand" module="Remote">
+    
+        <configuration>xsn/path</configuration>
+        <configuration>xsn/xms</configuration>
+    
+        
+        <parameter>load db ModifySubWithValidValues.xml</parameter>
+    
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        
+    <parameter>SUCCESS: XML upload completed</parameter>
+    <parameter>dev/null</parameter>
+    </function>    
+    
+  </test>

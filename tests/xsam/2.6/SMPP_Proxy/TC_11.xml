@@ -1,0 +1,191 @@
+<test>
+<configuration>xsam_config.xml</configuration>
+    <function name="testName" module="Basic">
+        <parameter>TC_11</parameter>
+    </function>
+<description> SMPP-submit_sm  Deferred Delivery		
+ ------------------------------------------------------------------------------------------
+Step 1: Set up a CP Simulator using XTT tool, configure proper TCP settings by providing the Remote  IP address / port with the IP/port (Incoming Channel) on which the XSAM is listening for connections.
+Step 2: Simulate SMSC using XTT.
+Step 3: Create "bind_transceiver"  message from the CP Simulator and verify that all the properties have correct values i.e. password etc.
+Step 4: Send "bind_transceiver" message. Connection should be established.
+Step 5: Create a "submit_sm" message with TLV's and send from CP to SMSC
+-----------------------------------------------------------------------------------------------
+	</description>
+    <!-- Start SMSC Server -->
+
+	<function name="startSMSCServer" module="SMS">
+		<configuration>SMSCSERVER/SMPPPORT</configuration>
+		<parameter>SMPP</parameter>
+	</function>
+	
+        <function name="openConnection" module="SMPP">
+            <parameter>connection</parameter>
+            <configuration>XSAM/IP</configuration>
+            <configuration>XSAM/SMPPPORT</configuration>
+        </function>
+
+        <function name="sendSMPPPacket" module="SMPP">
+        <parameter>connection</parameter>
+        <parameter>BIND_TRANSCEIVER</parameter>
+        <parameter>internal</parameter>
+        <parameter>systemid</parameter> <!--system_id, parameter[4]-->
+        <parameter>password</parameter> <!--password, parameter[5]-->
+        <parameter>system_type</parameter> <!--system_type, parameter[6]-->
+        <parameter>0x50</parameter><!--version, parameter[7]-->
+        <parameter>0</parameter><!--addr_ton, parameter[8]-->
+        <parameter>0</parameter><!--addr_npi,parameter[9]-->
+        <configuration>XSAM/SMPPSHORTCODE</configuration>
+        <parameter>0</parameter>
+        </function>
+
+		
+       <function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/system_id</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/system_id</variable>
+            <parameter>XTT-724-SMSC</parameter>
+        </function>
+
+        <function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_status</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_status</variable>
+            <parameter>0x00000000</parameter>
+        </function>
+
+          <function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_id</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_id</variable>
+            <parameter>0x80000009</parameter>
+        </function>
+
+		<function name="addTLV" module="SMPP">
+            <parameter>connection</parameter>
+            <parameter>SC_INTERFACE_VERSION</parameter>
+            <parameter>0x50</parameter>
+		</function>
+
+		<function name="addTLV" module="SMPP">
+            <parameter>connection</parameter>
+            <parameter>SOURCE_PORT</parameter>
+            <parameter>2121</parameter>
+		</function>
+
+		<function name="addTLV" module="SMPP">
+            <parameter>connection</parameter>
+            <parameter>DESTINATION_PORT</parameter>
+            <parameter>9999</parameter>
+		</function>
+
+	         <function name="addResponseTLV" module="SMPP">
+            <parameter>SUBMIT_SM</parameter>
+             <parameter>DESTINATION_PORT</parameter>
+            <parameter>9999</parameter>
+            </function>
+
+
+           <function name="sendSMPPPacket" module="SMPP">
+            <parameter>connection</parameter><!--connection-->
+            <parameter>SUBMIT_SM</parameter><!--commandID-->
+            <parameter>internal</parameter><!--sequence-->
+            <parameter>STYP</parameter><!--service type-->
+            <parameter>0</parameter><!--source_addr_ton-->
+            <parameter>0</parameter><!--source_addr_npi-->
+            <configuration>XSAM/SMPPSHORTCODE</configuration><!--source_address-->
+            <parameter>0</parameter><!--dest_addr_ton-->
+            <parameter>0</parameter><!--dest_addr_npi-->
+            <configuration>SMSCServer/MSISDN</configuration><!--destination_addr-->
+            <parameter>0</parameter><!--esm_class-->
+            <parameter>0</parameter><!--protocol_id-->
+            <parameter>0</parameter><!--priority_flag-->
+            <parameter>101230095806</parameter><!--schedule_delivery_time-->
+            <parameter></parameter><!--validity_period-->
+            <parameter>0</parameter><!--registered_delivery-->
+            <parameter>0</parameter><!--replace_if_present_flag-->
+            <parameter>0</parameter><!--data_coding-->
+            <parameter>0</parameter><!--sm_default_msg_id-->
+            <!--sm_length-->
+            <parameter>9999999444444666666777</parameter><!--numeric short_message-->
+            <!--getTLVs-->
+        </function>
+
+		    <function name="clearResponseTLV" module="SMPP">
+            <parameter>SUBMIT_SM</parameter>
+            </function>		
+
+            <function name="clearTLVs" module="SMPP">
+            <parameter>connection</parameter>
+             </function>		
+        
+           <function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/system_id</variable>
+           </function>
+
+		   <function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/system_id</variable>
+            <parameter>XTT-724-SMSC</parameter>
+        </function>
+
+        <function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_status</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_status</variable>
+            <parameter>0x00000000</parameter>
+        </function>
+
+          <function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_id</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_id</variable>
+            <parameter>0x80000004</parameter>
+        </function>
+
+	     <!-- lets validate TLVs at CP side -->
+		<function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/DESTINATION_PORT</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/DESTINATION_PORT</variable>
+            <parameter>9999</parameter>
+        </function>
+		     
+		<!-- lets validate TLVs at SMSC side -->
+		<function name="info" module="BASIC">
+            <variable><parameter>smsc/smpp/</parameter><configuration>SMSCServer/MSISDN</configuration><parameter>/SC_INTERFACE_VERSION</parameter></variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable><parameter>smsc/smpp/</parameter><configuration>SMSCServer/MSISDN</configuration><parameter>/SC_INTERFACE_VERSION</parameter></variable>
+            <parameter>80</parameter>
+        </function>
+
+		<function name="info" module="BASIC">
+            <variable><parameter>smsc/smpp/</parameter><configuration>SMSCServer/MSISDN</configuration><parameter>/DESTINATION_PORT</parameter></variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable><parameter>smsc/smpp/</parameter><configuration>SMSCServer/MSISDN</configuration><parameter>/DESTINATION_PORT</parameter></variable>
+            <parameter>9999</parameter>
+        </function>
+
+
+		<function name="closeConnection" module="SMPP">
+            <parameter>connection</parameter>
+        </function>
+ 
+    <function name="stopSMSCServer" module="SMS"/>
+
+</test>

@@ -1,0 +1,229 @@
+
+Description:  [reply]	Opened: 2010-02-16 17:34
+ Private  No Wrapping
+In VFUK XMP4.0 we have fixed handling of accept enconding headers for
+transparent traffic ( workflow/reqmod enforce XMP does not overwritte it with
+preferred accept-encoding header - use of FTR_UseOriginalAcceptEncodingHeader).
+This has been identified as root cause for some of the transparent application.
+
+XMP4.1 does not really support that anymore and by default changes the accept
+encoding header.
+
+
+------- Comment #1 From Tomasz Maslewski 2010-02-16 17:34 [reply] -------  Private  No Wrapping
+10-02-16 16:24:32.617:000000000:E://HTTP/PARSED/REQUEST:hta_helper.c(1406):IP=10.16.2.121 SUBSCRIBER-ID=447919480095 REQUEST-ID=F.CEE.TCP-ROUTER.phgwsl09.02_26632528132 COMMAND="GET / HTTP/1.1"
+  cookie                BBC-UID=646b530b4420c3dfc3769c03e15169d4c6e0c19520a0119f2289e684aa3c3a160Mozilla%2f5%2e0%20%28Windows%3b%20U%3b%20Windows%20NT%205%2e1%3b%20en%2dGB%3b%20rv%3a1%2e9%2e1%2e5%29%20Gecko%2f20091102%20Firefox%2f3%2e5%2e5%20%28%2eNET%20CLR%203%2e5%2e30729%29
+  accept                text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8  
+  accept-charset        ISO-8859-1,utf-8;q=0.7,*;q=0.7
+  accept-encoding       gzip,deflate
+  accept-language       en-gb,en;q=0.5
+  host                  www.bbc.co.uk
+  user-agent            Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.2) Gecko/20100115 Firefox/3.6 (.NET CLR 3.5.30729)
+10-02-16 16:24:32.620:000000000:E://HTTP/GENERATED/REQUEST:htg_acts.c(428):IP=10.16.2.121 SUBSCRIBER-ID=447919480095 REQUEST-ID=F.CEE.TCP-ROUTER.phgwsl09.02_26632528132 SERVER=212.58.246.160:80
+  GET / HTTP/1.1
+  Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+  Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+  Accept-Encoding: deflate, gzip, identity
+  Accept-Language: en-gb,en;q=0.5
+  Cookie: BBC-UID=646b530b4420c3dfc3769c03e15169d4c6e0c19520a0119f2289e684aa3c3a160Mozilla%2f5%2e0%20%28Windows%3b%20U%3b%20Windows%20NT%205%2e1%3b%20en%2dGB%3b%20rv%3a1%2e9%2e1%2e5%29%20Gecko%2f20091102%20Firefox%2f3%2e5%2e5%20%28%2eNET%20CLR%203%2e5%2e30729%29
+  Host: www.bbc.co.uk
+  User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.2) Gecko/20100115 Firefox/3.6 (.NET CLR 3.5.30729)
+  x-vodafone-accesscontrol: Adult
+  x-vodafone-usertype: Consumer
+  x-wap-bearer-id: >64000;ROAMING=NOT ROAMING;SGSNIP=212.183.144.246
+  x-wap-calling-line-id: bsg.wap
+  Connection: keep-alive
+  Keep-Alive: 115
+
+------- Comment #2 From Markus Bircher 2010-02-18 10:05 [reply] -------  Private  No Wrapping
+Philippe, can you check with Tomasz, whether this is a workflow change that
+needs to be applied?
+
+
+------- Comment #3 From Tomasz Maslewski 2010-02-18 10:32 [reply] -------  Private  No Wrapping
+The original problem was discussed in
+https://724bugzilla.724.com/show_bug.cgi?id=21916 (see comment#28 onwards). 
+
+I think it would make sense to address that problem in product. i.e.: currently
+VFUK would run generic xmp4.1 workflow
+
+
+------- Comment #4 From Stewart Rout 2010-02-18 15:38 [reply] -------  Private  No Wrapping
+Tomasz, for the time being you should adapt the REQMOD 
+
+
+------- Comment #5 From Philippe Jost 2010-02-24 16:48 [reply] -------  Private  No Wrapping
+I've looked again at bug 21916, in particular bug 21916 comments #6 and bug
+21916 comment #28 and the logs and tcpdumps:
+
+My observations are:
+- Requests to /youtube/accounts/registerDevice return every time different,
+unique DeviceId and DeviceKey.
+- Responses to /youtube/accounts/registerDevice requests are always chunked
+encoded when the header 'accept-encoding: deflate, gzip, identity' is present
+in the request and are never chunked encoded when that header isn't present.
+- Subsequents responses to requests to /proxy/ytbt are always correctly
+forwarded by XMP, number and size of the chunks is different. This means XMP
+forwards the same payload to the device as it was received coming from CP. This
+is to refute some of the comments in bug21916 saying the payload wouldn't be
+the same.
+
+Conclusions:
+As the change applied to fix bug21916 does solve the issue, the real source of
+the problem is that the device isn't able to correctly interpret a chunked
+encoded response to request to /youtube/accounts/registerDevice. As described
+in bug 21916 comments #6 the device seems to be in a special state when sending
+this reqest and manifestly unable to properly decode the response.
+In RFC2616 (HTTP/1.1) it stays that "All HTTP/1.1 applications MUST be able to
+receive and decode the "chunked" transfer-coding" and the request sent by the
+device is an HTTP/1.1 one.
+
+Short, the modification required here is to workaround a bug in the client
+device.
+As the workflow is already complex and overloaded I would propose to modify
+ICC.
+- Add a new configuration parameter for ICC, says
+'ContextName_UseOriginalAcceptEncoding' being configured by default to
+'FTR_UseOriginalAcceptEncodingHeader'
+- When ever ICC finds a true value ('true' or '1') for the context element
+named by its configuration 'ContextName_UseOriginalAcceptEncoding', the
+original accept-encoding header isn't replaced resp. it remains not present.
+- We are adding REQMOD rules like in bug21916 which very restrictively (only
+for request to '/youtube/accounts/registerDevice' and where the user-agent
+contains 'Android-YouTube') set the FTR_UseOriginalAcceptEncodingHeader context
+element to true.
+
+At this place I'm interested in comments from Tomasz about this proposition and
+from Thorsten about the feasibility in ICC
+
+
+------- Comment #6 From Tomasz Maslewski 2010-02-25 09:58 [reply] -------  Private  No Wrapping
+(In reply to comment #5)
+> Short, the modification required here is to workaround a bug in the client
+> device.
+> As the workflow is already complex and overloaded I would propose to modify
+> ICC.
+> - Add a new configuration parameter for ICC, says
+> 'ContextName_UseOriginalAcceptEncoding' being configured by default to
+> 'FTR_UseOriginalAcceptEncodingHeader'
+> - When ever ICC finds a true value ('true' or '1') for the context element
+> named by its configuration 'ContextName_UseOriginalAcceptEncoding', the
+> original accept-encoding header isn't replaced resp. it remains not present.
+> - We are adding REQMOD rules like in bug21916 which very restrictively (only
+> for request to '/youtube/accounts/registerDevice' and where the user-agent
+> contains 'Android-YouTube') set the FTR_UseOriginalAcceptEncodingHeader context
+> element to true.
+> 
+> At this place I'm interested in comments from Tomasz about this proposition and
+> from Thorsten about the feasibility in ICC
+> 
+> 
+Hi Phillipe,
+
+That is exactly what we want an ability to enforce original accept encoding
+with REQMODs (FTR_UseOriginalAcceptEncodingHeader) and it make sense for ICC to
+own the task.
+
+Just to add to your analysis - investigation @VFUK shows there might be more
+then a single application failing for that reason. We had a discussion over
+that and VFUK decided they do not want to change accept encoding for
+intercepted requests (= be as transparent as you can). The clients on that type
+of traffic can be grouped into 2 high level baskets:
+- Intelligent browsers (for laptop and smarthpones) that usually would support
+wide range of encoding and changing the accept encoding does not seems to make
+sense anyway
+- HTTP-based application that are quite often designed to fit the purpose and
+often do not obey the HTTP standards
+
+Smarthpone manufactures (iPhone,Google Phone) insists that no proxy is setup in
+between as some application may not work.
+
+
+------- Comment #7 From Thorsten Lemler 2010-03-01 11:08 [reply] -------  Private  No Wrapping
+(In reply to comment #5)
+> At this place I'm interested in comments from Tomasz about this proposition and
+> from Thorsten about the feasibility in ICC
+> 
+Yes we could do this in ICC. But maybe out existing instruments
+like "ICC_LIB_Internal_disable-conversion" and "skip_ICC" can be used.
+
+
+------- Comment #8 From Philippe Jost 2010-03-08 16:27 [reply] -------  Private  No Wrapping
+Reusing an already implemented mechanism in ICC
+(ICC_LIB_Internal_disable-conversion) by modifying the workflow to set that
+context element not only when Skip_ICC is true but also when no
+"accept-encoding" header is defined in the original request will do the trick.
+This should cover the different applications relying on not having a proxy in
+the request path and doesn't require any REQMOD rule looking at user-agent
+values as I first described in comment#5.
+Must be careful with request coming from MPC over SAA, I'm not sure what the
+"accept-encoding" header will be in that case
+
+
+------- Comment #9 From Philippe Jost 2010-03-16 10:52 [reply] -------  Private  No Wrapping
+CVS commit: MAIN-branch: source/xpdl/xmp  
+
+See attachment (id=29533) [edit]
+
+
+------- Comment #10 From Philippe Jost 2010-03-16 10:53 [reply] -------  Private  No Wrapping
+Fixed
+
+Workflow sets 'ICC_LIB_Internal_disable-conversion' when 'accept-encoding'
+header is missing in original request. This tells ICC (the one used for content
+conversion or/and the one used fordecompression) to not modify/set the
+accept-encoding header in the request XMP is finally sending to the content
+provider.
+
+
+------- Comment #11 From Philippe Jost 2010-03-17 17:18 [reply] -------  Private  No Wrapping
+CVS commit: XFW_004-branch: source/xpdl/xmp  
+
+See attachment (id=29533) [edit]
+
+
+------- Comment #12 From Tomasz Maslewski 2010-03-23 14:30 [reply] -------  Private  No Wrapping
+Stewart,
+
+We are interested in that fix for VFUK deployment.
+Will you be able to release that together with the final Patch.
+As this is just workflow fix, we are happy to take it as single fix I guess.
+
+Tomasz
+
+
+------- Comment #13 From Stewart Rout 2010-03-30 16:58 [reply] -------  Private  No Wrapping
+(In reply to comment #12)
+> We are interested in that fix for VFUK deployment.
+> Will you be able to release that together with the final Patch.
+> As this is just workflow fix, we are happy to take it as single fix I guess.
+
+Hi Tomasz,
+
+This fix will be a part of the release in the final patch.
+
+Cheers Stewart 
+
+
+------- Comment #14 From Martin Lichtin 2011-01-05 20:22 [reply] -------  Private  No Wrapping
+CVS commit: XFW_004-branch: source/xpdl/xmp  
+
+See attachment (id=29533) [edit]
+
+
+------- Comment #15 From Martin Lichtin 2011-01-05 20:56 [reply] -------  Private  No Wrapping
+The change in this ticket has been undone.
+Instead ICC supports the FTR_UseOriginalAcceptEncodingHeader flag
+as discussed in comment #6
+Depends on bug 27065
+
+
+------- Comment #16 From Oren Bodner 2011-01-18 15:39 [reply] -------  Private  No Wrapping
+Martin, by undoing the fix of revision 1.14.4.5, you mean that this is not a
+bug ?
+
+
+------- Comment #17 From Martin Lichtin 2011-01-18 15:57 [reply] -------  Private  No Wrapping
+It is a bug, but the workflow change was only a workaround.
+So now the feature of preserving the accept header is supported in ICC
+and therefore the workflow workaround is not needed.

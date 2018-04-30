@@ -1,0 +1,7 @@
+<configuration>
+	<pushTestSpecific>
+		<msisdn>0791234567</msisdn>
+		<msisdnprefix>079123456</msisdnprefix>
+		<href>wab.sbc.ch</href>
+	</pushTestSpecific>
+</configuration>

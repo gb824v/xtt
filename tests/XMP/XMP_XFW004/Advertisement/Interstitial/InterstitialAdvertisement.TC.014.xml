@@ -1,0 +1,123 @@
+<!--
+InterstitialAdvertisement.TC.014  - Validate the Subscriber does not always see the same interstitial advertisement (in a sequence).
+
+Test Description:
+ 1. Radius Logon.
+ 2. Start Web Server for http request.
+ 3. Send Get request to http://872383.724xtt.com/ with loop of 15 times.
+ 4. Stop Web Server.
+ 5. Check query variable.
+ 6. Radius Logoff.
+ 
+Expected Result:
+ -  XMP should check the Subscriber does not always see the same interstitial advertisement.
+
+XTT Main Commands:
+
+ 1.  - Radius log-ON
+ 2.  - startWebServer
+ 3.  - sendGetRequest		to http://872383.724xtt.com/
+ 4.  - stopWebServer
+ 5.  - queryVariableNegative
+ 6.  - Radius log-OFF
+-->
+
+<test>
+	<function name="testName" module="Basic">
+		<parameter>InterstitialAdvertisement.TC.014 </parameter>
+	</function>
+
+	<description>Validate the Subscriber does not always see the same interstitial advertisement (in a sequence).</description>
+
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12345</parameter>
+	</function>
+
+	<function name="startWebServer" module="HTTP"/>
+
+	<function name="setHeader" module="HTTP">
+		<parameter>Accept-Encoding</parameter>
+		<parameter>compress</parameter>
+	</function>
+	
+	<function name="disableKeepAlive" module="HTTP"/>
+
+	<!-- Loop Starts here -->
+	<loop name="processLoop" start="1" stop="6" step="1">
+		<function name="sendGetRequest" module="HTTP">
+			<parameter>
+			<parameter>http://872381.724xtt.com/</parameter>
+			</parameter>
+		</function>
+
+		<function name="checkResponseCode" module="HTTP">
+			<parameter>200</parameter>
+		</function>
+
+		<function name="queryBody" module="HTTP">
+			<variable>processLoop</variable>
+			<parameter>&lt;div&gt;.*&lt;img src=(.*)".*&gt;.*&lt;/div&gt;</parameter>
+		</function>
+
+		<function name="sendGetRequest" module="HTTP">
+			<parameter>
+			<parameter>http://872381.724xtt.com/</parameter>
+			</parameter>
+		</function>
+
+		<function name="checkResponseCode" module="HTTP">
+			<parameter>200</parameter>
+		</function>
+
+		<function name="sleep" module="Basic">
+			<parameter> 
+			<parameter>2000</parameter>
+			</parameter>
+		</function>
+
+		<function name="sendGetRequest" module="HTTP">
+			<parameter>
+			<parameter>http://872381.724xtt.com/</parameter>
+			</parameter>
+		</function>
+
+		<function name="checkResponseCode" module="HTTP">
+			<parameter>200</parameter>
+		</function>
+
+		<function name="sleep" module="Basic">
+			<parameter> 
+			<parameter>35000</parameter>
+			</parameter>
+		</function>
+	</loop>
+
+	<function name="queryVariableNegative" module="Basic">
+		<variable>1</variable>
+		<variable>2</variable>
+	</function>
+
+	<function name="queryVariableNegative" module="Basic">
+		<variable>2</variable>
+		<variable>3</variable>
+	</function>
+
+	<function name="queryVariableNegative" module="Basic">
+		<variable>3</variable>
+		<variable>4</variable>
+	</function>
+
+	<function name="queryVariableNegative" module="Basic">
+		<variable>4</variable>
+		<variable>5</variable>
+	</function>
+
+	<function name="stopWebServer" module="HTTP"/>
+
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12345</parameter>
+		</function>
+
+</test>

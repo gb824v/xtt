@@ -1,0 +1,8 @@
+<modifications xmlns="http://www.xmldb.org/xupdate" version="1.0">
+
+	<!-- 80% of 1562500 = 1250000 -->
+	<insert-after select="/component-view/processgroup[starts-with(@name,'MEDIA-STORE')]/component[@name='AMO']/AMO_CFG/AllowUnknownAttributes">
+			<element name="InstanceAttributeName">MS_Instance</element>
+	</insert-after>
+
+</modifications>

@@ -1,0 +1,64 @@
+<test>
+	<name>CCRI Test</name>
+	<qcid>555</qcid>
+	<description>
+		defaultAuthenticationType=radius; starting a web session, enabling Advertising, disabling advetisingand
+		ending the session
+	</description>
+	<steps>
+		BASIC/setVariable
+		Diameter/createConnection
+		Basic/sleep
+		Diameter/sendDiameterRequest
+	</steps>
+	<designer></designer>
+	<creationdate></creationdate>
+	<testlevel>Integration</testlevel>
+	<xfwVersion>XMP_XFW006</xfwVersion>
+	<mandatory>false</mandatory>
+	<stepname>BASIC/setVariable</stepname>
+	<stepid>1</stepid>
+	<function name="setVariable" module="Basic">
+		<parameter>STORED_SESSION_ID</parameter>
+		<parameter>1200</parameter>
+	</function>
+	<mandatory>false</mandatory>
+	<stepname>Diameter/createConnection</stepname>
+	<stepid>2</stepid>
+	<function name="createConnection" module="Diameter">
+		<parameter>one</parameter>
+		<parameter>10.0.1.185</parameter>
+		<parameter>3868</parameter>
+	</function>
+	<mandatory>false</mandatory>
+	<stepname>Basic/sleep</stepname>
+	<stepid>3</stepid>
+	<function name="sleep" module="Basic">
+		<parameter>1000</parameter>
+	</function>
+	<mandatory>false</mandatory>
+	<stepname>Diameter/sendDiameterRequest</stepname>
+	<stepid>4</stepid>
+	<function name="sendDiameterRequest" module="Diameter">
+		<parameter>one</parameter>
+		<xml>
+			&lt;?xml version="1.0"?&gt;
+			<CREDIT_CONTROL_REQUEST version="1"
+				applicationID="16777238" hopbyhopID="456" endtoendID="789"
+				proxiable="true" error="false" tretr="false" overrideCommandCode="258">
+				<SESSION_ID value="123456789" />
+				<ORIGIN_HOST value="10.0.1.51" mandatory="true"
+					protected="false" vendorspecific="false" vendorid="" />
+				<AUTH_APPLICATION_ID value="16777238" mandatory="true"
+					protected="false" vendorspecific="false" vendorid="" />
+				<CC_REQUEST_TYPE value="INITIAL_REQUEST" mandatory="true"
+					protected="false" vendorspecific="false" vendorid="" />
+				<CC_REQUEST_NUMBER value="0" mandatory="true"
+					protected="false" vendorspecific="false" vendorid="" />
+				<FRAMED_IP_ADDRESS      value="0a043c34" overrideavpcode="8" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+			</CREDIT_CONTROL_REQUEST>
+
+		</xml>
+		<parameter>STORERESULT</parameter>
+	</function>
+</test>

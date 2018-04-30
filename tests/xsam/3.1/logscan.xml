@@ -1,0 +1,25 @@
+<test>
+    <function name="sleep" module="Basic">
+        <parameter>30000</parameter>
+    </function>
+
+    <function name="writeRemoteFile" module="Remote">
+        <parameter>logscan_script.txt</parameter>
+        <file>logscan_script.txt</file>
+    </function>
+
+    <function name="getNewestRemoteFileName" module="Remote">
+        <parameter>newestlogfile</parameter>
+	    <configuration>remote/logpath</configuration>
+        <parameter>XSAM</parameter>
+    </function>
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+    	<parameter>
+            <configuration>remote/command</configuration>
+    	    <parameter>logscan -in </parameter>
+    	    <variable>newestlogfile</variable>
+            <parameter> -script logscan_script.txt</parameter>
+    	</parameter>
+    </function>
+</test>

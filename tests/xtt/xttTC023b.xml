@@ -1,0 +1,42 @@
+<test>
+    <name>XTT.TC.023b</name>
+
+    <description>Test the Synchronize feature of the TCP module, server side</description>
+
+    <function name="startWebServer" module="HTTP"/>
+
+    <!-- any port would do as long as it's free, so we take this one -->
+    <function name="synchronizeWait" module="TCP">
+        <configuration>HTTPPROXY/DEFAULT/PORT</configuration>
+        <parameter>Got your first Synchronize!</parameter>
+        <parameter>SAVE</parameter>
+    </function>
+    
+    <function name="compareString" module="Basic">
+        <parameter>This is the first Synchronize!</parameter>
+        <variable>SAVE</variable>
+    </function>
+    
+    <function name="waitForRequests" module="HTTP">
+        <parameter>1</parameter>
+    </function>
+    
+    <!-- initialize the variable, NEVER use uninitialized variables as data in a notify or wait, 
+         if you do that your wait/notify can get out of sync destroying all tests and getting an endless loop -->
+    <conditional variable="WEBSERVER/POST/APPLICATION/OCTET-STREAM" targetValue="null">
+        <function name="setVariable" module="Basic">
+            <parameter>WEBSERVER/POST/APPLICATION/OCTET-STREAM</parameter>
+            <parameter></parameter>
+        </function>
+    </conditional>
+
+    <function name="synchronizeWait" module="TCP">
+        <configuration>HTTPPROXY/DEFAULT/PORT</configuration>
+        <variable>WEBSERVER/POST/APPLICATION/OCTET-STREAM</variable>
+        <parameter>SAVE2</parameter>
+    </function>
+
+
+    <function name="stopWebServer" module="HTTP"/>
+
+</test>

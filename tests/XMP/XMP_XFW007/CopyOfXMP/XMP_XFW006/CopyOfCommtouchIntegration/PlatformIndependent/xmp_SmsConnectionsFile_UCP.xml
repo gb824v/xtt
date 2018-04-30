@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmpSmsConnections>
+    <channels>
+
+<!-- Make sure you set maxSegmentPduSize to the maximum segment size (in bytes) 
+     supported by the target SMSCs. -->
+
+        <connectChannel name="SmsChannel" maxSegmentPduSize="127" policy="backup" protocol="UCP" settings="UcpSettings" >
+            <connection name="SmsConnection" address="2222" username="724" password="" />
+            <remoteAddress ipAddress=""
+                           port="" />
+
+        </connectChannel>
+    </channels>
+    <settings>
+        <ucpSettings name="UcpSettings"
+                     disableAuthentication="false"
+                     linkDownMaxRetries="1"
+                     linkDownRetryTimeoutSeconds="30"
+                     maxConcurrentReq="1"
+                     maxMessagesPerSecond="0"
+                     maxPduSize="4096"
+                     mode="active"
+                     throttleIncomingTcp="false"
+                     use60Open="true" >
+            <ucpConnectionOptions authenticationCode="xyz"
+                                  npi="5"
+                                  ton="6" />
+            <ucpMessageOptionSets>
+                <ucpMessageOptionSet optionSetName="DEFAULT"
+                                   sendOperation="51"
+                                   sourceAddr="30080"
+                                   lastResortAddress="30080"
+                                   lastResortId="0539"
+                                   messageClass="0" />
+             </ucpMessageOptionSets>
+        </ucpSettings>
+    </settings>
+</xmpSmsConnections>

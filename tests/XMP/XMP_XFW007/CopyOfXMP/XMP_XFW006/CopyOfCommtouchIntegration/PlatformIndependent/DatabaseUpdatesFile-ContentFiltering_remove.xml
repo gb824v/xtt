@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Example database updates file for XMP. This file is in the 
+     XMP "training" directory. It loads dummy
+     data that is used in the instructions in the Installation
+     Guide to test that XMP is working correctly.  -->
+<dbupdates>
+    <subscribers>
+        <remove subscriber="0787367500" />
+         <!-- Age >= 12 -->
+        <remove subscriber="0787367501" />
+         <!-- Age >= 24 -->
+        <remove subscriber="0787367502" />
+        <remove subscriber="0787367503" />
+        <remove subscriber="0787367601" />
+        <remove subscriber="0787367602" />
+        <remove subscriber="0787367603" />
+        <remove subscriber="0787367701" />
+        <remove subscriber="0787367702" />
+        <remove subscriber="0787367703" />
+        <remove subscriber="0787367802" />
+        <remove subscriber="0787367803" />
+        <remove subscriber="0787367804" />
+        <remove subscriber="0787367805" />        
+    </subscribers>
+    <communities>
+        <remove name="blockTravel" />
+        <remove name="blockPorn" />
+        <remove name="blockPorn/blockTravel/blockNews" />
+        <remove name="blockPorn/blockTravel" />   
+    </communities>
+</dbupdates>

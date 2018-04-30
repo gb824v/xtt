@@ -1,0 +1,7 @@
+tests/XMP/XMP_XFW006/Kaspersky/kaspersky_mms/MMS-Variety_GET_HTTP_app-vnd-wap_multipart_mixed_inf.xml
+tests/XMP/XMP_XFW006/Kaspersky/kaspersky_mms/MMS-Variety_GET_HTTP_app-vnd-wap_multipart_mixed_non-inf.xml
+tests/XMP/XMP_XFW006/Kaspersky/kaspersky_mms/GET_HTTP_more_than_10Mb_non-infected.xml
+tests/XMP/XMP_XFW006/Kaspersky/kaspersky_mms/GET_HTTP_more_than_10Mb_infected.xml
+tests/XMP/XMP_XFW006/Kaspersky/kaspersky_mms/MMS-Variety_POST-HTTP_app-vnd-wap_multipart_mixed_inf.xml
+tests/XMP/XMP_XFW006/Kaspersky/kaspersky_mms/MMS-Variety_POST-HTTP_app-vnd-wap_multipart_mixed_non-inf.xml
+tests/XMP/XMP_XFW006/Kaspersky/kaspersky_mms/MMS-Variety_GET_HTTP_app-vnd-wap_multipart_related_inf.xml

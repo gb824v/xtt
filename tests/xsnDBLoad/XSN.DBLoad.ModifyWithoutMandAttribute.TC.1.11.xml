@@ -1,0 +1,33 @@
+<test>
+	<function name="testName" module="Basic">
+	
+	<parameter>XSN.DBLoad.ModifyWithoutMandAttribute.TC.1.11.xml</parameter>
+	</function>
+	
+	<description>Modify without mandatory attribute Subscriber </description>
+   
+    <function name="sendRemoteCommand" module="Remote">
+    
+    	<parameter>writeFile ModifyWithoutMandAttribute.xml </parameter> 
+         
+        <file>ModifyWithoutMandAttribute.xml</file>
+    
+    </function>
+    
+    <function name="sendRemoteCommand" module="Remote">
+    
+        <configuration>xsn/path</configuration>
+        <configuration>xsn/xms</configuration>
+    
+        
+        <parameter>load db ModifyWithoutMandAttribute.xml</parameter>
+    
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        
+    <parameter>ERROR: XML upload encountered problems and ended prematurely</parameter>
+    <parameter>dev/null</parameter>
+    </function>    
+    
+  </test>

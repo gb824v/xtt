@@ -1,0 +1,35 @@
+<test>
+    <function name="testName" module="Basic">
+        <parameter>XMS.TC.002</parameter>
+    </function>
+    <function name="sendRemoteCommand" module="Remote">
+        <configuration>xmg/path</configuration>
+        <parameter>bin/xms show process PSE.*</parameter>
+    </function>
+    <function name="showResponse" module="Remote"/>
+    
+    <function name="queryResponseNegative" module="Remote">
+        <parameter>No such process</parameter>    
+    </function>
+
+    <function name="sendRemoteCommand" module="Remote">
+        <configuration>xmg/path</configuration>
+        <parameter>bin/xms show process SERVICE.*.1</parameter>
+    </function>
+    <function name="showResponse" module="Remote"/>    
+
+    <function name="queryResponseNegative" module="Remote">
+        <parameter>No such process</parameter>
+    </function>
+
+    <function name="sendRemoteCommand" module="Remote">
+        <configuration>xmg/path</configuration>
+        <parameter>bin/xms show process NOSUCHPROCESS.*.1</parameter>
+    </function>
+    <function name="showResponse" module="Remote"/>     
+
+    <function name="queryResponse" module="Remote">
+        <parameter>No such process</parameter>    
+        <parameter>dev/null</parameter>
+    </function>
+</test>

@@ -1,0 +1,35 @@
+<test>
+
+	<name>XMPVideoOptCoreFunctionality.TC.000</name>
+	<description>Setup Video Optimization test Environment</description>
+
+	<!-- Load Video Optimization File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>vo_videooptimization.xml</parameter>
+		<file>vo_videooptimization.xml</file>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>load data vo_videooptimization.xml</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded videooptimization.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Load Example Stat Collector File -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter> 
+			<parameter>load data </parameter>
+			<configuration>remote/path</configuration>
+			<parameter>examples/xmp_StatsCollector.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded statscollector</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+</test>

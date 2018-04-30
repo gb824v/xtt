@@ -1,0 +1,110 @@
+ <test>
+	<name>RTSP.TC.003_ServerToClient_server</name>
+	<description>Test RTSP ANNOUNCE method for Server to Client scenario</description>
+
+	<function name="radiusLogon" module="Radius">
+      <parameter>xttuser</parameter>
+      <parameter>12346</parameter>
+    </function>
+
+	 <!-- client side server for responses -->
+    <function name="setVariable" module="Basic">
+        <parameter>CLIENT</parameter>
+        <configuration>RTSPSERVER/CLIENTPORT</configuration>
+    </function>
+    <!-- client side server for responses -->
+    <function name="setVariable" module="Basic">
+        <parameter>SERVER</parameter>
+        <configuration>RTSPSERVER/PORT</configuration>
+    </function>
+
+    <!-- client side server for responses -->
+    <function name="startRTSPServer" module="RTSP">
+        <variable>SERVER</variable>
+        <configuration>RTSPSERVER/TIMEOUT</configuration>
+        <testpath>rtsp</testpath>
+    </function>
+   
+    <function name="waitForVariable" module="Basic">
+	<parameter>
+		<parameter>RTSP/</parameter>
+		<variable>SERVER</variable>
+		<parameter>/SETUP/FINISHED/REQUEST</parameter>
+	</parameter>
+	</function>
+	
+	<function name="removeVariables" module="Basic">
+	<parameter>
+		<parameter>RTSP/</parameter>
+		<variable>SERVER</variable>
+		<parameter>/SETUP/FINISHED/REQUEST</parameter>
+	</parameter>
+	</function>
+
+	<function name="setVariable" module="Basic">
+        <parameter>content</parameter>
+        <base64encode>
+            <crlf>v=0</crlf>
+            <crlf>o=mhandley 2890844526 2890845468 IN IP4 126.16.64.4</crlf>
+            <crlf>s=SDP Seminar</crlf>
+            <crlf>i=A Seminar on the session description protocol</crlf>
+            <crlf>u=http://www.cs.ucl.ac.uk/staff/M.Handley/sdp.03.ps</crlf>
+            <crlf>e=mjh@isi.edu (Mark Handley)</crlf>
+            <crlf>c=IN IP4 224.2.17.12/127</crlf>
+            <crlf>t=2873397496 2873404696</crlf>
+            <crlf>a=recvonly</crlf>
+            <crlf>m=audio 3456 RTP/AVP 0</crlf>
+            <crlf>m=video 2232 RTP/AVP 31</crlf>
+        </base64encode>
+    </function>
+ 
+    <function name="setHeader" module="RTSP">
+        <parameter>one</parameter>
+        <parameter>Content-Type</parameter>
+        <parameter>application/sdp</parameter>
+    </function>
+    <function name="setHeader" module="RTSP">
+        <parameter>one</parameter>
+        <parameter>Content-Length</parameter>
+        <base64bytelength><variable>content</variable></base64bytelength>
+    </function>
+        
+    <function name="sendRTSPRequest" module="RTSP">
+        <parameter>ANNOUNCE</parameter>
+        <parameter>
+            <parameter>rtsp://</parameter>
+           <configuration>RTSPSERVER/CLIENTIP</configuration>
+            <parameter>:</parameter>
+            <variable>CLIENT</variable>
+            <parameter>/foo/twister</parameter>
+        </parameter>
+        <variable>content</variable>
+    </function>
+
+	 <function name="waitForResponses" module="RTSP">
+        <parameter>1</parameter>
+    </function>
+
+    <function name="waitForVariable" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>SERVER</variable>
+            <parameter>/RESPONSE/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+    <function name="removeVariables" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>SERVER</variable>
+            <parameter>/RESPONSE/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+    <function name="stopRTSPServer" module="RTSP"/>
+
+	<function name="radiusLogoff" module="Radius">
+      <parameter>xttuser</parameter>
+      <parameter>12346</parameter>
+    </function>
+	
+</test>

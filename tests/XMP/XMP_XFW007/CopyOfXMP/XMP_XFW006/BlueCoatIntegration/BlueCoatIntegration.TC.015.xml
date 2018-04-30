@@ -1,0 +1,179 @@
+<test>
+<name>BlueCoatIntegration.TC.015</name>
+<qcid>55</qcid>
+<description>
+BlueCoat returns 200 OK / X-vf-categories-policy: none, X-vf-categories-local: [Non_Sensitive1], X-vf-categories-bluecoat: [Sensitive1;Sensitive2], X-vf-category: pending / XMP should allow
+</description>
+<steps>
+Radius/radiusLogon
+HTTP/startWebServer
+HTTP/startWebServer
+HTTP/setServerDelayms
+HTTP/setServerReturnCode
+HTTP/setServerReturnMessage
+HTTP/setServerHeader
+HTTP/setServerHeader
+HTTP/setServerHeader
+HTTP/setServerHeader
+Thread: HTTP/waitForRequests
+Thread: HTTP/checkServerURL
+Thread: HTTP/checkServerHeader
+Thread: HTTP/checkServerHeader
+Thread: HTTP/checkServerHeader
+Thread: HTTP/setServerHeader
+Thread: HTTP/setServerHeader
+Thread: HTTP/setServerHeader
+Thread: HTTP/setServerHeader
+Thread: HTTP/setServerReturnCode
+Thread: HTTP/setServerReturnMessage
+Thread: HTTP/setCacheFile
+HTTP/sendGetRequest
+HTTP/checkResponseCode
+HTTP/queryBody
+HTTP/stopWebServer
+Radius/radiusLogoff
+</steps>
+<designer>guyb </designer>
+<creationdate>2012-01-18 11:32:35 </creationdate>
+<testlevel>Regression</testlevel>
+<xfwVersion>XMP_XFW006</xfwVersion>
+<stepname>Radius/radiusLogon</stepname>
+<function name="radiusLogon" module="Radius">
+<parameter>xttuser</parameter>
+<parameter>12346</parameter>
+</function>
+<stepname>HTTP/startWebServer</stepname>
+<function name="startWebServer" module="HTTP">
+<parameter>80</parameter>
+<testpath></testpath>
+<parameter>30000</parameter>
+</function>
+<stepname>HTTP/startWebServer</stepname>
+<function name="startWebServer" module="HTTP">
+<parameter>8444</parameter>
+<testpath></testpath>
+<parameter>30000</parameter>
+</function>
+<stepname>HTTP/setServerDelayms</stepname>
+<function name="setServerDelayms" module="HTTP">
+<parameter>3000</parameter>
+</function>
+<stepname>HTTP/setServerReturnCode</stepname>
+<function name="setServerReturnCode" module="HTTP">
+<parameter>200</parameter>
+</function>
+<stepname>HTTP/setServerReturnMessage</stepname>
+<function name="setServerReturnMessage" module="HTTP">
+<parameter> OK</parameter>
+</function>
+<stepname>HTTP/setServerHeader</stepname>
+<function name="setServerHeader" module="HTTP">
+<parameter>X-vf-categories-policy</parameter>
+<parameter>none</parameter>
+</function>
+<stepname>HTTP/setServerHeader</stepname>
+<function name="setServerHeader" module="HTTP">
+<parameter>X-vf-categories-local</parameter>
+<parameter>Non Sensitive Category 001</parameter>
+</function>
+<stepname>HTTP/setServerHeader</stepname>
+<function name="setServerHeader" module="HTTP">
+<parameter>X-vf-categories-bluecoat</parameter>
+<parameter>Sensitive Category 001;Sensitive Category 002</parameter>
+</function>
+<stepname>HTTP/setServerHeader</stepname>
+<function name="setServerHeader" module="HTTP">
+<parameter>X-vf-category</parameter>
+<parameter>pending</parameter>
+</function>
+<threadname>Thread</threadname>
+<thread>
+<stepname>HTTP/waitForRequests</stepname>
+<function name="waitForRequests" module="HTTP">
+<parameter>1</parameter>
+</function>
+<stepname>HTTP/checkServerURL</stepname>
+<function name="checkServerURL" module="HTTP">
+<parameter>
+<parameter>http://</parameter>
+<configuration>system/ip</configuration>
+<parameter>/page015.html</parameter>
+</parameter>
+</function>
+<stepname>HTTP/checkServerHeader</stepname>
+<function name="checkServerHeader" module="HTTP">
+<parameter>Host</parameter>
+<configuration>system/ip</configuration>
+</function>
+<stepname>HTTP/checkServerHeader</stepname>
+<function name="checkServerHeader" module="HTTP">
+<parameter>User-Agent</parameter>
+<parameter>VF Access Layer</parameter>
+</function>
+<stepname>HTTP/checkServerHeader</stepname>
+<function name="checkServerHeader" module="HTTP">
+<parameter>X-vf-category-only</parameter>
+<parameter>CAT-AL</parameter>
+</function>
+<stepname>HTTP/setServerHeader</stepname>
+<function name="setServerHeader" module="HTTP">
+<parameter>X-vf-categories-policy</parameter>
+</function>
+<stepname>HTTP/setServerHeader</stepname>
+<function name="setServerHeader" module="HTTP">
+<parameter>X-vf-categories-local</parameter>
+</function>
+<stepname>HTTP/setServerHeader</stepname>
+<function name="setServerHeader" module="HTTP">
+<parameter>X-vf-categories-bluecoat</parameter>
+</function>
+<stepname>HTTP/setServerHeader</stepname>
+<function name="setServerHeader" module="HTTP">
+<parameter>X-vf-category</parameter>
+</function>
+<stepname>HTTP/setServerReturnCode</stepname>
+<function name="setServerReturnCode" module="HTTP">
+<parameter>200</parameter>
+</function>
+<stepname>HTTP/setServerReturnMessage</stepname>
+<function name="setServerReturnMessage" module="HTTP">
+<parameter> OK</parameter>
+</function>
+<stepname>HTTP/setCacheFile</stepname>
+<function name="setCacheFile" module="HTTP">
+<parameter>page015.html</parameter>
+<xml>&lt;?xml version="1.0"?&gt;
+<html>
+  <body>
+This is the contents of page015.html... Enjoy it.
+</body>
+</html>
+
+</xml>
+</function>
+</thread>
+<stepname>HTTP/sendGetRequest</stepname>
+<function name="sendGetRequest" module="HTTP">
+<parameter>
+<parameter>http://</parameter>
+<configuration>system/ip</configuration>
+<parameter>/page015.html</parameter>
+</parameter>
+</function>
+<stepname>HTTP/checkResponseCode</stepname>
+<function name="checkResponseCode" module="HTTP">
+<parameter>200</parameter>
+</function>
+<stepname>HTTP/queryBody</stepname>
+<function name="queryBody" module="HTTP">
+<parameter>dev/null</parameter>
+<parameter>This is the contents of page015.html... Enjoy it.</parameter>
+</function>
+<stepname>HTTP/stopWebServer</stepname>
+<function name="stopWebServer" module="HTTP"/>
+<stepname>Radius/radiusLogoff</stepname>
+<function name="radiusLogoff" module="Radius">
+<parameter>xttuser</parameter>
+<parameter>12346</parameter>
+</function>
+</test>

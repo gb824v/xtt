@@ -1,0 +1,34 @@
+<test>
+
+
+
+    <function name="writeRemoteFile" module="Remote">
+        <parameter>wurfl.xml</parameter>
+        <file>wurfl.xml</file>
+    </function>
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>
+            <parameter>load data wurfl.xml</parameter>
+        </parameter>
+    </function>
+    <function name="queryResponse" module="Remote">
+        <parameter>^Loaded</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+
+    <function name="writeRemoteFile" module="Remote">
+        <parameter>defaultREQMOD.xml</parameter>
+        <file>defaultREQMOD.xml</file>
+    </function>
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>
+            <parameter>load data defaultREQMOD.xml</parameter>
+        </parameter>
+    </function>
+    <function name="queryResponse" module="Remote">
+        <parameter>^Loaded requestmodifications.*</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+</test>

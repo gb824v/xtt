@@ -1,0 +1,18 @@
+<test>
+<name>guy</name>
+<qcid>55</qcid>
+<description>
+555
+</description>
+<steps>
+Subtest Description: 
+</steps>
+<designer>guyb </designer>
+<creationdate>2012-03-29 14:58:02 </creationdate>
+<testlevel>Integration</testlevel>
+<xfwVersion>XMP_XFW006</xfwVersion>
+<mandatory>false</mandatory>
+<stepname>Subtest Description: </stepname>
+<stepid>1</stepid>
+<subtest>deleteCacheAll.xml</subtest>
+</test>

@@ -1,0 +1,9 @@
+<test>
+    <configuration>xsam_config.xml</configuration>
+    <function name="testName" module="Basic">
+        <parameter>TRN.TC.000</parameter>
+    </function>
+
+    <function name="startSMSCServer" module="SMS"/>
+
+</test>

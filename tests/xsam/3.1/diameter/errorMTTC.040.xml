@@ -1,0 +1,99 @@
+<test>
+    <name>MBSPPB_ErrorScenarios_MT_TC.040</name>
+    <configuration>../configXSAM.xml</configuration>
+
+    <description>[TPI->SMS] Both of the ISCP communication channels Fail / If DirectDebitingFailureHandling service parameter is not set then the processing stops (default is TERMINATE_OR_BUFFER)</description>
+
+<!-- 
+
+Settings / Services
+____________________
+
+ServiceName      ServiceGroup    Template   IscpDirectDebitFailureHandling  IscpInterrogate
+___________________________________________________________________________________________________
+         
+XTT3-600          4003            SMSSubmit    0 = TERMINATE_OR_BUFFER       9 = always interrogate
+
+
+
+Testscenario
+____________
+
+ISCP (XTT)                          MBS                           TP                     SMSC
+
+   |                                 |                             |                       |
+   | CAPABILITIES_EXCHANGE_REQUEST   |                             |                       |
+   | - - - - - - - - - - - - - - >   |                             |                       |
+   | < - - - - - - - - - - - - - -   |                             |                       |
+   |                                 |           sendSMS           |                       | 
+   |                                 |  < - - - - - - - - - - -    |                       |
+   |                                 |                             |                       |                         
+ communication                       |                             |                       |
+ channels fail                       |                             |                       |
+   |                                 |                             |                       |                         
+   |                                 |                             |                       |
+-->
+
+    <function name="startSMSCServer" module="SMS"/>
+    
+    <function name="setVariable" module="Basic">
+        <parameter>SKIP_SMSC</parameter>
+        <parameter>true</parameter>
+    </function>
+
+    <function name="setVariable" module="Basic">
+        <parameter>SKIP_DIAMETER</parameter>
+        <parameter>true</parameter>
+    </function>
+
+    <function name="setVariable" module="Basic">
+        <parameter>ISCP_DIRECT_DEBIT_FAILURE_HANDLING</parameter>
+        <parameter>0</parameter>
+    </function>
+
+    <function name="setVariable" module="Basic">
+        <parameter>SERVICE-SHORTID</parameter>
+        <parameter>
+            <configuration>xsam/serviceGroupPrefix</configuration>
+            <configuration>xsam/serviceGroupNoSMS</configuration>
+         </parameter>
+    </function>
+    
+    <function name="setVariable" module="Basic">
+        <parameter>SERVICE-NAME</parameter>
+        <parameter>
+            <parameter>XTT</parameter><configuration>xsam/serviceGroupNoSMS</configuration><parameter>-</parameter><configuration>xsam/serviceNoSMS</configuration><variable>ISCP_DIRECT_DEBIT_FAILURE_HANDLING</variable><parameter></parameter>
+        </parameter>
+    </function>
+        
+    <function name="setVariable" module="Basic">
+        <parameter>AMOUNT</parameter>
+        <parameter>11.734</parameter>
+    </function>
+
+    <function name="startDiameterServer" module="Diameter"/>  
+    
+    <function name="waitForSpecificRequests" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT</configuration>
+        <parameter>CAPABILITIES_EXCHANGE_REQUEST</parameter>
+        <parameter>1</parameter>
+    </function>
+
+    <function name="stopDiameterServer" module="Diameter"/>
+
+    <thread>
+        <function name="sleep" module="Basic">
+             <configuration>DIAMETERSERVER/TIMEOUT</configuration>
+        </function>
+    </thread>
+
+    <!-- SMS from TP -->
+    <subtest>sendSMS-errorMTTC.xml</subtest>
+
+     <function name="waitForTimeoutMessages" module="SMS">
+        <parameter>20000</parameter>
+     </function>
+
+    <function name="stopSMSCServer" module="SMS"/>
+
+</test>

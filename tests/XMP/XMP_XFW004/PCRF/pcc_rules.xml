@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by Daniel Kaufmann (724 Solutions Inc.) -->
+<pccrules xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="x:\source\xsd\pccrules.xsd">
+	<ruleSet name="MyRule">
+		<Charging-Rule-Install Charging-Rule-Name="HTTP-A">
+			<Charging-Rule-Definition Flow-Status="ENABLED">
+				<Flow-Description direction="in">
+					<source ipAddress="192.168.0.1" maskBits="8">
+						<port exact="80" nodeId="port10"/>
+					</source>
+					<destination ipAddress="10.0.0.0" maskBits="8">
+						<port exact="80" nodeId="port10"/>
+					</destination>
+				</Flow-Description>
+			</Charging-Rule-Definition>
+			<Charging-Rule-Definition Flow-Status="DISABLED">
+				<Flow-Description direction="in">
+					<destination ipAddress="172.20.0.0" maskBits="16">
+						<port exact="80" nodeId="port172"/>
+					</destination>
+				</Flow-Description>
+			</Charging-Rule-Definition>
+		</Charging-Rule-Install>
+		<QoS-Information QoS-Class-Identifier="CLASS_2"/>
+	</ruleSet>
+
+	<ruleSet name="OptionalAVPRule">
+		<Charging-Rule-Remove Charging-Rule-Name="OptionalAVP"/>
+		<Charging-Rule-Install Charging-Rule-Name="HTTP-A">
+			<Charging-Rule-Definition
+				Flow-Status="ENABLED"
+				Service-Identifier="123"
+				Rating-Group="999"
+				Reporting-Level="SERVICE_IDENTIFIER_LEVEL"
+				Online="ENABLE_ONLINE"
+				Offline="DISABLE_OFFLINE"
+				Metering-Method="VOLUME"
+				Precedence="1000">
+			<Flow-Description direction="in" protocol="6">
+				<source ipAddress="192.168.0.1" maskBits="8">
+					<port exact="80" nodeId="port10"/>
+				</source>
+				<destination ipAddress="10.0.0.0" maskBits="8">
+					<port exact="80" nodeId="port10"/>
+				</destination>
+			</Flow-Description>
+			<QoS-Information
+				QoS-Class-Identifier="CLASS_1"
+				Max-Requested-Bandwidth-UL="128000"
+				Max-Requested-Bandwidth-DL="256000"
+				Guaranteed-Bitrate-UL="48000"
+				Guaranteed-Bitrate-DL="96000"
+				Bearer-Identifier="Bearer"
+				Allocation-Retention-Priority="1" />
+		</Charging-Rule-Definition>
+			<Charging-Rule-Definition Flow-Status="DISABLED">
+				<Flow-Description direction="in">
+				<destination ipAddress="172.20.0.0" maskBits="16">
+				<port exact="80" nodeId="port172"/>
+				</destination>
+				</Flow-Description>
+			</Charging-Rule-Definition>
+		</Charging-Rule-Install>
+		<Charging-Information
+			Primary-Event-Charging-Function-Name="aaa://internal.724.com:6666;transport=tcp;protocol=diameter"
+			Secondary-Event-Charging-Function-Name="aaa://internal.724.com:6667;transport=tcp;protocol=diameter"
+			Primary-Charging-Collection-Function-Name="aaa://internal.724.com:6668;transport=tcp;protocol=diameter"
+			Secondary-Charging-Collection-Function-Name="aaa://internal.724.com:6669;transport=tcp;protocol=diameter"/>
+		<QoS-Information
+			QoS-Class-Identifier="CLASS_2"
+			Max-Requested-Bandwidth-UL="128001"
+			Max-Requested-Bandwidth-DL="256001"
+			Guaranteed-Bitrate-UL="48001"
+			Guaranteed-Bitrate-DL="96001"
+			Bearer-Identifier="Bearer1"
+			Allocation-Retention-Priority="1" />
+		<Event-Trigger value="OUT_OF_CREDIT"/>
+		<Event-Trigger value="REALLOCATION_OF_CREDIT"/>
+		<AVP name="Termination-Cause" value="DIAMETER_SERVICE_NOT_PROVIDED"/>
+		<AVP name="Experimental-Result">
+			<AVP name="Vendor-Id" value="22334"/>
+			<AVP name="Experimental-Result-Code" value="55655"/>
+		</AVP>
+	</ruleSet>
+
+	<ruleSet name="MercuryRule">
+		<Charging-Rule-Install Charging-Rule-Name="MercuryRule">
+			<Charging-Rule-Definition Flow-Status="ENABLED">
+				<Flow-Description direction="in">
+					<source ipAddress="192.168.0.1" maskBits="8">
+						<port exact="80" nodeId="port10"/>
+					</source>
+					<destination ipAddress="10.0.0.0" maskBits="8">
+						<port exact="80" nodeId="port10"/>
+					</destination>
+				</Flow-Description>
+			</Charging-Rule-Definition>
+			<Charging-Rule-Definition Flow-Status="DISABLED">
+				<Flow-Description direction="in">
+					<destination ipAddress="172.20.0.0" maskBits="16">
+						<port exact="80" nodeId="port172"/>
+					</destination>
+				</Flow-Description>
+			</Charging-Rule-Definition>
+		</Charging-Rule-Install>
+		<QoS-Information QoS-Class-Identifier="CLASS_2"/>
+	</ruleSet>
+
+	<ruleSet name="MercuryRuleRemove">
+		<Charging-Rule-Remove Charging-Rule-Name="MercuryRule"/>
+	</ruleSet>
+
+	<ruleSet name="EarthRule">
+		<Charging-Rule-Install Charging-Rule-Name="EarthRule">
+			<Charging-Rule-Definition Flow-Status="ENABLED">
+				<Flow-Description direction="in">
+					<source ipAddress="192.168.0.1" maskBits="8">
+						<port exact="80" nodeId="port10"/>
+					</source>
+					<destination ipAddress="10.0.0.0" maskBits="8">
+						<port exact="80" nodeId="port20"/>
+					</destination>
+				</Flow-Description>
+			</Charging-Rule-Definition>
+			<Charging-Rule-Definition Flow-Status="DISABLED">
+				<Flow-Description direction="in">
+					<destination ipAddress="172.20.0.0" maskBits="16">
+						<port exact="80" nodeId="port172"/>
+					</destination>
+				</Flow-Description>
+			</Charging-Rule-Definition>
+		</Charging-Rule-Install>
+		<QoS-Information QoS-Class-Identifier="CLASS_2"/>
+	</ruleSet>
+
+	<ruleSet name="MarsRule">
+		<Charging-Rule-Install Charging-Rule-Name="MarsRule"/>
+		<QoS-Information QoS-Class-Identifier="CLASS_2"/>
+	</ruleSet>
+
+	<ruleSet name="MarsRuleRemove">
+		<Charging-Rule-Remove Charging-Rule-Name="MarsRule"/>
+	</ruleSet>
+
+	<ruleSet name="SaturnRule">
+		<Charging-Rule-Install Charging-Rule-Base-Name="SaturnGroupRule"/>
+		<QoS-Information QoS-Class-Identifier="CLASS_2"/>
+	</ruleSet>
+
+	<ruleSet name="SaturnRuleRemove">
+		<Charging-Rule-Remove Charging-Rule-Base-Name="SaturnGroupRule"/>
+	</ruleSet>
+
+	<ruleSet name="NeptuneRule">
+		<Charging-Rule-Remove Charging-Rule-Name="NeptuneRule-B" Charging-Rule-Base-Name="NeptuneGroupRule" />
+		<Charging-Rule-Install Charging-Rule-Name="NeptuneRule-A" Charging-Rule-Base-Name="NeptuneGroupRule" >
+			<Charging-Rule-Definition Flow-Status="ENABLED">
+				<Flow-Description direction="in">
+					<source ipAddress="192.168.0.1" maskBits="8">
+						<port exact="80" nodeId="port10"/>
+					</source>
+					<destination ipAddress="10.0.0.0" maskBits="8">
+						<port exact="80" nodeId="port10"/>
+					</destination>
+				</Flow-Description>
+			</Charging-Rule-Definition>
+			<Charging-Rule-Definition Flow-Status="DISABLED">
+				<Flow-Description direction="in">
+					<destination ipAddress="172.20.0.0" maskBits="16">
+						<port exact="80" nodeId="port172"/>
+					</destination>
+				</Flow-Description>
+			</Charging-Rule-Definition>
+		</Charging-Rule-Install>
+		<QoS-Information QoS-Class-Identifier="CLASS_2"/>
+	</ruleSet>
+
+	<ruleSet name="SunRule">
+		<Charging-Rule-Install Charging-Rule-Name="SunRule">
+			<Charging-Rule-Definition Flow-Status="ENABLED">
+				<Flow-Description direction="in">
+					<source ipAddress="192.168.0.1" maskBits="8">
+						<port exact="80" nodeId="port10"/>
+					</source>
+					<destination ipAddress="10.0.0.0" maskBits="8">
+						<port exact="80" nodeId="port10"/>
+					</destination>
+				</Flow-Description>
+			</Charging-Rule-Definition>
+			<Charging-Rule-Definition Flow-Status="DISABLED">
+				<Flow-Description direction="in">
+					<destination ipAddress="172.20.0.0" maskBits="16">
+						<port exact="80" nodeId="port172"/>
+					</destination>
+				</Flow-Description>
+			</Charging-Rule-Definition>
+		</Charging-Rule-Install>
+		<AVP name="Bearer-Identifier" value="Samuel Eto'o opened the scoring with a seventh minute penalty after strike partner Mario Balotelli, 19, was felled. Balotelli, so often criticised by Mourinho for his immature attitude, demanded to take the spot kick and captain Javier Zanetti had to pull him away from designated taker Eto'o.After a mild sulk, Balotelli intensified his bid for a goal and was rewarded when he headed in a corner after 34 minutes. His second goal followed soon after when the uncompromising forward prodded in Esteban Cambiasso's header on the line even though the ball would have gone in anyway. The Italy [ Images ] Under-21 striker then cut the ball back for Cameroon striker Eto'o to ram home the fourth at the near post just before the break. Balotelli had picked up a cold in the build-up to the game and although he wore a scarf in the first half, he asked to be substituted just seconds into the second period. Inter, who also lost Eto'o to injury, seemed to lose focus thereafter and Palermo's Fabrizio Miccoli quickly pulled a goal back after first dinking the ball over goalkeeper Julio Cesar [ Images ]. Uruguayan Abel Hernandez then finished off a superb move just past the hour for the side coached by former Inter keeper Walter Zenga and the Sicilians suddenly believed they could pull off an incredible comeback when more Miccoli magic made it 4-3. However, Inter substitute Diego Milito settled the San Siro's nerves when he converted Maicon's excellent cross seven minutes from time."/>
+	</ruleSet>
+
+	<ruleSet name="StarRule">
+		<Charging-Rule-Install Charging-Rule-Name="StarRule">
+			<Charging-Rule-Definition Flow-Status="ENABLED">
+				<Flow-Description direction="in">
+					<source ipAddress="192.168.0.1" maskBits="8">
+						<port exact="80" nodeId="port10"/>
+					</source>
+					<destination ipAddress="10.0.0.0" maskBits="8">
+						<port exact="80" nodeId="port10"/>
+					</destination>
+				</Flow-Description>
+			</Charging-Rule-Definition>
+			<Charging-Rule-Definition Flow-Status="DISABLED">
+				<Flow-Description direction="in">
+					<destination ipAddress="172.20.0.0" maskBits="16">
+						<port exact="80" nodeId="port172"/>
+					</destination>
+				</Flow-Description>
+			</Charging-Rule-Definition>
+		</Charging-Rule-Install>
+		<QoS-Information QoS-Class-Identifier="CLASS_2"/>
+	</ruleSet>
+
+	<ruleSet name="MoonRule">
+		<Charging-Rule-Install Charging-Rule-Name="MoonRule">
+			<Charging-Rule-Definition Flow-Status="ENABLED">
+				<Flow-Description direction="in">
+					<source ipAddress="192.168.0.1" maskBits="8">
+						<port exact="80" nodeId="port10"/>
+					</source>
+					<destination ipAddress="10.0.0.0" maskBits="8">
+						<port exact="80" nodeId="port10"/>
+					</destination>
+				</Flow-Description>
+			</Charging-Rule-Definition>
+			<Charging-Rule-Definition Flow-Status="DISABLED">
+				<Flow-Description direction="in">
+					<destination ipAddress="172.20.0.0" maskBits="16">
+						<port exact="80" nodeId="port172"/>
+					</destination>
+				</Flow-Description>
+			</Charging-Rule-Definition>
+		</Charging-Rule-Install>
+		<QoS-Information QoS-Class-Identifier="CLASS_2"/>
+	</ruleSet>
+
+	<ruleSet name="HisRule">
+		<Charging-Rule-Remove Charging-Rule-Name="HTTP-B"/>
+		<QoS-Information QoS-Class-Identifier="CLASS_3"/>
+
+		<Event-Trigger value="OUT_OF_CREDIT"/>
+<!--		<Event-Trigger value="REALLOCATION_OF_CREDIT"/>
+-->
+	</ruleSet>
+</pccrules>

@@ -1,0 +1,83 @@
+<test>
+	<name>URLListsREQMODEnhancements.TC.002</name>
+	<description>Validate Black List could be properly loaded into the CONFIG-SERVER</description>
+	
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>BlackList.txt</parameter>
+		<file>BlackList.txt</file>
+	</function>
+	
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load file </parameter>
+			<parameter>BlackList.txt /url/BlackList.txt</parameter>
+		</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>Loaded '/url/BlackList.txt' from 'BlackList.txt'</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>extract file </parameter>
+			<parameter>/url/BlackList.txt BL.txt</parameter>
+		</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>Extracted  '/url/BlackList.txt' into file 'BL.txt'</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	
+	<function name="readRemoteFile" module="Remote">
+		<parameter>BL.txt</parameter>
+		<parameter>BL</parameter>
+	</function>
+	
+	<function name="compareString" module="Basic">
+		<file>BlackList.txt</file>
+		<variable>BL</variable>
+	</function>
+
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>BlackList1.txt</parameter>
+		<file>BlackList1.txt</file>
+	</function>
+	
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load file </parameter>
+			<parameter>BlackList1.txt /url/BlackList1.txt</parameter>
+		</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>Loaded '/url/BlackList1.txt' from 'BlackList1.txt'</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>extract file </parameter>
+			<parameter>/url/BlackList1.txt BL2.txt</parameter>
+		</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>Extracted  '/url/BlackList1.txt' into file 'BL2.txt'</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	
+	<function name="readRemoteFile" module="Remote">
+		<parameter>BL2.txt</parameter>
+		<parameter>BL2</parameter>
+	</function>
+	
+	<function name="compareString" module="Basic">
+		<file>BlackList1.txt</file>
+		<variable>BL2</variable>
+	</function>
+	
+</test>

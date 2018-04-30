@@ -1,0 +1,82 @@
+<test>
+	<function name="testName" module="Basic">
+		<parameter>XSN.HTTP.TC.000</parameter>
+	</function>
+	
+	<description>Load the database file to get the test users.</description>
+
+    <function name="sendRemoteCommand" module="Remote">
+        <parameter>writeFile xtt-xsn-xpdl.xml </parameter>
+        <file>xtt-xsn-xpdl.xml</file>
+    </function>
+    <function name="sendRemoteCommand" module="Remote">
+        <configuration>xsn/path</configuration>
+        <configuration>xsn/xms</configuration>
+        <parameter>load data xtt-xsn-xpdl.xml</parameter>
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        <parameter>^Loaded </parameter>
+        <parameter>response</parameter>
+    </function> 
+    
+    <function name="sendRemoteCommand" module="Remote">
+        <parameter>writeFile xtt-xsn-categories.xml </parameter>
+        <file>xtt-xsn-categories.xml</file>
+    </function>
+    <function name="sendRemoteCommand" module="Remote">
+        <configuration>xsn/path</configuration>
+        <configuration>xsn/xms</configuration>
+        <parameter>load data xtt-xsn-categories.xml</parameter>
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        <parameter>^Loaded </parameter>
+        <parameter>response</parameter>
+    </function>    
+
+    
+    <function name="sendRemoteCommand" module="Remote">
+        <parameter>writeFile xtt-xsn-database.xml </parameter>
+        <file>xtt-xsn-database.xml</file>
+    </function>
+    <function name="sendRemoteCommand" module="Remote">
+        <configuration>xsn/path</configuration>
+        <configuration>xsn/xms</configuration>
+        <parameter>load db xtt-xsn-database.xml</parameter>
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        <parameter>SUCCESS: XML upload completed.</parameter>
+        <parameter>dev/null</parameter>
+    </function>    
+
+    
+    <function name="sendRemoteCommand" module="Remote">
+        <parameter>writeFile xtt-xsn-negative-database.xml </parameter>
+        <file>xtt-xsn-negative-database.xml</file>
+    </function>
+    <function name="sendRemoteCommand" module="Remote">
+        <configuration>xsn/path</configuration>
+        <configuration>xsn/xms</configuration>
+        <parameter>load db xtt-xsn-negative-database.xml</parameter>
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        <parameter>SUCCESS: XML upload completed.</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+    
+    <function name="sendRemoteCommand" module="Remote">
+        <configuration>xsn/path</configuration>
+        <configuration>xsn/xms</configuration>
+        <parameter>load data </parameter>
+        <configuration>xsn/path</configuration>
+        <parameter>training/wurfl.xml</parameter>
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        <parameter>^Loaded </parameter>
+        <parameter>response</parameter>
+    </function>        
+</test>

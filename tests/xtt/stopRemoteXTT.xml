@@ -1,0 +1,6 @@
+<test>	
+    <name>STOP.REMOTE.XTT</name>
+    <description>Shut down remote xtt</description>
+
+	<function name="stopRemoteXTT" module="Remote"/>
+</test>

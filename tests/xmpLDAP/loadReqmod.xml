@@ -1,0 +1,44 @@
+<test>
+    <function name="writeRemoteFile" module="Remote">
+        <parameter>ldapREQMOD.xml</parameter>
+        <xml>
+<requestModifications xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="requestmodifications.xsd">
+    <table name="pre">
+        <selector>
+            <modifyHeader name="MSISDN" value="Internal_NAI"/>
+            <modifyHeader name="ReqModExecuted" value="'true'"/>
+        </selector>
+    </table>
+    <table name="unsetThings" processType="auth">
+        <selector>
+			<disableMimeMultipart value="true"/>
+			<disablePrefetch value="true"/>
+        </selector>
+    </table>
+    <table name="SetLDAP" processType="auth">
+        <selector urlPattern="http://ldap1.xtt724.com/*">
+            <!--modifyContext name="CHSkip_LDAP" value="'EXPIRE=-1'"/-->
+        </selector>
+        <selector>
+            <modifyContext name="CHSkip_LDAP" value="'true'"/>
+        </selector>
+    </table>
+    <table name="ShowLDAP">
+        <selector urlPattern="http://ldap1.xtt724.com/*">
+            <modifyHeader name="SKIP_LDAP" value="CHSkip_LDAP"/>
+        </selector>
+    </table>
+</requestModifications></xml>
+    </function>
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>
+            <configuration>remote/loaddata</configuration>
+            <parameter>ldapREQMOD.xml</parameter>
+        </parameter>
+    </function>
+    <function name="queryResponse" module="Remote">
+        <parameter>^Loaded requestmodifications.*</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+</test>

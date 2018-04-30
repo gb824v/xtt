@@ -1,0 +1,189 @@
+<test>
+
+<configuration>xsam_config.xml</configuration>
+
+     <function name="testName" module="Basic">
+         <parameter>TC_2.1</parameter>
+      </function>
+
+
+<description>CP to XSAM Listen Port (Incoming Channel) Connectivity Test. For Single Port and Multiple Port.
+----------------------------------------------------------------------------------------------------
+Step1: Configue Multiple CP Listen port ((Incoming Channel, atleast 2) in XSAM
+Step2: CP sends a TCP Connection request on one of the port on which XSAM is listening.
+Step3: The Connection between CP and XSAM is established
+Step4: Another CP sends a TCP Connection request on a same port.
+Step5: The Connection between second CP and XSAM is established on the same port(SINGLE PORT)
+Step6: First CP Disconnects the TCP Connection with XSAM
+Step7: Same CP sends a TCP Connection request on different port on which XSAM is listening. (MULTIPLE PORT)
+------------------------------------------------------------------------------------------------------
+</description>
+
+
+       <function name="startSMSCServer" module="SMS">
+            <configuration>SMSCSERVER/SMPPPort</configuration>
+            <parameter>SMPP</parameter>
+       </function>
+
+        <function name="openConnection" module="SMPP">
+            <parameter>connection</parameter>
+            <configuration>XSAM/IP</configuration>
+            <configuration>XSAM/SMPPPort</configuration>
+        </function>
+
+        <function name="sendSMPPPacket" module="SMPP">
+            <parameter>connection</parameter>
+            <parameter>BIND_TRANSCEIVER</parameter>
+            <parameter>internal</parameter>
+            <parameter>systemid</parameter> <!--system_id, parameter[4]-->
+            <parameter>password</parameter> <!--password, parameter[5]-->
+            <parameter>system_type</parameter> <!--system_type, parameter[6]-->
+            <parameter>0x50</parameter><!--version, parameter[7]-->
+            <parameter>0</parameter><!--addr_ton, parameter[8]-->
+            <parameter>0</parameter><!--addr_npi,parameter[9]-->
+            <configuration>XSAM/SMPPSHORTCODE</configuration>
+            <parameter>0</parameter><!---->
+        </function>
+
+            
+		<function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/system_id</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/system_id</variable>
+            <parameter>XTT-724-SMSC</parameter>
+        </function>
+        
+
+		 <function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_status</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_status</variable>
+            <parameter>0x00000000</parameter>
+        </function>
+
+        <function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_id</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_id</variable>
+            <parameter>0x80000009</parameter>
+        </function>
+
+
+        <function name="openConnection" module="SMPP">
+            <parameter>connection1</parameter>
+            <configuration>XSAM/IP</configuration>
+            <configuration>XSAM/SMPPPort</configuration>
+        </function>
+
+        <function name="sendSMPPPacket" module="SMPP">
+            <parameter>connection1</parameter>
+            <parameter>BIND_TRANSCEIVER</parameter>
+            <parameter>internal</parameter>
+            <parameter>systemid</parameter> <!--system_id, parameter[4]-->
+            <parameter>password</parameter> <!--password, parameter[5]-->
+            <parameter>system_type</parameter> <!--system_type, parameter[6]-->
+            <parameter>0x50</parameter><!--version, parameter[7]-->
+            <parameter>0</parameter><!--addr_ton, parameter[8]-->
+            <parameter>0</parameter><!--addr_npi,parameter[9]-->
+            <configuration>XSAM/SMPPSHORTCODE1</configuration>
+            <parameter>0</parameter><!---->
+        </function>
+
+        <function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection1/system_id</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection1/system_id</variable>
+            <parameter>XTT-724-SMSC</parameter>
+        </function>
+        
+		<function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection1/command_status</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection1/command_status</variable>
+            <parameter>0x00000000</parameter>
+        </function>
+
+         <function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection1/command_id</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection1/command_id</variable>
+            <parameter>0x80000009</parameter>
+        </function>
+      
+
+         <function name="closeConnection" module="SMPP">
+            <parameter>connection</parameter>
+        </function>
+
+
+        <function name="openConnection" module="SMPP">
+            <parameter>connection</parameter>
+            <configuration>XSAM/IP</configuration>
+            <configuration>XSAM/SMPPPort1</configuration>
+        </function>
+
+        <function name="sendSMPPPacket" module="SMPP">
+           <parameter>connection</parameter>
+           <parameter>BIND_TRANSCEIVER</parameter>
+           <parameter>internal</parameter>
+           <parameter>systemid</parameter> <!--system_id, parameter[4]-->
+           <parameter>password</parameter> <!--password, parameter[5]-->
+           <parameter>system_type</parameter> <!--system_type, parameter[6]-->
+           <parameter>0x50</parameter><!--version, parameter[7]-->
+           <parameter>0</parameter><!--addr_ton, parameter[8]-->
+           <parameter>0</parameter><!--addr_npi,parameter[9]-->
+           <configuration>XSAM/SMPPSHORTCODE</configuration>
+           <parameter>0</parameter><!---->
+        </function>
+
+      
+		<function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/system_id</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/system_id</variable>
+            <parameter>XTT-724-SMSC</parameter>
+        </function>
+
+         <function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_status</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_status</variable>
+            <parameter>0x00000000</parameter>
+        </function>
+
+          <function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_id</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_id</variable>
+            <parameter>0x80000009</parameter>
+        </function>
+
+         <function name="closeConnection" module="SMPP">
+            <parameter>connection</parameter>
+        </function>
+
+         <function name="closeConnection" module="SMPP">
+            <parameter>connection1</parameter>
+        </function>
+		
+        <function name="stopSMSCServer" module="SMS"/>
+
+       </test>

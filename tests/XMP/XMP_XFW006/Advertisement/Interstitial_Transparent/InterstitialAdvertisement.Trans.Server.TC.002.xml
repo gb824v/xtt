@@ -1,0 +1,42 @@
+<!-- 
+InterstitialAdvertisement.Trans.Server.TC.002  - Start Web Server to Validate Interstitial Advertisement use case performs only with GET requests, not with POST and any other HTTP request types [1 request to XMP] During Transparent Proxy condition.
+
+Test Description:
+ 1. Start Web Server.
+ 2. Wait for get request.
+ 3. Stop Web Server.
+
+Expected Result:
+ -  XMP should not process the Post Interstitial Advertisement request and should show main page without any Interstitial 
+	Advertisement .
+
+XTT Commands:
+
+ 1.  - startWebServer
+ 2.  - waitForRequests
+ 3.  - stopWebServer
+-->
+
+<test>
+
+	<function name="testName" module="Basic">
+		<parameter>InterstitialAdvertisement.Trans.Server.TC.002</parameter>
+	</function>
+
+	<description>Start Web Server to Validate Interstitial Advertisement use case performs only with GET requests, not with POST and any other HTTP request types [1 request to XMP] During Transparent Proxy condition.</description>
+
+	<function name="startWebServer" module="HTTP"/>
+
+	<function name="waitForRequests" module="HTTP">
+		<parameter>1</parameter>
+	</function>	
+
+	<function name="sleep" module="Basic">
+		<parameter>
+		<parameter>5000</parameter>
+		</parameter>
+	</function>
+
+	<function name="stopWebServer" module="HTTP"/>
+
+</test>

@@ -1,0 +1,128 @@
+<!--
+InterstitialAdvertisement.TC.009  - Validate the example workflow inserts an interstitial advert if the target URL is a main page.
+
+Test Description:
+ 1. Radius Logon.
+ 2. Start Web Server for http request.
+ 3. Send Get request to http://872381.xtt724.com/default.htm
+ 4. Stop Web Server.
+ 5. Radius Logoff.
+ 
+Expected Result:
+ -  XMP should inserts an interstitial advert if the target URL is a main page.
+
+XTT Main Commands:
+
+ 1.  - Radius log-ON
+ 2.  - startWebServer
+ 3.  - sendGetRequest
+ 4.  - stopWebServer
+ 5.  - Radius log-OFF
+-->
+
+<test>
+
+	<function name="testName" module="Basic">
+		<parameter>InterstitialAdvertisement.TC.009</parameter>
+	</function>
+
+	<description>Validate the example workflow inserts an interstitial advert if the target URL is a main page.</description>
+
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12345</parameter>
+	</function>
+
+	<function name="setHeader" module="HTTP">
+		<parameter>Accept-Encoding</parameter>
+		<parameter>compress</parameter>
+	</function>
+
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>
+		<parameter>http://872381.xtt724.com/advert.html</parameter>
+		</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+	
+	<function name="startWebServer" module="HTTP"/>
+
+	<function name="setHeader" module="HTTP">
+		<parameter>Accept-Encoding</parameter>
+		<parameter>compress</parameter>
+	</function>
+
+	<function name="setVariable" module="Basic">
+		<parameter>seconds</parameter>
+		<parameter>seconds</parameter>
+	</function>
+
+	<function name="queryText" module="Basic">
+		<variable>HTTP/BODY/PLAIN</variable>
+		<variable>seconds</variable>
+		<parameter>content="(\d+)</parameter>
+	</function>
+
+	<function name="setVariable" module="Basic">
+		<parameter>image</parameter>
+		<parameter>image</parameter>
+	</function>
+
+	<function name="queryText" module="Basic">
+		<variable>HTTP/BODY/PLAIN</variable>
+		<variable>image</variable>
+		<parameter>&lt;div&gt;.*&lt;img src=(.*)".*&gt;.*&lt;/div&gt;</parameter>
+	</function>
+
+	<function name="setVariable" module="Basic">
+		<parameter>click</parameter>
+		<parameter>click</parameter>
+	</function>
+
+	<function name="queryBody" module="HTTP">
+		<variable>click</variable>
+		<parameter>&lt;a href="(.*)"</parameter>
+	</function>
+	
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>
+			<variable>click</variable>
+		</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<function name="sleep" module="Basic">
+		<parameter>
+		<variable>seconds</variable>
+		<parameter>000</parameter>
+		</parameter>
+	</function>
+
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>
+		<parameter>http://872383.724xtt.com/</parameter>
+		</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<function name="stopWebServer" module="HTTP"/>
+
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12345</parameter>
+		</function>
+
+        <function name="sleep" module="Basic">
+                <parameter>20000</parameter>
+        </function>
+
+</test>

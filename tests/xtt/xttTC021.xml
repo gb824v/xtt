@@ -1,0 +1,99 @@
+<test>
+	<name>XTT.TC.021</name>
+
+	<description>Example TCP proxy functionality</description>
+
+    <function name="startWebServer" module="HTTP">
+ 	    <configuration>HTTPPROXY/DEFAULT/PORT</configuration>
+ 	    <configuration>WEBSERVER/ROOT</configuration>
+ 	    <configuration>WEBSERVER/TIMEOUT</configuration>
+    </function>
+    <function name="startTCPProxy" module="TCP">
+ 	    <configuration>WEBSERVER/PORT</configuration>
+ 	    <configuration>SYSTEM/IP</configuration>
+ 	    <configuration>HTTPPROXY/DEFAULT/PORT</configuration>
+    </function>
+
+	<function name="setServerHeader" module="HTTP">
+ 	    <parameter>date</parameter>
+ 	    <parameter>Mon, 16 Feb 2009 14:10:14 GMT</parameter>
+    </function>
+
+	<function name="sendGetRequest" module="HTTP">
+ 	    <parameter>http://127.0.0.1/</parameter>
+    </function>
+	<function name="checkResponseCode" module="HTTP">
+	    <parameter>200</parameter>
+    </function>
+	<function name="waitForVariable" module="Basic">
+ 	    <parameter>HTTP/BODY/PLAIN</parameter>
+    </function>
+	<function name="queryText" module="Basic">
+ 	    <variable>HTTP/BODY/PLAIN</variable>
+ 	    <parameter>dev/null</parameter>
+ 	    <parameter>&lt;title&gt;Index Page&lt;/title&gt;</parameter>
+    </function>
+	<function name="removeVariables" module="Basic">
+ 	    <parameter>HTTP/BODY/PLAIN</parameter>
+    </function>
+
+	<function name="closeConnection" module="HTTP"/>
+	<function name="setTCPProxyAction" module="TCP">
+ 	    <configuration>WEBSERVER/PORT</configuration>
+ 	    <parameter>170</parameter>
+ 	    <parameter>-1</parameter>
+ 	    <parameter>RANDOMALPHANUMERIC</parameter>
+ 	    <parameter>10</parameter>
+ 	    <parameter>out</parameter>
+    </function>
+
+	<function name="sendGetRequest" module="HTTP">
+ 	    <parameter>http://127.0.0.1/</parameter>
+    </function>
+	<function name="checkResponseCode" module="HTTP">
+	    <parameter>200</parameter>
+    </function>
+	<function name="waitForVariable" module="Basic">
+ 	    <parameter>HTTP/BODY/PLAIN</parameter>
+    </function>
+	<function name="queryText" module="Basic">
+ 	    <variable>HTTP/BODY/PLAIN</variable>
+ 	    <parameter>dev/null</parameter>
+ 	    <parameter>&lt;title&gt;(.*)&lt;/title&gt;</parameter>
+    </function>
+	<function name="queryTextNegative" module="Basic">
+ 	    <variable>HTTP/BODY/PLAIN</variable>
+ 	    <parameter>&lt;title&gt;Index Page&lt;/title&gt;</parameter>
+    </function>
+	<function name="removeVariables" module="Basic">
+ 	    <parameter>HTTP/BODY/PLAIN</parameter>
+    </function>
+
+	<function name="closeConnection" module="HTTP"/>
+	<function name="setTCPProxyAction" module="TCP">
+ 	    <configuration>WEBSERVER/PORT</configuration>
+ 	    <parameter>22</parameter>
+ 	    <parameter>-1</parameter>
+ 	    <parameter>RANDOMALPHANUMERIC</parameter>
+ 	    <parameter>6</parameter>
+ 	    <parameter>in</parameter>
+    </function>
+
+	<function name="sendGetRequest" module="HTTP">
+ 	    <parameter>http://127.0.0.1/images/</parameter>
+    </function>
+	<function name="checkResponseCode" module="HTTP">
+	    <parameter>404</parameter>
+    </function>
+	<function name="waitForVariable" module="Basic">
+ 	    <parameter>HTTP/BODY/PLAIN</parameter>
+    </function>
+	<function name="removeVariables" module="Basic">
+ 	    <parameter>HTTP/BODY/PLAIN</parameter>
+    </function>
+
+
+    <function name="stopWebServer" module="HTTP"/>
+    <function name="stopTCPProxy" module="TCP"/>
+
+</test>

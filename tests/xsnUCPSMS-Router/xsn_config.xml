@@ -1,0 +1,21 @@
+<Configuration>
+    <XSN>
+        <Ip>172.20.2.97</Ip>
+        <Port>7998</Port>
+        <Shortcode>1111</Shortcode>
+        <!--<ShortcodeNW>1411</ShortcodeNW>
+        <UnknownShortcode>1491</UnknownShortcode>
+        <ShortcodePrefix>140</ShortcodePrefix>
+        <ShortcodePrefixNW>141</ShortcodePrefixNW>
+        <ShortcodePrefixU>149</ShortcodePrefixU>-->
+        <InternalSMSC/>
+    </XSN>
+    <SMSCServer>
+		<Port>2000</Port>
+		<Protocol>UCP</Protocol>
+        <!--<BackupPort>2000</BackupPort>-->
+        <UCPMaxSessions>5</UCPMaxSessions>
+        <UCPWindowSize>5</UCPWindowSize>
+        <UCPSessionTimeout>300000</UCPSessionTimeout>
+    </SMSCServer>
+</Configuration>

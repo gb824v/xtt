@@ -1,0 +1,195 @@
+<test>
+    <name>XMP.MULTIPART.TC.005</name>
+    <description>MULTIPART WURFL maxMultipartCompositionSizeKBytes</description>
+
+    <subtest>deleteCacheAll.xml</subtest>
+
+    <subtest>loadWURFL.xml</subtest>
+
+    <function name="radiusLogon" module="Radius">
+        <parameter>xttuser</parameter>
+        <parameter>12346</parameter>
+    </function>
+    <function name="startWebServer" module="HTTP"/>
+
+    <function name="setHeader" module="HTTP">
+        <parameter>User-Agent</parameter>
+        <parameter>XTT/multipart</parameter>
+    </function>
+
+
+    <function name="setServerHeader" module="HTTP">
+        <parameter>Last-Modified</parameter>
+        <parameter>Wed, 15 Nov 1995 04:58:08 GMT</parameter>
+    </function>
+
+    <function name="setCacheFileBase64" module="HTTP">
+        <parameter>MULTIPARTTC005_img1.bmp</parameter>
+        <base64File>bmp.bmp</base64File>
+    </function>
+    <function name="setCacheFileBase64" module="HTTP">
+        <parameter>MULTIPARTTC005_img2.png</parameter>
+        <base64File>png.png</base64File>
+    </function>
+    <function name="setCacheFileBase64" module="HTTP">
+        <parameter>MULTIPARTTC005_img3.bmp</parameter>
+        <base64File>bmp.bmp</base64File>
+    </function>
+    <function name="setCacheFile" module="HTTP">
+        <parameter>MULTIPARTTC005.html</parameter>
+        <parameter>
+            <parameter>&lt;html&gt;&lt;body&gt;</parameter>
+            <parameter>&lt;pre&gt;This is the initial file FILLTO65536bytestotalmultipartsizeXXXXX&lt;/pre&gt;</parameter>
+            <parameter>0000XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>1024XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>0000XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>1024XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>0000XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>1024XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>0000XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>1024XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>0000XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>0512XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</parameter>
+            <parameter>123456789ABCDEF</parameter>
+            <parameter>&lt;br/&gt;&lt;img src="http://multipart.xtt724.com/MULTIPARTTC005_img1.bmp"/&gt;&lt;br/</parameter>
+            <parameter>&gt;&lt;img src="http://multipart.xtt724.com/MULTIPARTTC005_img3.bmp"/&gt;&lt;br/</parameter>
+            <parameter>&gt;&lt;img src="http://multipart.xtt724.com/MULTIPARTTC005_img2.png"/&gt;&lt;/body&gt;&lt;/html&gt;</parameter>
+        </parameter>
+    </function>
+
+    <function name="sendGetRequest" module="HTTP">
+        <parameter>
+            <parameter>http://multipart.xtt724.com/MULTIPARTTC005.html</parameter>
+        </parameter>
+    </function>
+    <function name="checkResponseCode" module="HTTP">
+        <parameter>200</parameter>
+    </function>
+    <function name="waitForRequests" module="HTTP">
+        <parameter>4</parameter>
+    </function>
+
+    <thread>
+        <function name="waitForTimeoutRequests" module="HTTP">
+            <parameter>5000</parameter>
+            <parameter>4</parameter>
+        </function>
+    </thread>
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>This is the initial file FILLTO65536bytestotalmultipartsizeXXXXX</parameter>
+    </function>
+    <function name="queryHeader" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>content-type</parameter>
+        <parameter>multipart/related;boundary=</parameter>
+    </function>
+    <function name="queryHeader" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>transfer-encoding</parameter>
+        <parameter>chunked</parameter>
+    </function>
+    <function name="queryHeader" module="HTTP">
+        <parameter>dev/null</parameter>
+		<parameter>warning</parameter>
+		<parameter>214</parameter>
+	</function>
+    <function name="queryHeader" module="HTTP">
+        <parameter>dev/null</parameter>
+		<parameter>warning</parameter>
+		<parameter>Transformation applied</parameter>
+	</function>
+    <function name="writeFile" module="basic">
+        <parameter>test.bin</parameter>
+        <variable>HTTP/BODY/PLAIN</variable>
+    </function>
+
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>[cC]ontent-[tT]ype: image/bmp\r\n[cC]ontent-[tT]ransfer-[eE]ncoding: binary\r\n[cC]ontent-[lL]ocation: http://multipart.xtt724.com/MULTIPARTTC005_img1.bmp</parameter>
+        </parameter>
+    </function>
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>[cC]ontent-[tT]ype: image/bmp\r\n[cC]ontent-[tT]ransfer-[eE]ncoding: binary\r\n[cC]ontent-[lL]ocation: http://multipart.xtt724.com/MULTIPARTTC005_img3.bmp</parameter>
+        </parameter>
+    </function>
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>[cC]ontent-[tT]ype: image/bmp</parameter>
+        </parameter>
+    </function>
+
+    <subtest>emptyWURFL.xml</subtest>
+
+    <function name="stopWebServer" module="HTTP"/>
+    <function name="radiusLogoff" module="Radius">
+        <parameter>xttuser</parameter>
+        <parameter>12346</parameter>
+    </function>
+</test>

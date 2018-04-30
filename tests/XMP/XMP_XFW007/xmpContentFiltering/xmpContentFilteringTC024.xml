@@ -1,0 +1,40 @@
+<test>
+    <function name="testName" module="Basic">
+        <parameter>XMP.CONTENTFILTERING.TC.024</parameter>
+     </function>
+	
+    <description>Standard Filter: Dating / minAge=18 / http://www.metrodate.com is in mapPersonalsDating by means of urlPattern, User is in DB [age=12], URL is NOT accessible / Redirection Page#4</description>
+        
+    <!-- Radius logon - User is in DB [age=12] -->
+    <function name="radiusLogon" module="Radius">
+	<parameter>0787367501</parameter>
+	<parameter>0787367501</parameter>
+	<configuration>system/Ip</configuration>
+    </function> 
+      
+    <!-- Redirected to /XMPBlocked/bySystemFilters.html -->  
+    <!-- XMP forwards blocked request to its WebServer -->
+    <function name="disableFollowRedirects" module="HTTP" />
+
+    <!-- http://www.metrodate.com/ : urlCategories : Dating (451)  -->
+    <function name="sendGetRequest" module="HTTP">
+	 <parameter>http://www.metrodate.com/</parameter>
+    </function>
+	
+    <function name="checkResponseCode" module="HTTP">
+	<parameter>302</parameter>
+    </function>
+	
+    <function name="queryHeader" module="HTTP">
+	 <parameter>dev/null</parameter>
+	 <parameter>location</parameter>
+         <parameter>XMPBlocked/bySystemFilters.html$</parameter>		
+    </function>		
+    
+    <!-- Radius logoff - User is in DB [age=12] -->
+    <function name="radiusLogoff" module="Radius">
+	<parameter>0787367501</parameter>
+	<parameter>0787367501</parameter>
+	<configuration>system/Ip</configuration>
+    </function> 
+</test>

@@ -1,0 +1,109 @@
+<test>
+	<name>XMP.COMPRESSION.TC.001</name>
+	<description>DEFLATE Compression/Decompression</description>
+
+	<!-- start server and session -->
+	<function name="startWebServer" module="HTTP"/>
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+	<!-- is not actually nececarry but set it to something that is not in a wurfl. -->
+	<function name="setHeader" module="HTTP">
+		<parameter>User-Agent</parameter>
+		<parameter>XTT/deflate</parameter>
+	</function>
+
+	<!-- set the accept to the converted type so conversion has to take place -->
+	<function name="setHeader" module="HTTP">
+		<parameter>Accept</parameter>
+		<parameter>text/vnd.wap.wml</parameter>
+	</function> 
+<!--
+	<function name="setCacheFileBase64" module="HTTP">
+		<parameter>test.xhtml</parameter>
+		<base64File>test.html</base64File>
+	</function>
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>
+			<parameter>http://</parameter>
+			<configuration>system/ip</configuration>
+			<parameter>/test.xhtml</parameter>
+		</parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>	
+
+	<function name="queryText" module="Basic">
+		<variable>HTTP/BODY/PLAIN</variable>
+		<parameter>dev/null</parameter>
+		<parameter>&lt;!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.1//EN" "http://www.wapforum.org/DTD/wml_1.1.xml"&gt;</parameter>
+	</function>	
+	<function name="queryText" module="Basic">
+		<variable>HTTP/BODY/PLAIN</variable>
+		<parameter>dev/null</parameter>
+		<parameter>Hello World</parameter>
+	</function>	
+	<function name="compareString" module="Basic">
+		<variable>HTTP/BODY/ENCODING</variable>
+		<parameter></parameter>
+	</function>	
+-->
+	
+	<!-- set the file in webserver cache as .xhtml so the content-type is set automatically -->
+	<function name="setCacheFileBase64" module="HTTP">
+		<parameter>d9test.xhtml</parameter>
+		<base64File>test.html.deflate9</base64File>
+	</function>
+
+	<!-- set the accept-encoding for the test -->
+	<function name="setHeader" module="HTTP">
+		<parameter>Accept-Encoding</parameter>
+		<parameter>deflate</parameter>
+	</function>
+	<!-- set the content-encoding in the server to deflate because our .xhtml file is actually a deflate file -->
+	<function name="setServerHeader" module="HTTP">
+		<parameter>content-encoding</parameter>
+		<parameter>deflate</parameter>
+	</function>	
+	<!-- download the file system independent -->
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>
+			<parameter>http://</parameter>
+			<configuration>system/ip</configuration>
+			<parameter>/d9test.xhtml</parameter>
+		</parameter>
+		<parameter>wap</parameter>
+	</function>
+	<!-- a http response code of 200 is expected -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>	
+	<!-- check for the new wml content, doctype will do -->
+	<function name="queryText" module="Basic">
+		<variable>HTTP/BODY/PLAIN</variable>
+		<parameter>dev/null</parameter>
+		<parameter>&lt;!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.1//EN" "http://www.wapforum.org/DTD/wml_1.1.xml"&gt;</parameter>
+	</function>	
+	<!-- check we didn't get a server message but the actuall content of the file -->
+	<function name="queryText" module="Basic">
+		<variable>HTTP/BODY/PLAIN</variable>
+		<parameter>dev/null</parameter>
+		<parameter>Hello World</parameter>
+	</function>	
+	<!-- check that client side deflate decompression happened -->
+	<function name="compareString" module="Basic">
+		<variable>HTTP/BODY/ENCODING</variable>
+		<parameter>deflate</parameter>
+	</function>	
+
+	<!-- cleanup so next test can be run with clean status -->
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+	
+	<function name="stopWebServer" module="HTTP"/>
+</test>

@@ -1,0 +1,69 @@
+<test>
+    <name>MBSPPB.ErrorScenarios.MT.TC.003</name>
+    <configuration>../configXSAM.xml</configuration>
+
+    <description>[TPI->MM7] If the connection to the primary ISCP fails or not available, DIAMETER process on each MBS machine transparently redirects DCC Request to the backup ISCP</description>
+
+    <subtest>../startSecondProcess.xml</subtest>
+    <function name="setVariable" module="Basic">
+        <parameter>AMOUNT</parameter>
+        <parameter>3.456</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+         <parameter>SKIP_DIAMETER</parameter>
+         <parameter>true</parameter>
+    </function>
+
+    <function name="startDiameterServer" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT</configuration>
+    </function>
+    <function name="startDiameterServer" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT2</configuration>
+    </function>
+    <function name="waitForSpecificRequests" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT</configuration>
+        <parameter>CAPABILITIES_EXCHANGE_REQUEST</parameter>
+        <parameter>1</parameter>
+    </function>
+     <function name="waitForSpecificRequests" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT2</configuration>
+        <parameter>CAPABILITIES_EXCHANGE_REQUEST</parameter>
+        <parameter>1</parameter>
+    </function>
+     <function name="waitForRequests" module="Diameter">
+        <parameter>2</parameter>
+    </function>
+
+    <subtest>sendMMS.xml</subtest>
+     <function name="waitForRequests" module="Diameter">
+        <parameter>3</parameter>
+    </function>
+    <function name="stopProcess" module="Remote">
+        <configuration>XSAM/BILLINGPROCESS/FIRST</configuration>
+    </function>
+
+    <function name="setVariable" module="Basic">
+        <parameter>AMOUNT</parameter>
+        <parameter>7.999</parameter>
+    </function>
+
+    <subtest>sendMMS.xml</subtest>
+    <function name="waitForSpecificRequests" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT2</configuration>
+        <parameter>CREDIT_CONTROL_REQUEST</parameter>
+        <parameter>1</parameter>
+    </function>
+
+
+    <function name="queryText" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT2</configuration>
+            <parameter>/AVP/REQUESTED_SERVICE_UNIT/CC_MONEY/UNIT_VALUE/VALUE_DIGITS</parameter>
+        </variable>
+        <parameter>dev/null</parameter>
+        <parameter>7999</parameter>
+    </function>
+    <function name="stopDiameterServer" module="Diameter"/>
+    <subtest>../startFirstProcess.xml</subtest>
+</test>

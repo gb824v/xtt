@@ -1,0 +1,190 @@
+<test>	    
+	<name>BZ24253.TC.005</name>
+	<description>Validate "logscan -loganon -in logfile1.log" obfuscates all the occurences of the value of IM_Password context element in IM_Password / other context variables [The obfuscated data should have the same length as its original]</description>
+
+
+	<!-- Start & Stop TCP-ROUTER & LOGGER processes -->
+	<!-- Get the name of TCP-ROUTER.1 process -->
+	<function name="activeProcessToVar" module="Remote">
+		<parameter><configuration>HttpProxy/ProcessName</configuration><parameter>.*1</parameter></parameter>
+		<parameter>Name_Of_Tcp_Router_Process</parameter>
+	</function>
+	<!-- Restart TCP-ROUTER -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>stop process </parameter>
+			<variable>Name_Of_Tcp_Router_Process</variable>
+		</parameter>
+	</function>
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>start process </parameter>
+			<variable>Name_Of_Tcp_Router_Process</variable>
+		</parameter>
+	</function>
+	<!-- Get the name of LOGGER process -->
+	<function name="activeProcessToVar" module="Remote">
+		<parameter>LOGGER.*</parameter>
+		<parameter>Name_Of_Logger_Process</parameter>
+	</function>
+	<!-- Restart LOGGER -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>stop process </parameter>
+			<variable>Name_Of_Logger_Process</variable>
+		</parameter>
+	</function>
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>start process </parameter>
+			<variable>Name_Of_Logger_Process</variable>
+		</parameter>
+	</function>
+	<function name="sleep" module="Basic">
+		<parameter>2000</parameter>
+	</function>
+
+
+
+	<!-- Load Request Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>reqmod1.xml</parameter>
+		<xml>
+<requestModifications xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="requestmodifications.xsd">
+	<table name="DummyTableName" phase="httpRequest">
+		<selector>
+			<modifyContext name="IM_Password" value="'724Solutions :-) erkansutculer 27041979 erkansutculer 27041979 erkansutculer 27041979 erkansutculer 27041979 erkansutculer 27041979 erkansutculer 27041979 724Solutions :-) erkansutculer 27041979 erkansutculer 27041979 erkansutculer 27041979 erkansutculer 27041979 erkansutculer 27041979 erkansutculer 27041979 ;)'"/>
+			<modifyContext name="IM_DummyContext" value="'724Solutions :-) erkansutculer 27041979 erkansutculer 27041979 erkansutculer 27041979 erkansutculer 27041979 erkansutculer 27041979 erkansutculer 27041979 724Solutions :-) erkansutculer 27041979 erkansutculer 27041979 erkansutculer 27041979 erkansutculer 27041979 erkansutculer 27041979 erkansutculer 27041979 ;)'"/>
+		</selector>
+	</table>
+</requestModifications>
+		</xml>
+	</function>
+    
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>reqmod1.xml</parameter>
+		</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>Loaded requestmodifications</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	
+	<!-- Start Target Web Server -->
+	<function name="startWebServer" module="HTTP">
+		<parameter>80</parameter>
+		<testpath/>
+		<parameter>30000</parameter>
+	</function>
+	
+	<!-- Define The Content in the Target Web Server -->
+	<function name="setCacheFile" module="HTTP">
+			<parameter>index/test1.html</parameter>
+<xml><html>
+<body>
+This is the contents of the page... Enjoy it.
+</body>
+</html>
+</xml>
+	</function>
+	
+	<!-- Radius Accounting Start for the Subscriber -->
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+	
+
+	
+	<!-- Send HTTP GET Request -->
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://www.724xtt.com/index/test1.html</parameter>
+	</function>
+	
+	<!-- Check Response Code sent by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>	
+	
+	<!-- Check Response Data sent by XMP -->
+	<function name="queryBody" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>This is the contents of the page\.\.\. Enjoy it\.</parameter>
+	</function>
+
+	<function name="sleep" module="Basic">
+		<parameter>10000</parameter>
+	</function>
+	
+	
+	
+	<!-- Analyze Logs -->
+	<function name="getNewestRemoteFileName" module="Remote">
+		<parameter>NewestLogFileName</parameter>
+		<configuration>xmg/logpath</configuration>
+		<parameter>XMP</parameter>
+   </function>
+   
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<configuration>remote/command</configuration>
+			<parameter>logscan -loganon -in </parameter>
+			<variable>NewestLogFileName</variable>
+		</parameter>
+		<parameter>3000000</parameter>
+	</function>
+
+	<function name="getNewestRemoteFileName" module="Remote">
+		<parameter>NewestLogFileName</parameter>
+		<configuration>xmg/logpath</configuration>
+		<parameter>XMP</parameter>
+   </function>
+   
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<configuration>remote/command</configuration>
+			<parameter>logscan -in </parameter>
+			<variable>NewestLogFileName</variable>
+		</parameter>
+		<parameter>300000</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>IM_Password: [0-9A-F]{312}</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>IM_DummyContext: [0-9A-F]{312}</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	
+		
+	
+	<!-- Radius Accounting Stop for the Subscriber -->
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function> 
+	
+	<!-- Stop Web Server -->
+	<function name="stopWebServer" module="HTTP"/>
+
+	<!-- Load Empty Request Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>reqmodTCemptyrules.xml</parameter>
+		<parameter>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;requestModifications&gt;&lt;/requestModifications&gt;</parameter>
+	</function>
+	
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>load data reqmodTCemptyrules.xml</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>Loaded requestmodifications</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+</test>

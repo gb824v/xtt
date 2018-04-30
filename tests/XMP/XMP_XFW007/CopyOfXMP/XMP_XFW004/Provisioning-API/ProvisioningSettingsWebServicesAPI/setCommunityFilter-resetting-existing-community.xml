@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://policy.intf.mobilgw.com/">
+  <soap:Body>
+    <tns:setCommunityFilter>
+      <arg0>Fabulous</arg0>
+      <arg1>
+        <scheme>1</scheme>
+        <blockedCategories>myGames</blockedCategories>
+        <blockedUrls>http://games*.com</blockedUrls>
+        <exceptionUrls>http://games123.com</exceptionUrls>
+      </arg1>
+    </tns:setCommunityFilter>
+  </soap:Body>
+</soap:Envelope>

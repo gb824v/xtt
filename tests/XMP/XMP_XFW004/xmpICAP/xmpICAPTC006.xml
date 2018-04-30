@@ -1,0 +1,71 @@
+<test>	    
+	<name>XMP.ICAP.TC.006</name>
+    <description>GET with RESPMOD, ADD/CHANGE header</description>
+
+    <subtest name="loadReqmod" file="loadReqmod.xml"/>
+
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+	<function name="startICAPServer" module="ICAP"/>
+	<function name="startWebServer" module="HTTP"/>
+
+	<function name="setServerHeader" module="HTTP">
+		<parameter>XTTAddedOne</parameter>
+		<parameter>unchanged</parameter>
+	</function>	
+	<function name="setServerHeader" module="HTTP">
+		<parameter>XTTAddedTwo</parameter>
+		<parameter>unchanged</parameter>
+	</function>	
+	<function name="setServerRESPHeader" module="ICAP">
+		<parameter>XTTAddedTwo</parameter>
+		<parameter>replaced</parameter>
+	</function>	
+	<function name="setServerRESPHeader" module="ICAP">
+		<parameter>XTTAddedThree</parameter>
+		<parameter>added</parameter>
+	</function>	
+
+	<function name="sendGetRequest" module="HTTP">
+        <parameter>
+    		<parameter>http://icap3.xtt724.com/</parameter>
+        </parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+	<function name="checkServerRESPHeader" module="ICAP">
+		<parameter>XTTAddedOne</parameter>
+		<parameter>unchanged</parameter>
+	</function>	
+	<function name="checkServerRESPHeader" module="ICAP">
+		<parameter>XTTAddedTwo</parameter>
+		<parameter>unchanged</parameter>
+	</function>	
+	<function name="checkHeader" module="HTTP">
+		<parameter>XTTAddedOne</parameter>
+		<parameter>unchanged</parameter>
+	</function>	
+	<function name="checkHeader" module="HTTP">
+		<parameter>XTTAddedTwo</parameter>
+		<parameter>replaced</parameter>
+	</function>	
+	<function name="checkHeader" module="HTTP">
+		<parameter>XTTAddedThree</parameter>
+		<parameter>added</parameter>
+	</function>	
+	<function name="waitForRESPMOD" module="ICAP">
+		<parameter>1</parameter>
+	</function>	
+
+    <subtest name="unloadReqmod" file="unloadReqmod.xml"/>
+
+	<function name="stopWebServer" module="HTTP"/>
+	<function name="stopICAPServer" module="ICAP"/>
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function> 
+</test>

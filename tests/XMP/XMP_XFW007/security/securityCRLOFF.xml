@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<security>    
+		<devices>
+			<wtls allowWeakEncryption="false" keyRefresh="8" >
+				<diffieHellman allowWeakParameters="true" />
+				<rsa allowAnonymousKeyExchange="true" >
+					<serverCertificate certificate="demo_wap1_server_certificate.wtls" privateKeyFile="demo_wap1_server_private_key.der" privateKeyPassword="Lq2jiwPwgSw92yeNrA+OMzrCF5xXKMRsf58myDc4pbFVtZJ1cnrLytWsw+co/tjpwxDmoCrxJs0=" />
+				</rsa>
+			</wtls>
+		</devices>
+		
+		<contentProviders>
+			<https allowWeakEncryption="true">
+				<clientCertificate privateKeyFile="demo_inet_client_private_key.der" privateKeyPassword="Lq2jiwPwgSw92yeNrA+OMzrCF5xXKMRsf58myDc4pbFVtZJ1cnrLytWsw+co/tjpwxDmoCrxJs0=">
+					<certificateChain>
+						<certificate name="demo_inet_client_certificate.der"/>
+						<certificate name="demo_inet_client_ca_certificate.der"/>
+					</certificateChain>
+				</clientCertificate>
+			</https>
+		</contentProviders>
+		    
+    <trustedAuthorities enableCrlChecking="false" >
+        <certificate name="cacert.der"/>
+    </trustedAuthorities>
+</security>

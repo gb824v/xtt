@@ -1,0 +1,35 @@
+<test>
+<name>CCR-U should send after configured timeout</name>
+<qcid>1329</qcid>
+<description>
+This test intend to validate that CCR-U send after second GET request issued after the time frame configured (pcrfValiditySecs) for PCRF.
+</description>
+<steps>
+Restore original workflowconstants file
+Load workflowconstants data file
+Verify new WorkflowConstants file loaded
+</steps>
+<designer>Administrator </designer>
+<creationdate>2012-02-28 10:23:39 </creationdate>
+<testlevel>Regression</testlevel>
+<xfwVersion>XMP_XFW006</xfwVersion>
+<mandatory>false</mandatory>
+<stepname>Restore original workflowconstants file</stepname>
+<stepid>1</stepid>
+<function name="executeRemoteCommand" module="Remote">
+<parameter>mv -f /opt/xmp/examples/xmp_WorkflowConstants.xml.backup /opt/xmp/examples/xmp_WorkflowConstants.xml</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Load workflowconstants data file</stepname>
+<stepid>2</stepid>
+<function name="executeRemoteXMSCommand" module="Remote">
+<parameter>load data /opt/xmp/examples/xmp_WorkflowConstants.xml</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Verify new WorkflowConstants file loaded</stepname>
+<stepid>3</stepid>
+<function name="queryResponse" module="Remote">
+<parameter>Loaded workflowconstants.*</parameter>
+<parameter>nothing</parameter>
+</function>
+</test>

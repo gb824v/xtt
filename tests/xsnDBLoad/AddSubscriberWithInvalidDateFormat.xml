@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+
+<dbupdates> 
+<subscribers>
+
+	<remove subscriber="123456793" />
+	
+	<add subscriber="123456793"> <born value="1995/01/31"/> <!-- invalid date  1.11 -->
+	
+	
+</subscribers>
+</dbupdates>

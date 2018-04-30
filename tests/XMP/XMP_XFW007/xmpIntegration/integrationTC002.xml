@@ -1,0 +1,17 @@
+<!-- just check if all the processes are running -->
+<test>
+	<function name="executeRemoteCommand" module="Remote">
+		<parameter>/usr/bin/java -Xmx512m -jar lib/xtt.jar --help | grep '^Version'</parameter>
+	</function>
+
+    <function name="testName" module="Basic">
+        <parameter>INTEGRATION.TC.002</parameter>
+    </function>
+    <description>Check if all processes are running</description>
+
+    <function name="checkAllProcessesStatus" module="Remote">
+        <parameter>Running</parameter>
+    </function>
+	<function name="stopDNSServer" module="DNS"/>
+	<function name="startDNSServer" module="DNS"/>
+</test>

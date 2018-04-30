@@ -1,0 +1,277 @@
+	<test>
+
+	<name>PCRF_ReqId-1005.TC.008.xml</name>
+	<description>Validate RA-Request (RAR) check all mandatorty AVP</description>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<configuration>remote/command</configuration>
+			<parameter>uname -n</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>(.*)</parameter>
+		<parameter>response</parameter>
+	</function>
+
+	<function name="queryText" module="Basic">
+		<variable>response</variable>
+		<parameter>hostname</parameter>
+		<parameter>\w++.</parameter>
+	</function>
+
+	<!-- Invalidate GSP cache - temp solution as it reads from cache -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>run command cmu -C GSP_CFG_CacheInvalidate  DIAMETER-IN.GXCHANNEL.1 true</parameter>
+	</function>
+
+	<!-- create connection at client -->
+	<function name="createConnection" module="Diameter">
+		<parameter>one</parameter>
+		<configuration>DIAMETERCLIENT/IP</configuration>
+		<configuration>DIAMETERCLIENT/PORT</configuration>
+	</function>
+
+	<!--  Exchange of CER/CEA -->
+	<function name="sendDiameterRequest" module="Diameter">
+		<parameter>one</parameter>
+		<xml>
+			<CAPABILITIES_EXCHANGE_REQUEST version="1"	overrideCommandCode="257" applicationID="16777238" hopbyhopID="456" endtoendID="789" proxiable="true" error="false" tretr="false">
+				<SESSION_ID overrideAVPCode="" value="1234567" mandatory="true" protected="false" vendorspecific="false" vendorID="" />
+				<VENDOR_ID  value="10415" mandatory="true" protected="false" vendorspecific="false" vendorID="" />
+				<ORIGIN_REALM           value="ORIGIN_REALM"        mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<HOST_IP_ADDRESS        value="0001AC140983" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<PRODUCT_NAME           value="PRODUCT_NAME" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<SUPPORTED_VENDOR_ID    value="10415" mandatory="true" protected="false" vendorspecific="false"  vendorID="" />
+				<AUTH_APPLICATION_ID    value="16777238" mandatory="true" protected="false" vendorspecific="false"  vendorID="" />
+			</CAPABILITIES_EXCHANGE_REQUEST>
+		</xml>
+		<parameter>STORERESULT</parameter>
+	</function>
+
+	<!-- Headers validation of CEA commandcode 257 -->
+	<function name="compareString" module="Basic">
+		<variable>DIAMETER/one/HEADER/commandcode</variable >
+		<parameter>257</parameter>
+	</function>
+
+	<!-- AVP validation of CEA -->
+	<function name="compareString" module="Basic">
+		<variable>DIAMETER/one/AVP/RESULT_CODE</variable>
+		<parameter>2001</parameter>
+	</function>
+
+	<function name="sleep" module="Basic">
+		<parameter>1000</parameter>
+	</function>
+
+	<!-- Exchange of CCR/CCA -->
+	<function name="sendDiameterRequest" module="Diameter">
+		<parameter>one</parameter>
+		<xml>
+			<CREDIT_CONTROL_REQUEST version="1"	overrideCommandCode="272" applicationID="16777238" hopbyhopID="456" endtoendID="789" proxiable="true" error="false" tretr="false">
+				<SESSION_ID             value="SESSION_ID"/>
+				<ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<ORIGIN_REALM           value="ORIGIN_REALM" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<DESTINATION_REALM      value="DESTINATION_REALM" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<AUTH_APPLICATION_ID    value="16777238" mandatory="true" protected="false" vendorspecific="false"  vendorID="" />
+				<CC_REQUEST_TYPE        value="INITIAL_REQUEST"   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<CC_REQUEST_NUMBER      value="0" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<IP_CAN_TYPE            value="00000000" overrideavpcode="1027" mandatory="false" protected="false" vendorspecific="true"  vendorID="10415"/>
+				<RAT_TYPE               value="00010000" overrideavpcode="1032" mandatory="false" protected="false" vendorspecific="true"  vendorID="10415"/>
+				<FRAMED_IP_ADDRESS      value="0a043c34" overrideavpcode="8" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<SUBSCRIPTION_ID         mandatory="true" protected="false" vendorspecific="false"  vendorID="">
+					<SUBSCRIPTION_ID_TYPE  value="00000000"   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>  //END_USER_E164=0   END_USER_IMSI=1   END_USER_SIP_URI=2   END_USER_NAI=3   END_USER_PRIVATE=4
+					<SUBSCRIPTION_ID_DATA  value="0787367400"       mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				</SUBSCRIPTION_ID>
+			</CREDIT_CONTROL_REQUEST>
+		</xml>
+	<parameter>STORERESULT</parameter>
+	</function>
+
+	<!-- Headers validation of CCA commandcode 272 -->
+	<function name="compareString" module="Basic">
+		<variable>DIAMETER/one/HEADER/commandcode</variable >
+		<parameter>272</parameter>
+	</function>
+
+	<!-- AVP validation of CCA -->
+	<function name="compareString" module="Basic">
+		<variable>DIAMETER/one/AVP/RESULT_CODE</variable>
+		<parameter>2001</parameter>
+	</function>
+
+	<!-- start DIAMETER Server -->
+	<function name="startDiameterServer" module="Diameter">
+		<configuration>DiameterServer/PORT</configuration>
+		<xml>
+			<Diameter>
+				<response>
+					<DEVICE_WATCHDOG_REQUEST proxiable="true" error="false" tretr="false">
+						<RESULT_CODE        value="DIAMETER_SUCCESS"    mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<ORIGIN_REALM           value="ORIGIN_REALM"        mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+					</DEVICE_WATCHDOG_REQUEST>
+					<CAPABILITIES_EXCHANGE_REQUEST proxiable="true" error="false" tretr="false">
+						<RESULT_CODE            value="DIAMETER_SUCCESS"    mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<ORIGIN_REALM           value="ORIGIN_REALM"        mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<VENDOR_ID              request="VENDOR_ID" />
+						<PRODUCT_NAME           request="PRODUCT_NAME" />
+						<SUPPORTED_VENDOR_ID    request="SUPPORTED_VENDOR_ID" />
+						<AUTH_APPLICATION_ID    request="AUTH_APPLICATION_ID" />
+					</CAPABILITIES_EXCHANGE_REQUEST>
+					<RE_AUTH_REQUEST proxiable="true" error="false" tretr="false">
+						<SESSION_ID             request="SESSION_ID"/>
+						<AUTH_APPLICATION_ID    value="16777238"                   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<RESULT_CODE            value="DIAMETER_FAILED"    mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<ORIGIN_REALM           value="ORIGIN_REALM"        mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+					</RE_AUTH_REQUEST>	
+				</response>
+			</Diameter>
+		</xml>
+		<!--
+		<configuration>DIAMETERSERVER/Timeout</configuration>
+		-->
+		<parameter>120000</parameter>
+	</function>
+
+	<!--  Checking Mandatory AVP values of RAR request.-->
+	<thread>
+		<function name="waitForSpecificRequests" module="Diameter">
+			<parameter>6868</parameter>
+			<parameter>258</parameter>
+			<parameter>1</parameter>
+		</function>
+
+		<!-- Headers validation of RAR commandcode 258 -->
+		<function name="compareString" module="Basic">
+			<variable>DIAMETER/HEADER/commandcode</variable >
+			<parameter>258</parameter>
+		</function>
+
+		<!-- AVP validation of RAR -->
+		<function name="compareString" module="Basic">
+			<variable>DIAMETER/AVP/ORIGIN_HOST</variable>
+			<parameter>
+			<variable>hostname</variable>
+			<parameter>originalRealm</parameter>
+			</parameter>
+		</function>
+
+		<function name="compareString" module="Basic">
+			<variable>DIAMETER/AVP/ORIGIN_REALM</variable>
+			<parameter>originalRealm</parameter>
+		</function>
+
+		<function name="compareString" module="Basic">
+			<variable>DIAMETER/AVP/DESTINATION_REALM</variable>
+			<parameter>ORIGIN_REALM</parameter>
+		</function>
+
+		<function name="compareString" module="Basic">
+			<variable>DIAMETER/AVP/DESTINATION_HOST</variable>
+			<parameter>diameter.xtt724.com</parameter>
+		</function>
+
+		<function name="compareString" module="Basic">
+			<variable>DIAMETER/AVP/AUTH_APPLICATION_ID</variable>
+			<parameter>16777238</parameter>
+		</function>
+
+		<function name="compareString" module="Basic">
+			<variable>DIAMETER/AVP/RE_AUTH_REQUEST_TYPE</variable>
+			<parameter>AUTHORIZE_ONLY</parameter>
+		</function>
+
+		<!-- wait for second RAR which is triggered dufing second profile update from SILVER to GOLD -->
+		<function name="waitForSpecificRequests" module="Diameter">
+			<parameter>6868</parameter>
+			<parameter>258</parameter>
+			<parameter>2</parameter>
+		</function>
+
+		<!-- Stopping Diameter Server -->
+		<function name="stopDiameterServer" module="Diameter" />
+	</thread>
+
+	<function name="sleep" module="Basic" >
+	<parameter>2000</parameter>
+	</function>
+
+	<!-- Update Subscriber Profile from GOLD to SILVER -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>updateSubscriberProfile.xml</parameter>
+		<xml>
+		<dbupdates>
+			<subscribers>
+				<modify subscriber="0787367400">
+					<attribute name="Class" value="SILVER"/>
+				</modify>
+			</subscribers>
+		</dbupdates>
+		</xml>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load db </parameter>
+			<parameter>updateSubscriberProfile.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>SUCCESS: XML upload completed</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<function name="sleep" module="Basic" >
+	<parameter>2000</parameter>
+	</function>
+
+	<!-- Invalidate GSP cache - temp solution as it reads from cache -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+			<parameter>run command cmu -C GSP_CFG_CacheInvalidate  DIAMETER-IN.GXCHANNEL.1 true</parameter>
+	</function>
+
+	<function name="waitForSpecificRequests" module="Diameter">
+		<parameter>6868</parameter>
+		<parameter>257</parameter>
+		<parameter>1</parameter>
+	</function>
+
+	<!-- Update Subscriber Profile from SILVER to GOLD-->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>updateSubscriberProfile.xml</parameter>
+		<xml>
+		<dbupdates>
+			<subscribers>
+				<modify subscriber="0787367400">
+					<attribute name="Class" value="GOLD"/>
+				</modify>
+			</subscribers>
+		</dbupdates>
+		</xml>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load db </parameter>
+			<parameter>updateSubscriberProfile.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>SUCCESS: XML upload completed</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Close connection -->
+	<function name="closeConnection" module="Diameter">
+		<parameter>one</parameter>
+	</function>
+
+</test>

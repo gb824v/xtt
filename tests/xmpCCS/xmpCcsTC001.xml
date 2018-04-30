@@ -1,0 +1,112 @@
+<test>
+    <name>XMP.CCS.TC.001</name>
+    <description>CCS cmu statistics</description>
+
+    <function name="startWebServer" module="HTTP"/>
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+    <function name="setCacheFile" module="HTTP">
+		<parameter>ccs.html</parameter>
+        <parameter>
+            <parameter>&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;Hello world&lt;/body&gt;&lt;/html&gt;</parameter>
+        </parameter>
+    </function>
+
+
+    <function name="activeProcessToVar" module="Remote">
+        <parameter>LOGGER</parameter>
+        <parameter>logger</parameter>
+    </function>
+    
+    <function name="sendGetRequest" module="HTTP">
+        <parameter>http://ccs1.xtt724.com/ccs.html</parameter>
+    </function>
+    <function name="checkResponseCode" module="HTTP">
+        <parameter>200</parameter>
+    </function>
+    <function name="sleep" module="Basic">
+        <parameter>10000</parameter>
+    </function>
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>
+            <configuration>remote/command</configuration>
+            <parameter>
+                <parameter>cmu -O CCS -d </parameter>
+                <variable>logger</variable>
+            </parameter>
+        </parameter>
+    </function>
+   
+   
+                                  
+    <function name="queryResponse" module="Remote">
+        <parameter>ccs1.xtt724.com: (\d++)</parameter>
+        <parameter>before</parameter>
+    </function>
+    <function name="queryResponse" module="Remote">
+        <parameter>Name: Domain name[\s]++Matching events: (\d++)[\s]++Errors: (\d++)[\s]++Overflow count: (\d++)[\s]++Total count: (\d++)</parameter>
+        <parameter>domainName</parameter>
+    </function>
+    <function name="queryResponse" module="Remote">
+        <parameter>Name: Response size[\s]++Matching events: (\d++)[\s]++Errors: (\d++)[\s]++Overflow count: (\d++)[\s]++Total count: (\d++)</parameter>
+        <parameter>responseSize</parameter>
+    </function>
+    <function name="queryResponse" module="Remote">
+        <parameter>Name: CcsCallOut[\s]++Calls: (\d++)[\s]++Successful: (\d++)[\s]++Failed: (\d++)</parameter>
+        <parameter>callOuts</parameter>
+    </function>
+
+    <function name="sendGetRequest" module="HTTP">
+        <parameter>http://ccs1.xtt724.com/ccs.html</parameter>
+    </function>
+    <function name="checkResponseCode" module="HTTP">
+        <parameter>200</parameter>
+    </function>
+    <function name="sleep" module="Basic">
+        <parameter>10000</parameter>
+    </function>
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>
+            <configuration>remote/command</configuration>
+            <parameter>
+                <parameter>cmu -O CCS -d </parameter>
+                <variable>logger</variable>
+            </parameter>
+        </parameter>
+    </function>
+   
+    <function name="queryResponse" module="Remote">
+        <parameter>ccs1.xtt724.com: (\d++)</parameter>
+        <parameter>after</parameter>
+    </function>
+
+    <function name="setVariable" module="Basic">
+        <parameter>minusbefore</parameter>
+        <parameter>
+            <parameter>-</parameter>
+            <variable>before</variable>
+        </parameter>
+    </function>
+
+    <function name="addVariable" module="BASIC">
+        <parameter>result</parameter>
+        <variable>after</variable>
+        <variable>minusbefore</variable>
+    </function>
+
+    <function name="compareString" module="basic">
+        <parameter>1</parameter>
+        <variable>result</variable>
+    </function>
+
+    <function name="stopWebServer" module="HTTP"/>
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function> 
+</test>

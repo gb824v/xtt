@@ -1,0 +1,13 @@
+<!-- LOCK Request for Transperant Proxy -->
+<?xml version="1.0" encoding="utf-8" ?></crlf>
+<D:lockinfo xmlns:D='DAV:'></crlf>
+    <D:lockscope></crlf>
+        <D:exclusive/></crlf>
+    </D:lockscope></crlf>
+    <D:locktype></crlf>
+        <D:write/></crlf>
+    </D:locktype></crlf>
+    <D:owner></crlf>
+        <D:href>http://example.org/~ejw/contact.html</D:href></crlf>
+    </D:owner></crlf>
+</D:lockinfo></crlf>

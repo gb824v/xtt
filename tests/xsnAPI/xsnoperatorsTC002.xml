@@ -1,0 +1,35 @@
+ <test>
+     
+     <!-- Test case 10.2.1.2: [XSN.Operators.TC.002] Find All Operators -->
+     
+     <description> SOAP-API: Operators : Find All Operators </description>
+
+	 <function name="testName" module="Basic">
+		<parameter>XSN.OPERATORS.TC.002</parameter>
+	</function>
+     
+	<function name="SOAPClient" module="SOAP_API" >
+		<parameter>
+			 <parameter>http://</parameter>
+			 <configuration>XSN/IP</configuration>
+			 <parameter>:</parameter>
+			 <configuration>XSN/PORT</configuration>
+			 <parameter>/jaxws-policy-operators/operators</parameter>
+		</parameter>
+		<file>operators_find.xml</file>
+		 <parameter>Body/findResponse/return/role</parameter>
+	</function>
+
+	<function name="queryResponse" module="SOAP_API">
+	     <!-- You want to check what the last command did, this is a java regular expression -->
+	     <parameter>Tester</parameter>
+	     <!-- Ignore this paramter, it stores the result to a variable (not important in this test -->
+	     <parameter>dev/null</parameter>
+	</function> 
+
+
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+        
+ </test>

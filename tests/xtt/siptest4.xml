@@ -1,0 +1,54 @@
+<test>
+	<function name="testName" module="Basic">
+		<parameter>SIP.TEST.TC.001</parameter>
+	</function>
+	<function name="startSIPServer" module="SIP"/>
+
+    <loop name="message" start="1" stop="10" step="1">
+        <function name="waitForVariable" module="Basic">
+            <parameter>SIP/TCP/MESSAGE/xtttcp@172.20.14.1/BODY/PLAIN</parameter>
+        </function>
+        <function name="setVariable" module="Basic">
+            <parameter>body</parameter>
+            <parameter>
+                <parameter>You sent :'</parameter>
+                <variable>SIP/TCP/MESSAGE/xtttcp@172.20.14.1/BODY/PLAIN</variable>
+                <parameter>' as message</parameter>
+            </parameter>
+        </function>
+
+        <function name="setVariableLines" module="Basic">
+            <parameter>2</parameter>
+            <parameter>headers</parameter>
+            <parameter>MESSAGE sip:xtttcp@172.20.14.1 SIP/2.0</parameter><parameter></parameter>
+            <parameter>Call-ID: </parameter>            <parameter><parameter>3000000000000000000000000000000</parameter><variable>message</variable></parameter>
+            <parameter>CSeq: </parameter>               <parameter><parameter>1000</parameter><variable>message</variable><parameter> MESSAGE</parameter></parameter>
+            <parameter>From: </parameter>               <parameter>"alala" &lt;sip:alalala@172.20.14.1&gt;;tag=8a671324</parameter>
+            <parameter>To: </parameter>                 <parameter>&lt;sip:xtttcp@172.20.14.1&gt;</parameter>
+            <parameter>Via: </parameter>                <parameter>SIP/2.0/TCP 172.20.14.1:5060;branch=z9hG4bK9146f746bd0659b85c59a57dbffdab8</parameter>
+            <parameter>Max-Forwards: </parameter>       <parameter>70</parameter>
+            <parameter>Content-Type: </parameter>       <parameter>text/plain</parameter>
+            <parameter>Content-Encoding: </parameter>   <parameter>UTF-8</parameter>
+            <parameter>Content-Length: </parameter>     <bytelength><variable>body</variable></bytelength>
+            <parameter></parameter><parameter></parameter>
+        </function>
+
+        <function name="queryText" module="Basic">
+            <variable>SIP/TCP/MESSAGE/xtttcp@172.20.14.1/Via</variable>
+            <parameter>toPort</parameter>
+            <parameter>\:(\d+);</parameter>
+        </function>
+
+        <function name="sendFreeRequest" module="SIP">
+            <parameter>172.20.14.1</parameter>
+            <variable>toPort</variable>
+            <parameter>TCP</parameter>
+            <variable>headers</variable>
+            <base64encode><variable>body</variable></base64encode>
+        </function>
+        <function name="setVariable" module="Basic">
+            <parameter>SIP/TCP/MESSAGE/xtttcp@172.20.14.1/BODY/PLAIN</parameter>
+        </function>
+    </loop>
+	<function name="stopSIPServer" module="SIP"/>
+</test>

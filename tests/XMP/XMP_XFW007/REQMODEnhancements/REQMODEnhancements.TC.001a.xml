@@ -1,0 +1,136 @@
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+REQMODEnhancements.TC.001a  - Validate the use of 'REQMOD_*' temporary REQMOD context variables (BZ18270).
+
+Test Description:
+ 1. Radius Logon
+ 2. Prepare and load the Request Modification File.
+ 3.	Send HTTP Get Proxy Request.
+ 4. Check Response Code
+ 5. Purge the Request Modification File.
+ 6. Radius Logoff
+ 
+Expected Result:
+ -  XMP should Block this request with "Site blocked by reqmod" HTTP Status.
+.
+
+XTT Commands:
+      startWebServer
+ 1. - Radius log-ON
+
+ 2. - Prepare and load the Request Modification File. 
+
+ 3.   - sendGetRequest 		"HTTP" "http://www.abc.com:80/index.html?query1=data1"
+
+ 4.   - checkResponseCode	"HTTP" "403"
+
+ 5. - Purge the Request Modification File
+
+ 6. - Radius log-OFF
+      stopWebServer
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- Test Start  -->
+<test>
+	<function name="testName" module="Basic">
+		<parameter>REQMODEnhancements.TC.001a</parameter>
+	</function>
+
+    <description>Validate the use of 'REQMOD_*' temporary REQMOD context variables (BZ18270)</description>
+
+	<!-- Radius Login -->
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+	    <parameter>12346</parameter>
+    </function>
+	
+	<!-- Start Web Server -->
+	<function name="startWebServer" module="HTTP"/>
+	
+	<function name="setHeader" module="HTTP">
+		<parameter>Accept-Encoding</parameter>
+		<parameter>0</parameter>
+	</function>
+	
+	<function name="setHeader" module="HTTP">
+		<parameter>Accept</parameter>
+		<parameter>*/*</parameter>
+	</function>
+	
+	<function name="setHeader" module="HTTP">
+		<parameter>User-Agent</parameter>
+		<parameter>XTT/0.1</parameter>
+	</function>
+
+	<!-- Prepare the Request Modification File -->
+<function name="writeRemoteFile" module="Remote">
+	<parameter>REQMOD_REQMODEnhancements.TC.001a.xml</parameter>
+	<xml>
+	<requestModifications xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="requestmodifications.xsd">
+	<table name="ModifyUrl" phase="httpRequest" >
+		<selector>
+		<modifyUrl value="'https://www.xyz.com:8080/index2.shtml?query2=data2'" />
+	</selector>
+	</table>
+
+	<table name="LookAtNewUrl" phase="httpRequest" >
+		<selector context="([REQMOD_CurrentProtocol] matches 'https') and ([REQMOD_CurrentDomainName] matches 'www.xyz.com') and ([REQMOD_CurrentPort] matches '8080') and ([REQMOD_CurrentPath] matches 'index2.shtml') and ([REQMOD_CurrentSearchString] matches 'query2=data2')" >
+		<denyAccess reason="'Site blocked by reqmod'"/>
+		</selector>
+	</table>
+	</requestModifications>
+	</xml>
+</function>
+
+<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>REQMOD_REQMODEnhancements.TC.001a.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded requestmodifications.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+   
+	<!-- Send HTTP Get Proxy Request --> 
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://www.abc.com:80/index.html?query1=data1</parameter>
+	</function>
+    
+	<!-- Validate Response Code Send by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>403</parameter>
+	</function>
+	
+	<function name="checkHeader" module="HTTP">
+		<parameter>null</parameter>
+		<parameter>HTTP/1.1 403 Site blocked by reqmod</parameter>
+	</function>
+	    
+	<!-- Purge the Request Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>REQMOD_EmptyRules.xml</parameter>
+		<parameter>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;requestModifications&gt;&lt;/requestModifications&gt;</parameter>
+    </function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>REQMOD_EmptyRules.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded requestmodifications.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>  
+   
+    <!-- Stop Web Server -->
+    <function name="stopWebServer" module="HTTP"/>
+    
+	<!-- Radius Logoff -->
+    <function name="radiusLogoff" module="Radius">
+	    <parameter>xttuser</parameter>
+	    <parameter>12346</parameter>
+    </function>    
+</test>

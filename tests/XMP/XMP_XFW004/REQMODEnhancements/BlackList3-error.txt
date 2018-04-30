@@ -1,0 +1,4 @@
+h_t:/..///////.yahoo.com/*
+http://*.google.com/*
+http://*.msn.com/*
+http://*.microsoft.com/*

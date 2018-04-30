@@ -1,0 +1,80 @@
+<test>
+	<function name="testName" module="Basic">
+		<parameter>License.TC.005.2</parameter>
+	</function>
+	
+	<description>This is an license example test for a base license(type-A) loaded and restarted with -clean option</description>
+   
+    <function name="sendRemoteCommand" module="Remote">
+        <parameter>
+        <configuration>xsn/path</configuration>
+        <configuration>xsn/xms</configuration>
+        <parameter>stop system </parameter>
+        </parameter>
+    </function>
+
+	<function name="sendRemoteCommand" module="Remote">
+        <parameter>writeFile XSN-License-TC003-2.xml </parameter>
+        <file>XSN-License-TC003-2.xml</file>
+    </function>
+
+	<function name="sendRemoteCommand" module="Remote">
+        <parameter>writeFile LicenseTC003-2-xsn-pv-bali.xml </parameter>
+        <file>LicenseTC003-2-xsn-pv-bali.xml</file>
+    </function>
+
+	<function name="sendRemoteCommand" module="Remote">
+        <parameter>
+        <configuration>xsn/path</configuration>
+        <configuration>xsn/xms</configuration>
+        <parameter>gen conf LicenseTC003-2-xsn-pv-bali.xml LicenseTC003-2-xsn-cv-bali.xml</parameter>
+        </parameter>
+    </function>
+
+	<function name="sendRemoteCommand" module="Remote">
+        <parameter>
+        <configuration>xsn/path</configuration>
+        <configuration>xsn/xms</configuration>
+        <parameter>start system -clean LicenseTC003-2-xsn-cv-bali.xml </parameter>
+        </parameter>
+    </function>
+
+    <function name="queryResponse" module="Remote">
+        <parameter>Start completed</parameter>
+        <parameter>test1.2</parameter>
+    </function>    
+
+    <function name="sendRemoteCommand" module="Remote">
+        <parameter>
+		<configuration>xsn/path</configuration>
+        <configuration>xsn/xms</configuration>
+        <parameter>stop system</parameter>
+		</parameter>
+    </function>
+	
+	<function name="sendRemoteCommand" module="Remote">
+        <parameter>writeFile LicenseTC001-xsn-pv-bali.xml </parameter>
+        <file>LicenseTC001-xsn-pv-bali.xml</file>
+    </function>
+
+	<function name="sendRemoteCommand" module="Remote">
+        <parameter>
+        <configuration>xsn/path</configuration>
+        <configuration>xsn/xms</configuration>
+        <parameter>gen conf LicenseTC001-xsn-pv-bali.xml LicenseTC001-xsn-cv-bali.xml</parameter>
+        </parameter>
+    </function>
+
+	<function name="sendRemoteCommand" module="Remote">
+        <parameter>
+        <configuration>xsn/path</configuration>
+        <configuration>xsn/xms</configuration>
+        <parameter>start system -clean LicenseTC001-xsn-cv-bali.xml </parameter>
+        </parameter>
+    </function>
+
+    <function name="queryResponse" module="Remote">
+        <parameter>Start completed with errors</parameter>
+        <parameter>test1.5</parameter>
+    </function>    
+</test>

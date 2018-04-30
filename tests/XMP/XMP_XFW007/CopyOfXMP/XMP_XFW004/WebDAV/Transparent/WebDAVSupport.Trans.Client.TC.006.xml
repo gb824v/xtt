@@ -1,0 +1,67 @@
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+WebDAVSupport.Trans.Client.TC.006  - Validate DELETE Request and its Response are successfully proxied by XMP.
+
+Test Description:
+ 1. Disable Proxy.
+ 2. Radius Logon
+ 3. Send DELETE request to server.
+ 5. Compare response code
+ 6. Radius Logoff
+ 
+Expected Result:
+ -  XMP should process the DELETE request and response through Transperant Proxy.
+
+XTT Commands:
+      
+ 1.  - Radius log-ON
+
+ 2.  - sendFreeRequest 		"HTTP" DELETE method to SERVER/IP {configure in XTT config.xml}
+
+ 3.  - checkResponseCode	
+
+ 4.  - Radius log-OFF
+      
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- Test Start  -->
+
+<test>
+    <name>WebDAVSupport.Trans.Client.TC.006</name>
+
+    <description>Validate DELETE Request and its Response are successfully proxied by XMP during transparent proxy</description>
+
+	<function name="disableProxy" module="HTTP" />
+
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+	
+	<function name="setHeader" module="HTTP">
+        <parameter>Content-Type</parameter>
+        <parameter>text/xml; charset="utf-8"</parameter>
+    </function>
+
+	<!-- Send DELETE request to XMP -->
+    <function name="sendFreeRequest" module="HTTP">
+        <parameter>DELETE</parameter>
+        <parameter>false</parameter>
+        <parameter>
+            <parameter>http://</parameter>
+            <configuration>SERVER/IP</configuration>
+            <parameter>:</parameter>
+            <configuration>WEBSERVER/PORT</configuration>
+            <parameter>/file</parameter>
+        </parameter>
+        <parameter>response</parameter>
+    </function>
+    
+	<function name="checkResponseCode" module="HTTP">
+        <parameter>404</parameter>
+    </function>
+
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+</test>

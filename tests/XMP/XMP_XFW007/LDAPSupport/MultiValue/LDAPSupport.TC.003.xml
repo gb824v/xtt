@@ -1,0 +1,119 @@
+<test>
+<name>LDAPSupport.TC.003</name>
+<qcid></qcid>
+<description>
+New entry send HTTP Request for the first time but the LDAP server is not up. - - - Annonymous user chosen.
+
+Test Description:
+ 1. Load LDAP and web servers
+ 2. Send HTTP Get Proxy Request
+ 3. Verify responses
+
+Expected Result:
+ -  Verify that LDAP sends searchResDone (0 success), without msisdn, to XMP for its Authentication Request.
+
+XTT Commands:
+      startWebServer
+      startLDAPServer
+ 1.   - Load ReqMod and workFlowConstants files
+ 2.   - sendGetRequest 	 "http://www.724xtt.com/index/test1.html"
+ 3.   - checkResponseCode	 "HTTP 200"
+ 4.   - verify LDAP responses via logscan
+      stopLDAPServer
+      stopWebServer
+</description>
+<steps>
+# Sleep 12 seconds for the configured timeout (10s) to end
+# Clean presence-store db
+# Restarting the LOGGER proc
+# Starting web server
+# Setting cache file
+# Send GET request
+# Checking response code
+# Query the response body
+# Sleep 3s for the transactiona logs to be written
+# Determine latest log
+# Writing transaction log to a file
+# Grep LDAP params from x.log
+# Validating "grep" response
+# Remove x.log
+# Stop web server
+</steps>
+<designer>Administrator </designer>
+<creationdate>2011-12-11 18:43:39 </creationdate>
+<testlevel>Regression</testlevel>
+<xfwVersion>XMP_XFW006</xfwVersion>
+<stepname>Sleep 12 seconds for the configured timeout (10s) to end</stepname>
+<function name="sleep" module="Basic">
+<parameter>12000</parameter>
+</function>
+<stepname>Clean presence-store db</stepname>
+<function name="executeRemoteCommand" module="Remote">
+<parameter>pse3cli da!</parameter>
+</function>
+<stepname>Restarting the LOGGER proc</stepname>
+<function name="restartProcess" module="Remote">
+<parameter>LOGGER.*</parameter>
+</function>
+<stepname>Starting web server</stepname>
+<function name="startWebServer" module="HTTP"/>
+<stepname>Setting cache file</stepname>
+<function name="setCacheFile" module="HTTP">
+<parameter>index/test1.html</parameter>
+<xml>&lt;?xml version="1.0"?&gt;
+<html>
+  <body>
+This is the contents of the page... Enjoy it.
+</body>
+</html>
+
+</xml>
+</function>
+<stepname>Send GET request</stepname>
+<function name="sendGetRequest" module="HTTP">
+<parameter>http://10.11.2.3/index/test1.html</parameter>
+</function>
+<stepname>Checking response code</stepname>
+<function name="checkResponseCode" module="HTTP">
+<parameter>200</parameter>
+</function>
+<stepname>Query the response body</stepname>
+<function name="queryBody" module="HTTP">
+<parameter>dev/null</parameter>
+<parameter>This is the contents of the page\.\.\. Enjoy it\.</parameter>
+</function>
+<stepname>Sleep 3s for the transactiona logs to be written</stepname>
+<function name="sleep" module="Basic">
+<parameter>3000</parameter>
+</function>
+<stepname>Determine latest log</stepname>
+<function name="getNewestRemoteFileName" module="Remote">
+<parameter>newestlogfile</parameter>
+<configuration>remote/logpath</configuration>
+<parameter>XMP</parameter>
+</function>
+<stepname>Writing transaction log to a file</stepname>
+<function name="executeRemoteXMSCommand" module="Remote">
+<parameter>
+<configuration>remote/command</configuration>
+<parameter>logscan -in </parameter>
+<variable>newestlogfile</variable>
+<parameter> -out x.log</parameter>
+</parameter>
+</function>
+<stepname>Grep LDAP params from x.log</stepname>
+<function name="executeRemoteCommand" module="Remote">
+<parameter>egrep "^CHLDAP_QueryLDAPEntries\/.*\/AttrName:|^Internal_NAI" x.log</parameter>
+</function>
+<stepname>Validating "grep" response</stepname>
+<function name="queryResponse" module="Remote">
+<parameter>Internal_NAI: 999_10.11.2.3</parameter>
+<parameter>data</parameter>
+</function>
+<stepname>Remove x.log</stepname>
+<function name="executeRemoteCommand" module="Remote">
+<parameter>rm -f x.log</parameter>
+</function>
+<stepname>Stop web server</stepname>
+<function name="stopWebServer" module="HTTP"/>
+</test>

@@ -1,0 +1,151 @@
+<test>
+<configuration>xsam_config.xml</configuration>
+    <function name="testName" module="Basic">
+        <parameter>TC_5.8.2</parameter>
+    </function>
+<description> SMPP-"submit_sm" Input Operation  Alphanumeric Message => CP - SMSC		
+ ----------------------------------------------------------------------
+Step 1: Set up a CP Simulator XTT tool, configure proper TCP settings by providing the Remote  IP address / port with the IP/port (Incoming Channel) on which the XSAM is listening for connections.
+Step 2: Simulate a SMSC using XTT Tool listening for incoming connections. 
+Step 3: Create "bind_transceiver"  message PDU from the CP XTT tool and verify that all the properties have correct values i.e. password etc.
+Step 4: Send "bind_transceiver" message. Connection should be established.
+Step 5: Send "submit_sm" Aplhanumeric message from CP Simulator
+--------------------------------------------------------------------
+	</description>
+
+ 
+	    <function name="startSMSCServer" module="SMS">
+		   <configuration>SMSCServer/SMPPPort</configuration>
+	 	    <parameter>SMPP</parameter>
+	    </function>
+
+	    <function name="openConnection" module="SMPP">
+            <parameter>connection</parameter>
+            <configuration>XSAM/IP</configuration>
+            <configuration>XSAM/SMPPPort</configuration>
+        </function>
+
+
+        <function name="sendSMPPPacket" module="SMPP">
+            <parameter>connection</parameter>
+            <parameter>BIND_TRANSCEIVER</parameter>
+            <parameter>internal</parameter>
+            <parameter>systemid</parameter>
+            <parameter>password</parameter>
+            <parameter>system_type</parameter>
+            <parameter>0x50</parameter>
+            <parameter>0</parameter>
+            <parameter>0</parameter>
+            <configuration>XSAM/SMPPSHORTCODE</configuration>
+			<parameter>0</parameter>
+        </function>
+       
+        <function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/system_id</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/system_id</variable>
+            <parameter>XTT-724-SMSC</parameter>
+        </function>
+
+        <function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_status</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_status</variable>
+            <parameter>0x00000000</parameter>
+        </function>
+
+          <function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_id</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_id</variable>
+            <parameter>0x80000009</parameter>
+        </function>
+
+         <function name="sendSMPPPacket" module="SMPP">
+            <parameter>connection</parameter><!--connection-->
+            <parameter>SUBMIT_SM</parameter><!--commandID-->
+            <parameter>internal</parameter><!--sequence-->
+            <parameter>STYP</parameter><!--service type-->
+            <parameter>0</parameter><!--source_addr_ton-->
+            <parameter>0</parameter><!--source_addr_npi-->
+            <configuration>XSAM/SMPPSHORTCODE</configuration><!--source_address-->
+            <parameter>0</parameter><!--dest_addr_ton-->
+            <parameter>0</parameter><!--dest_addr_npi-->
+            <configuration>SMSCServer/MSISDN</configuration><!--destination_addr-->
+            <parameter>0</parameter><!--esm_class-->
+            <parameter>0</parameter><!--protocol_id-->
+            <parameter>0</parameter><!--priority_flag-->
+            <parameter></parameter><!--schedule_delivery_time-->
+            <parameter></parameter><!--validity_period-->
+            <parameter>0</parameter><!--registered_delivery-->
+            <parameter>0</parameter><!--replace_if_present_flag-->
+            <parameter>0</parameter><!--data_coding-->
+            <parameter>0</parameter><!--sm_default_msg_id-->
+            <parameter>This is Alphanumeric mesage 9999999444444666666777</parameter><!--Alphanumeric short_message-->
+         </function>
+      
+        <function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/system_id</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/system_id</variable>
+            <parameter>XTT-724-SMSC</parameter>
+        </function>
+
+        <function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_status</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_status</variable>
+            <parameter>0x00000000</parameter>
+        </function>
+
+        <function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_id</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_id</variable>
+            <parameter>0x80000004</parameter>
+        </function>
+
+    
+        <function name="sendSMPPPacket" module="SMPP">
+            <parameter>connection</parameter>
+            <parameter>UNBIND</parameter>
+            <parameter>internal</parameter>
+        </function>
+
+       <function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_status</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_status</variable>
+            <parameter>0x00000000</parameter>
+        </function>
+
+          <function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_id</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_id</variable>
+            <parameter>0x80000006</parameter>
+        </function>
+
+        <function name="closeConnection" module="SMPP">
+            <parameter>connection</parameter>
+        </function>
+
+        <function name="stopSMSCServer" module="SMS"/>
+
+</test>

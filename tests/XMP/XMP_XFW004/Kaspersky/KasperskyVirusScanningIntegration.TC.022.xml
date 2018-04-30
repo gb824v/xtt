@@ -1,0 +1,69 @@
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+KasperskyVirusScanningIntegration.TC.0022  - HTTP GET / Virus Check is enabled / Requested web page contains corrupted data (Kaspersky returns CORRUPTED error code) / XMP might block.
+
+Test Description:
+ 1. Radius Logon
+ 2. Send corrupted data in HTTP Get Proxy Request
+ 3. Check Response Code
+ 4. Radius Logoff
+ 
+Expected Result:
+ -  XMP should Block this request.
+
+XTT Commands:
+      startWebServer
+ 1. - Radius log-ON
+
+ 2.   - sendGetRequest 		"HTTP" "http://SYSTEM-IP/corrupted.exe"
+
+ 3.   - checkResponseCode	"HTTP" "200"
+
+ 4. - Radius log-OFF
+      stopWebServer
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- Test Start  -->
+<test>
+	<function name="testName" module="Basic">
+		<parameter>KasperskyVirusScanningIntegration.TC.022</parameter>
+	</function>
+	
+    <description>HTTP GET / Virus Check is enabled / Requested web page contains corrupted data (Kaspersky returns CORRUPTED error code) / XMP might block</description>
+
+	<function name="disableFollowRedirects" module="HTTP"/>
+
+	<!-- Start Web Server -->
+    <function name="startWebServer" module="HTTP"/>
+	<function name="setCacheFileBase64" module="HTTP">
+		<parameter>corrupted.exe</parameter>
+		<base64file>corrupted.exe</base64file>
+	</function>
+	
+	<!-- Radius Login -->
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+	    <parameter>12346</parameter>
+    </function>
+   	
+	<!-- Send corrupted data in HTTP Get Proxy Request -->
+    <function name="sendGetRequest" module="HTTP">
+        <parameter>
+        	<parameter>http://</parameter>
+        	<configuration>system/ip</configuration>
+        	<parameter>/corrupted.exe</parameter>
+        </parameter>
+    </function>
+    
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>    
+    
+    <!-- Radius Logoff -->
+     <function name="radiusLogoff" module="Radius">
+	    <parameter>xttuser</parameter>
+	    <parameter>12346</parameter>
+    </function>  
+	
+	<!-- Stop Web Server -->
+     <function name="stopWebServer" module="HTTP"/>
+
+</test>

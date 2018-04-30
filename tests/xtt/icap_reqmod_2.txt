@@ -1,0 +1,18 @@
+REQMOD icap://icap.xtt724.com/server?arg=87 ICAP/1.0
+Host: icap.xtt724.com
+Encapsulated: req-hdr=0, req-body=147
+
+POST /origin-resource/form.pl HTTP/1.1
+Host: www.origin-server.com
+Accept: text/html, text/plain
+Accept-Encoding: compress
+Pragma: no-cache
+
+1e
+I am posting this information.
+49
+It is absolutely necessary to obey the size restrictions of chunked data!
+2c
+If you do not obey it will crash the server!
+0
+

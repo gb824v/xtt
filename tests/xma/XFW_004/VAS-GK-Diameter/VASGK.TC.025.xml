@@ -1,0 +1,153 @@
+<test>
+
+	<name>VASGK.TC.025</name>
+
+	<description>Validate CE-Request (CER define all possible AVP)</description>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<configuration>remote/command</configuration>
+			<parameter>uname -n</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>(.*)</parameter>
+		<parameter>response</parameter>
+	</function>
+
+	<function name="queryText" module="Basic">
+		<variable>response</variable>
+		<parameter>hostname</parameter>
+		<parameter>\w++.</parameter>
+	</function>
+
+	<!-- Start SecureDiameter server -->
+	<function name="startSecureDiameterServer" module="Diameter">
+		<configuration>DIAMETERSERVER/SECUREPORT</configuration>
+		<xml>
+			<Diameter>
+				<response>
+					<DEVICE_WATCHDOG_REQUEST proxiable="true" error="false" tretr="false">
+						<RESULT_CODE        value="DIAMETER_SUCCESS"    mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<ORIGIN_REALM           value="ORIGIN_REALM"        mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+					</DEVICE_WATCHDOG_REQUEST>
+					<CAPABILITIES_EXCHANGE_REQUEST proxiable="true" error="false" tretr="false">
+						<RESULT_CODE            value="DIAMETER_SUCCESS"    mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<ORIGIN_REALM           value="ORIGIN_REALM"        mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<VENDOR_ID              request="VENDOR_ID" />
+						<PRODUCT_NAME           request="PRODUCT_NAME" />
+						<SUPPORTED_VENDOR_ID    request="SUPPORTED_VENDOR_ID" />
+						<AUTH_APPLICATION_ID    request="AUTH_APPLICATION_ID" />
+						<HOST_IP_ADDRESS        value="0001AC150503" mandatory="true" protected="false" vendorspecific="false"  vendorID="" />
+					</CAPABILITIES_EXCHANGE_REQUEST>
+					<CREDIT_CONTROL_REQUEST proxiable="true" error="false" tretr="false">
+						<SESSION_ID             request="SESSION_ID"/>
+						<RESULT_CODE            value="DIAMETER_SUCCESS"    mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<DESTINATION_REALM      value="DESTINATION_REALM" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<AUTH_APPLICATION_ID    value="4"                   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<SERVICE_CONTEXT_ID value="1" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<CC_REQUEST_TYPE        value="CC_REQUEST_TYPE"   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<CC_REQUEST_NUMBER      request="CC_REQUEST_NUMBER" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+					</CREDIT_CONTROL_REQUEST>
+				</response>
+			</Diameter>
+		</xml>
+		<parameter>120000</parameter>
+	</function>
+
+	<function name="setHeader" module="HTTP">
+		<parameter>Content-Type</parameter>
+		<parameter>text/xml; charset="utf-8"</parameter>
+	</function>
+
+	<!-- Create XML payload request for VASGK process -->
+	<function name="setTextPostData" module="HTTP">
+		<parameter>
+			<crlf>&lt;?xml version="1.0"?&gt;</crlf>
+			<crlf>&lt;vasgk-check&gt;</crlf>
+			<crlf>	&lt;request&gt;</crlf>
+			<crlf>		&lt;sender-address address-type="MSISDN"&gt;41794440001&lt;/sender-address&gt;</crlf>
+			<crlf>		&lt;recipient-address address-type="MSISDN"&gt;41794440002&lt;/recipient-address&gt;</crlf>
+			<crlf>		&lt;mobile-originating&gt;</crlf>
+			<crlf>			&lt;message-text&gt;sample message text&lt;/message-text&gt;</crlf>
+			<crlf>		&lt;/mobile-originating&gt;</crlf>
+			<crlf>	&lt;/request&gt;</crlf>
+			<crlf>&lt;/vasgk-check&gt;</crlf>
+		</parameter>
+	</function>
+
+	<!-- Send post request to VASGK -->
+	<function name="sendPostRequest" module="HTTP">
+		<parameter>
+			<parameter>http://</parameter>
+			<configuration>VASGK/Ip</configuration>
+			<parameter>:</parameter>
+			<configuration>VASGK/Port</configuration>
+			<parameter>/</parameter>
+		</parameter>
+	</function>
+
+	<!-- Wait for CER from Diameter Server after sending xml payload through VAS-GK -->
+	<function name="waitForSpecificRequests" module="Diameter">
+			<parameter>6868</parameter>
+			<parameter>CAPABILITIES_EXCHANGE_REQUEST</parameter>
+			<parameter>1</parameter>
+		</function>
+
+	<function name="compareString" module="Basic">
+		<variable>DIAMETER/AVP/ORIGIN_REALM</variable>
+		<parameter>originalRealm</parameter>
+	</function>
+
+	<function name="compareString" module="Basic">
+			<variable>DIAMETER/AVP/ORIGIN_HOST</variable>
+			<parameter>
+			<variable>hostname</variable>
+			<parameter>originalRealm</parameter>
+			</parameter>
+	</function>
+
+	<function name="compareString" module="Basic">
+		<variable>DIAMETER/AVP/AUTH_APPLICATION_ID</variable>
+		<parameter>4</parameter>
+	</function>
+
+	<function name="compareString" module="Basic">
+		<variable>DIAMETER/AVP/PRODUCT_NAME</variable>
+		<parameter>XMA</parameter>
+	</function>
+
+	<function name="compareString" module="Basic">
+		<variable>DIAMETER/AVP/VENDOR_ID</variable>
+		<parameter>12766</parameter>
+	</function>
+
+	<!-- Wait for CCR from Diameter Server after sending xml payload through VAS-GK -->
+	<function name="waitForSpecificRequests" module="Diameter">
+		<parameter>6868</parameter>
+		<parameter>CREDIT_CONTROL_REQUEST</parameter>
+		<parameter>1</parameter>
+	</function>
+
+	<!-- Check response of xml payload -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<!-- Check xml response of Diameter CCA which is converted by VAS-GK -->
+	<function name="queryText" module="Basic">
+		<base64decode><variable>HTTP/DEFAULT/BODY/BASE64</variable></base64decode>
+		<parameter>dev/null</parameter>
+		<parameter>
+			<parameter>&lt;result-code&gt;2001&lt;/result-code&gt;</parameter>
+		</parameter>
+	</function>
+
+	<!-- Stop SecureDiameter server -->
+	<function name="stopSecureDiameterServer" module="Diameter" />
+
+</test>

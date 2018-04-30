@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pccModifications xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <selector context="Internal_SubscriberAttributesClass == 'GOLD'" ruleName="MyRule">
+		<setParameter nodeId="port172" attributeName="exact" attributeValue="'8080'"/>
+    </selector>
+
+	<selector context="Internal_SubscriberAttributesClass == '1001ATC010'" ruleName="OptionalAVPRule">
+        <setParameter nodeId="port172" attributeName="exact" attributeValue="'8080'"/>
+        <remove nodeId="port10"/>
+    </selector>
+
+	<selector context="Internal_SubscriberAttributesClass == '1001ATC012' and [DIAMCTX_Request/Avps/@CC-Request-Type] == 'INITIAL_REQUEST'" ruleName="MercuryRule">
+        <setParameter nodeId="port172" attributeName="exact" attributeValue="'8080'"/>
+        <remove nodeId="port10"/>
+    </selector>
+
+	<selector context="Internal_SubscriberAttributesClass == '1001ATC012' and [DIAMCTX_Request/Avps/@CC-Request-Type] == 'UPDATE_REQUEST'" ruleName="MercuryRuleRemove">
+        <setParameter nodeId="port172" attributeName="exact" attributeValue="'8080'"/>
+        <remove nodeId="port10"/>
+    </selector>
+
+	<selector context="Internal_SubscriberAttributesClass == '1001ATC014'" ruleName="EarthRule">
+        <setParameter nodeId="port172" attributeName="exact" attributeValue="'8090'"/>
+        <remove nodeId="port10"/>
+		<remove nodeId="port20"/>
+    </selector>
+
+	<selector context="Internal_SubscriberAttributesClass == '1001ATC015' and [DIAMCTX_Request/Avps/@CC-Request-Type] == 'INITIAL_REQUEST'" ruleName="MarsRule">
+        <setParameter nodeId="port172" attributeName="exact" attributeValue="'8080'"/>
+        <remove nodeId="port10"/>
+    </selector>
+
+	<selector context="Internal_SubscriberAttributesClass == '1001ATC015' and [DIAMCTX_Request/Avps/@CC-Request-Type] == 'UPDATE_REQUEST'" ruleName="MarsRuleRemove">
+        <setParameter nodeId="port172" attributeName="exact" attributeValue="'8080'"/>
+        <remove nodeId="port10"/>
+    </selector>
+
+	<selector context="Internal_SubscriberAttributesClass == '1001ATC018' and [DIAMCTX_Request/Avps/@CC-Request-Type] == 'INITIAL_REQUEST'" ruleName="SaturnRule">
+        <setParameter nodeId="port172" attributeName="exact" attributeValue="'8080'"/>
+        <remove nodeId="port10"/>
+    </selector>
+
+	<selector context="Internal_SubscriberAttributesClass == '1001ATC018' and [DIAMCTX_Request/Avps/@CC-Request-Type] == 'UPDATE_REQUEST'" ruleName="SaturnRuleRemove">
+        <setParameter nodeId="port172" attributeName="exact" attributeValue="'8080'"/>
+        <remove nodeId="port10"/>
+    </selector>
+
+	<selector context="Internal_SubscriberAttributesClass == '1001ATC020'" ruleName="NeptuneRule">
+        <setParameter nodeId="port172" attributeName="exact" attributeValue="'8080'"/>
+        <remove nodeId="port10"/>
+    </selector>
+
+	<selector context="[DIAMCTX_Request/Avps/@Framed-IP-Address] == '%0a%04%3c4'"  ruleName="SunRule">
+        <setParameter nodeId="port172" attributeName="exact" attributeValue="'8080'"/>
+        <remove nodeId="port10"/>
+    </selector>
+
+	<selector context="[DIAMCTX_Request/Avps/@Framed-IP-Address] == '172.20.5.43'" ruleName="StarRule">
+        <setParameter nodeId="port172" attributeName="exact" attributeValue="'8080'"/>
+        <remove nodeId="port10"/>
+    </selector>
+
+   <selector ruleName="HisRule"/>
+</pccModifications>

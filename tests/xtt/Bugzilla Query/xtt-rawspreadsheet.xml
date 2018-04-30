@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+ <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
+  <LastAuthor>Gavin Cattell</LastAuthor>
+  <Created>2007-11-13T16:32:56Z</Created>
+  <Version>11.8132</Version>
+ </DocumentProperties>
+ <ExcelWorkbook xmlns="urn:schemas-microsoft-com:office:excel">
+  <WindowHeight>12270</WindowHeight>
+  <WindowWidth>21675</WindowWidth>
+  <WindowTopX>360</WindowTopX>
+  <WindowTopY>345</WindowTopY>
+  <ProtectStructure>False</ProtectStructure>
+  <ProtectWindows>False</ProtectWindows>
+ </ExcelWorkbook>
+ <Styles>
+  <Style ss:ID="Default" ss:Name="Normal">
+   <Alignment ss:Vertical="Bottom"/>
+   <Borders/>
+   <Font/>
+   <Interior/>
+   <NumberFormat/>
+   <Protection/>
+  </Style>
+  <Style ss:ID="s21">
+   <NumberFormat ss:Format="General Date"/>
+  </Style>
+ </Styles>
+ <Worksheet ss:Name="result">
+  <Table ss:ExpandedColumnCount="16" x:FullColumns="1" x:FullRows="1">
+   <Column ss:Width="48.75"/>
+   <Column ss:Index="3" ss:Width="81"/>
+   <Column ss:Index="7" ss:Width="48.75" ss:Span="2"/>
+  <Row>
+    <Cell><Data ss:Type="String">Bug Num</Data></Cell>
+    <Cell><Data ss:Type="String">Product</Data></Cell>
+    <Cell><Data ss:Type="String">Component</Data></Cell>
+    <Cell><Data ss:Type="String">Customer</Data></Cell>
+    <Cell><Data ss:Type="String">Status</Data></Cell>
+    <Cell><Data ss:Type="String">Creation Date</Data></Cell>
+    <Cell><Data ss:Type="String">Assigned Engineer</Data></Cell>
+    <Cell><Data ss:Type="String">Severity</Data></Cell>
+    <Cell><Data ss:Type="String">Summary</Data></Cell>
+    <Cell><Data ss:Type="String">Seconds to Temporary Fix</Data></Cell>
+    <Cell><Data ss:Type="String">Time to Temporary Fix</Data></Cell>
+    <Cell><Data ss:Type="String">Seconds to Permanent Fix</Data></Cell>
+    <Cell><Data ss:Type="String">Time to Permanent Fix</Data></Cell>
+    <Cell><Data ss:Type="String">Resolved Date</Data></Cell>
+    <Cell><Data ss:Type="String">Seconds to Resolved</Data></Cell>
+    <Cell><Data ss:Type="String">Time to Resolved</Data></Cell>
+  </Row>   
+  </Table>
+  <!--WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <TopRowVisible>0</TopRowVisible>
+   <Panes>
+    <Pane>
+     <Number>3</Number>
+     <ActiveRow>305</ActiveRow>
+     <ActiveCol>5</ActiveCol>
+    </Pane>
+   </Panes>
+   <ProtectObjects>False</ProtectObjects>
+   <ProtectScenarios>False</ProtectScenarios>
+  </WorksheetOptions-->
+ </Worksheet>
+</Workbook>
+

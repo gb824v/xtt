@@ -1,0 +1,37 @@
+<Configuration>
+    <XSAM>
+        <!--
+        <Ip>172.20.9.69</Ip>
+        <Port>4100</Port>
+        -->
+        <Ip>172.16.64.6</Ip>
+        <Port>5024</Port>
+        <Shortcode>7777</Shortcode>
+        <ShortcodeNW>1411</ShortcodeNW>
+        <UnknownShortcode>1491</UnknownShortcode>
+        <ShortcodePrefix>140</ShortcodePrefix>
+        <ShortcodePrefixNW>141</ShortcodePrefixNW>
+        <ShortcodePrefixU>149</ShortcodePrefixU>
+        <InternalSMSC/>
+        <!--SMPP changes-->
+        <SMPPPort>2121</SMPPPort>
+        <SMPPPort1>2323</SMPPPort1>
+        <SMPPShortcode>2211</SMPPShortcode>
+		<SMPPShortcode1>2210</SMPPShortcode1>
+		<UnknownSMPPShortcode>1491</UnknownSMPPShortcode>
+		<ProvisioningURL>http://172.16.64.6:8080/proxy/provisioning</ProvisioningURL>	
+    </XSAM>
+    <SMSCServer>
+        <BackupPort>8888</BackupPort>
+        <UCPMaxSessions>128</UCPMaxSessions>
+        <UCPWindowSize>5</UCPWindowSize>
+        <UCPSessionTimeout>300000</UCPSessionTimeout>
+        <!--SMPP changes-->
+        <SMPPPort>9999</SMPPPort>
+        <SMPPBackupPort>10999</SMPPBackupPort>
+		<MAXREQUESTCOUNT>5</MAXREQUESTCOUNT>
+		<MSISDN>+919967700081</MSISDN>
+		<MSISDN1>+919967700082</MSISDN1>
+		<MSISDN2>+919967700083</MSISDN2>
+    </SMSCServer>
+</Configuration>

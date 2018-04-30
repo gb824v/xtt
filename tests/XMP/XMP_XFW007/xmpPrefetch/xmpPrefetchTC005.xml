@@ -1,0 +1,130 @@
+<test>	    
+	<name>XMP.PREFETCH.TC.005</name>
+    <description>Prefetch max file size</description>
+
+	<subtest>deleteCacheAll.xml</subtest>
+    <subtest>loadReqmod.xml</subtest>
+
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+	<function name="startWebServer" module="HTTP"/>
+	<function name="setServerHeader" module="HTTP">
+		<parameter>Last-Modified</parameter>
+		<parameter>Wed, 15 Nov 1995 04:58:08 GMT</parameter>
+	</function>	
+
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>prefetchTC005_img_in_cache.bmp</parameter>
+		<base64File>bmp.bmp</base64File>
+    </function>
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>prefetchTC005_img_not_in_cache.bmp</parameter>
+		<base64File>bmp-big.bmp</base64File>
+    </function>
+    <function name="setCacheFile" module="HTTP">
+		<parameter>prefetchTC005.html</parameter>
+        <parameter>
+<parameter>&lt;html&gt;
+&lt;body&gt;
+&lt;pre&gt;This is the initial file FILLTO64CHARACTERSXXXXXXXXXXXXXXXXXXXXX&lt;/pre&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/prefetchTC005_img_in_cache.bmp"/&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/prefetchTC005_img_not_in_cache.bmp"/&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</parameter>
+        </parameter>
+    </function>
+
+	<function name="sendGetRequest" module="HTTP">
+        <parameter>
+    		<parameter>http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/prefetchTC005.html</parameter>
+        </parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>	
+	<function name="waitForRequests" module="HTTP">
+		<parameter>3</parameter>
+	</function>	
+
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>This is the initial file FILLTO64CHARACTERSXXXXXXXXXXXXXXXXXXXXX</parameter>
+    </function>
+
+    <function name="setCacheFile" module="HTTP">
+		<parameter>prefetchTC005.html</parameter>
+<xml><html>
+<body>
+This is the file that should not be retrieved AGAINDOTHEFILLXXXX
+</body>
+</html>
+</xml>
+    </function>
+
+	<function name="sendGetRequest" module="HTTP">
+        <parameter>
+    		<parameter>http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/prefetchTC005.html</parameter>
+        </parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>	
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>This is the initial file FILLTO64CHARACTERSXXXXXXXXXXXXXXXXXXXXX</parameter>
+    </function>
+    <function name="queryBodyNegative" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>This is the file that should not be retrieved AGAINDOTHEFILLXXXX</parameter>
+    </function>
+    	<function name="waitForTimeoutRequests" module="HTTP">
+    		<parameter>2000</parameter>
+    		<parameter>3</parameter>
+    	</function>	
+	<function name="sendGetRequest" module="HTTP">
+        <parameter>
+    		<parameter>http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/prefetchTC005_img_in_cache.bmp</parameter>
+        </parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>	
+    	<function name="waitForTimeoutRequests" module="HTTP">
+    		<parameter>2000</parameter>
+    		<parameter>3</parameter>
+    	</function>	
+	<function name="sendGetRequest" module="HTTP">
+        <parameter>
+    		<parameter>http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/prefetchTC005_img_not_in_cache.bmp</parameter>
+        </parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>	
+    	<function name="waitForRequests" module="HTTP">
+    		<parameter>3</parameter>
+    	</function>	
+
+    <subtest>unloadReqmod.xml</subtest>
+
+	<function name="stopWebServer" module="HTTP"/>
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function> 
+</test>

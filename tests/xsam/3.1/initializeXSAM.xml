@@ -1,0 +1,23 @@
+<test>
+    <name>XSAM.INITIALIZE</name>
+    <description>Load all needed configuration files into XSAM</description>
+
+    <div nocomment="Load the valrules.jar File">
+        <subtest>loadValrules.xml</subtest>
+    </div>
+    <div nocomment="Load the SMSC configuration file">
+        <subtest>loadSMSC.xml</subtest>
+    </div>
+    <div nocomment="Load the MMSC to the database">
+        <subtest>loadMMSC.xml</subtest>
+    </div>
+    <div nocomment="Change retry time delays to 1 minute in database">
+        <subtest>setRetryTimes.xml</subtest>
+    </div>
+    <div nocomment="Add the service groups and services to the database">
+        <subtest>addService.xml</subtest>
+    </div>
+    <div nocomment="Stop all billing processes and then start the first Process (default for tests)">
+        <subtest>startFirstProcess.xml</subtest>
+    </div>
+</test>

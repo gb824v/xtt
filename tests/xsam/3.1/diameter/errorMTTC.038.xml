@@ -1,0 +1,128 @@
+<test>
+    <name>MBSPPB_ErrorScenarios_MT_TC.038</name>
+    <configuration>../configXSAM.xml</configuration>
+
+    <description>[TPI->SMS - IscpDirectDebitFailureHandling = CONTINUE - ISCP communication channels fail ] processing continues / Charge Field of CDR is set to NIL </description>
+
+<!-- 
+
+Settings / Services
+____________________
+
+ServiceName      ServiceGroup    Template   IscpDirectDebitFailureHandling  IscpInterrogate
+___________________________________________________________________________________________________
+         
+XTT3-600          4003            SMSSubmit    1 = CONTINUE                 9 = always interrogate
+
+
+
+Testscenario
+____________
+
+ISCP (XTT)                          MBS                           TP                     SMSC
+
+   |                                 |                             |                       |
+   | CAPABILITIES_EXCHANGE_REQUEST   |                             |                       |
+   | - - - - - - - - - - - - - - >   |                             |                       |
+   | < - - - - - - - - - - - - - -   |                             |                       |
+   |                                 |           sendSMS           |                       | 
+   |                                 |  < - - - - - - - - - - -    |                       |
+   |                                 |                             |                       |                         
+ communication                       |                             |                       |
+ channels fail                       |                             |                       |
+   |                                 |                             |                       |                         
+   |                                 |                             |                       |
+-->
+
+    <function name="startSMSCServer" module="SMS"/>
+    
+    <function name="setVariable" module="Basic">
+        <parameter>MSISDN</parameter>
+        <parameter>41790000000</parameter>
+    </function>
+
+    <function name="setVariable" module="Basic">
+        <parameter>SKIP_SMSC</parameter>
+        <parameter>true</parameter>
+    </function>
+
+    <function name="setVariable" module="Basic">
+        <parameter>SKIP_DIAMETER</parameter>
+        <parameter>true</parameter>
+    </function>
+
+    <function name="setVariable" module="Basic">
+        <parameter>ISCP_DIRECT_DEBIT_FAILURE_HANDLING</parameter>
+        <parameter>1</parameter>
+    </function>
+
+    <function name="restartProcess" module="Remote">
+        <parameter>LOGGER</parameter>
+    </function>
+
+    <function name="setVariable" module="Basic">
+        <parameter>SERVICE-SHORTID</parameter>
+        <parameter>
+            <configuration>xsam/serviceGroupPrefix</configuration>
+            <configuration>xsam/serviceGroupNoSMSDDFH</configuration>
+         </parameter>
+    </function>
+    
+    <function name="setVariable" module="Basic">
+        <parameter>SERVICE-NAME</parameter>
+        <parameter>
+            <parameter>XTT</parameter><configuration>xsam/serviceGroupNoSMSDDFH</configuration><parameter>-</parameter><configuration>xsam/serviceNoSMSDDFH</configuration><variable>ISCP_DIRECT_DEBIT_FAILURE_HANDLING</variable><parameter></parameter>
+        </parameter>
+    </function>
+        
+    <function name="setVariable" module="Basic">
+        <parameter>AMOUNT</parameter>
+        <parameter>11.734</parameter>
+    </function>
+
+    <function name="startDiameterServer" module="Diameter"/>  
+    
+    <function name="waitForSpecificRequests" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT</configuration>
+        <parameter>CAPABILITIES_EXCHANGE_REQUEST</parameter>
+        <parameter>1</parameter>
+    </function>
+
+    <function name="stopDiameterServer" module="Diameter"/>
+
+    <thread>
+        <function name="sleep" module="Basic">
+             <configuration>DIAMETERSERVER/TIMEOUT</configuration>
+        </function>
+    </thread>
+
+    <!-- SMS from TP -->
+    <subtest>sendSMS-errorMTTC.xml</subtest>
+
+    <function name="waitForMessages" module="SMS">
+       <parameter>1</parameter>
+    </function> 
+
+    <function name="checkResponseCode" module="VASP">
+        <parameter>200</parameter>
+    </function>
+    
+    <function name="queryBody" module="VASP">
+        <parameter>tpiResponseCode</parameter>
+        <parameter>&lt;state&gt;(1000)&lt;/state&gt;\s+&lt;state-text&gt;</parameter><!--Ok&lt;/state-text&gt;-->
+    </function>
+
+    <function name="stopSMSCServer" module="SMS"/>
+
+    <subtest>../logscan.xml</subtest>
+
+    <function name="queryresponse" module="Remote">
+        <parameter>
+             <parameter>(\d+;</parameter>
+             <parameter>41790000000</parameter>
+             <parameter>;NIL;NIL;NIL;NIL;NIL;NIL;NIL;NIL;NIL;NIL;True;U)</parameter>
+        </parameter>
+    	<parameter>dev/null</parameter>
+    </function>
+
+</test>

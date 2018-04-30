@@ -1,0 +1,85 @@
+<test>
+    <configuration>xsam_config.xml</configuration>
+    <function name="testName" module="Basic">
+        <parameter>TC_1.3.3</parameter>
+    </function>
+    <description>Add white list  (When white list IP is null or empty string)</description> 
+
+   <!-- Add CP With Short Code "1972"-->
+
+	 <function name="SOAPClient" module="SOAP_API" >
+		<configuration>XSAM/PROVISIONINGURL</configuration>
+		<xml><soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsdl="http://www.724solutions.com/wsdl">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <wsdl:addContentProvider soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+         <String_1 xsi:type="xsd:string">1972</String_1>
+		 <String_2 xsi:type="xsd:string">Manoj</String_2>
+      </wsdl:addContentProvider>
+   </soapenv:Body>
+</soapenv:Envelope></xml>
+		<parameter>Body/return</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function> 
+
+
+	<!--Add Whitelist-->
+	<function name="SOAPClient" module="SOAP_API" >
+		<configuration>XSAM/PROVISIONINGURL</configuration>
+		<xml><soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsdl="http://www.724solutions.com/wsdl">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <wsdl:addWhitelistForContentProvider soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+         <String_1 xsi:type="xsd:string">1972</String_1>
+         <String_2 xsi:type="xsd:string"></String_2>
+      </wsdl:addWhitelistForContentProvider>
+   </soapenv:Body>
+</soapenv:Envelope></xml>
+		<parameter>Body/return</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>500</parameter>
+	</function>
+
+	<function name="info" module="BASIC">
+		 <variable>SOAP_API/BODY/PLAIN</variable>
+	</function>
+	
+	<function name="queryText" module="BASIC">
+		<variable>SOAP_API/BODY/PLAIN</variable>
+		<parameter>dev/null</parameter>
+		<parameter>&lt;errorCode.*&gt;105&lt;/errorCode&gt;</parameter>
+	</function>
+	
+	<function name="queryText" module="BASIC">
+		<variable>SOAP_API/BODY/PLAIN</variable>
+		<parameter>dev/null</parameter>
+		<parameter>&lt;message.*&gt;Invalid white list IP address&lt;/message&gt;</parameter>
+	</function>
+
+
+	<!--Delete CP "Manoj"-->
+
+  <function name="SOAPClient" module="SOAP_API" >
+		<configuration>XSAM/PROVISIONINGURL</configuration>
+		<xml><soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsdl="http://www.724solutions.com/wsdl">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <wsdl:deleteContentProvider soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+         <String_1 xsi:type="xsd:string">1972</String_1>
+	  </wsdl:deleteContentProvider>
+   </soapenv:Body>
+</soapenv:Envelope></xml>
+		<parameter>Body/return</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+ 
+
+</test>

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dbupdates> 
+
+<!-- XSN.DBLoad.CommAdmAdd.TC006.1	Add a Administrator to a community. With Audit and Notification flag On. -->
+<subscribers>
+	<remove subscriber="1234567" />
+	<add subscriber="1234567" > 
+	</add> 
+</subscribers>
+<communities>
+	<remove name="Fruits/Citrus/Orange" />
+	<add name="Fruits/Citrus/Orange" />
+</communities>
+<communityAdmins>
+	<remove community="Fruits/Citrus/Orange" subscriber="1234567" />
+	<add community="Fruits/Citrus/Orange"
+	name="Jane"
+	subscriber="1234567"
+	wantAudit="Yes"
+	wantNotifications="Yes" />
+</communityAdmins>
+
+<!-- XSN.DBLoad.CommAdmAdd.TC006.2	Add Different Admins for different Levels of Community -->
+<subscribers>
+	<remove subscriber="1234567" />
+	<remove subscriber="1234568" />
+	<add subscriber="1234567" > </add>
+	<add subscriber="1234568" > </add>
+ </subscribers>
+<communities>
+	<remove name="Fruits/Citrus/Orange" />
+	<remove name="Fruits/Citrus/Lemon" />
+	<add name="Fruits/Citrus/Orange" />
+	<add name="Fruits/Citrus/Lemon" />
+</communities>
+<communityAdmins>
+	<remove community="Fruits/Citrus/Lemon" subscriber="1234567" />
+	<remove community="Fruits/Citrus/Orange" subscriber="1234568" />
+	<add community="Fruits/Citrus/Lemon"
+	name="Joan"
+	subscriber="1234567"
+	wantAudit="Yes"
+	wantNotifications="Yes" />
+<add community="Fruits/Citrus/Orange"
+	name="John"
+	subscriber="1234568" />
+</communityAdmins>
+
+<!-- XSN.DBLoad.CommAdmAdd.TC006.3	Try to Add Admin for a non existing Community. Should give stop msg. -->
+<subscribers>
+	<remove subscriber="1234569" /> 
+	<add subscriber="1234569" > 
+	</add> 
+</subscribers>
+<communities>
+	<remove name="NotPresent" />
+</communities>
+<communityAdmins>
+	<add community="NotPresent" subscriber="1234569" />
+</communityAdmins>
+
+
+<!-- XSN.DBLoad.CommAdmAdd.TC006.4	Add Admin with different Name from his firstName and lastName -->
+<subscribers>
+	<remove subscriber="1234570" />
+	<add subscriber="1234570" >
+	<firstName value="Rose" />
+	<lastName value="Thorn" /> 
+	</add>
+</subscribers> 
+<communities>
+	<remove name="Fruits/Citrus/Orange" />
+	<add name="Fruits/Citrus/Orange" />
+</communities>
+<communityAdmins>
+	<remove community="Fruits/Citrus/Orange" subscriber="1234570" />
+	<add community="Fruits/Citrus/Orange"
+	name="Rock Rose"
+	subscriber="1234570" />
+</communityAdmins>
+
+
+<!-- XSN.DBLoad.CommAdmAdd.TC006.6	Add a non existing Sub ID as Admin of a community -->
+
+<subscribers>
+	<remove subscriber="Not_PresentSubId" /> 
+</subscribers>
+
+<communities>
+	<remove name="Fruits" />
+	<add name="Fruits" />
+</communities>
+<communityAdmins>
+	<add community="Fruits"
+	name="Jordon"
+	subscriber="Not_PresentSubId" />
+</communityAdmins>
+
+
+<!-- XSN.DBLoad.CommAdmAdd.TC006.8	Uniqueness of CommunityAdmin across Community Hierarchy. Each hierarchy can have same admin -->
+
+<subscribers> 
+	<add subscriber="1234572" > </add> 
+</subscribers>
+<communities>
+	<remove name="Animals" />
+	<remove name="Animals/Wild" />
+	<add name="Animals" />
+	<add name="Animals/Wild" />
+</communities>
+<communityAdmins>
+	<remove community="Animals"
+		subscriber="1234572" />
+	<remove community="Animals/Wild"
+		subscriber="1234572" />
+	<add community="Animals" subscriber="1234572" />
+	<add community="Animals/Wild" subscriber="1234572" /> 
+</communityAdmins>
+
+<!-- XSN.DBLoad.CommAdmAdd.TC006.9	Add Admin. Sub Id should be unique for 1 community. -->
+<subscribers>
+	<remove subscriber="1234573" />
+	<add subscriber="1234573" > </add> 
+</subscribers>
+<communities>
+	<remove name="Animals/Farm" />
+	<add name="Animals/Farm" />
+</communities>
+<communityAdmins>
+	<remove community="Animals/Farm" subscriber="1234573" />
+	<remove community="Animals/Farm" subscriber="1234573" />
+	<add community="Animals/Farm" subscriber="1234573" />
+	<add community="Animals/Farm" subscriber="1234573" />
+</communityAdmins>
+
+<!-- XSN.DBLoad.CommAdmAdd.TC006.10	"Add Admin at Parent level. Have different Audit and Notification flag at various level. -->
+
+<communities>
+	<remove name="Flower/Wild" />
+	<remove name="Flower" />
+	<add name="Flower/Wild" />
+	<add name="Flower" />
+</communities>
+<communityAdmins>
+	<remove community="Flower" subscriber="1234573" />
+	<add community="Flower"
+	name="Jane"
+	subscriber="1234573"
+	wantAudit="Yes"
+	wantNotifications="No" />
+
+<remove community="Flower/Wild" subscriber="1234573" />
+<add community="Flower/Wild"
+	name="Jane"
+	subscriber="1234573"
+	wantAudit="No"
+	wantNotifications="Yes" />
+</communityAdmins>
+
+</dbupdates>

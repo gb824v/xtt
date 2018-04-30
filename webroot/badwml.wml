@@ -1,0 +1,93 @@
+
+<?xml version="1.0"?>
+<!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.1//EN"
+                     "http://www.wapforum.org/DTD/wml_1.1.xml">
+<wml>
+ <card id="main" title="Free Wallpaper">
+
+<p align="center">
+Download free!!<br/>
+For  Motorola C350,C359,T720,E365<br/>
+(1-31 July 2003)<br/></p>
+<p>
+<b>Select Wallpaper</b><br/>
+
+            <img src="http://mobile.shinee.com/wallpaper_color/imgwap/wall1_W12.gif" alt=""/><br/>
+            <anchor>download
+            <go method="post"  href="http://wap.2shinee.com/wallpaper_color/freewall/freedownload.asp">
+            <postfield name="ivrnumber" value="20012"/>
+            <postfield name="size" value=""/>
+            <postfield name="agent" value="Mozilla"/>
+            </go>
+
+
+
+            <img src="http://mobile.shinee.com/wallpaper_color/imgwap/wall1_W13.gif" alt=""/><br/>
+            <anchor>download
+            <go method="post"  href="http://wap.2shinee.com/wallpaper_color/freewall/freedownload.asp">
+            <postfield name="ivrnumber" value="20013"/>
+            <postfield name="size" value=""/>
+            <postfield name="agent" value="Mozilla"/>
+            </go>
+
+
+
+            <img src="http://mobile.shinee.com/wallpaper_color/imgwap/wall1_W15.gif" alt=""/><br/>
+            <anchor>download
+            <go method="post"  href="http://wap.2shinee.com/wallpaper_color/freewall/freedownload.asp">
+            <postfield name="ivrnumber" value="20015"/>
+            <postfield name="size" value=""/>
+            <postfield name="agent" value="Mozilla"/>
+            </go>
+
+
+
+            <img src="http://mobile.shinee.com/wallpaper_color/imgwap/wall1_W27.gif" alt=""/><br/>
+            <anchor>download
+            <go method="post"  href="http://wap.2shinee.com/wallpaper_color/freewall/freedownload.asp">
+            <postfield name="ivrnumber" value="20027"/>
+            <postfield name="size" value=""/>
+            <postfield name="agent" value="Mozilla"/>
+            </go>
+
+
+
+            <img src="http://mobile.shinee.com/wallpaper_color/imgwap/wall1_W29.gif" alt=""/><br/>
+            <anchor>download
+            <go method="post"  href="http://wap.2shinee.com/wallpaper_color/freewall/freedownload.asp">
+            <postfield name="ivrnumber" value="20029"/>
+            <postfield name="size" value=""/>
+            <postfield name="agent" value="Mozilla"/>
+            </go>
+
+
+            <br/>
+    1&nbsp;
+
+        <anchor>2&nbsp;
+        <go method="post"  href="http://wap.2shinee.com/wallpaper_color/freewall/index.asp">
+        <postfield name="cpage" value="2"/>
+        </go>
+        </anchor>
+
+
+        <anchor>3&nbsp;
+        <go method="post"  href="http://wap.2shinee.com/wallpaper_color/freewall/index.asp">
+        <postfield name="cpage" value="3"/>
+        </go>
+        </anchor>
+
+
+        <anchor>4&nbsp;
+        <go method="post"  href="http://wap.2shinee.com/wallpaper_color/freewall/index.asp">
+        <postfield name="cpage" value="4"/>
+        </go>
+        </anchor>
+
+
+</p>
+<p>
+<a href="http://wap.2shinee.com/default.asp">[Home]</a>
+</p>
+</card>
+</wml>

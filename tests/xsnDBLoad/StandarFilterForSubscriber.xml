@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<dbupdates> 
+<!-- Filters -->
+<!--  XSN.DBLoad.Filter.TC009.0 (Prerequisite data xml)"	Set custom Filter to a Community -->
+<!-- Prerequisite for xsn filters tag -->
+<subscribers> 
+	<add subscriber="1234577" > </add>  
+	<add subscriber="1234578" > </add> 
+	<add subscriber="1234579" > </add> 
+	<add subscriber="1234580" > </add> 
+</subscribers>
+
+<communities> 
+	<add name="FamilyOne/Parents/Children" /> 
+	<add name="FamilyOne/Parents" /> 
+	<add name="FamilyOne" /> 
+</communities>
+
+<communityAdmins>
+	<add community="FamilyOne" subscriber="1234577" /> 
+</communityAdmins>
+
+<communityMembers> 
+	<add community="FamilyOne/Parents" subscriber="1234578" /> 
+	<add community="FamilyOne/Parents" subscriber="1234579" /> 
+	<add community="FamilyOne/Parents/Children" subscriber="1234580" /> 
+</communityMembers>
+
+
+	<!-- 	Scheme:standardFilters to a Subscriber	-->
+	<!-- Categories Tag	-->
+<!-- XSN.DBLoad.FilterSubrStdFilCat.TC0014.1	Set standardFilters to Subscribers to block existing categories in standardFilters	-->
+
+<xsnFilters>
+	<set subscriber="1234581" scheme="standardFilters" >
+	<categories>
+		<block category="Drugs" />
+	</categories>
+	</set>
+	<set subscriber="1234582" scheme="standardFilters" >
+	<categories>
+		<block category="Gambling" />
+	</categories>
+	</set>
+	<set subscriber="1234583" scheme="standardFilters" >
+	<categories>
+		<block category="SexuallyExplicit" />
+	</categories>
+	</set>
+</xsnFilters>
+
+<!-- XSN.DBLoad.FilterSubrStdFilCat.TC0014.2	Set standardFilters to a Subscriber to block non exisiting categories	-->
+
+<xsnFilters>
+	<set subscriber="1234581"
+		scheme="standardFilters" >
+		<categories>
+			<block category="XYZ" />
+		</categories>
+	</set>
+</xsnFilters>
+
+
+<!-- XSN.DBLoad.FilterSubrStdFilCat.TC0014.3	Unblock category to a Subscriber	-->
+
+<xsnFilters>
+	<set subscriber="1234581" scheme="standardFilters" >
+	</set>
+</xsnFilters>
+
+<!-- XSN.DBLoad.FilterSubrStdFilCat.TC0014.4	Set standardFilters - internetFilters to a Subscriber to block url patterns.	-->
+
+<xsnFilters>
+	<set subscriber="1234582" scheme="standardFilters" >
+	<internetFilters> <block urlPattern="garfield.com" />
+	</internetFilters>
+	</set>
+	<set subscriber="1234583" scheme="standardFilters" >
+	<internetFilters> <block urlPattern="comic.*" />
+	</internetFilters>
+	</set>
+</xsnFilters>
+
+<!-- XSN.DBLoad.FilterSubrStdFilCat.TC0014.5	Set standardFilters - internetFilters to a Subscriber for exceptions to block url patterns.	-->
+
+<xsnFilters>
+	<set subscriber="1234582" scheme="standardFilters" >
+	<internetFilters>
+		<exception urlPattern="easyshop.com/" />
+	</internetFilters>
+	</set>
+	<set subscriber="1234583" scheme="standardFilters" >
+	<internetFilters>
+		<exception urlPattern="mail.gmail.com" />
+	</internetFilters>
+	</set>
+</xsnFilters>
+
+	<!-- mms filter	-->
+<!-- XSN.DBLoad.FilterSubrStdFilMms.TC0014.6	Set standardFilters - mmsFilters to a Subscriber to block url patterns, with wild card character.	-->
+
+<xsnFilters>
+	<set subscriber="1234582" scheme="standardFilters" >
+	<mmsFilters>
+		<block shortcodePattern="956*" />
+	</mmsFilters>
+	</set>
+	<set subscriber="1234583" scheme="standardFilters" >
+	<mmsFilters>
+		<block shortcodePattern="388*" />
+	</mmsFilters>
+	</set>
+</xsnFilters>
+
+<!-- XSN.DBLoad.FilterSubrStdFilMms.TC0014.7	Uniqueness check is not present	-->
+
+<xsnFilters>
+	<set subscriber="1234582" scheme="standardFilters" >
+	<mmsFilters>
+		<block shortcodePattern="6516*" />
+		<block shortcodePattern="6516*" />
+	</mmsFilters>
+	</set>
+</xsnFilters>
+
+<!-- XSN.DBLoad.FilterSubrStdFilMms.TC0014.8	Set standardFilters - mmsFilters to a Subscriber for exceptions to block keyword or shortcode patterns 	-->
+
+<xsnFilters>
+	<set subscriber="1234582" scheme="standardFilters" >
+	<mmsFilters>
+		<exception shortcodePattern="*" keywords="help" />
+	</mmsFilters>
+	</set>
+	<set subscriber="1234583" scheme="standardFilters" >
+	<mmsFilters>
+		<exception shortcodePattern="*" keywords="help" />
+	</mmsFilters>
+	</set>
+</xsnFilters>
+
+	<!-- sms  filter	-->
+<!-- XSN.DBLoad.FilterSubrStdFilSms.TC0014.9	Set standardFilters - smsFilters to a Subscriber to block keyword or shortcode  patterns.	--> 
+
+<xsnFilters>
+	<set subscriber="1234582" scheme="standardFilters" >
+	<smsFilters>
+		<block shortcodePattern="3756*" keywords="lingerie" />
+		<block shortcodePattern="3935" />
+	</smsFilters>
+	</set>
+	<set subscriber="1234583" scheme="standardFilters" >
+	<smsFilters>
+		<block shortcodePattern="3477*" keywords="baby d*" />
+		<block shortcodePattern="7894" />
+	</smsFilters>
+	</set>
+</xsnFilters>
+
+<!-- XSN.DBLoad.FilterSubrStdFilSms.TC0014.10	Set standardFilters - smsFilters to a Subscriber for exceptions to block keyword or shortcode  patterns.	--> 
+
+<xsnFilters>
+	<set subscriber="1234582" scheme="standardFilters" >
+	<smsFilters>
+		<exception shortcodePattern="7878" keywords="football*" />
+	</smsFilters>
+	</set>
+	<set subscriber="1234583" scheme="standardFilters" >
+	<smsFilters>
+		<exception shortcodePattern="7894" keywords="fifa*" />
+	</smsFilters>
+	</set>
+</xsnFilters>
+
+<!-- XSN.DBLoad.FilterSubrStdFilSms.TC0014.11	Uniqueness check is not present	-->
+
+<xsnFilters>
+	<set subscriber="1234582" scheme="standardFilters" >
+	<smsFilters>
+		<block shortcodePattern="4786*" />
+		<block shortcodePattern="47866*" />
+	</smsFilters>
+	</set>
+</xsnFilters>
+
+
+</dbupdates>

@@ -1,0 +1,73 @@
+<test>
+    <name>MBSPPB.Error.MO.TC.011</name>
+    <configuration>../configXSAM.xml</configuration>
+
+    <description>[SMS->TPI] TP is unreachable / Successful DIRECT-DEBIT invocation towards ISCP</description>
+
+    <function name="setVariable" module="Basic">
+        <parameter>MSISDN</parameter>
+        <parameter>41790000005</parameter>
+    </function>
+    <function name="startSMSCServer" module="SMS">
+        <configuration>SMSCSERVER/PORT</configuration>
+        <parameter>UCP</parameter>
+    </function>
+    <function name="startDiameterServer" module="Diameter"/>
+    <subtest>../sisSTART.xml</subtest>
+
+    <function name="waitForSpecificRequests" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT</configuration>
+        <parameter>CAPABILITIES_EXCHANGE_REQUEST</parameter>
+        <parameter>1</parameter>
+    </function>
+
+    <function name="waitForBind" module="SMS">
+        <parameter>
+            <configuration>XSAM/SERVICEGROUPPREFIX</configuration>
+            <configuration>XSAM/SERVICEGROUPNOSMSMO</configuration>
+        </parameter>
+    </function>
+
+    <function name="getConnection" module="UCP">
+        <parameter>connection</parameter>
+        <parameter>
+            <configuration>XSAM/SERVICEGROUPPREFIX</configuration>
+            <configuration>XSAM/SERVICEGROUPNOSMSMO</configuration>
+        </parameter>
+    </function>
+    <function name="sendSMSCUCPPackets" module="UCP">
+        <parameter>connection</parameter>
+        <parameter>internal</parameter>
+        <parameter>O</parameter>
+        <parameter>52</parameter>
+        <parameter>
+            <parameter>/</parameter>
+            <configuration>XSAM/SERVICEGROUPPREFIX</configuration>
+            <configuration>XSAM/SERVICEGROUPNOSMSMO</configuration>
+            <parameter>/</parameter>
+            <variable>MSISDN</variable>
+            <parameter>/////////1/</parameter>
+            <parameter>///////3//</parameter>
+            <bytestringencode>SMS failed message</bytestringencode>
+            <parameter>/////////////</parameter>
+        </parameter>
+    </function>
+
+
+    <function name="waitForSISCalls" module="SIS">
+        <parameter>1</parameter>
+    </function>
+    <function name="waitForSpecificRequests" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT</configuration>
+        <parameter>CREDIT_CONTROL_REQUEST</parameter>
+        <parameter>1</parameter>
+    </function>
+    <function name="waitForMessages" module="SMS">
+        <parameter>1</parameter>
+    </function>
+
+    <function name="waitOnThreads" module="Basic"/>
+    <subtest>../sisSTOP.xml</subtest>
+    <function name="stopSMSCServer" module="SMS"/>
+    <function name="stopDiameterServer" module="Diameter"/>
+</test>

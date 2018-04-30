@@ -1,0 +1,62 @@
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+PSEWebServiceAPI.TC003  - Retrieve PSE Entry for a given valid user name (MSISDN) when there is no active session.
+
+Test Description:
+ 1. Radius Logon
+ 2. Send SOAP Request
+ 3. Check Response 
+ 4. Radius Logoff
+ 
+Expected Result:
+ -  XMP should hadle the SOAP request and with proper response .
+
+XTT Commands:
+
+1.  - radiusLogon
+2.  - radiusLogoff 
+3.  - SOAP Request - Using getByName method send request to XMP/PORT {configure in XTT config.xml}
+4.  - checkResponseCode
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+        <!-- Test Start  -->
+
+<test>
+    <name>PSEWebServiceAPI.TC003.xml</name>
+    <description>Retrieve PSE Entry for a given valid user name (MSISDN) when there is no active session</description>
+
+    <function name="testName" module="Basic">
+        <parameter>PSEWebServiceAPI.TC003</parameter>
+    </function>
+
+    <function name="radiusLogon" module="Radius">
+        <parameter>xttuser</parameter>
+        <parameter>12345678</parameter>
+        <parameter>172.20.5.45</parameter>
+    </function>
+
+    <function name="radiusLogoff" module="Radius">
+        <parameter>xttuser</parameter>
+        <parameter>12345678</parameter>
+        <parameter>172.20.5.45</parameter>
+    </function>
+
+    <!--  using getByName method send request to XMP -->
+
+    <function name="SOAPClient" module="SOAP_API">
+        <parameter>
+            <parameter>http://</parameter>
+            <configuration>XMP/IP</configuration>
+            <parameter>:</parameter>
+            <configuration>XMP/PORT</configuration>
+            <parameter>/jaxws-presenceservice/presenceservice</parameter>
+        </parameter>
+        <file>getByName003.xml</file>
+        <parameter>Body/return</parameter>
+    </function>
+
+    <function name="checkResponseCode" module="SOAP_API">
+        <parameter>200</parameter>
+    </function>
+
+</test>

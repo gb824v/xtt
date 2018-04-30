@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<dbupdates> 
+<subscribers>
+
+	<remove subscriber="253456115" />
+
+	<add subscriber="253456115"> <born value="1995-01-31"/></add>
+	<!-- XSN.DBLoad.SubrMod.TC002.16	Modify without using mandatory attribute -->
+	<modify > <born value="2006-13-01"/></modify>  
+
+
+
+</subscribers>
+</dbupdates>
+

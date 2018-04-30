@@ -1,0 +1,73 @@
+<test>
+<configuration>xsam_config.xml</configuration>
+    <function name="testName" module="Basic">
+        <parameter>TC_5.2.3</parameter>
+    </function>
+
+<description>Incorrect Connenction Short Code: Service not provisioned on that short code			
+ ----------------------------------------------------------------------
+Step 1: Enter an incorrect short code in the ""bind_transceiver"" message (i.e. no service provisioned for the shortcode)
+-------------------------------------------------------------------------
+	</description>
+
+   <function name="startSMSCServer" module="SMS">
+        <configuration>SMSCServer/SMPPPort</configuration>
+        <parameter>SMPP</parameter>
+    </function>
+
+    <function name="openConnection" module="SMPP">
+        <parameter>connection</parameter>
+        <configuration>XSAM/IP</configuration>
+        <configuration>XSAM/SMPPPort</configuration>
+    </function>
+
+    <function name="sendSMPPPacket" module="SMPP">
+        <parameter>connection</parameter>
+        <parameter>BIND_TRANSCEIVER</parameter>
+        <parameter>internal</parameter>
+        <parameter>systemid</parameter> <!--system_id, parameter[4]-->
+        <parameter>password</parameter> <!--password, parameter[5]-->
+        <parameter>system_type</parameter> <!--system_type, parameter[6]-->
+        <parameter>0x50</parameter><!--version, parameter[7]-->
+        <parameter>0</parameter><!--addr_ton, parameter[8]-->
+        <parameter>0</parameter><!--addr_npi,parameter[9]-->
+        <configuration>XSAM/UNKNOWNSMPPSHORTCODE</configuration>
+        <parameter>0</parameter><!---->
+    </function>
+
+    <function name="info" module="BASIC">
+        <variable>SMSC/SMPP/connection/system_id</variable>
+    </function>
+
+    <function name="compareString" module="BASIC">
+        <variable>SMSC/SMPP/connection/system_id</variable>
+        <parameter></parameter>
+    </function>
+
+    <function name="info" module="BASIC">
+        <variable>SMSC/SMPP/connection/command_status</variable>
+    </function>
+
+    <function name="compareString" module="BASIC">
+        <variable>SMSC/SMPP/connection/command_status</variable>
+        <!--<parameter>0x00000000</parameter>-->
+        <parameter>0x00000008</parameter><!--ESME_RSYSERR -->
+    </function>
+    
+
+    <function name="info" module="BASIC">
+        <variable>SMSC/SMPP/connection/command_id</variable>
+    </function>
+
+    <function name="compareString" module="BASIC">
+        <variable>SMSC/SMPP/connection/command_id</variable>
+        <parameter>0x80000009</parameter>
+    </function>
+
+    <function name="closeConnection" module="SMPP">
+        <parameter>connection</parameter>
+    </function>
+
+    <function name="stopSMSCServer" module="SMS"/>
+
+</test>

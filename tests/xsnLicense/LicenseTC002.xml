@@ -1,0 +1,23 @@
+<test>
+	<function name="testName" module="Basic">
+		<parameter>License.TC.002</parameter>
+	</function>
+	
+	<description>This is an license example test for a blank license loaded</description>
+   
+    <function name="sendRemoteCommand" module="Remote">
+        <parameter>writeFile license-blank.xml </parameter>
+        <file>license-blank.xml</file>
+    </function>
+    
+    <function name="sendRemoteCommand" module="Remote">
+        <configuration>xsn/path</configuration>
+        <configuration>xsn/xms</configuration>
+        <parameter>load data license-blank.xml</parameter>
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        <parameter>Cannot load data</parameter>
+        <parameter>test2</parameter>
+    </function>    
+</test>

@@ -1,0 +1,240 @@
+<test>
+<name>CacheHeaderOverrides.TC.002</name>
+<qcid>7890</qcid>
+<description>
+Validate Cache Header Overriding is configurable for different content types (i.e. content markup/images/javascript)
+</description>
+<steps>
+HTTP/startWebServer
+HTTP/setHeader
+HTTP/setHeader
+HTTP/setHeader
+HTTP/setServerHeader
+HTTP/setCacheFile
+Radius/radiusLogon
+Remote/writeRemoteFile
+Remote/executeRemoteXMSCommand
+Remote/queryResponse
+HTTP/sendGetRequest
+HTTP/checkResponseCode
+HTTP/checkHeader
+HTTP/queryBody
+HTTP/sendGetRequest
+HTTP/checkResponseCode
+HTTP/checkHeader
+HTTP/queryBody
+HTTP/sendGetRequest
+HTTP/checkResponseCode
+HTTP/checkHeader
+HTTP/queryBody
+Remote/writeRemoteFile
+Remote/executeRemoteXMSCommand
+Remote/queryResponse
+Radius/radiusLogoff
+HTTP/stopWebServer
+</steps>
+<designer>guyb </designer>
+<creationdate>2012-03-29 18:53:25 </creationdate>
+<testlevel>---</testlevel>
+<xfwVersion>XMP_XFW006</xfwVersion>
+<mandatory>false</mandatory>
+<stepname>HTTP/startWebServer</stepname>
+<stepid>1</stepid>
+<function name="startWebServer" module="HTTP"/>
+<mandatory>false</mandatory>
+<stepname>HTTP/setHeader</stepname>
+<stepid>2</stepid>
+<function name="setHeader" module="HTTP">
+<parameter>Accept-Encoding</parameter>
+<parameter>0</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/setHeader</stepname>
+<stepid>3</stepid>
+<function name="setHeader" module="HTTP">
+<parameter>Accept</parameter>
+<parameter>*/*</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/setHeader</stepname>
+<stepid>4</stepid>
+<function name="setHeader" module="HTTP">
+<parameter>User-Agent</parameter>
+<parameter>XTT/0.1</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/setServerHeader</stepname>
+<stepid>5</stepid>
+<function name="setServerHeader" module="HTTP">
+<parameter>Cache-Control</parameter>
+<parameter>max-age=30000</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/setCacheFile</stepname>
+<stepid>6</stepid>
+<function name="setCacheFile" module="HTTP">
+<parameter>test.js</parameter>
+<xml>&lt;?xml version="1.0"?&gt;
+<SCRIPT LANGUAGE="JavaScript">
+function validateForms()
+{	abc = "This is a nice file that should be always received by HTTP User Agent!";
+}
+</SCRIPT>
+
+</xml>
+</function>
+<mandatory>false</mandatory>
+<stepname>Radius/radiusLogon</stepname>
+<stepid>7</stepid>
+<function name="radiusLogon" module="Radius">
+<parameter>xttuser</parameter>
+<parameter>12346</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Remote/writeRemoteFile</stepname>
+<stepid>8</stepid>
+<function name="writeRemoteFile" module="Remote">
+<parameter>REQMOD_CacheHeaderOverridesTC002.xml</parameter>
+<xml>&lt;?xml version="1.0"?&gt;
+<requestModifications xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="requestmodifications.xsd">
+  <table name="SetMobileAccelerationDefaults" phase="httpResponse">
+    <selector urlPattern="http://*.cacheheaderoverride.xtt724.com/*">
+      <modifyContext name="HTA_RespHdr_cache-control" value="'no-cache'" />
+    </selector>
+    <selector urlPattern="http://*.cacheheaderremove.xtt724.com/*">
+      <modifyContext name="HTA_RespHdr_cache-control" />
+    </selector>
+  </table>
+</requestModifications>
+
+</xml>
+</function>
+<mandatory>false</mandatory>
+<stepname>Remote/executeRemoteXMSCommand</stepname>
+<stepid>9</stepid>
+<function name="executeRemoteXMSCommand" module="Remote">
+<parameter>
+<parameter>load data </parameter>
+<parameter>REQMOD_CacheHeaderOverridesTC002.xml</parameter>
+</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Remote/queryResponse</stepname>
+<stepid>10</stepid>
+<function name="queryResponse" module="Remote">
+<parameter>^Loaded requestmodifications.*</parameter>
+<parameter>dev/null</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/sendGetRequest</stepname>
+<stepid>11</stepid>
+<function name="sendGetRequest" module="HTTP">
+<parameter>http://test.cacheheaderoverride.xtt724.com/test.js</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/checkResponseCode</stepname>
+<stepid>12</stepid>
+<function name="checkResponseCode" module="HTTP">
+<parameter>200</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/checkHeader</stepname>
+<stepid>13</stepid>
+<function name="checkHeader" module="HTTP">
+<parameter>Cache-Control</parameter>
+<parameter>no-cache</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/queryBody</stepname>
+<stepid>14</stepid>
+<function name="queryBody" module="HTTP">
+<parameter>dev/null</parameter>
+<parameter>This is a nice file that should be always received by HTTP User Agent!</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/sendGetRequest</stepname>
+<stepid>15</stepid>
+<function name="sendGetRequest" module="HTTP">
+<parameter>http://test.cacheheaderremove.xtt724.com/test.js</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/checkResponseCode</stepname>
+<stepid>16</stepid>
+<function name="checkResponseCode" module="HTTP">
+<parameter>200</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/checkHeader</stepname>
+<stepid>17</stepid>
+<function name="checkHeader" module="HTTP">
+<parameter>Cache-Control</parameter>
+<parameter>null</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/queryBody</stepname>
+<stepid>18</stepid>
+<function name="queryBody" module="HTTP">
+<parameter>dev/null</parameter>
+<parameter>This is a nice file that should be always received by HTTP User Agent!</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/sendGetRequest</stepname>
+<stepid>19</stepid>
+<function name="sendGetRequest" module="HTTP">
+<parameter>http://test.standard.xtt724.com/test.js</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/checkResponseCode</stepname>
+<stepid>20</stepid>
+<function name="checkResponseCode" module="HTTP">
+<parameter>200</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/checkHeader</stepname>
+<stepid>21</stepid>
+<function name="checkHeader" module="HTTP">
+<parameter>Cache-Control</parameter>
+<parameter>max-age=30000</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/queryBody</stepname>
+<stepid>22</stepid>
+<function name="queryBody" module="HTTP">
+<parameter>dev/null</parameter>
+<parameter>This is a nice file that should be always received by HTTP User Agent!</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Remote/writeRemoteFile</stepname>
+<stepid>23</stepid>
+<function name="writeRemoteFile" module="Remote">
+<parameter>REQMOD_EmptyRules.xml</parameter>
+<parameter>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;requestModifications&gt;&lt;/requestModifications&gt;</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Remote/executeRemoteXMSCommand</stepname>
+<stepid>24</stepid>
+<function name="executeRemoteXMSCommand" module="Remote">
+<parameter>
+<parameter>load data </parameter>
+<parameter>REQMOD_EmptyRules.xml</parameter>
+</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Remote/queryResponse</stepname>
+<stepid>25</stepid>
+<function name="queryResponse" module="Remote">
+<parameter>^Loaded requestmodifications.*</parameter>
+<parameter>dev/null</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Radius/radiusLogoff</stepname>
+<stepid>26</stepid>
+<function name="radiusLogoff" module="Radius">
+<parameter>xttuser</parameter>
+<parameter>12346</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/stopWebServer</stepname>
+<stepid>27</stepid>
+<function name="stopWebServer" module="HTTP"/>
+</test>

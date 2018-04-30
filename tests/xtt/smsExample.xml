@@ -1,0 +1,38 @@
+<test>
+    <name>SMS.EXAMPLE</name>
+    <description>Example of the 3GPP SMS Protocol</description>
+
+	<function name="createTPPacket" module="SMS">
+		<parameter>tppacket1</parameter>
+		<parameter>SMS_SUBMIT</parameter>
+		<parameter>false</parameter>
+		<parameter>0x03</parameter>
+		<parameter>false</parameter>
+		<parameter>false</parameter>
+		<parameter>false</parameter>
+		<parameter>0x01</parameter>
+		<parameter>0x02</parameter>
+		<parameter>0x01</parameter>
+		<parameter>795430987</parameter>
+		<parameter>0x1F</parameter>
+		<parameter>0x04</parameter>
+		<parameter>13123100000000</parameter>
+		<parameter>11</parameter>
+		<base64Encode>Hello World</base64Encode>
+	</function>
+
+    <function name="createRPPacket" module="SMS">
+    	<parameter>rppacket1</parameter>
+    	<parameter>RP-DATA-MSN</parameter>
+    	<parameter>0x01</parameter>
+		<parameter>0x02</parameter>
+		<parameter>0x01</parameter>
+		<parameter>795430987</parameter>
+    	<parameter>tppacket1</parameter>
+    </function>
+    
+    <function name="storeRPPacket" module="SMS">
+    	<parameter>rppacket1Variable</parameter>
+    	<parameter>rppacket1</parameter>
+    </function>
+</test>

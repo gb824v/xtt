@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- License file created by lfcu program. Do not edit -->
+<modifications xmlns="http://www.xmldb.org/xupdate" version="1.0">
+    <append select="//component[@name='CEE']/CEECFG">
+    </append>
+    <append select="//component-view">
+    </append>
+</modifications>

@@ -1,0 +1,13 @@
+<!-- DELETE Response for Transperant Proxy -->
+<?xml version="1.0" encoding="utf-8" ?>
+<d:multistatus xmlns:d="DAV:">
+    <d:response>
+        <d:href>http://www.example.com/container/resource3</d:href>
+        <d:status>HTTP/1.1 423 Locked</d:status>
+        <d:error>
+            <d:lock-token-submitted/>
+        </d:error>
+    </d:response>
+    <D:responsedescription>There has been an error, the resource was not deleted.
+    </D:responsedescription>
+</d:multistatus>

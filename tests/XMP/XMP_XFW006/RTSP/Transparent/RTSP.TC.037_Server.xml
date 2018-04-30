@@ -1,0 +1,110 @@
+ <test>
+	<name>RTSP.TC.040_Server</name>
+	<description>Validate Single Stream Container Files</description>
+
+     <!-- client side server for responses -->
+    <function name="setVariable" module="Basic">
+        <parameter>SERVER</parameter>
+        <configuration>RTSPSERVER/PORT</configuration>
+    </function>
+
+     <!-- server side server for requests  -->
+    <function name="startRTSPServer" module="RTSP">
+        <variable>SERVER</variable>
+        <configuration>RTSPSERVER/TIMEOUT</configuration>
+        <testpath>rtsp</testpath>
+    </function>
+
+    <!-- CSeq: 1 -->
+    <function name="setVariable" module="Basic">
+        <parameter>content</parameter>
+        <parameter>
+            <file>/sec14</file>
+        </parameter>
+    </function>
+
+   <function name="setCacheFile" module="RTSP">
+        <parameter>DESCRIBE</parameter>
+        <parameter>/sec14</parameter>
+        <parameter>
+            <file>/sec14</file>
+        </parameter>
+    </function>
+
+    <function name="setServerHeader" module="RTSP">
+        <parameter>Content-Type</parameter>
+        <parameter>application/sdp</parameter>
+    </function>
+
+    <function name="setServerHeader" module="RTSP">
+        <parameter>Content-Length</parameter>
+        <base64bytelength><variable>content</variable></base64bytelength>
+    </function>
+
+    <function name="waitForVariable" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>SERVER</variable>
+            <parameter>/DESCRIBE/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+    <function name="removeVariables" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>SERVER</variable>
+            <parameter>/DESCRIBE/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+	<function name="clearServerHeader" module="RTSP"/>
+    <!-- CSeq: 1 end-->   
+	
+	<!-- CSeq: 2 -->
+    <function name="setServerHeader" module="RTSP">
+        <parameter>Transport</parameter>
+        <parameter>RTP/AVP/UDP;unicast;client_port=6970-6971;server_port=6970-6971;mode=play</parameter>
+    </function>
+
+    <function name="waitForVariable" module="Basic">
+         <parameter>
+             <parameter>RTSP/</parameter>
+             <variable>SERVER</variable>
+             <parameter>/SETUP/FINISHED/REQUEST</parameter>
+        </parameter>
+     </function>
+     <function name="removeVariables" module="Basic">
+            <parameter>
+                <parameter>RTSP/</parameter>
+                <variable>SERVER</variable>
+                <parameter>/SETUP/FINISHED/REQUEST</parameter>
+            </parameter>
+    </function>
+    <function name="clearServerHeader" module="RTSP"/>
+    <!-- CSeq: 2 end -->
+
+	<!-- CSeq: 3 -->
+    <function name="setServerHeader" module="RTSP">
+        <parameter>RTP-Info</parameter>
+        <parameter>url=rtsp://172.20.2.119/Yakeen.rm/streamid=0;seq=981888;rtptime=3781123</parameter>
+    </function>
+
+    <function name="waitForVariable" module="Basic">
+         <parameter>
+             <parameter>RTSP/</parameter>
+             <variable>SERVER</variable>
+             <parameter>/PLAY/FINISHED/REQUEST</parameter>
+        </parameter>
+     </function>
+     <function name="removeVariables" module="Basic">
+            <parameter>
+                <parameter>RTSP/</parameter>
+                <variable>SERVER</variable>
+                <parameter>/PLAY/FINISHED/REQUEST</parameter>
+            </parameter>
+    </function>
+    <function name="clearServerHeader" module="RTSP"/>
+    <!-- CSeq: 3 end -->
+
+    <function name="stopRTSPServer" module="RTSP"/>
+
+</test>

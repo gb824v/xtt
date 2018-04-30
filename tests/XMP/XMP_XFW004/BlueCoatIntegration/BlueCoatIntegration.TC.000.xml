@@ -1,0 +1,120 @@
+<test>	    
+	<name>BlueCoatIntegration.TC.000</name>
+	<description>Setup BlueCoat test Environment</description>
+
+
+	<!-- Load illegalbluecoatcategories.url -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>illegalbluecoatcategories.url</parameter>
+		<parameter>'Illegal Category 001'
+'Illegal Category 002'
+'Illegal Category 003'
+'Illegal Category 004'
+'Illegal Category 005'
+'Illegal Category 006'
+'Illegal Category 007'
+'Illegal Category 008'
+'Illegal Category 009'
+'Illegal Category 010'</parameter>
+	</function>
+    
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load file </parameter>
+			<parameter>illegalbluecoatcategories.url</parameter>
+		</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>Loaded '/url/illegalbluecoatcategories.url' from 'illegalbluecoatcategories.url'</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+
+
+	<!-- Load sensitivebluecoatcategories.url -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>sensitivebluecoatcategories.url</parameter>
+		<parameter>'Sensitive Category 001'
+'Sensitive Category 002'
+'Sensitive Category 003'
+'Sensitive Category 004'
+'Sensitive Category 005'
+'Sensitive Category 006'
+'Sensitive Category 007'
+'Sensitive Category 008'
+'Sensitive Category 009'
+'Sensitive Category 010'</parameter>
+	</function>
+    
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load file </parameter>
+			<parameter>sensitivebluecoatcategories.url</parameter>
+		</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>Loaded '/url/sensitivebluecoatcategories.url' from 'sensitivebluecoatcategories.url'</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+
+
+	<!-- Load BlueCoat Request Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>Reqmod_BlueCoat.xml</parameter>
+		<xml>
+<requestModifications>
+	<table phase="1000" name="BlueCoat categories" nonUrlKey="BLUECOAT_Category">
+		<selector context="BLUECOAT_Category is absent or BLUECOAT_Category == 'none' or BLUECOAT_Category == 'pending'">
+		</selector>
+		<selector nonUrlList="illegalbluecoatcategories.url">
+			<modifyContext name="BLUECOAT_IsIllegal" value="'true'"/>
+		</selector>
+		<selector nonUrlList="sensitivebluecoatcategories.url">
+			<modifyContext name="BLUECOAT_IsSensitive" value="'true'"/>
+		</selector>
+		<selector>
+			<modifyContext name="BLUECOAT_IsSensitive" value="'false'"/>
+		</selector>
+	</table>
+</requestModifications>
+		</xml>
+	</function>
+    
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>Reqmod_BlueCoat.xml</parameter>
+		</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>Loaded requestmodifications</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	
+	
+	
+	<!-- Extract Current (Original) Workflow Constans File -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>extract data workflowconstants BlueCoat_pre_WorkflowConstants.xml</parameter>
+	</function>
+	
+	
+	<!-- Load BlueCoat_WorkflowConstants.xml -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>BlueCoat_WorkflowConstants.xml</parameter>
+		<file>BlueCoat_WorkflowConstants.xml</file>
+	</function>
+		
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>load data BlueCoat_WorkflowConstants.xml</parameter>
+	</function>
+		
+	<function name="queryResponse" module="Remote">
+		<parameter>Loaded workflowconstants</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+</test>

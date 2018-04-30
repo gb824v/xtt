@@ -1,0 +1,106 @@
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+WebDAVSupport.TC.011  - Validate UNLOCK Request and its Response are successfully proxied by XMP.
+
+Test Description:
+ 1. Radius Logon
+ 2. Send UNLOCK Request
+ 3. Check Response 
+ 4. Radius Logoff
+ 
+Expected Result:
+ -  XMP should process the UNLOCK request and response through Non Transperant Proxy.
+
+XTT Commands:
+
+1. -  startWebServer
+     
+2.  - Radius log-ON
+
+3.  - setCacheFile
+
+4. -  setTextPostData
+
+5.  - sendFreeRequest 		"HTTP" UNLOCK method to SERVER/IP {configure in XTT config.xml}
+
+6.  - waitForRequests
+
+7.  - Radius log-OFF
+
+8.  - stopWebServer
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- Test Start  -->
+
+<test>
+    <name>WebDAVSupport.TC.011</name>
+
+    <description>WebDAV - UNLOCK</description>
+
+    <function name="startWebServer" module="HTTP"/>
+
+	<function name="radiusLogon" module="Radius">
+	    <parameter>xttuser</parameter>
+	    <parameter>12346</parameter>
+    </function>
+
+
+    <function name="setServerReturnCode" module="HTTP">
+        <parameter>204</parameter>
+    </function>
+
+    <function name="setServerReturnMessage" module="HTTP">
+        <parameter> No Content</parameter>
+    </function>
+
+<!-- Received response from server using setCacheFile -->
+
+    <function name="setHeader" module="HTTP">
+        <parameter>Lock-Token</parameter>
+        <parameter>&lt;urn:uuid:a515cfa4-5da4-22e1-f5b5-00a0451e6bf7&gt;</parameter>
+    </function>
+
+    <function name="setHeader" module="HTTP">
+        <parameter>Authorization</parameter>
+        <parameter>Digest username="ejw", realm="ejw@example.com", nonce="...", uri="/workspace/webdav/proposal.doc", response="...", opaque="..."</parameter>
+    </function>
+
+<!-- Send UNLOCK request to XMP -->
+
+    <function name="sendFreeRequest" module="HTTP">
+        <parameter>UNLOCK</parameter>
+        <parameter>flase</parameter>
+        <parameter>
+            <parameter>http://</parameter>
+            <configuration>SYSTEM/IP</configuration>
+            <parameter>:</parameter>
+            <configuration>WEBSERVER/PORT</configuration>
+            <parameter>/file</parameter>
+        </parameter>
+        <parameter>response</parameter>
+    </function>
+
+    <function name="sendGetRequest" module="HTTP">
+        <parameter>
+            <parameter>http://</parameter>
+            <configuration>SYSTEM/IP</configuration>
+            <parameter>:</parameter>
+            <configuration>WEBSERVER/PORT</configuration>
+            <parameter>/file</parameter>
+        </parameter>
+    </function>
+
+    <function name="waitForRequests" module="HTTP">
+        <parameter>1</parameter>
+    </function>
+
+	<function name="checkResponseCode" module="HTTP">
+        <parameter>204</parameter>
+    </function>
+
+	<function name="radiusLogoff" module="Radius">
+	    <parameter>xttuser</parameter>
+	    <parameter>12346</parameter>
+    </function>
+
+    <function name="stopWebServer" module="HTTP"/>
+
+</test>

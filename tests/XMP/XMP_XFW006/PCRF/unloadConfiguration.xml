@@ -1,0 +1,101 @@
+<test>  
+ 
+    <name>unloadConfiguration.xml</name>
+    <description>unload Dynamic Configuration Files</description>
+
+	<!-- Load PCC Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>pcc_modification.xml</parameter>
+		<xml>
+			<pccModifications xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			</pccModifications>
+		</xml>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>pcc_modification.xml</parameter>
+		</parameter>
+	</function>
+	
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>Loaded pccmodifications</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	
+	
+	<!-- Load PCC Rules File -->
+
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>pcc_rules.xml</parameter>
+		<xml>
+			<pccrules xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="x:\source\xsd\pccrules.xsd">
+			</pccrules>
+	    </xml>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>pcc_rules.xml</parameter>
+		</parameter>
+	</function>	
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>Loaded pccrules</parameter>
+		<parameter>dev/null</parameter>
+	</function>	
+	
+	
+	
+	<!-- Load Subscriber DB Update File -->
+	<function name="setVariable" module="Basic">
+		<parameter>xmp_pcrf_DatabaseUpdateFile</parameter>
+		<file>xmp_pcrf_DatabaseUpdateFile_remove.xml</file>
+	</function>
+xmp_pcrf_DatabaseUpdateFile_remove.xml
+
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>xmp_pcrf_DatabaseUpdateFile_remove.xml</parameter>
+		<variable>xmp_pcrf_DatabaseUpdateFile</variable>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load db </parameter>
+			<parameter>xmp_pcrf_DatabaseUpdateFile_remove.xml</parameter>
+		</parameter>
+	</function>		
+	
+    <function name="queryResponse" module="Remote">
+        <parameter>SUCCESS: XML upload completed</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+    
+    
+    <!-- check that all processes are running - no core files -->
+    
+    <!-- just check of there are any corefiles -->
+    <function name="executeRemoteCommand" module="Remote">
+        <parameter>
+            <parameter>find </parameter>
+            <configuration>REMOTE/PROCPATH</configuration>
+            <parameter> -name *.core</parameter>
+        </parameter>
+    </function>
+
+    <function name="queryResponse" module="Remote">
+        <parameter></parameter>
+        <parameter>result</parameter>
+    </function>
+
+    <!-- just check if all the processes are running -->
+    <function name="checkAllProcessesStatus" module="Remote">
+        <parameter>Running</parameter>
+    </function>
+    
+
+</test>
+

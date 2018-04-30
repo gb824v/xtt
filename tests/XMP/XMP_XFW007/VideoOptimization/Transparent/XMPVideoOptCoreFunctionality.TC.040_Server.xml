@@ -1,0 +1,31 @@
+<test>
+
+	<function name="testName" module="Basic">
+		<parameter>XMPVideoOptCoreFunctionality.TC.040_Server</parameter>
+	</function>
+
+	<description>Validate video optimization takes the value of videoOptimizationFailureRetentionSecs parameter specified in the workflow constants file into account</description>
+
+	<!-- Start Web Server -->
+	<function name="startWebServer" module="HTTP">
+		<parameter>12111</parameter>
+	</function>
+
+	<function name="setServerHeader" module="HTTP">
+		<parameter>content-type</parameter>
+		<parameter>video/x-flv</parameter>
+	</function>
+
+	<function name="setServerReturnCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<!-- Sleep a while until video optimization will start -->
+	<function name="sleep" module="Basic">
+		<parameter>120000</parameter>
+	</function>
+
+	<!-- Stop Web Server -->
+	<function name="stopWebServer" module="HTTP"/>
+
+</test>

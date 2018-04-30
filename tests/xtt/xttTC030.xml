@@ -1,0 +1,12 @@
+<test>  
+ <name>XTT.TC.030</name>
+ <description>convert string to upper/lower case and stored into variable</description>
+   <function name="toUpperCase" module="Basic">
+       <parameter>thisstringconverttouppercase</parameter>
+       <parameter>VARUPPER</parameter>
+    </function>
+   <function name="toLowerCase" module="Basic">
+       <parameter>stringtoconvertintolowercase</parameter>
+       <parameter>VARLOWER</parameter>
+    </function>
+</test>

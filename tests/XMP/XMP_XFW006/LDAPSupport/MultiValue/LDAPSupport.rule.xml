@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<requestModifications xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="requestModifications.xsd">
+
+<!-- This table sets up  the   AuthenticationType as  LDAP and  RemoteIpAddress equalsip     -->
+	<table name="authentication" phase="authentication">
+		<!--selector context="TCP_RemoteIpAddress equalsip '%IPADDRESS%'"-->
+		<selector>
+			<!--modifyContext name="FTR_AuthenticationType" value="'ldap'"/-->
+			<modifyContext name="FTR_AnonymousIfUnauthenticated" value="'True'" />
+			<modifyContext name="FTR_SubscriberId" value="'999_' + TCP_RemoteIpAddress"/>
+		</selector>
+	</table>
+    <table name="ExtractLDAPInfo_Msisdn">
+        <selector context="[CHLDAP_QueryLDAPEntries/[AttrName=Msisdn]/Value] is present">
+            <modifyContext name="LDAP_Msisdn" value="[CHLDAP_QueryLDAPEntries/[AttrName=Msisdn]/Value]"/>
+            <modifyContext name="LDAP_CalledStationId" value="[CHLDAP_QueryLDAPEntries/[AttrName=CalledStationId]/Value]"/>
+            <modifyContext name="LDAP_RoamingInfo" value="[CHLDAP_QueryLDAPEntries/[AttrName=RoamingInfo]/Value]"/>
+            <modifyContext name="LDAP_BearerInfo" value="[CHLDAP_QueryLDAPEntries/[AttrName=BearerInfo]/Value]"/>
+            <modifyContext name="LDAP_AgeControl" value="[CHLDAP_QueryLDAPEntries/[AttrName=ageControl]/Value]"/>
+        </selector>
+    </table>
+
+</requestModifications>

@@ -1,0 +1,229 @@
+<test>
+
+	<name>Vasp-url-DR.TC.013</name>
+
+	<description>XMA should generate negative DR to sender if message expires.</description>
+
+	<!-- Load config file -->
+	<configuration>../xmaConfig.xml</configuration>
+
+	<!-- Start web server on VASP port -->
+	<function name="startWebServer" module="HTTP">
+		<configuration>VASP/PORT</configuration>
+		<configuration>WEBSERVER/ROOT</configuration>
+		<configuration>WEBSERVER/TIMEOUT</configuration>
+	</function>
+
+	<function name="setServerReturnCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<function name="setServerReturnMessage" module="HTTP">
+		<parameter> OK</parameter>
+	</function>
+
+	<!-- Delete existing messages from message store -->
+	<subtest name="deleteMessagestoreAll" file="../deleteMessagestoreAll.xml"/>
+
+	<!-- Start SMSC server -->
+	<function name="startSMSCServer" module="SMS"/>
+
+	<subtest name="loadVariables" file="loadVariables.xml">
+		<parameter>MSISDN</parameter>
+	</subtest>
+
+	<function name="setVariable" module="Basic">
+		<parameter>MSISDN</parameter>
+		<variable>MSISDN/0</variable>
+	</function>
+
+	<function name="waitForBind" module="SMS"/>
+
+	<!-- Create MM7 Submit Req -->
+	<function name="createMM7Soap" module="VASP">
+		<parameter>SubmitReq</parameter>
+		<configuration>VASP/VASPID</configuration>
+		<configuration>VASP/VASID</configuration>
+	</function>
+
+	<function name="setMessageBoundary" module="VASP">
+		<parameter>000001message</parameter>
+	</function>
+
+	<function name="setSoapData" module="VASP">
+		<parameter>//*[local-name()='SenderIdentification']</parameter>
+		<parameter>SenderAddress</parameter>
+	</function>
+
+	<function name="setSoapData" module="VASP">
+		<parameter>//*[local-name()='SenderAddress']</parameter>
+		<parameter>Number</parameter>
+		<configuration>VASP/NUMBER</configuration>
+	</function>
+
+	<function name="setSoapData" module="VASP">
+		<parameter>//*[local-name()='SubmitReq']</parameter>
+		<parameter>Recipients</parameter>
+	</function>
+
+	<function name="setSoapData" module="VASP">
+		<parameter>//*[local-name()='Recipients']</parameter>
+		<parameter>To</parameter>
+	</function>
+
+	<function name="setSoapData" module="VASP">
+		<parameter>//*[local-name()='To'][last()]</parameter>
+		<parameter>Number</parameter>
+		<variable>MSISDN</variable>
+	</function>
+
+	<function name="setSoapData" module="VASP">
+		<parameter>//*[local-name()='SubmitReq']</parameter>
+		<parameter>Content</parameter>
+	</function>
+
+	<function name="setSoapAttribute" module="VASP">
+		<parameter>//*[local-name()='Content']</parameter>
+		<parameter>href</parameter>
+		<parameter>cid:xtt-test001</parameter>
+	</function>
+
+	<function name="setSoapData" module="VASP">
+		<parameter>//*[local-name()='SubmitReq']</parameter>
+		<parameter>ExpiryDate</parameter>
+		<parameter>-PT60S</parameter>
+	</function>
+
+	<function name="setSoapData" module="VASP">
+		<parameter>//*[local-name()='SubmitReq']</parameter>
+		<parameter>DeliveryReport</parameter>
+		<parameter>true</parameter>
+	</function>
+
+	<function name="setSoapData" module="VASP">
+		<parameter>//*[local-name()='SubmitReq']</parameter>
+		<parameter>ReadReply</parameter>
+		<parameter>false</parameter>
+	</function>
+
+	<!-- Set x-vasp-url for DR -->
+	<function name="setHeader" module="VASP">
+		<parameter>x-vasp-url</parameter>
+		<parameter>
+		<parameter>http://</parameter>
+		<configuration>system/ip</configuration>
+		<parameter>:</parameter>
+		<configuration>vasp/port</configuration>
+		<parameter>/</parameter>
+		<configuration>vasp/Directory</configuration>
+		</parameter>
+	</function>
+
+	<function name="addContent" module="VASP">
+		<file>sendMM7data.txt</file>
+	</function>
+
+	<!--Send post request to VASP IN-->
+	<function name="sendPostRequest" module="VASP"/>
+
+	<!-- Check response of XMA-->
+	<function name="checkResponseCode" module="VASP">
+		<parameter>200</parameter>
+	</function>
+
+	<function name="queryBody" module="VASP">
+		<parameter>temp</parameter>
+		<parameter>&lt;StatusCode&gt;1000&lt;/StatusCode&gt;</parameter>
+	</function>
+
+	<function name="queryBody" module="VASP">
+		<parameter>MessageID</parameter>
+		<parameter>&lt;MessageID&gt;(\p{Alnum}{13})&lt;/MessageID&gt;</parameter>
+	</function>
+
+	<function name="waitForTimeoutWSPMessages" module="SMS">
+		<parameter>50000</parameter>
+	</function>
+
+	<!-- Wait for Expired Delivery Report -->
+	<function name="waitForPOSTs" module="HTTP">
+		<parameter>1</parameter>
+	</function>
+
+	<function name="queryVariable" module="Basic">
+		<parameter>WEBSERVER/POST/TEXT/XML</parameter>
+		<parameter>MessageID2</parameter>
+		<parameter>&lt;MessageID&gt;(\p{Alnum}{13})&lt;/MessageID&gt;</parameter>
+	</function>
+
+	<function name="compareString" module="Basic">
+		<variable>MessageID2</variable>
+		<variable>MessageID</variable>
+	</function>
+
+	<function name="queryVariable" module="BASIC">
+		<parameter>
+			<parameter>WEBSERVER/POST/MM7/DELIVERYREPORTRSP/</parameter>
+			<variable>MSISDN</variable>
+		</parameter>
+		<parameter>dev/null</parameter>
+		<parameter>
+			<parameter>&lt;DeliveryReportReq xmlns="</parameter><configuration>VASP/XMLNSMM7</configuration><parameter>"&gt;</parameter>
+		</parameter>
+	</function>
+
+	<!-- check that the Sender and recipient set correctly in SOAP response-->
+	<function name="queryText" module="Basic">
+		<variable>
+			<parameter>WEBSERVER/POST/MM7/DELIVERYREPORTRSP/</parameter>
+			<variable>MSISDN</variable>
+		</variable>
+		<parameter>mytest</parameter>
+		<parameter>
+		<parameter>&lt;Sender&gt;(.*)&lt;/Sender&gt;</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryText" module="Basic">
+		<variable>mytest</variable>
+		<parameter>dev/null</parameter>
+		<parameter>
+			<configuration>VASP/NUMBER</configuration>
+		</parameter>
+	</function>
+
+	<function name="queryText" module="Basic">
+		<variable>
+			<parameter>WEBSERVER/POST/MM7/DELIVERYREPORTRSP/</parameter>
+			<variable>MSISDN</variable>
+		</variable>
+		<parameter>mytest</parameter>
+		<parameter>
+		<parameter>&lt;Recipient&gt;(.*)&lt;/Recipient&gt;</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryText" module="Basic">
+		<variable>mytest</variable>
+		<parameter>dev/null</parameter>
+		<parameter>
+			<variable>MSISDN</variable>
+		</parameter>
+	</function>
+
+	<function name="queryVariable" module="BASIC">
+		<parameter>
+			<parameter>WEBSERVER/POST/MM7/DELIVERYREPORTRSP/</parameter>
+			<variable>MSISDN</variable>
+		</parameter>
+		<parameter>MessageID2</parameter>
+		<parameter>&lt;MMStatus&gt;Expired&lt;/MMStatus&gt;</parameter>
+	</function>
+
+	<!-- Stopping Web server -->
+	<function name="stopWebServer" module="HTTP"/>
+
+	<!-- Stopping SMSC server -->
+	<function name="stopSMSCServer" module="SMS"/>
+
+</test>

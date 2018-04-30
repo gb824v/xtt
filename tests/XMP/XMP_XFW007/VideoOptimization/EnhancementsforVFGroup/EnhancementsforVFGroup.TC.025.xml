@@ -1,0 +1,643 @@
+<test>
+
+	<function name="testName" module="Basic">
+		<parameter>EnhancementsforVFGroup.TC.025</parameter>
+	</function>
+
+	<description>Validate all media context information are set correctly</description>
+
+	<!-- Start Web Server -->
+	<function name="startWebServer" module="HTTP"/>
+
+	<function name="setClientTimeout" module="HTTP">
+		<parameter>120000</parameter>
+	</function>
+
+	<function name="disableKeepAlive" module="HTTP"/>
+
+	<function name="setServerHeader" module="HTTP">
+		<parameter>content-type</parameter>
+		<parameter>video/x-flv</parameter>
+	</function>
+
+	<function name="setServerReturnCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<!-- Delete Message Store -->
+	<subtest>deleteMediaStoreAll.xml</subtest>
+
+	<!-- Query the name of the active MEDIA-STORE process -->
+	<function name="activeProcessToVar" module="Remote">
+		<parameter>MEDIA-STORE</parameter>
+		<parameter>Media_Store_Process_Name</parameter>
+	</function>
+
+	<!-- restart process to get clean log / proc files -->
+	<function name="restartProcess" module="Remote">
+		<parameter>LOGGER</parameter>
+	</function>
+	<function name="activeProcessToVar" module="Remote">
+		<parameter>HTTP-PROXY</parameter>
+		<parameter>HTTP-PROXY</parameter>
+	</function>
+
+	<!-- Restart process to get latest process log -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>restart process </parameter>
+			<variable>HTTP-PROXY/0</variable>
+		</parameter>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>enable trac -v MSR HTTP-PROXY.*.*</parameter>
+	</function>
+
+	<!-- Prepare the ContextStatistics File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>vo_ContextStatistics.xml</parameter>
+		<xml>
+		<contextStatistics>
+			<contextStatistic statisticName="VideoOptimization"
+					condition="FTR_OptimizeVideo is true and LSA_LogicalLog matches '^(HTTP-PROXY|TCP-ROUTER)'"
+					key="FTR_Quality + '|' + MSR_Name"
+					rateIntervalSeconds="60"
+					maxCounters="200" />
+			<contextStatistic statisticName="DownloadBytesPerSecond"
+					condition="LSA_LogicalLog matches '^(HTTP-PROXY|TCP-ROUTER|WAP1-PROXY)' and LSA_Event=='DSP_REQUEST_COMPLETED'"
+					value="DSP_BytesTransferredOut"
+					rateIntervalSeconds="60"
+					rateMultiplier="0.0166666667" />
+		</contextStatistics>
+		</xml>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>vo_ContextStatistics.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded contextstatistics.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Prepare the Request Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>vo_reqmod_online_opt.xml</parameter>
+		<xml>
+		<requestModifications xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="requestmodifications.xsd">
+		<table name="DisableThings" phase="httpRequest">
+			<selector>
+				<modifyContext name="Skip_CACHE" value="'true'"/>
+				<modifyContext name="Skip_VIRUSSCANNER" value="'true'"/>
+				<modifyContext name="FTR_HtmlTidyDisable" value="'true'"/>
+				<modifyContext name="Skip_COOKIE" value="'true'"/>
+				<modifyContext name="Skip_ICC" value="'true'"/>
+				<modifyContext name="FTR_MultipartCompose_Disable" value="'true'"/>
+				<modifyContext name="FTR_Prefetch_Disable" value="'true'"/>
+				<modifyContext name="FTR_Deflate_Disable" value="'true'"/>
+				<modifyContext name="FTR_Gzip_Disable" value="'true'"/>
+				<modifyContext name="HTA_RespHdr_STAT_DownloadBytesPerSecond" value="STATCHLET_DownloadBytesPerSecond"/>
+			</selector>
+		</table>
+		<table name="XTT_videoOptimization" phase="httpRequest">
+			<selector urlPattern="http://*/videos/{.*\.flv}">
+				<modifyContext name="FTR_OptimizeVideo" value="'true'"/>
+				<modifyContext name="FTR_WaitForOptimizedContent" value="'true'"/>
+				<modifyContext name="FTR_Quality" value="'C'" />
+			</selector>
+		</table>
+		</requestModifications>
+		</xml>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>vo_reqmod_online_opt.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded requestmodifications.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Radius Login -->
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+	<!-- Send the video retrieval request -->
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>
+			<parameter>http://</parameter>
+			<configuration>system/ip</configuration>
+			<parameter>/videos/Tarabonner-FlightControl637.flv</parameter>
+		</parameter>
+	</function>
+
+	<!-- Validate Response Code Send by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+        <function name="sleep" module="Basic">
+                <parameter>20000</parameter>
+        </function>
+
+	<!-- amocli search for Optimized Video stored in Media Store -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>run command amocli -e "MS_Status=='done'" -m0 search TI:F.CEE.</parameter>
+			<variable>Media_Store_Process_Name</variable>
+			<parameter>:AMO</parameter>
+		</parameter>
+	</function>
+
+	<!-- Check for final status of chunks stored in the Media Store, it should be in "Done" status-->
+	<function name="queryResponse" module="Remote">
+		<parameter>MS_Status=done</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!--Check for High priority item associated with the real-time use case-->
+	<function name="queryResponse" module="Remote">
+		<parameter>MS_Priority=99</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Check for MS_Url & MS_Name & MS_Quality -->
+	<function name="queryResponse" module="Remote">
+		<parameter>
+			<parameter>MS_Url=http://</parameter>
+			<configuration>system/ip</configuration>
+			<parameter>/videos/Tarabonner-FlightControl637.flv</parameter>
+		</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>
+			<parameter>MS_Name=http://</parameter>
+			<configuration>system/ip</configuration>
+			<parameter>/videos/Tarabonner-FlightControl637.flv</parameter>
+		</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Check for MS_Quality attribute associated with the real-time use case-->
+	<function name="queryResponse" module="Remote">
+		<parameter>MS_Quality=C</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Check for total number of Optimized Chunks stored in Media Store-->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>run command amocli -k count TI:F.CEE.</parameter>
+			<variable>Media_Store_Process_Name</variable>
+			<parameter>:AMO</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>amocli: 53 items counted</parameter>
+		<parameter>response</parameter>
+	</function>
+
+	<!-- Radius Logoff -->
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+	<!-- Sleep to complete video optimization -->
+	<function name="sleep" module="Basic">
+		<parameter>60000</parameter>
+	</function>
+
+	<!-- Check Context elements from Activity log -->
+	<function name="getNewestRemoteFileName" module="Remote">
+		<parameter>newestlogfile</parameter>
+		<configuration>remote/logpath</configuration>
+		<parameter>XMP</parameter>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<configuration>remote/command</configuration>
+			<parameter>logscan -in </parameter>
+			<variable>newestlogfile</variable>
+		</parameter>
+	</function>
+
+	<!-- Check for Media Format -->
+	<function name="queryResponse" module="Remote">
+		<parameter>MEDIA_Format: flv</parameter>
+		<parameter>response</parameter>
+	</function>
+
+	<!-- Check for MEDIA_Duration -->
+		<function name="queryResponse" module="Remote">
+			<parameter>MEDIA_Duration: (\d++)</parameter>
+			<parameter>MEDIA_Duration</parameter>
+		</function>
+
+		<function name="info" module="Basic">
+			<parameter>MEDIA_Duration = </parameter>
+			<variable>MEDIA_Duration</variable>
+		</function>
+
+	<!-- Check for Audio Encoding -->
+		<function name="queryResponse" module="Remote">
+			<parameter>AUDIO_Encoding: (.*)AUDIO_KbitRate</parameter>
+			<parameter>AUDIO_Encoding1</parameter>
+		</function>
+
+		<function name="info" module="Basic">
+			<parameter>AUDIO_Encoding = </parameter>
+			<variable>AUDIO_Encoding1</variable>
+		</function>
+
+	<!-- Check for Audio Sample rate -->
+		<function name="queryResponse" module="Remote">
+			<parameter>AUDIO_SampleRate: (\d++)</parameter>
+			<parameter>AUDIO_SampleRate1</parameter>
+		</function>
+
+		<function name="info" module="Basic">
+			<parameter>AUDIO_SampleRate = </parameter>
+			<variable>AUDIO_SampleRate1</variable>
+		</function>
+
+	<!-- Check for Audio Channels -->
+		<function name="queryResponse" module="Remote">
+			<parameter>AUDIO_Channels: (\d++)</parameter>
+			<parameter>AUDIO_Channels1</parameter>
+		</function>
+
+		<function name="info" module="Basic">
+			<parameter>AUDIO_Channels = </parameter>
+			<variable>AUDIO_Channels1</variable>
+		</function>
+
+	<!-- Check for AUDIO_KbitRate -->
+		<function name="queryResponse" module="Remote">
+			<parameter>AUDIO_KbitRate: (\d++)</parameter>
+			<parameter>AUDIO_KbitRate1</parameter>
+		</function>
+
+		<function name="info" module="Basic">
+			<parameter>AUDIO_KbitRate = </parameter>
+			<variable>AUDIO_KbitRate1</variable>
+		</function>
+
+	<!-- Check for VIDEO_KbitRate -->
+		<function name="queryResponse" module="Remote">
+			<parameter>VIDEO_KbitRate: (\d++)</parameter>
+			<parameter>VIDEO_KbitRate1</parameter>
+		</function>
+
+		<function name="info" module="Basic">
+			<parameter>VIDEO_KbitRate = </parameter>
+			<variable>VIDEO_KbitRate1</variable>
+		</function>
+
+	<!-- Check for MEDIA_Kbitrate - it should be equal to (VIDEO_KbitRate+AUDIO_KbitRate) -->
+		<function name="queryResponse" module="Remote">
+			<parameter>MEDIA_KbitRate: (\d++)</parameter>
+			<parameter>MEDIA_KbitRate1</parameter>
+		</function>
+
+		<function name="info" module="Basic">
+			<parameter>MEDIA_KbitRate = </parameter>
+			<variable>MEDIA_KbitRate1</variable>
+		</function>
+
+	<!-- Check for VIDEO_Encoding -->
+		<function name="queryResponse" module="Remote">
+			<parameter>VIDEO_Encoding: (.*)VIDEO_FrameHeight</parameter>
+			<parameter>VIDEO_Encoding1</parameter>
+		</function>
+
+		<function name="info" module="Basic">
+			<parameter>VIDEO_Encoding = </parameter>
+			<variable>VIDEO_Encoding1</variable>
+		</function>
+
+	<!-- Check for VIDEO_FrameHeight -->
+		<function name="queryResponse" module="Remote">
+			<parameter>VIDEO_FrameHeight: (\d++)</parameter>
+			<parameter>VIDEO_FrameHeight1</parameter>
+		</function>
+
+		<function name="info" module="Basic">
+			<parameter>VIDEO_FrameHeight = </parameter>
+			<variable>VIDEO_FrameHeight1</variable>
+		</function>
+
+	<!-- Check for VIDEO_FrameWidth -->
+		<function name="queryResponse" module="Remote">
+			<parameter>VIDEO_FrameWidth: (\d++)</parameter>
+			<parameter>VIDEO_FrameWidth1</parameter>
+		</function>
+
+		<function name="info" module="Basic">
+			<parameter>VIDEO_FrameWidth = </parameter>
+			<variable>VIDEO_FrameWidth1</variable>
+		</function>
+
+	<!-- Check for VIDEO_FrameRate -->
+		<function name="queryResponse" module="Remote">
+			<parameter>VIDEO_FrameRate: (\d++.\d++)</parameter>
+			<parameter>VIDEO_FrameRate1</parameter>
+		</function>
+
+		<function name="info" module="Basic">
+			<parameter>VIDEO_FrameRate = </parameter>
+			<variable>VIDEO_FrameRate1</variable>
+		</function>
+
+	<!-- Check for VOP_ContentLengthOptimized -->
+		<function name="queryResponse" module="Remote">
+			<parameter>VOP_ContentLengthOptimized: (\d++)</parameter>
+			<parameter>VOP_ContentLengthOptimized</parameter>
+		</function>
+
+		<function name="info" module="Basic">
+			<parameter>VOP_ContentLengthOptimized = </parameter>
+			<variable>VOP_ContentLengthOptimized</variable>
+		</function>
+
+	<!-- Check for MS_ContentLengthOptimized  -->
+		<function name="queryResponse" module="Remote">
+			<parameter>MS_ContentLengthOptimized: (\d++)</parameter>
+			<parameter>MS_ContentLengthOptimized</parameter>
+		</function>
+
+		<function name="info" module="Basic">
+			<parameter>MS_ContentLengthOptimized = </parameter>
+			<variable>MS_ContentLengthOptimized</variable>
+		</function>
+
+	<!--Compare FFmpeg VOP_ContentLengthOptimized value to MS_ContentLengthOptimized value -->
+		<function name="compareString" module="basic">
+			<variable>VOP_ContentLengthOptimized</variable>
+			<variable>MS_ContentLengthOptimized</variable>
+		</function>
+
+	<!-- Check for VOP_ContentLengthOriginal -->
+		<function name="queryResponse" module="Remote">
+			<parameter>VOP_ContentLengthOriginal: (\d++)</parameter>
+			<parameter>VOP_ContentLengthOriginal</parameter>
+		</function>
+
+		<function name="info" module="Basic">
+			<parameter>VOP_ContentLengthOriginal = </parameter>
+			<variable>VOP_ContentLengthOriginal</variable>
+		</function>
+
+	<!-- Check for MS_ContentLengthOriginal  -->
+		<function name="queryResponse" module="Remote">
+			<parameter>MS_ContentLengthOriginal: (\d++)</parameter>
+			<parameter>MS_ContentLengthOriginal</parameter>
+		</function>
+
+		<function name="info" module="Basic">
+			<parameter>MS_ContentLengthOriginal = </parameter>
+			<variable>MS_ContentLengthOriginal</variable>
+		</function>
+
+	<!--Compare FFmpeg VOP_ContentLengthOriginal value to MS_ContentLengthOriginal value -->
+		<function name="compareString" module="basic">
+			<variable>VOP_ContentLengthOriginal</variable>
+			<variable>MS_ContentLengthOriginal</variable>
+		</function>
+
+	<function name="executeRemoteCommand" module="Remote">
+		<parameter>
+			<parameter>/bin/grep Stream </parameter>
+			<configuration>remote/procpath</configuration>
+			<parameter>/</parameter>
+			<variable>HTTP-PROXY/0</variable>
+			<parameter>/</parameter>
+			<variable>HTTP-PROXY/0</variable>
+			<parameter>.out</parameter>
+		</parameter>
+	</function>
+
+	<!-- Check for Audio Encoding from FFmpeg conversion -->
+		<function name="queryResponse" module="Remote">
+			<parameter> Audio: (.*), 44100</parameter>
+			<parameter>AUDIO_Encoding2</parameter>
+		</function>
+
+		<function name="info" module="Basic">
+			<parameter>AUDIO_Encoding = </parameter>
+			<variable>AUDIO_Encoding2</variable>
+		</function>
+
+	<!--Compare FFmpeg encoded value to final encoded value -->
+		<function name="compareString" module="basic">
+			<parameter>mp3</parameter>
+			<variable>AUDIO_Encoding2</variable>
+		</function>
+
+	<!-- Check for Audio Sample rate from FFmpeg conversion -->
+		<function name="queryResponse" module="Remote">
+			<parameter> mp3, (\d++) Hz</parameter>
+			<parameter>AUDIO_SampleRate2</parameter>
+		</function>
+
+		<function name="info" module="Basic">
+			<parameter>AUDIO_SampleRate = </parameter>
+			<variable>AUDIO_SampleRate2</variable>
+		</function>
+
+	<!--Compare FFmpeg Audio Sample rate to final Audio Sample rate -->
+		<function name="compareString" module="basic">
+			<variable>AUDIO_SampleRate1</variable>
+			<variable>AUDIO_SampleRate2</variable>
+		</function>
+
+	<!-- Check for Audio Channels from FFmpeg conversion -->
+		<function name="queryResponse" module="Remote">
+			<parameter> Hz, (\d++) channels</parameter>
+			<parameter>AUDIO_Channels2</parameter>
+		</function>
+
+		<function name="info" module="Basic">
+			<parameter>AUDIO_Channels = </parameter>
+			<variable>AUDIO_Channels2</variable>
+		</function>
+
+	<!--Compare FFmpeg Audio Channels value to final Audio Channels value -->
+		<function name="compareString" module="basic">
+			<variable>AUDIO_Channels1</variable>
+			<variable>AUDIO_Channels2</variable>
+		</function>
+
+	<!-- Check for AUDIO_KbitRate from FFmpeg conversion -->
+		<function name="queryResponse" module="Remote">
+			<parameter> s16, (\d++) kb</parameter>
+			<parameter>AUDIO_KbitRate2</parameter>
+		</function>
+
+		<function name="info" module="Basic">
+			<parameter>AUDIO_KbitRate = </parameter>
+			<variable>AUDIO_KbitRate2</variable>
+		</function>
+
+	<!--Compare FFmpeg AUDIO_KbitRate value to final AUDIO_KbitRate value -->
+		<function name="compareString" module="basic">
+			<variable>AUDIO_KbitRate1</variable>
+			<variable>AUDIO_KbitRate2</variable>
+		</function>
+
+	<!-- Check for VIDEO_KbitRate from FFmpeg conversion -->
+		<function name="queryResponse" module="Remote">
+			<parameter>, (\d++) kb/s,</parameter>
+			<parameter>VIDEO_KbitRate2</parameter>
+		</function>
+
+		<function name="info" module="Basic">
+			<parameter>VIDEO_KbitRate = </parameter>
+			<variable>VIDEO_KbitRate2</variable>
+		</function>
+
+	<!--Compare FFmpeg VIDEO_KbitRate value to final VIDEO_KbitRate value -->
+		<function name="compareString" module="basic">
+			<variable>VIDEO_KbitRate1</variable>
+			<variable>VIDEO_KbitRate2</variable>
+		</function>
+
+		<function name="addVariable" module="Basic">
+			<parameter>MEDIA_KbitRate2</parameter>
+			<variable>AUDIO_KbitRate2</variable>
+			<variable>VIDEO_KbitRate2</variable>
+		</function>
+
+	<!--Compare MEDIA_Kbitrate value to (VIDEO_KbitRate+AUDIO_KbitRate) value -->
+		<function name="compareString" module="basic">
+			<variable>MEDIA_KbitRate1</variable>
+			<variable>MEDIA_KbitRate2</variable>
+		</function>
+
+	<!-- Check for VIDEO_Encoding from FFmpeg conversion -->
+		<function name="queryResponse" module="Remote">
+			<parameter> Video: (.*), yuv420p</parameter>
+			<parameter>VIDEO_Encoding2</parameter>
+		</function>
+
+		<function name="info" module="Basic">
+			<parameter>VIDEO_Encoding = </parameter>
+			<variable>VIDEO_Encoding2</variable>
+		</function>
+
+	<!--Compare FFmpeg VIDEO_Encoding value to final VIDEO_Encoding value -->
+		<function name="compareString" module="basic">
+			<parameter>vp6f</parameter>
+			<variable>VIDEO_Encoding2</variable>
+		</function>
+
+	<!-- Check for VIDEO_FrameHeight from FFmpeg conversion -->
+		<function name="queryResponse" module="Remote">
+			<parameter>, 640x(\d++),</parameter>
+			<parameter>VIDEO_FrameHeight2</parameter>
+		</function>
+
+		<function name="info" module="Basic">
+			<parameter>VIDEO_FrameHeight = </parameter>
+			<variable>VIDEO_FrameHeight2</variable>
+		</function>
+
+	<!--Compare FFmpeg VIDEO_FrameHeight value to final VIDEO_FrameHeight value -->
+		<function name="compareString" module="basic">
+			<variable>VIDEO_FrameHeight1</variable>
+			<variable>VIDEO_FrameHeight2</variable>
+		</function>
+
+	<!-- Check for VIDEO_FrameWidth from FFmpeg conversion -->
+		<function name="queryResponse" module="Remote">
+			<parameter>, (\d++)x360,</parameter>
+			<parameter>VIDEO_FrameWidth2</parameter>
+		</function>
+
+		<function name="info" module="Basic">
+			<parameter>VIDEO_FrameWidth = </parameter>
+			<variable>VIDEO_FrameWidth2</variable>
+		</function>
+
+	<!--Compare FFmpeg VIDEO_FrameWidth value to final VIDEO_FrameWidth value -->
+		<function name="compareString" module="basic">
+			<variable>VIDEO_FrameWidth1</variable>
+			<variable>VIDEO_FrameWidth2</variable>
+		</function>
+
+	<!-- Check for VIDEO_FrameRate from FFmpeg conversion -->
+		<function name="queryResponse" module="Remote">
+			<parameter>, (\d++.\d++) tbr,</parameter>
+			<parameter>VIDEO_FrameRate2</parameter>
+		</function>
+
+		<function name="info" module="Basic">
+			<parameter>VIDEO_FrameRate = </parameter>
+			<variable>VIDEO_FrameRate2</variable>
+		</function>
+
+	<!--Compare FFmpeg VIDEO_FrameRate value to final VIDEO_FrameRate value -->
+		<function name="compareString" module="basic">
+			<variable>VIDEO_FrameRate1</variable>
+			<variable>VIDEO_FrameRate2</variable>
+		</function>
+
+	<!-- Purge the Request Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>REQMOD_EmptyRules.xml</parameter>
+		<parameter>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;requestModifications&gt;&lt;/requestModifications&gt;</parameter>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>REQMOD_EmptyRules.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded requestmodifications.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Purge the ContextStatistics File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>vo_EmptyContextStatistics.xml</parameter>
+		<parameter>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;contextStatistics&gt;&lt;/contextStatistics&gt;</parameter>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>vo_EmptyContextStatistics.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded contextstatistics.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Stop Web Server -->
+	<function name="stopWebServer" module="HTTP"/>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>disable trac -v </parameter>
+	</function>
+
+</test>

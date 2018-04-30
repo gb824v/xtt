@@ -1,0 +1,44 @@
+<test>
+	<name>RTSP.TC.027_Server</name>
+	<description>Validate RTSP implementation handles corrupted request headers (request is initiated by client)</description>
+
+
+    <!-- client side server for responses -->
+    <function name="setVariable" module="Basic">
+        <parameter>SERVER</parameter>
+        <configuration>RTSPSERVER/PORT</configuration>
+    </function>
+        
+    	<function name="setServerReturnCode" module="RTSP">
+    		<parameter>456</parameter>    <!-- Header Field Not Valid -->
+        </function>
+    
+
+    <!-- server side server for requests -->
+    <function name="startRTSPServer" module="RTSP">
+        <variable>SERVER</variable>
+        <configuration>RTSPSERVER/TIMEOUT</configuration>
+        <testpath>rtsp</testpath>
+    </function>
+    
+	<!-- testing -->
+		    <function name="waitForVariable" module="Basic">
+	        <parameter>
+	            <parameter>RTSP/</parameter>
+	            <variable>SERVER</variable>
+	            <parameter>/SETUP/FINISHED/REQUEST</parameter>
+	        </parameter>
+	    </function>
+	    <function name="removeVariables" module="Basic">
+	        <parameter>
+	            <parameter>RTSP/</parameter>
+	            <variable>SERVER</variable>
+	            <parameter>/SETUP/FINISHED/REQUEST</parameter>
+	        </parameter>
+	    </function>
+
+
+    <function name="stopRTSPServer" module="RTSP"/>
+
+
+</test>

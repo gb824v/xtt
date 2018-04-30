@@ -1,0 +1,41 @@
+<!-- 
+InterstitialAdvertisement.Trans.Server.TC.003  - Start Web-Server to Validate the example workflow inserts an interstitial advert at most once every 30 seconds in a user session during Transparent proxy condition [7 requests to XMP].
+
+Test Description:
+ 1. Start Web Server.
+ 2. Wait for get request.
+ 3. Stop Web Server.
+
+Expected Result:
+ -  XMP workflow should insert an interstitial advert at once every 30 seconds in a user session [7 requests to XMP].
+
+XTT Commands:
+
+ 1.  - startWebServer
+ 2.  - waitForRequests
+ 3.  - stopWebServer
+-->
+
+<test>
+
+	<function name="testName" module="Basic">
+		<parameter>InterstitialAdvertisement.Trans.Server.TC.003</parameter>
+	</function>
+
+	<description>Start Web Server to Validate the example workflow inserts an interstitial advert at most once every 30 seconds in a user session during Transparent proxy condition [7 requests to XMP].</description>
+
+	<function name="startWebServer" module="HTTP"/>	
+
+	<function name="sleep" module="Basic">
+		<parameter>
+		<parameter>50000</parameter>
+		</parameter>
+	</function>
+
+		<function name="waitForRequests" module="HTTP">
+		<parameter>5</parameter>
+	</function>	
+
+	<function name="stopWebServer" module="HTTP"/>
+
+</test>

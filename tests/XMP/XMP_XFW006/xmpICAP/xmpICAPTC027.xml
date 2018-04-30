@@ -1,0 +1,133 @@
+<test>	    
+	<name>XMP.ICAP.TC.027</name>
+    <description>EXTENSION: X-Attribute, X-ICAP-Profile, X-Attribute-Prefix, X-Response-Info, X-Response-Desc</description>
+
+    <subtest name="loadReqmod" file="loadReqmod.xml"/>
+
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+	<function name="startICAPServer" module="ICAP"/>
+	<function name="startWebServer" module="HTTP"/>
+
+	<function name="setServerICAPHeader" module="ICAP">
+		<parameter>X-Attribute</parameter>
+		<parameter>News, German</parameter>
+	</function>	
+	<function name="setServerICAPHeader" module="ICAP">
+		<parameter>X-Attribute-Prefix</parameter>
+		<parameter>1</parameter>
+	</function>	
+	<function name="setServerICAPHeader" module="ICAP">
+		<parameter>X-ICAP-Profile</parameter>
+		<parameter>ReqProfile</parameter>
+	</function>	
+	<function name="setServerICAPHeader" module="ICAP">
+		<parameter>X-Response-Info</parameter>
+		<parameter>REQPassed</parameter>
+	</function>	
+	<function name="setServerICAPHeader" module="ICAP">
+		<parameter>X-Response-Desc</parameter>
+		<parameter>Passed through REQMOD</parameter>
+	</function>	
+
+	<thread>
+    	<function name="waitForREQMOD" module="ICAP">
+    		<parameter>1</parameter>
+    	</function>	
+    	<function name="setServerICAPHeader" module="ICAP">
+    		<parameter>X-Attribute</parameter>
+    		<parameter>Sports, English</parameter>
+    	</function>	
+    	<function name="setServerICAPHeader" module="ICAP">
+    		<parameter>X-Attribute-Prefix</parameter>
+    		<parameter>2</parameter>
+    	</function>	
+    	<function name="setServerICAPHeader" module="ICAP">
+    		<parameter>X-ICAP-Profile</parameter>
+    		<parameter>RespProfile</parameter>
+    	</function>	
+    	<function name="setServerICAPHeader" module="ICAP">
+    		<parameter>X-Response-Info</parameter>
+    		<parameter>RESPPassed</parameter>
+    	</function>	
+    	<function name="setServerICAPHeader" module="ICAP">
+    		<parameter>X-Response-Desc</parameter>
+    		<parameter>Passed through RESPMOD</parameter>
+    	</function>	
+	</thread>
+	<function name="sendGetRequest" module="HTTP">
+        <parameter>
+    		<parameter>http://icapextension.xtt724.com/?delay=1</parameter>
+        </parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>	
+	<function name="waitForRESPMOD" module="ICAP">
+		<parameter>1</parameter>
+	</function>	
+	<function name="checkHeader" module="HTTP">
+		<parameter>X-XTT-Extension</parameter>
+		<parameter>true</parameter>
+	</function>	
+	<function name="checkServerHeader" module="HTTP">
+		<parameter>X-XTT-Extension</parameter>
+		<parameter>true</parameter>
+	</function>	
+
+	<function name="checkHeader" module="HTTP">
+		<parameter>REQ-X-Attribute</parameter>
+		<parameter>News, German</parameter>
+	</function>	
+	<function name="checkHeader" module="HTTP">
+		<parameter>RESP-X-Attribute</parameter>
+		<parameter>Sports, English</parameter>
+	</function>	
+	<function name="checkHeader" module="HTTP">
+		<parameter>REQ-X-Attribute-Prefix</parameter>
+		<parameter>1</parameter>
+	</function>	
+	<function name="checkHeader" module="HTTP">
+		<parameter>RESP-X-Attribute-Prefix</parameter>
+		<parameter>2</parameter>
+	</function>	
+
+	<function name="checkHeader" module="HTTP">
+		<parameter>REQ-X-ICAP-Profile</parameter>
+		<parameter>ReqProfile</parameter>
+	</function>	
+	<function name="checkHeader" module="HTTP">
+		<parameter>RESP-X-ICAP-Profile</parameter>
+		<parameter>RespProfile</parameter>
+	</function>	
+
+	<function name="checkHeader" module="HTTP">
+		<parameter>REQ-X-Response-Info</parameter>
+		<parameter>REQPassed</parameter>
+	</function>	
+	<function name="checkHeader" module="HTTP">
+		<parameter>RESP-X-Response-Info</parameter>
+		<parameter>RESPPassed</parameter>
+	</function>	
+
+	<function name="checkHeader" module="HTTP">
+		<parameter>REQ-X-Response-Desc</parameter>
+		<parameter>Passed through REQMOD</parameter>
+	</function>	
+	<function name="checkHeader" module="HTTP">
+		<parameter>RESP-X-Response-Desc</parameter>
+		<parameter>Passed through RESPMOD</parameter>
+	</function>	
+
+
+    <subtest name="unloadReqmod" file="unloadReqmod.xml"/>
+
+	<function name="stopWebServer" module="HTTP"/>
+	<function name="stopICAPServer" module="ICAP"/>
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function> 
+</test>

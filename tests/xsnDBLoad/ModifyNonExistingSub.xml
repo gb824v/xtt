@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<dbupdates> 
+<subscribers>
+
+<!-- XSN.DBLoad.SubrMod.TC002.15	Should not allow Modify nonexisting record : Subscriber id is not in database -->
+	<remove subscriber=""NewSubID" />
+	<modify subscriber="NewSubID"> <firstName value="SomeName"/></modify> 
+
+
+</subscribers>
+</dbupdates>
+

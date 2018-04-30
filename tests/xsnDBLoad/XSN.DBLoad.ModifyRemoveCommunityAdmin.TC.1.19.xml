@@ -1,0 +1,32 @@
+	<test>
+	<function name="testName" module="Basic">
+	
+	<parameter>XSN.DBLoad.ModifyRemoveCommunityAdmin.TC.1.19.xml</parameter>
+	</function>
+	
+	<description>Modify and Remove Community Admin</description>
+   
+    <function name="sendRemoteCommand" module="Remote">
+    
+    	<parameter>writeFile ModifyRemoveCommunityAdmin.xml </parameter> 
+         
+        <file>ModifyRemoveCommunityAdmin.xml </file>
+    
+    </function>
+    
+    <function name="sendRemoteCommand" module="Remote">
+    
+        <configuration>xsn/path</configuration>
+        <configuration>xsn/xms</configuration>
+      
+        <parameter>load db ModifyRemoveCommunityAdmin.xml </parameter>
+    
+    </function>
+    
+		<function name="queryResponse" module="Remote">
+			<parameter>SUCCESS: XML upload completed</parameter>
+			<!-- <parameter>ERROR: XML upload encountered problems and ended prematurely</parameter> -->
+			<parameter>dev/null</parameter>
+    </function>    
+   
+  </test>

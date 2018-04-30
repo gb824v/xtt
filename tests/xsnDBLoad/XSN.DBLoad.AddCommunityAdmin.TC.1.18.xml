@@ -1,0 +1,58 @@
+	<test>
+	<function name="testName" module="Basic">
+	
+	<parameter>XSN.DBLoad.AddCommunityAdmin.TC.1.18.xml </parameter>
+	</function>
+	
+	<description>Add Communities Admin </description>
+   
+    <function name="sendRemoteCommand" module="Remote">
+    
+    	<parameter>writeFile AddCommunityAdmin.xml </parameter> 
+         
+        <file>AddCommunityAdmin.xml </file>
+    
+    </function>
+    
+    <function name="sendRemoteCommand" module="Remote">
+    
+        <configuration>xsn/path</configuration>
+        <configuration>xsn/xms</configuration>
+    
+        
+        <parameter>load db AddCommunityAdmin.xml </parameter>
+    
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        
+    <parameter>SUCCESS: XML upload completed</parameter>
+    <!-- <parameter>ERROR: XML upload encountered problems and ended prematurely</parameter> -->
+    <parameter>dev/null</parameter>
+    </function>    
+
+	<function name="queryResponse" module="Remote">
+    <parameter>Cannot add community admin: admin name already exists</parameter>
+       <parameter>dev/null</parameter>
+    </function>    
+
+ <function name="queryResponse" module="Remote">
+       <parameter>Cannot add community admin: admin subscriber doesn't exist</parameter>
+       <parameter>dev/null</parameter>
+    </function>      
+
+ <function name="queryResponse" module="Remote">
+       <parameter>Cannot add community admin: no such community exists</parameter>
+       <parameter>dev/null</parameter>
+    </function>      
+
+<!--
+>  Total XML Element Count            = 83
+>  Total XML Elements Processed Count = 57
+>  Total XML Element Problems Count   = 16  (16 warnings, 0 errors, 0 fatal errors)
+>  Total Elapsed Time                 = 5783ms
+>SUCCESS: XML upload completed.
+>         See results file '/home/xsn/XTT/AddCommunityAdmin.xml.results' for details.
+-->
+    
+  </test>

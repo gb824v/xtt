@@ -1,0 +1,16 @@
+<test>
+    <function name="writeRemoteFile" module="Remote">
+        <parameter>reqmodTCemptyrules.xml</parameter>
+        <parameter>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;requestModifications&gt;&lt;/requestModifications&gt;</parameter>
+    </function>
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>
+            <parameter>load data </parameter>
+            <parameter>reqmodTCemptyrules.xml</parameter>
+        </parameter>
+    </function>
+    <function name="queryResponse" module="Remote">
+        <parameter>^Loaded requestmodifications.*</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+</test>

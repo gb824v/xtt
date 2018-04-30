@@ -1,0 +1,18 @@
+<test>	
+    <name>XTT.TC.001</name>
+    <description>Hello World!</description>
+
+    <div nocomment="No show!"/>
+    <div comment="Here comes the Hello World!">
+    	<function name="info" module="Basic">
+    		<parameter>Hello World!</parameter>
+    	</function>  
+    </div>
+    <div comment="Here ends World!"/>
+    
+    <div fail="Here is fail!"/>
+    <div warn="Here is warn!"/>
+    <div info="Here is info!"/>
+    <div verbose="Here is verbose!"/>
+    <div debug="Here is debug!"/>
+</test>

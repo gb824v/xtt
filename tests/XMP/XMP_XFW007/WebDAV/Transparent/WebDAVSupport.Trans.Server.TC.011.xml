@@ -1,0 +1,52 @@
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+WebDAVSupport.Trans.Server.TC.011  - Validate UNLOCK Request and its Response are successfully proxied by XMP.
+
+Test Description:
+ 1. Start Web-Server.
+ 2. Set Catch file for HTTP Response.
+ 3. Wait for request from client.
+ 4. Stop Web-Server.
+ 
+Expected Result:
+ -  XMP should Validate UNLOCK Request and its Response through Transperant Proxy.
+
+Main XTT Commands:
+      
+ 1.  - startWebServer
+
+ 2.  - setCacheFile 		
+
+ 3.  - waitForRequests	"1"
+
+ 4. - stopWebServer
+      
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- Test Start  -->
+
+<test>
+    <name>WebDAVSupport.Trans.Server.TC.011</name>
+
+    <description>Start web server to Validate UNLOCK Request and its Response are successfully proxied by XMP during Transparent proxy</description>
+
+    <function name="startWebServer" module="HTTP"/>
+
+    <function name="setServerReturnCode" module="HTTP">
+        <parameter>204</parameter>
+    </function>
+
+    <function name="setServerReturnMessage" module="HTTP">
+        <parameter> No Content</parameter>
+    </function>
+
+    <function name="setCacheFile" module="HTTP">
+        <parameter>/file</parameter>
+        <parameter></parameter>
+    </function>
+
+    <function name="waitForRequests" module="HTTP">
+        <parameter>1</parameter>
+    </function>
+
+    <function name="stopWebServer" module="HTTP"/>
+
+</test>

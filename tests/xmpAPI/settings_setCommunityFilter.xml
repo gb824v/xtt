@@ -1,0 +1,29 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://policy.intf.mobilgw.com/">
+  <soap:Body>
+    <tns:setCommunityFilter>
+      <arg0>TheSimpsonFamily</arg0>
+      <arg1>
+        <scheme>2</scheme>
+        <blockedCategories>Gambling</blockedCategories>
+        <blockedUrls>http://travel123.com</blockedUrls>
+        <exceptionUrls>http://travel.com</exceptionUrls>
+        <blockedMmsServices>
+          <shortcodePattern/>
+          <keywords/>
+        </blockedMmsServices>
+        <exceptionMmsServices>
+          <shortcodePattern/>
+          <keywords/>
+        </exceptionMmsServices>
+        <blockedSmsServices>
+          <shortcodePattern/>
+          <keywords/>
+        </blockedSmsServices>
+        <exceptionSmsServices>
+          <shortcodePattern/>
+          <keywords/>
+        </exceptionSmsServices>
+      </arg1>
+    </tns:setCommunityFilter>
+  </soap:Body>
+</soap:Envelope>

@@ -1,0 +1,121 @@
+ <test>
+    <name>RTSP.TC.040_Server</name>
+    <description>Validate Recording</description>
+
+     <!-- client side server for responses -->
+    <function name="setVariable" module="Basic">
+        <parameter>SERVER</parameter>
+        <configuration>RTSPSERVER/PORT</configuration>
+    </function>
+
+     <!-- server side server for requests  -->
+    <function name="startRTSPServer" module="RTSP">
+        <variable>SERVER</variable>
+        <configuration>RTSPSERVER/TIMEOUT</configuration>
+        <testpath>rtsp</testpath>
+    </function>
+
+    <function name="setServerHeader" module="RTSP">
+        <parameter>Public</parameter>
+        <parameter>SETUP</parameter>
+    </function>
+
+    <function name="waitForVariable" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>SERVER</variable>
+            <parameter>/OPTIONS/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+    <function name="removeVariables" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>SERVER</variable>
+            <parameter>/OPTIONS/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+    <function name="clearServerHeader" module="RTSP"/>
+
+    <function name="waitForVariable" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>SERVER</variable>
+            <parameter>/ANNOUNCE/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+    <function name="removeVariables" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>SERVER</variable>
+            <parameter>/ANNOUNCE/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+    <function name="setServerHeader" module="RTSP">
+        <parameter>Transport</parameter>
+        <parameter>RTP/AVP;multicast;destination=224.0.1.11;port=21010-21011;mode=record;ttl=127</parameter>
+    </function>
+
+    <function name="waitForVariable" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>SERVER</variable>
+            <parameter>/SETUP/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+    <function name="removeVariables" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>SERVER</variable>
+            <parameter>/SETUP/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+    <function name="clearServerHeader" module="RTSP"/>
+
+    <function name="setServerHeader" module="RTSP">
+        <parameter>Transport</parameter>
+        <parameter>RTP/AVP;multicast;destination=224.0.1.12;port=61010-61011;mode=record;ttl=127</parameter>
+    </function>
+
+    <function name="waitForVariable" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>SERVER</variable>
+            <parameter>/SETUP/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+    <function name="removeVariables" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>SERVER</variable>
+            <parameter>/SETUP/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+    <function name="clearServerHeader" module="RTSP"/>
+
+    <function name="waitForVariable" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>SERVER</variable>
+            <parameter>/RECORD/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+    <function name="removeVariables" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>SERVER</variable>
+            <parameter>/RECORD/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+    <function name="stopRTSPServer" module="RTSP"/>
+
+</test>

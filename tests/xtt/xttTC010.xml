@@ -1,0 +1,69 @@
+<test>
+    <name>XTT.TC.006</name>
+    <description>Test the checkServer and checkServerHeader functions in HTTP</description>
+
+    <function name="startWebServer" module="HTTP"/>
+
+    <function name="setHeader" module="HTTP">
+        <parameter>ServerTest</parameter>
+        <parameter>somevalue</parameter>
+    </function>
+    <function name="setServerHeader" module="HTTP">
+        <parameter>ClientTest</parameter>
+        <parameter>othervalue</parameter>
+    </function>
+
+	<function name="sendGetRequest" module="HTTP">
+ 	    <parameter>http://127.0.0.1</parameter>
+    </function>
+    
+
+	<function name="checkHeader" module="HTTP">
+ 	    <parameter>ClientTest</parameter>
+ 	    <parameter>othervalue</parameter>
+    </function>
+	<function name="checkHeaderNot" module="HTTP">
+ 	    <parameter>ClientTest</parameter>
+ 	    <parameter>null</parameter>
+    </function>
+	<function name="checkHeaderNot" module="HTTP">
+ 	    <parameter>ClientTest</parameter>
+ 	    <parameter>somevalue</parameter>
+    </function>
+	<function name="checkHeader" module="HTTP">
+ 	    <parameter>ClientNotTest</parameter>
+ 	    <parameter>null</parameter>
+    </function>
+	<function name="checkHeader" module="HTTP">
+ 	    <parameter>ClientTest</parameter>
+    </function>
+	<function name="checkHeaderNot" module="HTTP">
+ 	    <parameter>ClientNotTest</parameter>
+    </function>
+
+	<function name="checkServerHeader" module="HTTP">
+ 	    <parameter>ServerTest</parameter>
+ 	    <parameter>somevalue</parameter>
+    </function>
+	<function name="checkServerHeaderNot" module="HTTP">
+ 	    <parameter>ServerTest</parameter>
+ 	    <parameter>null</parameter>
+    </function>
+	<function name="checkServerHeaderNot" module="HTTP">
+ 	    <parameter>ServerTest</parameter>
+ 	    <parameter>othervalue</parameter>
+    </function>
+	<function name="checkServerHeader" module="HTTP">
+ 	    <parameter>ServerNotTest</parameter>
+ 	    <parameter>null</parameter>
+    </function>
+	<function name="checkServerHeader" module="HTTP">
+ 	    <parameter>ServerTest</parameter>
+    </function>
+	<function name="checkServerHeaderNot" module="HTTP">
+ 	    <parameter>ServerNotTest</parameter>
+    </function>
+
+    <function name="stopWebServer" module="HTTP"/>
+
+</test>

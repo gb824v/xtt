@@ -1,0 +1,93 @@
+<test>
+	<function name="testName" module="Basic">
+		<parameter>Bugzilla24113.TC.001</parameter>
+	</function>
+	<description>Validate XMP scans the response which fits to the default value of ResponseCondition ("[IM_ContentType] matches '^application/' &amp;&amp; not [IM_ContentType] matches '^application/vnd.wap.'") / XMP blocks</description>
+
+<subtest>virus_scan_reqmod.xml</subtest>
+
+	<!-- Set KSPRSKY_CFG_ResponseCondition -->
+	<function name="activeProcessToVar" module="Remote">
+		<parameter><configuration>HttpProxy/ProcessName</configuration><parameter>.*1</parameter></parameter>
+		<parameter>Name_Of_Tcp_Router_Process</parameter>
+	</function>
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>run command cmu -CKSPRSKY_CFG_ResponseCondition </parameter>
+			<variable>Name_Of_Tcp_Router_Process</variable>
+			<parameter> [IM_ContentType] matches '^application/' &amp;amp;&amp;amp; not [IM_ContentType] matches '^application/vnd.wap.'</parameter>
+		</parameter>
+	</function>
+	<function name="queryResponse" module="Remote">
+		<parameter>KSPRSKY_CFG_ResponseCondition[\s]++:[\s]++\[IM_ContentType\] matches '\^application/' &amp;&amp; not \[IM_ContentType\] matches '\^application/vnd\.wap\.'</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	<function name="queryResponse" module="Remote">
+		<parameter>Update successful</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+
+	<function name="disableFollowRedirects" module="HTTP"/>
+
+	<!-- Start Web Server -->
+	<function name="startWebServer" module="HTTP" />
+
+	<!-- Radius Login -->
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+	<function name="setCacheFile" module="HTTP">
+		<parameter>virus.bin</parameter>
+		<base64decode><base64decode><file>base64virus.bin</file></base64decode></base64decode>
+	</function>
+
+	<!-- Send virus Infected data in HTTP Get Proxy Request -->
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>
+			<parameter>http://</parameter>
+			<configuration>SYSTEM/IP</configuration>
+			<parameter>/virus.bin</parameter>
+		</parameter>
+	</function>
+
+	<!-- Validate Response Code Send by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>302</parameter>
+	</function>
+
+	 <function name="queryHeader" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>location</parameter>
+		<parameter>http://www.telco.com/Blocked/Virus.html</parameter>
+	</function> 
+	
+	<!-- Radius Logoff -->
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+	<!-- Stop Web Server -->
+	<function name="stopWebServer" module="HTTP"/>
+	
+	<!-- Reset KSPRSKY_CFG_ResponseCondition -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>run command cmu -CKSPRSKY_CFG_ResponseCondition </parameter>
+			<variable>Name_Of_Tcp_Router_Process</variable>
+			<parameter> [IM_ContentType] matches '.*/.*'</parameter>
+		</parameter>
+	</function>
+	<function name="queryResponse" module="Remote">
+		<parameter>KSPRSKY_CFG_ResponseCondition[\s]++:[\s]++\[IM_ContentType\] matches '\.\*/\.\*'</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	<function name="queryResponse" module="Remote">
+		<parameter>Update successful</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+</test>

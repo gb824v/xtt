@@ -1,0 +1,79 @@
+ <test>
+	<name>RTSP.TC.005_server</name>
+	<description>Test RTSP PLAY method on Server side</description>
+
+	<function name="setCacheFileBase64" module="RTSP">
+	    <parameter>PLAY</parameter>
+        <parameter>/Yakeen.rm</parameter>
+        <base64file>/rtsp/Yakeen.rm</base64file>
+    </function>	
+	
+    <!-- client side server for responses -->
+    <function name="setVariable" module="Basic">
+        <parameter>SERVER</parameter>
+        <configuration>RTSPSERVER/PORT</configuration>
+    </function>
+
+    <!-- server side server for requests -->
+    <function name="startRTSPServer" module="RTSP">
+        <variable>SERVER</variable>
+        <configuration>RTSPSERVER/TIMEOUT</configuration>
+        <testpath>rtsp</testpath>
+    </function>
+
+     <function name="setServerHeader" module="RTSP">
+        <parameter>Transport</parameter>
+        <parameter>RTP/AVP/TCP;interleaved=0-1</parameter>
+    </function>
+
+	<function name="waitForVariable" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>SERVER</variable>
+            <parameter>/SETUP/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+    <function name="removeVariables" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>SERVER</variable>
+            <parameter>/SETUP/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+    <function name="setVariable" module="Basic">
+         <parameter>content</parameter>
+		 <parameter>
+			<file>/rtsp/Yakeen.rm</file>
+		 </parameter>
+    </function>
+
+    <function name="setServerHeader" module="RTSP">
+         <parameter>Range</parameter>
+		 <parameter>npt=10-15</parameter>
+    </function>
+
+	<function name="setServerHeader" module="RTSP">
+         <parameter>Content-Length</parameter>
+    	 <base64bytelength><variable>content</variable></base64bytelength>
+    </function>
+
+    <function name="waitForVariable" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>SERVER</variable>
+            <parameter>/PLAY/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+    
+	<function name="removeVariables" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>SERVER</variable>
+            <parameter>/PLAY/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+ 
+    <function name="stopRTSPServer" module="RTSP"/> 
+
+</test>

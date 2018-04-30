@@ -1,0 +1,89 @@
+<test>
+    <function name="testName" module="Basic">
+        <parameter>SMPP.SMSC.TC.002</parameter>
+    </function>
+
+    <function name="startSMSCServer" module="SMS">
+        <configuration>SMSCSERVER/PORT</configuration>
+        <parameter>SMPP</parameter>
+        <parameter>-1</parameter>
+        <parameter>true</parameter>
+        <parameter>2000</parameter>
+        <parameter>5000</parameter>
+        <parameter>500</parameter>
+    </function>
+
+        <function name="createServerConnection" module="SMPP">
+            <parameter>servercon</parameter>
+            <!--parameter>172.20.2.83</parameter-->
+            <configuration>SYSTEM/IP</configuration>
+            <!--parameter>2000</parameter-->
+            <configuration>SMSCSERVER/PORT</configuration>
+        </function>
+
+        <function name="sendSMPPPacket" module="SMPP">
+            <parameter>servercon</parameter>
+            <parameter>BIND_TRANSCEIVER</parameter>
+            <parameter>internal</parameter>
+            <parameter>systemid</parameter>
+            <parameter>password</parameter>
+            <parameter>system_type</parameter>
+            <parameter>0x50</parameter>
+            <parameter>0</parameter>
+            <parameter>0</parameter>
+            <parameter>0</parameter>
+            <parameter>address_range</parameter>
+        </function>
+
+        <function name="sleep" module="basic">
+            <parameter>2000</parameter>
+        </function>
+
+        <function name="sendSMPPPacket" module="SMPP">
+            <parameter>servercon</parameter>
+            <parameter>SUBMIT_SM</parameter>
+            <parameter>internal</parameter>
+            <parameter>STYP</parameter>
+            <parameter>0</parameter>
+            <parameter>0</parameter>
+            <parameter>+41794122345</parameter>
+            <parameter>0</parameter>
+            <parameter>0</parameter>
+            <parameter>+41790001234</parameter>
+            <parameter>0</parameter>
+            <parameter>0</parameter>
+            <parameter>0</parameter>
+            <parameter></parameter>
+            <parameter></parameter>
+            <parameter>0</parameter>
+            <parameter>0</parameter>
+            <parameter>0</parameter>
+            <parameter>0</parameter>
+            <parameter>This is the Message</parameter>
+        </function>
+
+        <!--function name="stop" module="xtt"/-->
+
+
+        <function name="sleep" module="basic">
+            <parameter>6000</parameter>
+        </function>
+
+        <function name="sendSMPPPacket" module="SMPP">
+            <parameter>servercon</parameter>
+            <parameter>UNBIND</parameter>
+            <parameter>internal</parameter>
+        </function>
+
+        <function name="sleep" module="basic">
+            <parameter>2000</parameter>
+        </function>
+
+        <function name="closeConnection" module="SMPP">
+            <parameter>servercon</parameter>
+        </function>
+
+    <function name="waitOnThreads" module="Basic"/>
+    <function name="stopSMSCServer" module="SMS"/>
+
+</test>

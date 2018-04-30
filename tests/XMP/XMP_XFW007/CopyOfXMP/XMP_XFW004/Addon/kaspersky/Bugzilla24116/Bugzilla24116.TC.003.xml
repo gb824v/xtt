@@ -1,0 +1,81 @@
+<test>
+	<function name="testName" module="Basic">
+		<parameter>Bugzilla24116.TC.003</parameter>
+	</function>
+
+	<description>Validate the statistics values of KSPRSKY component / Create at least a few events whose statistics are calculated 
+	[KSPRSKY_STATS_Stats.clean]</description>
+
+    <!-- Validate KSPRSKY_STATS_Stats.clean statistic-->
+
+	<function name="disableFollowRedirects" module="HTTP"/>
+
+	<!-- Start Web Server -->
+	<function name="startWebServer" module="HTTP" />
+
+	<!-- Radius Login -->
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+	<!-- Start & Stop TCP-ROUTER process -->
+	<!-- Get the name of TCP-ROUTER.1 process -->
+	<function name="activeProcessToVar" module="Remote">
+		<parameter><configuration>HttpProxy/ProcessName</configuration><parameter>.*\.1</parameter></parameter>
+		<parameter>Name_Of_Tcp_Router_Process</parameter>
+	</function>
+	<!-- Restart TCP-ROUTER -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>restart process </parameter>
+			<variable>Name_Of_Tcp_Router_Process</variable>
+		</parameter>
+	</function>
+
+	<function name="sleep" module="Basic">
+		<parameter>5000</parameter>
+	</function>
+
+    <function name="setCacheFile" module="HTTP">
+		<parameter>clean.html</parameter>
+		<file>clean.txt</file>
+	</function>
+
+	<!-- Send virus Infected data in HTTP Get Proxy Request -->
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>
+			<parameter>http://</parameter>
+			<configuration>SYSTEM/IP</configuration>
+			<parameter>/clean.html</parameter>
+		</parameter>
+	</function>
+
+	<!-- Validate Response Code Send by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>run command cmu -O KSPRSKY -d </parameter>
+			<variable>Name_Of_Tcp_Router_Process</variable>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>KSPRSKY_STATS_Stats.clean[\s]++:[\s]++1</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	
+
+	<!-- Radius Logoff -->
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+	<!-- Stop Web Server -->
+	<function name="stopWebServer" module="HTTP"/>
+
+</test>

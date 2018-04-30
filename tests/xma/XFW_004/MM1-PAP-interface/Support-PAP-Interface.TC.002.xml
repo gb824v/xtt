@@ -1,0 +1,245 @@
+<test>
+
+	<function name="testName" module="Basic">
+		<parameter>Support-PAP-Interface.TC.002</parameter>
+	</function>
+
+	<description>MM7 -> MM1 / Sender requested Delivery Reports / Verify MM1 outgoing DR notification work over PAP</description>
+
+	<configuration>../xmaConfig.xml</configuration>
+
+	<!-- Start MMSC to get DR -->
+	<function name="startMMSCServer" module="MMSC">
+		<configuration>VASP/PORT</configuration>
+		<configuration>WEBSERVER/ROOT</configuration>
+		<configuration>WEBSERVER/TIMEOUT</configuration>
+	</function>
+
+	<subtest name="deleteMessagestoreAll" file="../deleteMessagestoreAll.xml"/>
+
+	<!-- Start Web Server for PPG gateway. -->
+	<function name="startWebServer" module="HTTP">
+		<configuration>pap/ppgPort</configuration>
+		<configuration>WEBSERVER/ROOT</configuration>
+		<configuration>WEBSERVER/TIMEOUT</configuration>
+	</function>
+
+	<!-- Set XTT response for PAP request -->
+	<function name="setDefaultWebWorkerExtension" module="HTTP">
+		<configuration>PUSH/PORT</configuration>
+		<parameter>com.mobilgw.xtt.WebWorkerExtensionPushInitiator</parameter>
+	</function>
+
+	<subtest name="loadVariables" file="loadVariables.xml">
+		<parameter>MSISDN</parameter>
+	</subtest>
+
+	<function name="setVariable" module="Basic">
+		<parameter>MSISDN</parameter>
+		<variable>MSISDN/0</variable>
+	</function>
+
+	<function name="createMM7Soap" module="VASP">
+		<parameter>SubmitReq</parameter>
+		<configuration>VASP/VASPID</configuration>
+		<configuration>VASP/VASID</configuration>
+	</function>
+
+	<function name="setMessageBoundary" module="VASP">
+		<parameter>000001message</parameter>
+	</function>
+
+	<function name="setSoapData" module="VASP">
+		<parameter>//*[local-name()='SenderIdentification']</parameter>
+		<parameter>SenderAddress</parameter>
+	</function>
+
+	<function name="setSoapData" module="VASP">
+		<parameter>//*[local-name()='SenderAddress']</parameter>
+		<parameter>Number</parameter>
+		<configuration>VASP/NUMBER</configuration>
+	</function>
+
+	<function name="setSoapData" module="VASP">
+		<parameter>//*[local-name()='SubmitReq']</parameter>
+		<parameter>Recipients</parameter>
+	</function>
+
+	<function name="setSoapData" module="VASP">
+		<parameter>//*[local-name()='Recipients']</parameter>
+		<parameter>To</parameter>
+	</function>
+
+	<function name="setSoapData" module="VASP">
+		<parameter>//*[local-name()='To'][last()]</parameter>
+		<parameter>Number</parameter>
+		<variable>MSISDN</variable>
+	</function>
+
+	<function name="setSoapData" module="VASP">
+		<parameter>//*[local-name()='SubmitReq']</parameter>
+		<parameter>Content</parameter>
+	</function>
+
+	<function name="setSoapData" module="VASP">
+		<parameter>//*[local-name()='SubmitReq']</parameter>
+		<parameter>DeliveryReport</parameter>
+		<parameter>true</parameter>
+	</function>
+
+	<function name="setHeader" module="VASP">
+		<parameter>x-vasp-url</parameter>
+		<parameter>
+		<parameter>http://</parameter>
+		<configuration>system/ip</configuration>
+		<parameter>:</parameter>
+		<configuration>vasp/port</configuration>
+		<parameter>/</parameter>
+		<configuration>vasp/Directory</configuration>
+		</parameter>
+	</function>
+
+	<function name="setSoapAttribute" module="VASP">
+		<parameter>//*[local-name()='Content']</parameter>
+		<parameter>href</parameter>
+		<parameter>cid:xtt-test001</parameter>
+	</function>
+
+	<function name="addContent" module="VASP">
+		<file>sendMM7data.txt</file>
+	</function>
+
+	<function name="sendPostRequest" module="VASP"/>
+	<function name="checkResponseCode" module="VASP">
+		<parameter>200</parameter>
+	</function>
+
+	<function name="queryBody" module="VASP">
+		<parameter>temp</parameter>
+		<parameter>&lt;StatusCode&gt;1000&lt;/StatusCode&gt;</parameter>
+	</function>
+
+	<function name="queryBody" module="VASP">
+		<parameter>MessageID</parameter>
+		<parameter>&lt;MessageID&gt;(\p{Alnum}{13})&lt;/MessageID&gt;</parameter>
+	</function> 
+
+	<function name="waitForRequests" module="HTTP">
+		<parameter>1</parameter>
+	</function>
+
+	<function name="info" module="Basic">
+		<variable>WEBSERVER/POST/MULTIPART/RELATED; BOUNDARY="ASDLFKJIURWGHASF"; TYPE="APPLICATION/XML"/PLAIN</variable>
+	</function>
+
+	<function name="setVariable" module="BASIC">
+		<parameter>x_mms_transaction_id</parameter>
+		<parameter>
+			<variable>MessageID</variable>
+			<parameter>@xma.724.com</parameter>
+		</parameter>
+	</function>
+
+	<function name="setHeader" module="HTTP">
+		<parameter>Accept</parameter>
+		<parameter>text/vnd.wap.wml, application/xml, image/gif, application/vnd.wap.mms-message</parameter>
+	</function>
+
+	<function name="setHeader" module="HTTP">
+		<parameter>User-Agent</parameter>
+		<parameter>UserAgent-1</parameter>
+	</function>
+
+	<function name="setHeader" module="HTTP">
+		<parameter>accept-charset</parameter>
+		<parameter>utf-8</parameter>
+	</function>
+
+	<function name="setHeader" module="HTTP">
+		<configuration>SMSCSERVER/MM1MSISDNHEADER</configuration>
+		<variable>MSISDN</variable>
+	</function>
+
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>
+ 			<parameter>http://</parameter>
+			<configuration>SMSCServer/MM1Ip</configuration>
+			<parameter>:</parameter>
+			<configuration>SMSCServer/MM1Port</configuration> 
+			<parameter>/</parameter>
+			<variable>MessageID</variable>
+		</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<function name="sendMM1NotifyResponse" module="SMS">
+		<parameter>retrieved</parameter>
+		<variable>x_mms_transaction_id</variable>
+		<variable>MSISDN</variable>
+	</function>
+
+	<function name="checkResponseCode" module="SMS">
+		<parameter>200</parameter>
+		<parameter>204</parameter>
+	</function> 
+
+	<function name="waitForPOSTs" module="HTTP">
+		<parameter>1</parameter>
+	</function>
+
+	<function name="waitForRequests" module="MMSC">
+		<parameter>1</parameter>
+	</function>
+
+	<!-- It's a good Idea to check whether the response is actually a correct MM7 request by validating against the standard -->
+	<function name="validateXML" module="XML">
+		<variable>MMSCSERVER/MM7/SOAP</variable>
+		<parameter></parameter>
+		<configuration>MMSCSERVER/XMLNSENV</configuration>
+		<configuration>MMSCSERVER/SOAPXSD</configuration>
+		<configuration>MMSCSERVER/XMLNSMM7</configuration>
+		<configuration>MMSCSERVER/MM7XSD</configuration>
+	</function>
+
+	<function name="queryVariable" module="BASIC">
+		<parameter>MMSCSERVER/MM7/SOAP</parameter>
+		<parameter>MessageID2</parameter>
+		<parameter>&lt;MessageID&gt;(\p{Alnum}{13})&lt;/MessageID&gt;</parameter>
+	</function>
+
+	<function name="compareString" module="BASIC">
+		<variable>MessageID2</variable>
+		<variable>MessageID</variable>
+	</function>
+
+	<function name="queryVariable" module="BASIC">
+		<parameter>MMSCSERVER/MM7/SOAP</parameter>
+		<parameter>dev/null</parameter>
+		<parameter>&lt;MMStatus&gt;Retrieved&lt;/MMStatus&gt;</parameter>
+	</function>
+
+	<function name="queryVariable" module="BASIC">
+		<parameter>MMSCSERVER/MM7/SOAP</parameter>
+		<parameter>dev/null</parameter>
+		<parameter>
+			<parameter>&lt;DeliveryReportReq xmlns="</parameter><configuration>VASP/XMLNSMM7</configuration><parameter>"&gt;</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryVariable" module="Basic">
+		<parameter>MMSCSERVER/MM7/SOAP</parameter>
+		<parameter>dev/null</parameter>
+		<parameter> <parameter>&lt;MM7Version&gt;</parameter><configuration>VASP/MM7VERSION</configuration><parameter>&lt;/MM7Version&gt;</parameter>
+		</parameter>
+	</function>
+
+	<!-- Stop Web Server -->
+	<function name="stopWebServer" module="HTTP"/>
+
+	<!-- Stop MMSC Server -->
+	<function name="stopMMSCServer" module="MMSC"/>
+
+</test>

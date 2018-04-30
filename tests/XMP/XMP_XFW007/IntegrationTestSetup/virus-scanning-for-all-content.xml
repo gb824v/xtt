@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+    <modifications xmlns="http://www.xmldb.org/xupdate" version="1.0">
+    <!-- Enable virus scanning for all content types -->
+		<update select="//component-view/processgroup/component/KSPRSKY_CFG/ResponseCondition">[IM_ContentType] matches '.*/.*'</update>
+</modifications>

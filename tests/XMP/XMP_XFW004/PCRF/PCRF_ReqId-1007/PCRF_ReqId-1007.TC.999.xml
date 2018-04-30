@@ -1,0 +1,9 @@
+<test>
+
+	<name>PCRF_ReqId-1006.TC.999.xml</name>
+	<description>unload Dynamic Configuration Files</description>
+
+	<!-- Load PCC Modification File -->
+	<subtest>../unloadConfiguration.xml</subtest>
+
+</test>

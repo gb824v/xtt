@@ -1,0 +1,385 @@
+<test>
+<name>ContentFiltering.TC.003</name>
+<qcid></qcid>
+<description>
+ContentFiltering.TC.003
+</description>
+<steps>
+Basic/testName
+Remote/activeProcessToVar
+Remote/executeRemoteXMSCommand
+Remote/executeRemoteXMSCommand
+Basic/sleep
+Remote/writeRemoteFile
+Remote/executeRemoteXMSCommand
+Remote/queryResponse
+Remote/writeRemoteFile
+Remote/executeRemoteXMSCommand
+Remote/queryResponse
+Remote/executeRemoteXMSCommand
+Remote/queryResponse
+Remote/executeRemoteXMSCommand
+Remote/queryResponse
+Radius/radiusLogon
+HTTP/sendGetRequest
+HTTP/checkResponseCode
+HTTP/checkHeader
+HTTP/checkHeader
+Basic/sleep
+HTTP/sendGetRequest
+HTTP/checkResponseCode
+HTTP/checkHeader
+HTTP/checkHeader
+Remote/executeRemoteXMSCommand
+Remote/executeRemoteXMSCommand
+Basic/sleep
+Remote/executeRemoteXMSCommand
+Remote/queryResponse
+Remote/executeRemoteXMSCommand
+Remote/queryResponse
+HTTP/sendGetRequest
+HTTP/checkResponseCode
+HTTP/checkHeader
+HTTP/checkHeader
+Radius/radiusLogoff
+Remote/writeRemoteFile
+Remote/executeRemoteXMSCommand
+Remote/queryResponse
+</steps>
+<designer>guyb </designer>
+<creationdate>2012-03-29 16:49:46 </creationdate>
+<testlevel>---</testlevel>
+<xfwVersion>XMP_XFW006</xfwVersion>
+<mandatory>false</mandatory>
+<stepname>Basic/testName</stepname>
+<stepid>1</stepid>
+<function name="testName" module="Basic">
+<parameter>ContentFiltering.TC.003.xml</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Remote/activeProcessToVar</stepname>
+<stepid>2</stepid>
+<function name="activeProcessToVar" module="Remote">
+<parameter>CONTENT-CATEGORIZER</parameter>
+<parameter>Name_Of_Content_Categorizer_Process</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Remote/executeRemoteXMSCommand</stepname>
+<stepid>3</stepid>
+<function name="executeRemoteXMSCommand" module="Remote">
+<parameter>
+<parameter>stop process </parameter>
+<variable>Name_Of_Content_Categorizer_Process</variable>
+</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Remote/executeRemoteXMSCommand</stepname>
+<stepid>4</stepid>
+<function name="executeRemoteXMSCommand" module="Remote">
+<parameter>
+<parameter>start process </parameter>
+<variable>Name_Of_Content_Categorizer_Process</variable>
+</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Basic/sleep</stepname>
+<stepid>5</stepid>
+<function name="sleep" module="Basic">
+<parameter>2500</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Remote/writeRemoteFile</stepname>
+<stepid>6</stepid>
+<function name="writeRemoteFile" module="Remote">
+<parameter>Reqmod_ContentFiltering.TC.001.xml</parameter>
+<xml>&lt;?xml version="1.0"?&gt;
+<requestModifications xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="requestmodifications.xsd">
+  <table name="Add Category to the HTTP Header" phase="httpResponse">
+    <selector>
+      <modifyContext name="HTA_RespHdr_CCF_Categories" value="CCF_Categories" />
+      <modifyContext name="HTA_RespHdr_Internal_Categories" value="Internal_Categories" />
+      <modifyContext name="Skip_CACHE" value="'true'" />
+      <modifyContext name="Skip_VIRUSSCANNER" value="'true'" />
+      <modifyContext name="FTR_HtmlTidyDisable" value="'true'" />
+      <modifyContext name="Skip_COOKIE" value="'true'" />
+      <modifyContext name="Skip_ICC" value="'true'" />
+      <modifyContext name="FTR_MultipartCompose_Disable" value="'true'" />
+      <modifyContext name="FTR_Prefetch_Disable" value="'true'" />
+      <modifyContext name="FTR_Deflate_Disable" value="'true'" />
+      <modifyContext name="FTR_Gzip_Disable" value="'true'" />
+    </selector>
+  </table>
+</requestModifications>
+
+</xml>
+</function>
+<mandatory>false</mandatory>
+<stepname>Remote/executeRemoteXMSCommand</stepname>
+<stepid>7</stepid>
+<function name="executeRemoteXMSCommand" module="Remote">
+<parameter>
+<parameter>load data </parameter>
+<parameter>Reqmod_ContentFiltering.TC.001.xml</parameter>
+</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Remote/queryResponse</stepname>
+<stepid>8</stepid>
+<function name="queryResponse" module="Remote">
+<parameter>^Loaded requestmodifications.*</parameter>
+<parameter>dev/null</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Remote/writeRemoteFile</stepname>
+<stepid>9</stepid>
+<function name="writeRemoteFile" module="Remote">
+<parameter>CategoriesFileForCtengine_ContentFiltering.TC.001.xml</parameter>
+<xml>&lt;?xml version="1.0"?&gt;
+<xmpCategories>
+  <categories>
+    <category name="Unknown external category" subscriberFilterable="false" />
+    <category name="No external category" subscriberFilterable="false" />
+    <category name="Internal Unknown" subscriberFilterable="false" />
+    <category name="Internal Shopping" />
+    <category name="Internal Education" />
+    <category name="Internal Dating" />
+  </categories>
+  <categoryMappings>
+    <!--map externalName="*" category="Unknown external category"/-->
+    <!--map externalName=""  category="No external category"/-->
+    <!--map externalName="Unknown"  category="Internal Unknown"/-->
+    <map externalName="Shopping" category="Internal Shopping" />
+    <map externalName="Education" category="Internal Education" />
+    <map externalName="Dating &amp; Personals" category="Internal Dating" />
+  </categoryMappings>
+</xmpCategories>
+
+</xml>
+</function>
+<mandatory>false</mandatory>
+<stepname>Remote/executeRemoteXMSCommand</stepname>
+<stepid>10</stepid>
+<function name="executeRemoteXMSCommand" module="Remote">
+<parameter>
+<parameter>load data </parameter>
+<parameter>CategoriesFileForCtengine_ContentFiltering.TC.001.xml</parameter>
+</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Remote/queryResponse</stepname>
+<stepid>11</stepid>
+<function name="queryResponse" module="Remote">
+<parameter>^Loaded xmpcategories.*</parameter>
+<parameter>dev/null</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Remote/executeRemoteXMSCommand</stepname>
+<stepid>12</stepid>
+<function name="executeRemoteXMSCommand" module="Remote">
+<parameter>
+<parameter>run command cmu -C CCF_CFG_MaxClassifyUrlRetries </parameter>
+<variable>Name_Of_Content_Categorizer_Process</variable>
+<parameter> 0</parameter>
+</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Remote/queryResponse</stepname>
+<stepid>13</stepid>
+<function name="queryResponse" module="Remote">
+<parameter>CCF_CFG_MaxClassifyUrlRetries                               : 0</parameter>
+<parameter>dev/null</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Remote/executeRemoteXMSCommand</stepname>
+<stepid>14</stepid>
+<function name="executeRemoteXMSCommand" module="Remote">
+<parameter>
+<parameter>run command cmu -C CCF_CFG_ClassifyUrlRetryIntervalMilliseconds </parameter>
+<variable>Name_Of_Content_Categorizer_Process</variable>
+<parameter> 500</parameter>
+</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Remote/queryResponse</stepname>
+<stepid>15</stepid>
+<function name="queryResponse" module="Remote">
+<parameter>CCF_CFG_ClassifyUrlRetryIntervalMilliseconds                : 500</parameter>
+<parameter>dev/null</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Radius/radiusLogon</stepname>
+<stepid>16</stepid>
+<function name="radiusLogon" module="Radius">
+<parameter>xttuser</parameter>
+<parameter>12346</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/sendGetRequest</stepname>
+<stepid>17</stepid>
+<function name="sendGetRequest" module="HTTP">
+<parameter>http://www.istanbul.net</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/checkResponseCode</stepname>
+<stepid>18</stepid>
+<function name="checkResponseCode" module="HTTP">
+<parameter>200</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/checkHeader</stepname>
+<stepid>19</stepid>
+<function name="checkHeader" module="HTTP">
+<parameter>CCF_Categories</parameter>
+<parameter>Unknown</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/checkHeader</stepname>
+<stepid>20</stepid>
+<function name="checkHeader" module="HTTP">
+<parameter>Internal_Categories</parameter>
+<parameter></parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Basic/sleep</stepname>
+<stepid>21</stepid>
+<function name="sleep" module="Basic">
+<parameter>2500</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/sendGetRequest</stepname>
+<stepid>22</stepid>
+<function name="sendGetRequest" module="HTTP">
+<parameter>http://www.istanbul.net</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/checkResponseCode</stepname>
+<stepid>23</stepid>
+<function name="checkResponseCode" module="HTTP">
+<parameter>200</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/checkHeader</stepname>
+<stepid>24</stepid>
+<function name="checkHeader" module="HTTP">
+<parameter>CCF_Categories</parameter>
+<parameter>Dating &amp; Personals</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/checkHeader</stepname>
+<stepid>25</stepid>
+<function name="checkHeader" module="HTTP">
+<parameter>Internal_Categories</parameter>
+<parameter>Internal Dating</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Remote/executeRemoteXMSCommand</stepname>
+<stepid>26</stepid>
+<function name="executeRemoteXMSCommand" module="Remote">
+<parameter>
+<parameter>stop process </parameter>
+<variable>Name_Of_Content_Categorizer_Process</variable>
+</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Remote/executeRemoteXMSCommand</stepname>
+<stepid>27</stepid>
+<function name="executeRemoteXMSCommand" module="Remote">
+<parameter>
+<parameter>start process </parameter>
+<variable>Name_Of_Content_Categorizer_Process</variable>
+</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Basic/sleep</stepname>
+<stepid>28</stepid>
+<function name="sleep" module="Basic">
+<parameter>2500</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Remote/executeRemoteXMSCommand</stepname>
+<stepid>29</stepid>
+<function name="executeRemoteXMSCommand" module="Remote">
+<parameter>
+<parameter>run command cmu -C CCF_CFG_MaxClassifyUrlRetries </parameter>
+<variable>Name_Of_Content_Categorizer_Process</variable>
+<parameter> 10</parameter>
+</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Remote/queryResponse</stepname>
+<stepid>30</stepid>
+<function name="queryResponse" module="Remote">
+<parameter>CCF_CFG_MaxClassifyUrlRetries                               : 10</parameter>
+<parameter>dev/null</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Remote/executeRemoteXMSCommand</stepname>
+<stepid>31</stepid>
+<function name="executeRemoteXMSCommand" module="Remote">
+<parameter>
+<parameter>run command cmu -C CCF_CFG_ClassifyUrlRetryIntervalMilliseconds </parameter>
+<variable>Name_Of_Content_Categorizer_Process</variable>
+<parameter> 500</parameter>
+</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Remote/queryResponse</stepname>
+<stepid>32</stepid>
+<function name="queryResponse" module="Remote">
+<parameter>CCF_CFG_ClassifyUrlRetryIntervalMilliseconds                : 500</parameter>
+<parameter>dev/null</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/sendGetRequest</stepname>
+<stepid>33</stepid>
+<function name="sendGetRequest" module="HTTP">
+<parameter>http://www.istanbul.net</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/checkResponseCode</stepname>
+<stepid>34</stepid>
+<function name="checkResponseCode" module="HTTP">
+<parameter>200</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/checkHeader</stepname>
+<stepid>35</stepid>
+<function name="checkHeader" module="HTTP">
+<parameter>CCF_Categories</parameter>
+<parameter>Dating &amp; Personals</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/checkHeader</stepname>
+<stepid>36</stepid>
+<function name="checkHeader" module="HTTP">
+<parameter>Internal_Categories</parameter>
+<parameter>Internal Dating</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Radius/radiusLogoff</stepname>
+<stepid>37</stepid>
+<function name="radiusLogoff" module="Radius">
+<parameter>xttuser</parameter>
+<parameter>12346</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Remote/writeRemoteFile</stepname>
+<stepid>38</stepid>
+<function name="writeRemoteFile" module="Remote">
+<parameter>reqmodTCemptyrules.xml</parameter>
+<parameter>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;requestModifications&gt;&lt;/requestModifications&gt;</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Remote/executeRemoteXMSCommand</stepname>
+<stepid>39</stepid>
+<function name="executeRemoteXMSCommand" module="Remote">
+<parameter>load data reqmodTCemptyrules.xml</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Remote/queryResponse</stepname>
+<stepid>40</stepid>
+<function name="queryResponse" module="Remote">
+<parameter>Loaded requestmodifications</parameter>
+<parameter>dev/null</parameter>
+</function>
+</test>

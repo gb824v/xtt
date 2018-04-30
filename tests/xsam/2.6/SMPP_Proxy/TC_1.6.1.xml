@@ -1,0 +1,122 @@
+<test>
+    <configuration>xsam_config.xml</configuration>
+    <function name="testName" module="Basic">
+        <parameter>TC_1.6.1</parameter>
+    </function>
+    <description>Create SMPP service  (When SMPP service for the passed short code already exists.)</description> 
+     <!-- Add Content Provider -->
+
+    <function name="SOAPClient" module="SOAP_API" >
+		<configuration>XSAM/PROVISIONINGURL</configuration>
+		<xml><soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsdl="http://www.724solutions.com/wsdl">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <wsdl:addContentProvider soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+         <String_1 xsi:type="xsd:string">4442</String_1>
+         <String_2 xsi:type="xsd:string">4442</String_2>
+      </wsdl:addContentProvider>
+   </soapenv:Body>
+</soapenv:Envelope></xml>
+
+		<parameter>Body/return</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+
+<!-- Create SMPP service -->
+    <function name="SOAPClient" module="SOAP_API" >
+		<configuration>XSAM/PROVISIONINGURL</configuration>
+		<xml><soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsdl="http://www.724solutions.com/wsdl">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <wsdl:addSMPPProxyService soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+         <String_1 xsi:type="xsd:string">4442</String_1>
+         <String_2 xsi:type="xsd:string">SMPP_PROXY</String_2>
+         <String_3 xsi:type="xsd:string">Y</String_3>
+      </wsdl:addSMPPProxyService>
+   </soapenv:Body>
+</soapenv:Envelope></xml>
+		<parameter>Body/return</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+
+<!-- Create SMPP service  (When SMPP service for the passed short code already exists.) -->
+    <function name="SOAPClient" module="SOAP_API" >
+		<configuration>XSAM/PROVISIONINGURL</configuration>
+		<xml><soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsdl="http://www.724solutions.com/wsdl">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <wsdl:addSMPPProxyService soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+         <String_1 xsi:type="xsd:string">4442</String_1>
+         <String_2 xsi:type="xsd:string">SMPP_PROXY</String_2>
+         <String_3 xsi:type="xsd:string">Y</String_3>
+      </wsdl:addSMPPProxyService>
+   </soapenv:Body>
+</soapenv:Envelope></xml>
+		<parameter>Body/return</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>500</parameter>
+	</function>
+
+	<function name="info" module="BASIC">
+		 <variable>SOAP_API/BODY/PLAIN</variable>
+	</function>
+
+	
+	<function name="queryText" module="BASIC">
+		<variable>SOAP_API/BODY/PLAIN</variable>
+		<parameter>dev/null</parameter>
+		<parameter>&lt;errorCode.*&gt;107&lt;/errorCode&gt;</parameter>
+	</function>
+	
+	<function name="queryText" module="BASIC">
+		<variable>SOAP_API/BODY/PLAIN</variable>
+		<parameter>dev/null</parameter>
+		<parameter>&lt;message.*&gt;*.*Service for SMS short code  '4442' already exists*.*&lt;/message&gt;</parameter>
+	</function>
+
+ <!-- Delete SMPP service -->
+ <function name="SOAPClient" module="SOAP_API" >
+		<configuration>XSAM/PROVISIONINGURL</configuration>
+		<xml><soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsdl="http://www.724solutions.com/wsdl">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <wsdl:deleteSMPPProxyService soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+         <String_1 xsi:type="xsd:string">4442</String_1>
+      </wsdl:deleteSMPPProxyService>
+   </soapenv:Body>
+</soapenv:Envelope></xml>
+
+		<parameter>Body/return</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+<!-- Delete Content Provider -->
+     <function name="SOAPClient" module="SOAP_API" >
+		<configuration>XSAM/PROVISIONINGURL</configuration>
+		<xml><soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsdl="http://www.724solutions.com/wsdl">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <wsdl:deleteContentProvider soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+         <String_1 xsi:type="xsd:string">4442</String_1>
+      </wsdl:deleteContentProvider>
+   </soapenv:Body>
+</soapenv:Envelope></xml>
+
+		<parameter>Body/return</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+
+</test>

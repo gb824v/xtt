@@ -1,0 +1,314 @@
+<test>
+    <function name="testName" module="Basic">
+        <parameter>XMP.CONTENTFILTERING.TC.000</parameter>
+     </function>
+	
+    <description>Load the dynamic configuration files</description>
+
+    <description>Load the Workflow</description>
+    <subtest>../xmpLoadWorkflow.xml</subtest>
+    
+    <description>Load the Reqmod dynamic configuration files</description>
+    <subtest>../xmpLoadReqmod.xml</subtest>
+    <!--
+    <description>Load the Throttling dynamic configuration files</description>
+    <subtest>../xmpLoadThrottling.xml</subtest>
+     -->
+    <description>Load the Wurfl dynamic configuration files</description>
+    <subtest>../xmpLoadWurfl.xml</subtest>
+
+    <description>Load the Dashboard dynamic configuration files</description>
+    <subtest>../xmpLoadDashboard.xml</subtest>
+
+    <description>Load the dynamic security configuration files</description>
+    <subtest>../xmpLoadSecurity.xml</subtest>
+   
+    <description>Download latest FDFT files to examples DIR</description>
+    <subtest>downloadFDFT.xml</subtest>
+
+    <!-- xms load file /opt/xmp41/examples/masterkeyworddatabase.txt -->
+    <function name="executeRemoteXMSCommand" module="Remote">
+       <parameter>
+	   <parameter>load file </parameter>
+	   <configuration>REMOTE/PATH</configuration>
+           <configuration>XMP41/EXAMPLESDIR</configuration>
+	   <parameter>masterkeyworddatabase.txt</parameter>
+       </parameter>
+    </function>
+
+    <function name="queryResponse" module="Remote">
+       <parameter>^Loaded '/masterkeyworddatabase.txt'</parameter>
+       <parameter>dev/null</parameter>
+    </function>
+
+    <!-- xms load file /opt/xmp41/examples/url_list_current_lsdk.txt -->
+    <function name="executeRemoteXMSCommand" module="Remote">
+       <parameter>
+	   <parameter>load file </parameter>
+	   <configuration>REMOTE/PATH</configuration>
+           <configuration>XMP41/EXAMPLESDIR</configuration>
+	   <parameter>url_list_current_lsdk.txt</parameter>
+       </parameter>
+    </function>
+
+    <function name="queryResponse" module="Remote">
+       <parameter>^Loaded '/url_list_current_lsdk.txt'</parameter>
+       <parameter>dev/null</parameter>
+    </function>
+
+    <!-- xms load file /opt/xmp41/examples/fatcat.JSP -->
+    <function name="executeRemoteXMSCommand" module="Remote">
+       <parameter>
+	   <parameter>load file </parameter>
+	   <configuration>REMOTE/PATH</configuration>
+           <configuration>XMP41/EXAMPLESDIR</configuration>
+	   <parameter>fatcat.JSP</parameter>
+       </parameter>
+    </function>
+
+    <function name="queryResponse" module="Remote">
+       <parameter>^Loaded '/fatcat.JSP'</parameter>
+       <parameter>dev/null</parameter>
+    </function>
+
+    <!-- xms load file /opt/xmp41/examples/fatcat.JSX2 -->
+    <function name="executeRemoteXMSCommand" module="Remote">
+       <parameter>
+	   <parameter>load file </parameter>
+	   <configuration>REMOTE/PATH</configuration>
+           <configuration>XMP41/EXAMPLESDIR</configuration>
+	   <parameter>fatcat.JSX2</parameter>
+       </parameter>
+    </function>
+
+    <function name="queryResponse" module="Remote">
+       <parameter>^Loaded '/fatcat.JSX2'</parameter>
+       <parameter>dev/null</parameter>
+    </function>
+
+    <!-- xms load file /opt/xmp41/examples/fatcat.JCX2 -->
+    <function name="executeRemoteXMSCommand" module="Remote">
+       <parameter>
+	   <parameter>load file </parameter>
+	   <configuration>REMOTE/PATH</configuration>
+           <configuration>XMP41/EXAMPLESDIR</configuration>
+	   <parameter>fatcat.JCX2</parameter>
+       </parameter>
+    </function>
+
+    <function name="queryResponse" module="Remote">
+       <parameter>^Loaded '/fatcat.JCX2'</parameter>
+       <parameter>dev/null</parameter>
+    </function>
+
+    <!-- xms load file /opt/xmp41/examples/fatcat.FVER -->
+    <function name="executeRemoteXMSCommand" module="Remote">
+       <parameter>
+	   <parameter>load file </parameter>
+	   <configuration>REMOTE/PATH</configuration>
+           <configuration>XMP41/EXAMPLESDIR</configuration>
+	   <parameter>fatcat.FVER</parameter>
+       </parameter>
+    </function>
+
+    <function name="queryResponse" module="Remote">
+       <parameter>^Loaded '/fatcat.FVER'</parameter>
+       <parameter>dev/null</parameter>
+    </function>
+
+    <!-- xms load file /opt/xmp41/examples/TopicList-1.csv -->
+    <function name="executeRemoteXMSCommand" module="Remote">
+       <parameter>
+	   <parameter>load file </parameter>
+	   <configuration>REMOTE/PATH</configuration>
+           <configuration>XMP41/EXAMPLESDIR</configuration>
+	   <parameter>TopicList-1.csv</parameter>
+       </parameter>
+    </function>
+
+    <function name="queryResponse" module="Remote">
+       <parameter>^Loaded '/TopicList-1.csv'</parameter>
+       <parameter>dev/null</parameter>
+    </function>
+
+    <!-- xms load file /opt/xmp41/examples/WebFilterNew.JBM -->
+    <function name="executeRemoteXMSCommand" module="Remote">
+       <parameter>
+	   <parameter>load file </parameter>
+	   <configuration>REMOTE/PATH</configuration>
+           <configuration>XMP41/EXAMPLESDIR</configuration>
+	   <parameter>WebFilterNew.JBM</parameter>
+       </parameter>
+    </function>
+
+    <function name="queryResponse" module="Remote">
+       <parameter>^Loaded '/WebFilterNew.JBM'</parameter>
+       <parameter>dev/null</parameter>
+    </function>
+
+    <!-- check that the FDFT installation is ok -->    
+        
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>
+           <parameter>run command </parameter>
+           <configuration>XMP41/VALIDATEFDFTSCRIPT</configuration>
+           <parameter> -d </parameter>
+           <configuration>REMOTE/PROCPATH</configuration>
+           <parameter>/</parameter>
+           <configuration>XMP41/FDFTPROCESSNAME</configuration>
+        </parameter>
+    </function>
+
+    <function name="queryResponse" module="Remote">
+        <parameter>URLs Processed = 50000</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+
+    <function name="queryResponse" module="Remote">
+        <parameter>URLs Processed = 100000</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+
+    <function name="queryResponse" module="Remote">
+        <parameter>URLs Processed = 150000</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+
+    <function name="queryResponse" module="Remote">
+        <parameter>URLs Processed = 200000</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+
+    <function name="queryResponse" module="Remote">
+        <parameter>URLs Processed = 250000</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+
+    <function name="queryResponseNegative" module="Remote">
+        <parameter>Error Code</parameter>
+    </function>
+
+    <function name="queryResponseNegative" module="Remote">
+        <parameter>Fast Tracker initialization failed</parameter>
+    </function>
+
+    <description>Load the FDFT workflow constants files</description>
+    <subtest>xmpLoadFDFTWorkflowConstants.xml</subtest>
+
+    <!-- load the urlList WhiteList.txt -->
+    <function name="writeRemoteFile" module="Remote">
+        <parameter>WhiteList.txt</parameter>
+        <file>WhiteList.txt</file>
+    </function>
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+            <parameter>load file WhiteList.txt /url/WhiteList.txt</parameter>
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        <parameter>^Loaded '/url/WhiteList.txt' from 'WhiteList.txt'</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+
+    <!-- load the urlList BlackList.txt -->
+    <function name="writeRemoteFile" module="Remote">
+        <parameter>BlackList.txt</parameter>
+        <file>BlackList.txt</file>
+    </function>
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+            <parameter>load file BlackList.txt /url/BlackList.txt</parameter>
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        <parameter>^Loaded '/url/BlackList.txt' from 'BlackList.txt'</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+    
+    <!-- load the urlList Dating.txt -->
+    <function name="writeRemoteFile" module="Remote">
+        <parameter>Dating.txt</parameter>
+        <file>Dating.txt</file>
+    </function>
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+            <parameter>load file Dating.txt /url/Dating.txt</parameter>
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        <parameter>^Loaded '/url/Dating.txt' from 'Dating.txt'</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+    
+    <!-- xms show file -->
+    <function name="executeRemoteXMSCommand" module="Remote">
+            <parameter>show file</parameter>
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        <parameter>WhiteList.txt</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+
+    <function name="queryResponse" module="Remote">
+        <parameter>BlackList.txt</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+
+    <function name="queryResponse" module="Remote">
+        <parameter>Dating.txt</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+
+    <!-- load the categories -->
+    <function name="writeRemoteFile" module="Remote">
+        <parameter>xmp-categories-fasttracker.xml</parameter>
+        <file>xmp-categories-fasttracker.xml</file>
+    </function>
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+            <parameter>load data xmp-categories-fasttracker.xml</parameter>
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        <parameter>Loaded xmpcategories</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+
+    <!-- load the dbUpdatesFile -->
+    <function name="writeRemoteFile" module="Remote">
+        <parameter>xmp_DatabaseUpdatesFile-FastTracker.xml</parameter>
+        <file>xmp_DatabaseUpdatesFile-FastTracker.xml</file>
+    </function>
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+            <parameter>load db xmp_DatabaseUpdatesFile-FastTracker.xml</parameter>
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        <parameter>SUCCESS: XML upload completed</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+
+    <!-- check that all processes are running - no core files -->
+    
+    <!-- just check of there are any corefiles -->
+    <function name="executeRemoteCommand" module="Remote">
+        <parameter>
+            <parameter>find </parameter>
+            <configuration>REMOTE/PROCPATH</configuration>
+            <parameter> -name *.core</parameter>
+        </parameter>
+    </function>
+
+    <function name="queryResponse" module="Remote">
+        <parameter></parameter>
+        <parameter>result</parameter>
+    </function>
+
+    <!-- just check if all the processes are running -->
+    <function name="checkAllProcessesStatus" module="Remote">
+        <parameter>Running</parameter>
+    </function>
+
+</test>

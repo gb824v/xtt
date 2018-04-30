@@ -1,0 +1,62 @@
+<test>	    
+	<name>XMP.ICAP.TC.021</name>
+    <description>POST with REQMOD, invalid response</description>
+
+    <subtest name="loadReqmod" file="loadReqmod.xml"/>
+
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+	<function name="startICAPServer" module="ICAP"/>
+	<function name="startWebServer" module="HTTP"/>
+
+	<function name="disableFullStreaming" module="ICAP">
+		<parameter>true</parameter>
+	</function>	
+
+    <function name="setVariableLines" module="Basic">
+        <parameter>1</parameter>
+        <parameter>headers</parameter>
+        <parameter>POST / HTTP/1.1</parameter>
+        <parameter>accept: text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2</parameter>
+        <parameter></parameter>
+        <parameter>accept-encoding: deflate, gzip, identity</parameter>
+        <parameter>content-length: 19</parameter>
+        <parameter>host: icap1.xtt724.com</parameter>
+        <parameter>XTTNewPostData: true</parameter>
+        <parameter>user-agent: Java/1.5.0_08</parameter>
+        <parameter>Content-Type: application/x-www-form-urlencoded</parameter>
+	</function>	
+    <function name="setServerOverrideResponse" module="ICAP">
+    	<variable>headers</variable>
+    	<base64encode>postData=somevalues</base64encode>
+    	<parameter>1</parameter>
+    	<parameter>req</parameter>
+    </function>  
+
+	<thread>
+    	<function name="waitForREQMOD" module="ICAP">
+    		<parameter>1</parameter>
+    	</function>	
+	</thread>
+	<function name="setPostData" module="HTTP">
+        <parameter>postData</parameter>
+        <parameter>somevalues</parameter>
+	</function>
+	<function name="sendPostRequest" module="HTTP">
+		<parameter>http://icap1.xtt724.com/</parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>500</parameter>
+	</function>	
+
+    <subtest name="unloadReqmod" file="unloadReqmod.xml"/>
+
+	<function name="stopWebServer" module="HTTP"/>
+	<function name="stopICAPServer" module="ICAP"/>
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function> 
+</test>

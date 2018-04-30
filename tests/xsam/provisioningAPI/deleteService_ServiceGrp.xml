@@ -1,0 +1,103 @@
+<test>
+    <configuration>provTestConfig.xml</configuration>
+    <name>XML.TEST</name>
+    
+    <function name="setVariable" module="Basic">
+        <parameter>numGroups</parameter>
+        <parameter>100850</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+        <parameter>numServices</parameter>
+        <parameter>10</parameter>
+    </function>
+    
+<loop name="serviceGroupNo" start="100800" stop="numGroups" step="1">
+    <loop name="serviceNo" start="0" stop="numServices" step="1">
+        <function name="createDocument" module="XML">
+            <parameter>serviceDeleteSoap</parameter>
+            <parameter>
+            <parameter>&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://messagebroker.intf.mobilgw.com/"&gt;
+  &lt;soap:Body&gt;
+    &lt;tns:deleteService&gt;
+      &lt;serviceName&gt;10</parameter>
+            <variable>serviceGroupNo</variable>
+            <parameter>SV</parameter>
+            <variable>serviceNo</variable>
+            <parameter>&lt;/serviceName&gt;
+    &lt;/tns:deleteService&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</parameter>
+            </parameter>
+        </function>
+        <function name="setHeader" module="XML">
+            <parameter>serviceDeleteSoap</parameter>
+            <parameter>content-type</parameter>
+            <parameter>text/xml</parameter>
+        </function>
+
+    	<function name="sendPostRequest" module="XML">
+    	    <parameter>serviceDeleteSoap</parameter>
+     	    <parameter>serviceDeleteSoapResp</parameter>
+     	    <parameter>
+     	        <configuration>provisioningURL</configuration>
+     	    </parameter>
+        </function>    
+        <function name="checkResponseCode" module="XML">
+            <parameter>serviceDeleteSoapResp</parameter>
+            <parameter>200</parameter>
+        </function>
+        
+    	<function name="documentToVariable" module="XML">
+    	    <parameter>serviceDeleteSoapResp</parameter>
+     	    <parameter>serviceDeleteSoapResp</parameter>
+        </function>    
+    	<function name="info" module="Basic">
+    	    <variable>serviceDeleteSoapResp</variable>
+        </function>
+    </loop>
+
+        <function name="createDocument" module="XML">
+            <parameter>groupDeleteSoap</parameter>
+            <parameter>
+            <parameter>&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://messagebroker.intf.mobilgw.com/"&gt;
+  &lt;soap:Body&gt;
+    &lt;tns:deleteServiceGroup&gt;
+      &lt;serviceGroupName&gt;10</parameter>
+            <variable>serviceGroupNo</variable>
+            <parameter>&lt;/serviceGroupName&gt;
+    &lt;/tns:deleteServiceGroup&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</parameter>
+            </parameter>
+        </function>
+
+        <function name="setHeader" module="XML">
+            <parameter>groupDeleteSoap</parameter>
+            <parameter>content-type</parameter>
+            <parameter>text/xml</parameter>
+        </function>
+
+    	<function name="sendPostRequest" module="XML">
+    	    <parameter>groupDeleteSoap</parameter>
+     	    <parameter>groupDeleteSoapResp</parameter>
+     	    <parameter>
+     	        <configuration>provisioningURL</configuration>
+     	    </parameter>
+        </function>    
+        <function name="checkResponseCode" module="XML">
+     	    <parameter>groupDeleteSoapResp</parameter>
+            <parameter>200</parameter>
+        </function>
+        
+    	<function name="documentToVariable" module="XML">
+    	    <parameter>groupDeleteSoapResp</parameter>
+     	    <parameter>groupDeleteSoapResp</parameter>
+        </function>    
+    	<function name="info" module="Basic">
+    	    <variable>groupDeleteSoapResp</variable>
+        </function>
+</loop>
+
+
+
+</test>

@@ -1,0 +1,74 @@
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+WebDAVSupport.Trans.Client.TC.002  - Validate PROPPATCH Request and its Response are successfully proxied by XMP.
+
+Test Description:
+ 1. Disable Proxy.
+ 2. Radius Logon
+ 3. Send Post data for http request.
+ 4. Send PROPPATCH request to server.
+ 5. Compare response string
+ 6. Radius Logoff
+ 
+Expected Result:
+ -  XMP should process the PROPPATCH request and response through Transperant Proxy.
+
+XTT Commands:
+      
+ 1.  - Radius log-ON
+
+ 2.  - sendFreeRequest 		"HTTP" PROPPATCH method to SERVER/IP {configure in XTT config.xml}
+
+ 3.  - compareString	
+
+ 4.  - Radius log-OFF
+      
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- Test Start  -->
+
+<test>
+    <name>WebDAVSupport.Trans.Client.TC.002</name>
+
+    <description>Validate PROPPATCH Request and its Response are successfully proxied by XMP during transparent proxy</description>
+
+	<function name="disableProxy" module="HTTP" />
+
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+    <function name="setTextPostData" module="HTTP">
+        <file>Request_PROPPATCH.xml</file>
+    </function>
+
+    <function name="setHeader" module="HTTP">
+        <parameter>Content-Type</parameter>
+        <parameter>text/xml; charset="utf-8"</parameter>
+    </function>
+
+    <!-- Send PROPPATCH request to XMP -->
+	<function name="sendFreeRequest" module="HTTP">
+        <parameter>PROPPATCH</parameter>
+        <parameter>true</parameter>
+        <parameter>
+            <parameter>http://</parameter>
+            <configuration>SERVER/IP</configuration>
+            <parameter>:</parameter>
+            <configuration>WEBSERVER/PORT</configuration>
+            <parameter>/file</parameter>
+        </parameter>
+        <parameter>response</parameter>
+    </function>
+
+	<!-- Compare the response returned by XMP with actual response -->
+    <function name="compareString" module="Basic">
+        <variable>response/PLAIN</variable>
+        <file>Response_PROPPATCH.xml</file>
+    </function>
+
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+</test>

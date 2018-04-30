@@ -1,0 +1,120 @@
+<test>
+    <name>MBSPPB.Error.MO.TC.010</name>
+    <configuration>../configXSAM.xml</configuration>
+
+    <description>[MM7->TPI] TP is unreachable / Successful DIRECT-DEBIT invocation towards ISCP</description>
+
+    <function name="setVariable" module="Basic">
+        <parameter>MSISDN</parameter>
+        <parameter>41790000005</parameter>
+    </function>
+    <function name="startDiameterServer" module="Diameter"/>
+    <subtest>../sisSTART.xml</subtest>
+    <function name="startMMSCServer" module="MMSC"/>
+
+    <function name="waitForSpecificRequests" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT</configuration>
+        <parameter>CAPABILITIES_EXCHANGE_REQUEST</parameter>
+        <parameter>1</parameter>
+    </function>
+
+    <function name="createMM7Soap" module="VASP">
+        <parameter>DeliverReq</parameter>
+        <!--parameter>VASPID001</parameter>
+        <parameter>VASID002</parameter-->
+    </function>
+    <function name="setMessageBoundary" module="VASP">
+        <parameter>000001message</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='DeliverReq']</parameter>
+        <parameter>Sender</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='Sender'][last()]</parameter>
+        <parameter>Number</parameter>
+        <variable>MSISDN</variable>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='DeliverReq']</parameter>
+        <parameter>Recipients</parameter>
+    </function>
+    <function name="addSoapData" module="VASP">
+        <parameter>//*[local-name()='Recipients']</parameter>
+        <parameter>To</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='To'][last()]</parameter>
+        <parameter>Number</parameter>
+        <parameter>
+            <configuration>XSAM/SERVICEGROUPPREFIX</configuration>
+            <configuration>XSAM/SERVICEGROUPNOMMSMO</configuration>
+        </parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='DeliverReq']</parameter>
+        <parameter>Subject</parameter>
+        <parameter>MMS failed message</parameter>
+    </function>
+    <function name="createDateString" module="VASP">
+        <parameter>TimeStamp</parameter>
+        <parameter>-120</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='DeliverReq']</parameter>
+        <parameter>TimeStamp</parameter>
+        <variable>TimeStamp</variable>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='DeliverReq']</parameter>
+        <parameter>Content</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='Content']</parameter>
+        <parameter>href</parameter>
+        <parameter>cid:xtt-test001</parameter>
+    </function>
+    <function name="addContent" module="VASP">
+        <file>sendMM7data.txt</file>
+    </function>
+
+    <function name="createConnection" module="VASP">
+        <parameter>one</parameter>
+    </function>
+    <!--function name="previewRequest" module="VASP" /-->
+    <function name="sendPostRequest" module="VASP">
+        <parameter>one</parameter>
+        <configuration>XSAM/MM7INURL</configuration>
+    </function>
+    <function name="checkResponseCode" module="VASP">
+        <parameter>200</parameter>
+    </function>
+    <function name="queryBody" module="VASP">
+        <parameter>temp</parameter>
+        <parameter>&lt;StatusCode&gt;1000&lt;/StatusCode&gt;</parameter>
+    </function>
+    <!--function name="queryBody" module="VASP">
+        <parameter>MessageID</parameter>
+        <parameter>&lt;MessageID&gt;(\p{Alnum}{13})&lt;/MessageID&gt;</parameter>
+    </function-->
+
+    <function name="closeConnection" module="VASP">
+        <parameter>one</parameter>
+    </function>
+
+    <function name="waitForSISCalls" module="SIS">
+        <parameter>1</parameter>
+    </function>
+    <function name="waitForSpecificRequests" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT</configuration>
+        <parameter>CREDIT_CONTROL_REQUEST</parameter>
+        <parameter>1</parameter>
+    </function>
+    <function name="waitForRequests" module="MMSC">
+        <parameter>1</parameter>
+    </function>
+
+    <function name="stopMMSCServer" module="MMSC"/>
+    <function name="stopDiameterServer" module="Diameter"/>
+    <subtest>../sisSTOP.xml</subtest>
+</test>

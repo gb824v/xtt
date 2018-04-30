@@ -1,0 +1,11 @@
+<configuration>	
+    <Vasp>
+        <!-- IpAddress and Port to connect to for VASP module -->
+        <RemoteIp>127.0.0.1</RemoteIp>
+        <RemotePort>4007</RemotePort>
+    </Vasp>
+    <MMSCServer>
+        <!-- the listening port of the internal webserver -->
+        <Port>4007</Port>
+    </MMSCServer>
+</configuration>

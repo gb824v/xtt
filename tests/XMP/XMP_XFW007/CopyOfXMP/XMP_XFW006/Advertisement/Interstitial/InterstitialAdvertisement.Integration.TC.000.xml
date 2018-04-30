@@ -1,0 +1,35 @@
+<test>
+
+	<name>InterstitialAdvertisement.Integration.TC.000</name>
+	<description>Setup Interstitial test Environment</description>
+
+	<!-- Load Interstitial Request Modification File -->
+	<function name="setVariable" module="Basic">
+		<parameter>ReqmodRule</parameter>
+		<file>REQMOD_Inst.xml</file>
+	</function>
+
+	<function name="replace" module="Basic">
+		<parameter>ReqmodRule</parameter>
+		<parameter>%IPADDRESS%</parameter>
+		<configuration>SYSTEM/IP</configuration>
+	</function>
+
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>REQMOD_Inst.xml</parameter>
+		<variable>ReqmodRule</variable>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>REQMOD_Inst.xml</parameter>
+		</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>Loaded requestmodifications</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+</test>

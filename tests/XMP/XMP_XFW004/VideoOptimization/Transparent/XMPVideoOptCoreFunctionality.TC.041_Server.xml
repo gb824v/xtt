@@ -1,0 +1,34 @@
+
+<!-- for Testting purpose changing the default value (604800) to (120) in cxpdl file, and again restoring the default value through test case-->
+
+<test>
+
+	<function name="testName" module="Basic">
+		<parameter>XMPVideoOptCoreFunctionality.TC.041_Server</parameter>
+	</function>
+
+	<description>Validate video optimization uses the default value (604800) of videoOptimizationFailureRetentionSecs parameter if it isn't specified in the workflow constants file</description>
+
+	<!-- Start Web Server -->
+	<function name="startWebServer" module="HTTP">
+		<parameter>12111</parameter>
+	</function>
+
+	<function name="setServerHeader" module="HTTP">
+		<parameter>content-type</parameter>
+		<parameter>video/x-flv</parameter>
+	</function>
+
+	<function name="setServerReturnCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<!-- Sleep a while until video optimization will start -->
+	<function name="sleep" module="Basic">
+		<parameter>210000</parameter>
+	</function>
+
+	<!-- Stop Web Server -->
+	<function name="stopWebServer" module="HTTP"/>
+
+</test>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<requestModifications>
+
+<table name="PCC rule url redirect">
+    <selector urlPattern="*://www.ynet.co.il/*" context="PCC_Rules matches 'activate_redirection'" >
+        <modifyUrl method="redirect" value="'http://' + NAI3_LiveFeedAttribute_RedirectServer"/>
+    </selector>
+</table>
+
+<table name="PCC rule activate_web_optimization">
+  <selector context="not (PCC_Rules contains 'activate_web_optimization')">
+    <modifyContext name="DisableCompression"
+                   value="'true'"/>
+    <modifyContext name="DisableHttpCache"
+                   value="'true'"/>
+    <modifyContext name="DisableImageReduction"
+                   value="'true'"/>
+  </selector>
+</table>
+<table name="PCC rule set_wo_level"
+       context="PCC_Rules matches 'set_wo_level'">
+  <selector context="PCC_Rules matches 'zero_quality_impact'">
+    <modifyContext name="WebOptimizationProfile"
+                   value="'ZeroQualityImpact'"/>
+  </selector>
+  <selector context="PCC_Rules matches 'no_visual_impact'">
+    <modifyContext name="WebOptimizationProfile"
+                   value="'NoVisualImpact'"/>
+  </selector>
+  <selector context="PCC_Rules matches 'minor_visual_impact'">
+    <modifyContext name="WebOptimizationProfile"
+                   value="'MinorVisualImpact'"/>
+  </selector>
+  <selector context="PCC_Rules matches 'small_visual_impact'">
+    <modifyContext name="WebOptimizationProfile"
+                   value="'SmallVisualImpact'"/>
+  </selector>
+  <selector context="PCC_Rules matches 'volume_saver'">
+    <modifyContext name="WebOptimizationProfile"
+                   value="'VolumeSaver'"/>
+  </selector>
+  <selector context="PCC_Rules matches 'volume_saver_extra'">
+    <modifyContext name="WebOptimizationProfile"
+                   value="'VolumeSaverExtra'"/>
+  </selector>
+</table>
+
+<table name="PCC rule activate_video_optimization">
+  <selector context="not (PCC_Rules contains 'activate_video_optimization')">
+    <modifyContext name="DisableVoeCaching"
+                   value="'true'"/>
+    <modifyContext name="DisableVoeDbra"
+                   value="'true'"/>
+    <modifyContext name="DisableVoePacing"
+                   value="'true'"/>
+    <modifyContext name="DisableVoeTranscoding"
+                   value="'true'"/>
+  </selector>
+</table>
+<table name="PCC rule set_vo_level"
+       context="PCC_Rules matches 'set_vo_level'">
+  <selector context="PCC_Rules matches 'lossless_impact'">
+    <modifyContext name="DisableVoePacing"
+                   value="'false'"/>
+    <modifyContext name="DisableVoeCaching"
+                   value="'true'"/>
+    <modifyContext name="DisableVoeDbra"
+                   value="'true'"/>
+    <modifyContext name="DisableVoeTranscoding"
+                   value="'true'"/>
+  </selector>
+  <selector context="PCC_Rules matches 'no_visual_impact'">
+    <modifyContext name="VideoOptimizationProfile"
+                   value="'NoVisualImpact'"/>
+  </selector>
+  <selector context="PCC_Rules matches 'minor_visual_impact'">
+    <modifyContext name="VideoOptimizationProfile"
+                   value="'MinorVisualImpact'"/>
+  </selector>
+  <selector context="PCC_Rules matches 'small_visual_impact'">
+    <modifyContext name="VideoOptimizationProfile"
+                   value="'SmallVisualImpact'"/>
+  </selector>
+  <selector context="PCC_Rules matches 'volume_saver'">
+    <modifyContext name="VideoOptimizationProfile"
+                   value="'VolumeSaver'"/>
+  </selector>
+ <selector context="PCC_Rules matches 'volume_saver_extra'">
+    <modifyContext name="VideoOptimizationProfile"
+                   value="'VolumeSaverExtra'"/>
+  </selector>
+</table>
+
+<!--
+<table name="AnonymousUntilAuthenticated" phase="authentication">
+<selector context="TCP_RemoteIpAddress matches '10.11.1.199'"> 
+                <modifyContext name="FTR_SubscriberId" value="'48100100100'" /> 
+                <modifyContext name="FTR_AnonymousIfUnauthenticated" value="'True'" />
+                <modifyContext name="RADIUS_APN" value="'internet'" />
+</selector>
+</table>
+-->
+
+<?xfw include="Reqmod_VideoOptimization.xml"?>
+<?xfw include="Reqmod_WebOptimization.xml"?>
+
+<table name="DisableThings" phase="httpRequest">
+                <selector>
+                                <modifyContext name="Skip_CACHE" value="'true'"/>
+                                <modifyContext name="Skip_VIRUSSCANNER" value="'true'"/>
+                                <modifyContext name="FTR_HtmlTidyDisable" value="'true'"/>
+                                <modifyContext name="Skip_COOKIE" value="'true'"/>
+                                <modifyContext name="Skip_ICC" value="'false'"/>
+                                <modifyContext name="FTR_MultipartCompose_Disable" value="'true'"/>
+                                <modifyContext name="FTR_Prefetch_Disable" value="'true'"/>
+                                <modifyContext name="FTR_Deflate_Disable" value="'true'"/>
+                                <modifyContext name="FTR_Gzip_Disable" value="'false'"/>
+                                <modifyContext name="TCP_HideSourceAddress" value="'false'"/>
+                </selector>
+</table>
+
+
+
+<!--<?xfw include="Reqmod_VideoLinkDetection.xml"?>-->
+
+</requestModifications>
+
+
+

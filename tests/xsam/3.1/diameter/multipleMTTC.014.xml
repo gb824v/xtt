@@ -1,0 +1,154 @@
+<test>
+    <name>MBSPPB.MultipleRecipients.MT.TC.014</name>
+    <configuration>../configXSAM.xml</configuration>
+
+    <description>[TPI->SMS] 1000 Recipients / 1000 DIRECT-DEBIT passed - 500 successful Message Delivery - 500 Failed Message Delivery / 500 REFUND passed</description>
+
+    <function name="setVariable" module="Basic">
+        <parameter>AMOUNT</parameter>
+        <parameter>3.456</parameter>
+    </function>
+
+    <function name="setOverrideNumber" module="SIS">
+         <parameter>41790000005</parameter>
+    </function>
+    
+    <function name="setVariable" module="Basic">
+         <parameter>SKIP_DIAMETER</parameter>
+         <parameter>true</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+         <parameter>SKIP_SMSC</parameter>
+         <parameter>true</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+        <parameter>SKIP_VASPQUERY</parameter>
+        <parameter>true</parameter>
+    </function>
+    <function name="startSMSCServer" module="SMS"/>
+    <function name="setOverridePattern" module="SMS">
+        <parameter>60000000[5-9]\d\d</parameter>
+    </function>
+
+    <function name="startDiameterServer" module="Diameter">
+    </function>
+     
+    
+    <function name="addExtendedStoreVar" module="Diameter">
+        <parameter>SUBSCRIPTION_ID_DATA</parameter>
+    </function>
+    <function name="addExtendedStoreVar" module="Diameter">
+        <parameter>REQUESTED_ACTION</parameter>
+    </function>
+    
+    <function name="waitForSpecificRequests" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT</configuration>
+        <parameter>CAPABILITIES_EXCHANGE_REQUEST</parameter>
+        <parameter>1</parameter>
+    </function>
+
+
+    <function name="setVariable" module="Basic">
+        <parameter>MSISDNSTART</parameter>
+        <parameter>60000000000</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+        <parameter>MSISDNBREAK</parameter>
+        <parameter>60000000500</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+        <parameter>MSISDNSTOP</parameter>
+        <parameter>60000001000</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+        <parameter>MSISDNSIS</parameter>
+        <parameter>8</parameter>
+    </function>
+
+    <function name="waitForBind" module="SMS"/> 
+    <subtest>sendMultiSMS.xml</subtest>
+
+    <function name="checkResponseCode" module="VASP">
+        <parameter>200</parameter>
+    </function>
+    
+    <function name="queryBody" module="VASP">
+        <parameter>tpiResponseCode</parameter>
+        <parameter>&lt;state&gt;(1000)&lt;/state&gt;\s+&lt;state-text&gt;</parameter><!--Ok&lt;/state-text&gt;-->
+    </function>
+
+    <function name="waitForSpecificRequests" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT</configuration>
+        <parameter>CREDIT_CONTROL_REQUEST</parameter>
+        <parameter>1000</parameter>
+    </function>
+
+    <!--function name="sleep" module="Basic">
+        <parameter>240000</parameter>
+    </function-->
+
+    <function name="waitForSpecificRequests" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT</configuration>
+        <parameter>CREDIT_CONTROL_REQUEST</parameter>
+        <parameter>1500</parameter>
+    </function>
+
+    <loop name="MSISDNLOOP" start="MSISDNSTART" stop="MSISDNBREAK" step="MSISDNSTEP">
+        <function name="compareString" module="Basic">
+            <variable>
+                <parameter>DIAMETER/</parameter>
+                <configuration>DIAMETERSERVER/PORT</configuration>
+                <parameter>/AVP/REQUESTED_SERVICE_UNIT/CC_MONEY/UNIT_VALUE/</parameter>
+                <variable>MSISDNLOOP</variable>
+                <parameter>DIRECT_DEBITING</parameter>
+                <parameter>/VALUE_DIGITS</parameter>
+            </variable>
+            <parameter>3456</parameter>
+        </function> 
+        <function name="queryVariableNegative" module="Basic">
+            <parameter>
+                <parameter>DIAMETER/</parameter>
+                <configuration>DIAMETERSERVER/PORT</configuration>
+                <parameter>/AVP/REQUESTED_SERVICE_UNIT/CC_MONEY/UNIT_VALUE/</parameter>
+                <variable>MSISDNLOOP</variable>
+                <parameter>REFUND_ACCOUNT</parameter>
+                <parameter>/VALUE_DIGITS</parameter>
+            </parameter>
+        </function> 
+    </loop>
+    <loop name="MSISDNLOOP" start="MSISDNBREAK" stop="MSISDNSTOP" step="MSISDNSTEP">
+        <function name="compareString" module="Basic">
+            <variable>
+                <parameter>DIAMETER/</parameter>
+                <configuration>DIAMETERSERVER/PORT</configuration>
+                <parameter>/AVP/REQUESTED_SERVICE_UNIT/CC_MONEY/UNIT_VALUE/</parameter>
+                <variable>MSISDNLOOP</variable>
+                <parameter>REFUND_ACCOUNT</parameter>
+                <parameter>/VALUE_DIGITS</parameter>
+            </variable>
+            <parameter>3456</parameter>
+        </function> 
+        <function name="compareString" module="Basic">
+            <variable>
+                <parameter>DIAMETER/</parameter>
+                <configuration>DIAMETERSERVER/PORT</configuration>
+                <parameter>/AVP/REQUESTED_SERVICE_UNIT/CC_MONEY/UNIT_VALUE/</parameter>
+                <variable>MSISDNLOOP</variable>
+                <parameter>DIRECT_DEBITING</parameter>
+                <parameter>/VALUE_DIGITS</parameter>
+            </variable>
+            <parameter>3456</parameter>
+        </function> 
+    </loop>
+
+    <function name="waitForTimeoutSpecificRequests" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT</configuration>
+        <parameter>CREDIT_CONTROL_REQUEST</parameter>
+        <configuration>DIAMETERSERVER/WAITTIMEOUT</configuration>
+        <parameter>1500</parameter>
+    </function>
+
+    <function name="stopDiameterServer" module="Diameter"/>
+    <function name="stopSMSCServer" module="SMS"/>
+
+</test>

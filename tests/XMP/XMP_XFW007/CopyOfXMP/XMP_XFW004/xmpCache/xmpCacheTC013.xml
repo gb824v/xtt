@@ -1,0 +1,84 @@
+<test>	    
+	<name>XMP.CACHE.TC.013</name>
+    <description>One file retrieved from cache - Validation of maxItemStoreMinutes Configuration</description>
+<!-- Set "Maximum Time to keep an item in the cache to 1 minute -->
+	<subtest>deleteCacheAll.xml</subtest>
+
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+	<function name="startWebServer" module="HTTP"/>
+	<function name="setServerHeader" module="HTTP">
+		<parameter>Last-Modified</parameter>
+		<parameter>Wed, 15 Nov 1995 04:58:08 GMT</parameter>
+	</function>	
+
+    <function name="setCacheFile" module="HTTP">
+		<parameter>cacheTC001.html</parameter>
+<xml><html>
+<body>
+This is the initial file FILLTO64CHARACTERSXXXXXXXXXXXXXXXXXXXXX
+</body>
+</html>
+</xml>
+    </function>
+
+	<function name="sendGetRequest" module="HTTP">
+        <parameter>
+    		<parameter>http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/cacheTC001.html</parameter>
+        </parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>	
+
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>This is the initial file FILLTO64CHARACTERSXXXXXXXXXXXXXXXXXXXXX</parameter>
+    </function>
+
+    <function name="setCacheFile" module="HTTP">
+		<parameter>cacheTC001.html</parameter>
+<xml><html>
+<body>
+This is the file that should be retrieved AGAINDOTHEFILLXXXX
+</body>
+</html>
+</xml>
+    </function>
+    
+    
+        <function name="sleep" module="basic">
+            <parameter>75000</parameter>
+        </function>
+    
+
+	<function name="sendGetRequest" module="HTTP">
+        <parameter>
+    		<parameter>http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/cacheTC001.html</parameter>
+        </parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>	
+
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>This is the file that should be retrieved AGAINDOTHEFILLXXXX</parameter>
+    </function>
+    <function name="queryBodyNegative" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>This is the initial file FILLTO64CHARACTERSXXXXXXXXXXXXXXXXXXXXX</parameter>
+    </function>
+
+	<function name="stopWebServer" module="HTTP"/>
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function> 
+</test>

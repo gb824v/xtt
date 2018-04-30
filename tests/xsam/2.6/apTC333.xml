@@ -1,0 +1,188 @@
+<test>
+    <configuration>xsam_config_32.xml</configuration>
+    <function name="testName" module="Basic">
+        <parameter>AP.TC.333</parameter>
+    </function>
+
+    <function name="startSMSCServer" module="SMS"/>
+
+    <function name="setVariable" module="BASIC">
+        <parameter>SMSCAddress</parameter>
+        <parameter>999111999</parameter>
+    </function>
+    <function name="setVariable" module="BASIC">
+        <parameter>tonumber</parameter>
+        <parameter>0796022207</parameter>
+    </function>
+
+    <loop name="repeatNTimes" start="0" stop="1" step="1">
+
+        <loop name="shortCode" start="1" stop="6" step="1">
+            <thread>
+                <function name="setLocalVariable" module="BASIC">
+                    <parameter>shortCodeOK</parameter>
+                    <parameter>
+                        <configuration>XSAM/SHORTCODEPREFIX</configuration>
+                        <localvariable>shortCode</localvariable>
+                    </parameter>
+                </function>
+                <function name="openConnection" module="UCP">
+                    <localvariable>shortCodeOK</localvariable>
+                    <configuration>XSAM/IP</configuration>
+                    <configuration>XSAM/PORT</configuration>
+                </function>
+                <function name="sendUCPPacket" module="UCP">
+                    <localvariable>shortCodeOK</localvariable>
+                    <parameter>internal</parameter>
+                    <parameter>O</parameter>
+                    <parameter>60</parameter>
+                    <parameter>
+                        <parameter>/</parameter>
+                        <localvariable>shortCodeOK</localvariable>
+                        <parameter>/6/1/1/70617373776F7264//0100//////</parameter>
+                    </parameter>
+                </function>
+                <function name="queryTextResponse" module="UCP">
+                    <localvariable>shortCodeOK</localvariable>
+                    <parameter>OK60</parameter>
+                    <parameter>\d\d/\d\d\d\d\d/R/60/A/[^/]++/\w\w</parameter>
+                </function>
+                <loop name="loop" start="1" stop="5" step="1">
+                    <function name="sendWindowedUCPPacket" module="UCP">
+                        <localvariable>shortCodeOK</localvariable>
+                        <parameter>internal</parameter>
+                        <parameter>O</parameter>
+                        <parameter>51</parameter>
+                        <parameter>
+                            <parameter>/</parameter>
+                            <variable>tonumber</variable>
+                            <parameter>/</parameter>
+                            <localvariable>shortCodeOK</localvariable>
+                            <parameter>/////////////////2//22220000</parameter>
+                            <variable>loop</variable>
+                            <parameter>/////////////</parameter>
+                        </parameter>
+                    </function>
+                </loop>
+                <loop name="iterate100" start="0" stop="95" step="1">
+                    <function name="readWindowedUCPPacket" module="UCP">
+                        <localvariable>shortCodeOK</localvariable>
+                    </function>
+                    <function name="queryTextResponse" module="UCP">
+                        <localvariable>shortCodeOK</localvariable>
+                        <parameter>OK51</parameter>
+                        <parameter>\d\d/\d\d\d\d\d/R/51/A//[^/]*+/\w\w</parameter>
+                    </function>
+                    <function name="sendWindowedUCPPacket" module="UCP">
+                        <localvariable>shortCodeOK</localvariable>
+                        <parameter>internal</parameter>
+                        <parameter>O</parameter>
+                        <parameter>51</parameter>
+                        <parameter>
+                            <parameter>/</parameter>
+                            <variable>tonumber</variable>
+                            <parameter>/</parameter>
+                            <localvariable>shortCodeOK</localvariable>
+                            <parameter>/////////////////2//22220000</parameter>
+                            <variable>loop</variable>
+                            <parameter>/////////////</parameter>
+                        </parameter>
+                    </function>
+                </loop>
+                <loop name="loop" start="1" stop="5" step="1">
+                    <function name="readWindowedUCPPacket" module="UCP">
+                        <localvariable>shortCodeOK</localvariable>
+                    </function>
+
+                    <function name="queryTextResponse" module="UCP">
+                        <localvariable>shortCodeOK</localvariable>
+                        <parameter>OK51Rest</parameter>
+                        <parameter>\d\d/\d\d\d\d\d/R/51/A//[^/]*+/\w\w</parameter>
+                    </function>
+                </loop>
+                <function name="closeConnection" module="UCP">
+                    <localvariable>shortCodeOK</localvariable>
+                </function>
+            </thread>
+
+
+            <thread>
+                <function name="setLocalVariable" module="BASIC">
+                    <parameter>shortCodeNW</parameter>
+                    <parameter>
+                        <configuration>XSAM/SHORTCODEPREFIXNW</configuration>
+                        <localvariable>shortCode</localvariable>
+                    </parameter>
+                </function>
+                <loop name="iterate100" start="0" stop="100" step="1">
+                    <function name="openConnection" module="UCP">
+                        <localvariable>shortCodeNW</localvariable>
+                        <configuration>XSAM/IP</configuration>
+                        <configuration>XSAM/PORT</configuration>
+                    </function>
+                    <function name="sendUCPPacket" module="UCP">
+                        <localvariable>shortCodeNW</localvariable>
+                        <parameter>internal</parameter>
+                        <parameter>O</parameter>
+                        <parameter>60</parameter>
+                        <parameter>
+                            <parameter>/</parameter>
+                            <localvariable>shortCodeNW</localvariable>
+                            <parameter>/6/1/1/70617373776F7264//0100//////</parameter>
+                        </parameter>
+                    </function>
+                    <function name="queryTextResponse" module="UCP">
+                        <localvariable>shortCodeNW</localvariable>
+                        <parameter>NoWhitelist</parameter>
+                        <parameter>\d\d/\d\d\d\d\d/R/60/N/[^/]++/\w\w</parameter>
+                    </function>
+                    <function name="closeConnection" module="UCP">
+                        <localvariable>shortCodeNW</localvariable>
+                    </function>
+                </loop>
+
+            </thread>
+
+
+            <thread>
+                <function name="setLocalVariable" module="BASIC">
+                    <parameter>shortCodeU</parameter>
+                    <parameter>
+                        <configuration>XSAM/SHORTCODEPREFIXU</configuration>
+                        <localvariable>shortCode</localvariable>
+                    </parameter>
+                </function>
+                <loop name="iterate100" start="0" stop="100" step="1">
+                    <function name="openConnection" module="UCP">
+                        <localvariable>shortCodeU</localvariable>
+                        <configuration>XSAM/IP</configuration>
+                        <configuration>XSAM/PORT</configuration>
+                    </function>
+                    <function name="sendUCPPacket" module="UCP">
+                        <localvariable>shortCodeU</localvariable>
+                        <parameter>internal</parameter>
+                        <parameter>O</parameter>
+                        <parameter>60</parameter>
+                        <parameter>
+                            <parameter>/</parameter>
+                            <localvariable>shortCodeU</localvariable>
+                            <parameter>/6/1/1/70617373776F7264//0100//////</parameter>
+                        </parameter>
+                    </function>
+                    <function name="queryTextResponse" module="UCP">
+                        <localvariable>shortCodeU</localvariable>
+                        <parameter>UnknownShortCode</parameter>
+                        <parameter>\d\d/\d\d\d\d\d/R/60/N/[^/]++/\w\w</parameter>
+                    </function>
+                    <function name="closeConnection" module="UCP">
+                        <localvariable>shortCodeU</localvariable>
+                    </function>
+                </loop>
+            </thread>
+
+        </loop>
+    </loop>
+
+    <function name="waitOnThreads" module="Basic"/>
+    <function name="stopSMSCServer" module="SMS"/>
+</test>

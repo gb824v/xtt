@@ -1,0 +1,149 @@
+<test>
+    <name>XTT.TC.003</name>
+    <description>Test the waitForVariable functionality of XTT</description>
+    <thread>
+        <function name="waitForVariable" module="Basic">
+            <parameter>xttWaitTest</parameter>
+        </function>
+        <function name="info" module="Basic">
+            <parameter>Success: </parameter>
+            <variable>xttWaitTest</variable>
+        </function>
+        <function name="compareString" module="Basic">
+            <variable>xttWaitTest</variable>
+            <parameter>yes</parameter>
+        </function>
+    </thread>
+    <function name="sleep" module="Basic">
+        <parameter>1000</parameter>
+    </function>
+
+    <function name="setVariable" module="Basic">
+        <parameter>xttWaitTest</parameter>
+        <parameter>yes</parameter>
+    </function>
+    <function name="waitOnThreads" module="Basic"/>
+
+
+
+
+    <thread>
+        <function name="sleep" module="Basic">
+            <parameter>1000</parameter>
+        </function>
+        <function name="waitForVariable" module="Basic">
+            <parameter>xttWaitTest2</parameter>
+        </function>
+        <function name="info" module="Basic">
+            <parameter>Success: </parameter>
+            <variable>xttWaitTest2</variable>
+        </function>
+        <function name="compareString" module="Basic">
+            <variable>xttWaitTest2</variable>
+            <parameter>yes too</parameter>
+        </function>
+    </thread>
+    <function name="setVariable" module="Basic">
+        <parameter>xttWaitTest2</parameter>
+        <parameter>yes too</parameter>
+    </function>
+    <function name="waitOnThreads" module="Basic"/>
+
+
+
+
+    <thread>
+        <function name="waitForVariable" module="Basic">
+            <parameter>xttWaitTest3</parameter>
+        </function>
+        <function name="info" module="Basic">
+            <parameter>Success: </parameter>
+            <variable>xttWaitTest3</variable>
+        </function>
+        <function name="compareString" module="Basic">
+            <variable>xttWaitTest3</variable>
+            <parameter>yes 3</parameter>
+        </function>
+    </thread>
+    <function name="sleep" module="Basic">
+        <parameter>1000</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+        <parameter>xttWaitTest3</parameter>
+        <parameter>yes 3</parameter>
+    </function>
+    <function name="waitOnThreads" module="Basic"/>
+
+
+    <thread>
+        <function name="waitForVariable" module="Basic">
+            <parameter>XTTWAITTEST4</parameter>
+        </function>
+        <function name="info" module="Basic">
+            <parameter>Success: </parameter>
+            <variable>xttwaittest4</variable>
+        </function>
+        <function name="compareString" module="Basic">
+            <variable>xTtWaItTeSt4</variable>
+            <parameter>yes</parameter>
+        </function>
+    </thread>
+    <function name="sleep" module="Basic">
+        <parameter>1000</parameter>
+    </function>
+
+    <function name="setVariable" module="Basic">
+        <parameter>XtTWaitTest4</parameter>
+        <parameter>yes</parameter>
+    </function>
+    <function name="waitOnThreads" module="Basic"/>
+
+
+    <thread>
+    <function name="sleep" module="Basic">
+        <parameter>5000</parameter>
+    </function>
+
+    <loop name="theloop" start="0" stop="500" step="1">
+        <function name="setVariable" module="Basic">
+            <parameter>
+                <parameter>loop-</parameter>
+                <localvariable>theloop</localvariable>
+            </parameter>
+            <localvariable>theloop</localvariable>
+        </function>
+    </loop>
+    </thread>
+
+    <loop name="theloop" start="0" stop="500" step="1">
+    <thread>
+        <function name="waitForVariable" module="Basic">
+            <parameter>
+                <parameter>loop-</parameter>
+                <localvariable>theloop</localvariable>
+            </parameter>
+        </function>
+        <function name="info" module="Basic">
+            <parameter>Success: </parameter>
+            <variable>
+                <parameter>loop-</parameter>
+                <localvariable>theloop</localvariable>
+            </variable>
+        </function>
+        <function name="compareString" module="Basic">
+            <variable>
+                <parameter>loop-</parameter>
+                <localvariable>theloop</localvariable>
+            </variable>
+            <localvariable>theloop</localvariable>
+        </function>
+    </thread>
+    </loop>
+
+
+
+
+    <function name="waitOnThreads" module="Basic"/>
+
+
+</test>

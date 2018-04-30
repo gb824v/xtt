@@ -1,0 +1,35 @@
+<test>	    
+	<name>XMP.ICAP.TC.013</name>
+    <description>GET with RESPMOD call, 500 response</description>
+
+    <subtest name="loadReqmod" file="loadReqmod.xml"/>
+
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+	<function name="startICAPServer" module="ICAP"/>
+	<function name="startWebServer" module="HTTP"/>
+	<function name="setServerReturnCode" module="ICAP">
+		<parameter>500</parameter>
+	</function>	
+
+	<function name="sendGetRequest" module="HTTP">
+   		<parameter>http://icap3.xtt724.com/</parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>500</parameter>
+	</function>	
+	<function name="waitForRESPMOD" module="ICAP">
+		<parameter>1</parameter>
+	</function>	
+
+    <subtest name="unloadReqmod" file="unloadReqmod.xml"/>
+
+	<function name="stopWebServer" module="HTTP"/>
+	<function name="stopICAPServer" module="ICAP"/>
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function> 
+</test>

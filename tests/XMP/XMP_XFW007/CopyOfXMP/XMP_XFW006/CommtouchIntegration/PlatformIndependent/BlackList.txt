@@ -1,0 +1,5 @@
+http://*.black.xtt724.com/*
+http://*.perfectgirls.net/*
+http://*.ddc.com:{80[01][0-9]}/*
+http://www.sex.com/*
+*://www.penthouse.com/*

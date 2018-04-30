@@ -1,0 +1,33 @@
+<test>
+	<function name="testName" module="Basic">
+	
+	<parameter>XSN.DBLoad.AddSubAdditionalAttribute1.2.xml</parameter>
+	</function>
+	
+	<description>Add Subscriber with additional Attribute</description>
+   
+    <function name="sendRemoteCommand" module="Remote">
+    
+    	<parameter>writeFile AddSubAdditionalAttribute.xml </parameter>
+         
+        <file>AddSubAdditionalAttribute.xml</file>
+    
+    </function>
+    
+    <function name="sendRemoteCommand" module="Remote">
+    
+        <configuration>xsn/path</configuration>
+        <configuration>xsn/xms</configuration>
+    
+        
+        <parameter>load db AddSubAdditionalAttribute.xml</parameter>
+    
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        
+    <parameter>ERROR: XML upload encountered problems and ended prematurely</parameter>
+    <parameter>dev/null</parameter>
+    </function>    
+    
+  </test>

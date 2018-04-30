@@ -1,0 +1,13 @@
+<!-- COPY Response for Transperant Proxy -->
+<?xml version="1.0" encoding="utf-8" ?></crlf>
+<d:multistatus xmlns:d="DAV:"></crlf>
+    <d:response></crlf>
+        <d:href>http://www.example.com/othercontainer/R2/</d:href></crlf>
+        <d:status>HTTP/1.1 423 Locked</d:status></crlf>
+        <d:error></crlf>
+            <d:lock-token-submitted/></crlf>
+        </d:error></crlf>
+    </d:response></crlf>
+    <D:responsedescription>There has been an error, few or all resources not copied successfully</crlf>
+    </D:responsedescription></crlf>
+</d:multistatus></crlf>

@@ -1,0 +1,96 @@
+<test>
+	<name>XTT.TC.020</name>
+
+	<description>Some WebDAV examples</description>
+
+    <function name="startWebServer" module="HTTP"/>
+
+
+    <function name="setServerHeader" module="HTTP">
+        <parameter>content-type</parameter>
+        <parameter>text/xml; charset="utf-8"</parameter>
+    </function>
+    <function name="setServerReturnCode" module="HTTP">
+        <parameter>207</parameter>
+    </function>
+    <function name="setServerReturnMessage" module="HTTP">
+        <parameter> Multi-Status</parameter>
+    </function>
+
+    <function name="setCacheFile" module="HTTP">
+        <parameter>/file</parameter>
+        <parameter>      
+            <crlf>&lt;?xml version="1.0" encoding="utf-8" ?&gt;</crlf>
+            <crlf>&lt;D:multistatus xmlns:D="DAV:"&gt;</crlf>
+            <crlf>  &lt;D:response&gt;</crlf>
+            <crlf>       &lt;D:href&gt;http://www.foo.bar/file&lt;/D:href&gt;</crlf>
+            <crlf>       &lt;D:propstat&gt;</crlf>
+            <crlf>            &lt;D:prop xmlns:R="http://www.foo.bar/boxschema/"&gt;</crlf>
+            <crlf>                 &lt;R:bigbox&gt;</crlf>
+            <crlf>                      &lt;R:BoxType&gt;Box type A&lt;/R:BoxType&gt;</crlf>
+            <crlf>                 &lt;/R:bigbox&gt;</crlf>
+            <crlf>                 &lt;R:author&gt;</crlf>
+            <crlf>                      &lt;R:Name&gt;J.J. Johnson&lt;/R:Name&gt;</crlf>
+            <crlf>                 &lt;/R:author&gt;</crlf>
+            <crlf>            &lt;/D:prop&gt;</crlf>
+            <crlf>            &lt;D:status&gt;HTTP/1.1 200 OK&lt;/D:status&gt;</crlf>
+            <crlf>       &lt;/D:propstat&gt;</crlf>
+            <crlf>       &lt;D:propstat&gt;</crlf>
+            <crlf>            &lt;D:prop&gt;&lt;R:DingALing/&gt;&lt;R:Random/&gt;&lt;/D:prop&gt;</crlf>
+            <crlf>            &lt;D:status&gt;HTTP/1.1 403 Forbidden&lt;/D:status&gt;</crlf>
+            <crlf>            &lt;D:responsedescription&gt; The user does not have access to the DingALing property.</crlf>
+            <crlf>            &lt;/D:responsedescription&gt;</crlf>
+            <crlf>       &lt;/D:propstat&gt;</crlf>
+            <crlf>  &lt;/D:response&gt;</crlf>
+            <crlf>  &lt;D:responsedescription&gt; There has been an access violation error.</crlf>
+            <crlf>  &lt;/D:responsedescription&gt;</crlf>
+            <crlf>&lt;/D:multistatus&gt;</crlf>
+        </parameter>
+    </function>
+
+
+    <function name="setTextPostData" module="HTTP">
+        <parameter>
+            <crlf>&lt;?xml version="1.0" encoding="utf-8" ?&gt;</crlf>
+            <crlf>&lt;D:propfind xmlns:D="DAV:"&gt;</crlf>
+            <crlf>  &lt;D:prop xmlns:R="http://www.foo.bar/boxschema/"&gt;</crlf>
+            <crlf>       &lt;R:bigbox/&gt;</crlf>
+            <crlf>       &lt;R:author/&gt;</crlf>
+            <crlf>       &lt;R:DingALing/&gt;</crlf>
+            <crlf>       &lt;R:Random/&gt;</crlf>
+            <crlf>  &lt;/D:prop&gt;</crlf>
+            <crlf>&lt;/D:propfind&gt;</crlf>
+        </parameter>      
+    </function>
+    <function name="setHeader" module="HTTP">
+        <parameter>Content-Type</parameter>
+        <parameter>text/xml; charset="utf-8"</parameter>
+    </function>
+    <function name="sendFreeRequest" module="HTTP">
+        <parameter>PROPFIND</parameter>
+        <parameter>true</parameter>
+        <parameter>
+            <parameter>http://</parameter>
+            <configuration>SYSTEM/IP</configuration>
+            <parameter>:</parameter>
+            <configuration>WEBSERVER/PORT</configuration>
+            <parameter>/file</parameter>
+        </parameter>
+        <parameter>response</parameter>
+    </function>
+    <function name="sendGetRequest" module="HTTP">
+        <parameter>
+            <parameter>http://</parameter>
+            <configuration>SYSTEM/IP</configuration>
+            <parameter>:</parameter>
+            <configuration>WEBSERVER/PORT</configuration>
+            <parameter>/file</parameter>
+        </parameter>
+    </function>
+    <function name="waitForRequests" module="HTTP">
+        <parameter>1</parameter>
+    </function>
+
+    <function name="stopWebServer" module="HTTP"/>
+
+</test>

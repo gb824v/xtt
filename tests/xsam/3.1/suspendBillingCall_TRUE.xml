@@ -1,0 +1,35 @@
+<test>
+    <configuration>configXSAM.xml</configuration>
+
+    <function name="writeRemoteFile" module="Remote">
+        <parameter>suspend-billing-call_TRUE.sql</parameter>
+        <file>suspend-billing-call_TRUE.sql</file>
+    </function>
+
+    <function name="writeRemoteFile" module="Remote">
+        <parameter>runSqlScript.sh</parameter>
+        <file>runSqlScript.sh</file>
+    </function>
+
+    <function name="executeRemoteCommand" module="Remote">
+    	    <parameter>chmod ugo+rx runSqlScript.sh</parameter>
+    </function>
+
+    <function name="executeRemoteCommand" module="Remote">
+        <parameter>
+    	    <parameter>sh runSqlScript.sh </parameter>
+            <configuration>xsam/sql/database</configuration>
+    	    <parameter> </parameter>
+            <configuration>xsam/sql/password</configuration>
+    	    <parameter> </parameter>
+            <configuration>xsam/sql/server</configuration>
+    	    <parameter> </parameter>
+    	    <parameter>suspend-billing-call_TRUE.sql</parameter>
+        </parameter>
+    </function>
+
+    <function name="sleep" module="Basic">
+        <parameter>30000</parameter>
+    </function>
+
+</test>

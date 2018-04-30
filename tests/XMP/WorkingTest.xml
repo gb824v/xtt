@@ -1,0 +1,37 @@
+<test>
+<name>MyTest</name>
+<qcid>44</qcid>
+<description>
+WebServer Test
+</description>
+<steps>
+HTTP/startWebServer
+HTTP/sendGetRequest
+HTTP/checkResponseCode
+HTTP/stopWebServer
+</steps>
+<designer>guyb </designer>
+<creationdate>2012-04-17 16:13:36 </creationdate>
+<testlevel>Regression</testlevel>
+<xfwVersion>XMP_XFW007</xfwVersion>
+<mandatory>false</mandatory>
+<stepname>HTTP/startWebServer</stepname>
+<stepid>1</stepid>
+<function name="startWebServer" module="HTTP"/>
+<mandatory>false</mandatory>
+<stepname>HTTP/sendGetRequest</stepname>
+<stepid>2</stepid>
+<function name="sendGetRequest" module="HTTP">
+<parameter>http://127.0.0.1/index.html</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/checkResponseCode</stepname>
+<stepid>3</stepid>
+<function name="checkResponseCode" module="HTTP">
+<parameter>200</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/stopWebServer</stepname>
+<stepid>4</stepid>
+<function name="stopWebServer" module="HTTP"/>
+</test>

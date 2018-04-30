@@ -1,0 +1,125 @@
+<test>
+
+    <configuration>xsnhttp.xml</configuration>
+
+	<function name="testName" module="Basic">
+		<parameter>XSN.FFC.TC.001</parameter>
+	</function>
+	
+	<description>Test fast filter change via SMS.</description>
+	
+	<function name="startSMSCServer" module="SMS"/>
+	
+	<subtest>loadSMSConnections.xml</subtest>
+
+    <function name="waitForBind" module="SMS">
+        <parameter>1111</parameter>
+	</function>
+    <function name="waitForBind" module="SMS">
+        <parameter>30080</parameter>
+	</function>
+	    
+    <function name="openConnection" module="UCP">
+        <parameter>connection1</parameter>
+        <configuration>SYSTEM/IP</configuration>
+        <configuration>SMSCSERVER/PORT</configuration>
+    </function>
+
+    <!--function name="sendUCPPacket" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>internal</parameter>
+        <parameter>O</parameter>
+        <parameter>60</parameter>
+        <parameter>/</parameter>
+        <configuration>XSN/FastFilterChangeShortcode</configuration>
+        <parameter>/6/1/1/70617373776F7264//0100//////</parameter>
+    </function>
+
+    <function name="queryTextResponse" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>dev/null</parameter>
+        <parameter>\d\d/\d\d\d\d\d/R/60/A/[^/]++/\w\w</parameter>
+    </function>
+
+    <function name="setVariable" module="BASIC">
+        <parameter>pass</parameter>
+        <parameter>SMSC/</parameter>
+        <configuration>SMSCSERVER/PROTOCOL</configuration>
+        <parameter>/</parameter>
+        <configuration>XSN/SHORTCODE</configuration>
+        <parameter>/PWD</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <parameter>password</parameter>
+        <variablepointer>pass</variablepointer>
+    </function-->
+    
+    <function name="sendSMSCUCPPacket" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>0</parameter>
+        <parameter>internal</parameter>
+        <parameter>O</parameter>
+        <parameter>51</parameter>
+        <parameter>
+            <parameter>/</parameter>
+            <parameter>0123456789</parameter>
+            <parameter>/</parameter>
+            <configuration>XSN/FASTFILTERCHANGESHORTCODE</configuration>
+            <parameter>////////////0066/////3//</parameter>
+            <byteStringEncode>My text</byteStringEncode>
+            <parameter>/////////////</parameter>
+        </parameter>            
+    </function>    
+
+    <function name="queryTextResponse" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>dev/null</parameter>
+        <parameter>\d\d/\d\d\d\d\d/R/51/A//[^/]++/\w\w</parameter>
+    </function>    
+    
+    <!--function name="disableFollowRedirects" module="HTTP" />
+    <thread>    
+        <function name="setHeader" module="HTTP">
+            <parameter>SubscriberIdHdr</parameter>
+            <configuration>xsn/subscribers/blockNotificationUser</configuration>
+        </function>
+        
+    	<function name="sendGetRequest" module="HTTP">
+    		<parameter>http://www.gnu.org/</parameter>
+    	</function>
+    	
+    	<function name="sendGetRequest" module="HTTP">
+    		<parameter>http://www.playboy.com/</parameter>
+    	</function>
+    	
+    	<function name="queryHeader" module="HTTP">
+    		<parameter>dev/null</parameter>
+    		<parameter>location</parameter>
+            <parameter>
+                <parameter>^</parameter>
+                <configuration>xsn/redirect/url</configuration>
+                <parameter>/</parameter>
+                <configuration>xsn/redirect/blockedByCommunityFiltersScreen</configuration>
+            </parameter>		
+    	</function>
+    </thread>
+    	
+    <function name="waitForMessages" module="SMS">
+        <parameter>1</parameter>
+    </function>	
+    
+    <function name="waitOnThreads" module="Basic"/>
+    
+    <function name="decodeByteString" module="Basic">
+        <parameter>test</parameter>
+        <variable>smsc/ucp/0041628881013/AMsg</variable>
+    </function>
+	
+	<function name="info" module="Basic">
+	    <variable>test</variable>
+    </function-->
+	
+    <function name="stopSMSCServer" module="SMS"/>	
+
+	<subtest>unloadSMSConnections.xml</subtest>
+</test>

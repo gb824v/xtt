@@ -1,0 +1,48 @@
+<test>	    
+	<name>XMP.ICAP.TC.011</name>
+    <description>POST with REQMOD/RESPMOD call, 204 response</description>
+
+    <subtest name="loadReqmod" file="loadReqmod.xml"/>
+
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+	<function name="startICAPServer" module="ICAP"/>
+	<function name="startWebServer" module="HTTP"/>
+	<function name="setServerReturnCode" module="ICAP">
+		<parameter>204</parameter>
+	</function>	
+
+	<thread>
+    	<function name="waitForREQMOD" module="ICAP">
+    		<parameter>1</parameter>
+    	</function>	
+    	<function name="checkServerICAPHeader" module="ICAP">
+    		<parameter>allow</parameter>
+    		<parameter>204</parameter>
+    	</function>	
+	</thread>
+	<function name="setPostData" module="HTTP">
+        <parameter>postData</parameter>
+        <parameter>somevalues</parameter>
+	</function>
+	<function name="sendPostRequest" module="HTTP">
+   		<parameter>http://icap1204.xtt724.com/?delay=1</parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>	
+	<function name="waitForRESPMOD" module="ICAP">
+		<parameter>1</parameter>
+	</function>	
+
+    <subtest name="unloadReqmod" file="unloadReqmod.xml"/>
+
+	<function name="stopWebServer" module="HTTP"/>
+	<function name="stopICAPServer" module="ICAP"/>
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function> 
+</test>

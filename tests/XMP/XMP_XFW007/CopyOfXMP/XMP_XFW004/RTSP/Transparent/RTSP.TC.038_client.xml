@@ -1,0 +1,185 @@
+<test>
+	<name>RTSP.TC.038_client</name>
+	<description>Validate Live Media Presentation Using Multicast (Client file)</description>
+
+    <function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function> 
+
+	<function name="disableProxy" module="HTTP" />
+
+	<function name="sendGetRequest" module="HTTP">
+		 <parameter>
+			<parameter>http://</parameter>
+			<configuration>RTSPSERVER/SERVERIP</configuration>
+			<parameter>:</parameter>
+			<configuration>WEBSERVER/PORT</configuration>
+			<parameter>/concert.sdp</parameter> 
+		</parameter>
+    </function>
+
+	<function name="checkResponseCode" module="HTTP">
+	    <parameter>200</parameter>
+    </function>
+ 
+	<function name="clearHeader" module="HTTP" />
+
+	<!-- client side server for responses -->
+    <function name="setVariable" module="Basic">
+        <parameter>CLIENT</parameter>
+        <configuration>RTSPSERVER/CLIENTPORT</configuration>
+    </function>
+
+    <function name="setVariable" module="Basic">
+	    <parameter>SERVER</parameter>
+		<configuration>RTSPSERVER/PORT</configuration>
+	</function>
+	
+	 <!-- server side server for requests -->
+    <function name="startRTSPServer" module="RTSP">
+        <variable>CLIENT</variable>
+        <configuration>RTSPSERVER/TIMEOUT</configuration>
+        <testpath>rtsp</testpath>
+    </function>  
+
+   <function name="createConnection" module="RTSP">
+        <parameter>one</parameter>
+        <variable>CLIENT</variable>
+    </function>
+
+	 <function name="sendRTSPRequest" module="RTSP">
+        <parameter>one</parameter>
+        <parameter>DESCRIBE</parameter>
+        <parameter>
+            <parameter>rtsp://</parameter>
+            <configuration>RTSPSERVER/SERVERIP</configuration>
+            <parameter>:</parameter>
+            <variable>SERVER</variable>
+            <parameter>/concert/audio</parameter>
+        </parameter>
+        <parameter></parameter>
+    </function>
+
+    <function name="waitForResponses" module="RTSP">
+        <parameter>1</parameter>
+    </function>
+    
+   <function name="waitForVariable" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>CLIENT</variable>
+            <parameter>/RESPONSE/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+	 <function name="removeVariables" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>CLIENT</variable>
+            <parameter>/RESPONSE/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+	<function name="setHeader" module="RTSP">
+        <parameter>one</parameter>
+        <parameter>Transport</parameter>
+        <parameter>RTP/AVP;multicast</parameter>
+    </function>
+
+    <function name="sendRTSPRequest" module="RTSP">
+        <parameter>one</parameter>
+        <parameter>SETUP</parameter>
+        <parameter>
+            <parameter>rtsp://</parameter>
+            <configuration>RTSPSERVER/SERVERIP</configuration>
+            <parameter>:</parameter>
+            <variable>SERVER</variable>
+            <parameter>/concert/audio</parameter>
+        </parameter>
+        <parameter></parameter>
+    </function>
+
+    <function name="waitForResponses" module="RTSP">
+        <parameter>2</parameter>
+    </function>     
+
+     <function name="waitForVariable" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>CLIENT</variable>
+            <parameter>/RESPONSE/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+	<function name="setVariable" module="Basic">
+       <parameter>SESSION</parameter>
+	    <variable>
+            <parameter>RTSP/</parameter>
+            <variable>CLIENT</variable>
+            <parameter>/RESPONSE/HEADER/SESSION</parameter>
+        </variable>
+    </function>
+    <function name="removeVariables" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+			<variable>CLIENT</variable>
+            <parameter>/RESPONSE/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+	<function name="setHeader" module="RTSP">
+        <parameter>one</parameter>
+        <parameter>Session</parameter>
+        <variable>SESSION</variable>
+    </function>
+    
+	<function name="sendRTSPRequest" module="RTSP">
+		<parameter>one</parameter>
+		<parameter>PLAY</parameter>
+		<parameter>
+			<parameter>rtsp://</parameter>
+		   <configuration>RTSPSERVER/SERVERIP</configuration>
+			<parameter>:</parameter>
+			<variable>SERVER</variable>
+			<parameter>/concert/audio</parameter>		
+		</parameter>
+	   <parameter></parameter>
+	</function>
+
+	<function name="waitForResponses" module="RTSP">
+		<parameter>3</parameter>
+	</function>
+
+
+	 <function name="waitForVariable" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>CLIENT</variable>
+            <parameter>/RESPONSE/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+	 <function name="removeVariables" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>CLIENT</variable>
+            <parameter>/RESPONSE/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+	<function name="sleep" module="Basic">
+		<parameter>5000</parameter>
+	</function>
+
+	<function name="closeConnection" module="RTSP">
+		<parameter>one</parameter>
+	</function>
+
+	<function name="stopRTSPServer" module="RTSP"/>
+
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+</test>

@@ -1,0 +1,7 @@
+<!-- 	XMG: System under test:	172.20.9.66 	8888
+	Test-Client system:	172.20.2.3
+-->
+
+<Configuration>
+    <provisioningURL>http://172.20.9.46:5010/mbservice/mbservice</provisioningURL> 
+</Configuration>

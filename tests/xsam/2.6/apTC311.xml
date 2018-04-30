@@ -1,0 +1,112 @@
+<test>
+    <configuration>xsam_config.xml</configuration>
+    <function name="testName" module="Basic">
+        <parameter>AP.TC.311</parameter>
+    </function>
+
+    <conditional configuration="XSAM/INTERNALSMSC" targetValue="">
+        <function name="startSMSCServer" module="SMS"/>
+    </conditional>
+
+    <function name="openConnection" module="UCP">
+        <parameter>connection1</parameter>
+        <configuration>XSAM/IP</configuration>
+        <configuration>XSAM/PORT</configuration>
+    </function>
+
+    <function name="sendUCPPacket" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>internal</parameter>
+        <parameter>O</parameter>
+        <parameter>60</parameter>
+        <parameter>
+            <parameter>/</parameter>
+            <configuration>XSAM/SHORTCODE</configuration>
+            <parameter>/6/1/1/70617373776F7264//0100//////</parameter>
+        </parameter>
+    </function>
+
+    <function name="queryTextResponse" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>secret</parameter>
+        <parameter>\d\d/\d\d\d\d\d/R/60/A/[^/]++/\w\w</parameter>
+    </function>
+
+    <conditional configuration="XSAM/INTERNALSMSC" targetValue="">
+        <function name="setVariable" module="BASIC">
+            <parameter>pass</parameter>
+            <parameter>
+                <parameter>SMSC/</parameter>
+                <configuration>SMSCSERVER/PROTOCOL</configuration>
+                <parameter>/</parameter>
+                <configuration>XSAM/SHORTCODE</configuration>
+                <parameter>/PWD</parameter>
+            </parameter>
+        </function>
+        <function name="compareString" module="basic">
+            <parameter>password</parameter>
+            <variablepointer>pass</variablepointer>
+        </function>
+    </conditional>
+
+    <function name="createDateString" module="Basic">
+        <parameter>ddMMyykkmmss</parameter>
+        <parameter>DDT</parameter>
+        <parameter>3600</parameter>
+        <parameter>GMT</parameter>
+    </function>
+
+
+    <function name="sendUCPPacket" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>internal</parameter>
+        <parameter>O</parameter>
+        <parameter>51</parameter>
+        <parameter>
+            <parameter>/0123456789/</parameter>
+            <configuration>XSAM/SHORTCODE</configuration>
+            <parameter>/////////1/</parameter>
+            <variable>DDT</variable>
+            <parameter>///////2//12345678901234567890/////////////</parameter>
+        </parameter>
+    </function>
+
+    <function name="queryTextResponse" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>secret</parameter>
+        <parameter>\d\d/\d\d\d\d\d/R/51/A//[^/]++/\w\w</parameter>
+    </function>
+
+    <conditional configuration="XSAM/INTERNALSMSC" targetValue="">
+        <function name="stopSMSCServer" module="SMS"/>
+        <function name="setVariable" module="BASIC">
+            <parameter>nmsg</parameter>
+            <parameter>
+                <parameter>SMSC/</parameter>
+                <configuration>SMSCSERVER/PROTOCOL</configuration>
+                <parameter>/0123456789/NMsg</parameter>
+            </parameter>
+        </function>
+        <function name="compareString" module="basic">
+            <parameter>12345678901234567890</parameter>
+            <variablepointer>nmsg</variablepointer>
+        </function>
+
+        <function name="setVariable" module="BASIC">
+            <parameter>ddt2</parameter>
+            <parameter>
+                <parameter>SMSC/</parameter>
+                <configuration>SMSCSERVER/PROTOCOL</configuration>
+                <parameter>/0123456789/DDT</parameter>
+            </parameter>
+        </function>
+        <function name="compareString" module="basic">
+            <variable>DDT</variable>
+            <variablepointer>ddt2</variablepointer>
+        </function>
+    </conditional>
+
+    <function name="closeConnection" module="UCP">
+        <parameter>connection1</parameter>
+    </function>
+</test>

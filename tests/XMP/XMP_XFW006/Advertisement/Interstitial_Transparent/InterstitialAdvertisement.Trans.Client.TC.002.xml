@@ -1,0 +1,63 @@
+<!--
+InterstitialAdvertisement.Trans.Client.TC.002  - Validate Interstitial Advertisement use case performs only with GET requests, not with POST and any other HTTP request types [1 request to XMP] During Transparent Proxy condition.
+
+Test Description:
+ 1. Disable proxy.
+ 2. Radius Logon.
+ 3. Set post data.
+ 4. Send Post request to http://872383.724xtt.com.
+ 5. Radius Logoff
+ 
+Expected Result:
+ -  XMP should not process the Post Interstitial Advertisement request and should show main page without any Interstitial 
+	Advertisement .
+
+XTT Main Commands:
+
+ 1.  - disableProxy
+ 2.  - Radius log-ON
+ 3.  - setPostData
+ 4.  - sendPostRequest
+ 5.  - Radius log-OFF
+-->
+
+<test>
+
+	<function name="testName" module="Basic">
+		<parameter>InterstitialAdvertisement.Trans.Client.TC.002</parameter>
+	</function>
+
+	<description>Validate Interstitial Advertisement use case performs only with GET requests, not with POST and any other HTTP request types [1 request to XMP] During Transparent Proxy condition.</description>
+
+	<function name="disableProxy" module="HTTP" />
+
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12345</parameter>
+	</function>
+
+	<function name="setPostData" module="HTTP">
+		<parameter>postData</parameter>
+		<parameter>one-value</parameter>
+	</function>
+
+	<function name="sendPostRequest" module="HTTP">
+		<parameter>
+		<parameter>http://</parameter>
+			<configuration>SERVER/IP</configuration>
+			<parameter>:</parameter>
+			<configuration>WEBSERVER/PORT</configuration>
+			<parameter>/index.html</parameter>
+		</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12345</parameter>
+	</function>
+
+</test>

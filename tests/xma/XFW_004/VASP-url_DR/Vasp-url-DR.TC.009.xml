@@ -1,0 +1,202 @@
+<test>
+
+	<name>Vasp-url-DR.TC.009</name>
+
+	<description>MM7 - MM1 : XMA should retry M-notification.ind as configured, if delivery not possible.</description>
+
+	<!-- Load config file -->
+	<configuration>../xmaConfig.xml</configuration>
+
+	<!-- Delete existing messages from message store -->
+	<subtest name="deleteMessagestoreAll" file="../deleteMessagestoreAll.xml"/>
+
+	<subtest name="loadVariables" file="loadVariables.xml">
+		<parameter>MSISDN</parameter>
+	</subtest>
+
+	<!-- Load Retry Policies -->
+	<subtest>../loadRetryPolicy.xml</subtest>
+
+	<function name="setVariable" module="Basic">
+		<parameter>MSISDN</parameter>
+		<variable>MSISDN/0</variable>
+	</function>
+
+	<!-- Create MM7 Submit Req -->
+	<function name="createMM7Soap" module="VASP">
+		<parameter>SubmitReq</parameter>
+		<configuration>VASP/VASPID</configuration>
+		<configuration>VASP/VASID</configuration>
+	</function>
+
+	<function name="setMessageBoundary" module="VASP">
+		<parameter>000001message</parameter>
+	</function>
+
+	<function name="setSoapData" module="VASP">
+		<parameter>//*[local-name()='SenderIdentification']</parameter>
+		<parameter>SenderAddress</parameter>
+	</function>
+
+	<function name="setSoapData" module="VASP">
+		<parameter>//*[local-name()='SenderAddress']</parameter>
+		<parameter>Number</parameter>
+		<configuration>VASP/NUMBER</configuration>
+	</function>
+
+	<function name="setSoapData" module="VASP">
+		<parameter>//*[local-name()='SubmitReq']</parameter>
+		<parameter>Recipients</parameter>
+	</function>
+
+	<function name="setSoapData" module="VASP">
+		<parameter>//*[local-name()='Recipients']</parameter>
+		<parameter>To</parameter>
+	</function>
+
+	<function name="setSoapData" module="VASP">
+		<parameter>//*[local-name()='To'][last()]</parameter>
+		<parameter>Number</parameter>
+		<variable>MSISDN</variable>
+	</function>
+
+	<function name="setSoapData" module="VASP">
+		<parameter>//*[local-name()='SubmitReq']</parameter>
+		<parameter>Content</parameter>
+	</function>
+
+	<function name="setSoapAttribute" module="VASP">
+		<parameter>//*[local-name()='Content']</parameter>
+		<parameter>href</parameter>
+		<parameter>cid:xtt-test001</parameter>
+	</function>
+
+	<function name="setSoapData" module="VASP">
+		<parameter>//*[local-name()='SubmitReq']</parameter>
+		<parameter>DeliveryReport</parameter>
+		<parameter>true</parameter>
+	</function>
+
+	<function name="setSoapData" module="VASP">
+		<parameter>//*[local-name()='SubmitReq']</parameter>
+		<parameter>ReadReply</parameter>
+		<parameter>false</parameter>
+	</function>
+
+	<function name="addContent" module="VASP">
+		<file>sendMM7data.txt</file>
+	</function>
+
+	<!--Send post request to VASP IN-->
+	<function name="sendPostRequest" module="VASP"/>
+
+	<!-- Check response of XMA-->
+	<function name="checkResponseCode" module="VASP">
+		<parameter>200</parameter>
+	</function>
+
+	<function name="queryBody" module="VASP">
+		<parameter>temp</parameter>
+		<parameter>&lt;StatusCode&gt;1000&lt;/StatusCode&gt;</parameter>
+	</function>
+
+	<function name="queryBody" module="VASP">
+		<parameter>MessageID</parameter>
+		<parameter>&lt;MessageID&gt;(\p{Alnum}{13})&lt;/MessageID&gt;</parameter>
+	</function>
+
+	<!-- XTT cannot receive M-Notification.ind requests for 75 seconds, so that XMA's second retry to send M-Notification.ind request will be successful. -->
+	<function name="sleep" module="Basic">
+		 <parameter>75000</parameter>
+	</function>
+
+	<!-- Start SMSC Server and wait until it binds to XMA -->
+	<function name="startSMSCServer" module="SMS"/>
+	<function name="waitForBind" module="SMS"/>
+
+	<!-- Wait for 1 WSP message -->
+	<function name="waitForWSPMessages" module="SMS">
+		<parameter>1</parameter>
+	</function>
+
+	<function name="setVariable" module="BASIC">
+		<parameter>x_mms_content_location</parameter>
+		<parameter>
+			<parameter>SMSC/</parameter>
+			<configuration>SMSCSERVER/PROTOCOL</configuration>
+			<parameter>/</parameter>
+			<variable>MSISDN</variable>
+			<parameter>/MMS/x_mms_content_location</parameter>
+		</parameter>
+	</function>
+
+	<function name="setVariable" module="BASIC">
+		<parameter>x_mms_transaction_id</parameter>
+		<parameter>
+			<parameter>SMSC/</parameter>
+			<configuration>SMSCSERVER/PROTOCOL</configuration>
+			<parameter>/</parameter>
+			<variable>MSISDN</variable>
+			<parameter>/MMS/x_mms_transaction_id</parameter>
+		</parameter>
+	</function>
+
+	<!-- Stopping SMSC server -->
+	<function name="stopSMSCServer" module="SMS"/>
+
+	<function name="setHeader" module="HTTP">
+		<parameter>Accept</parameter>
+		<parameter>text/vnd.wap.wml, application/xml, image/gif, application/vnd.wap.mms-message</parameter>
+	</function>
+
+	<function name="setHeader" module="HTTP">
+		<parameter>User-Agent</parameter>
+		<parameter>UserAgent-1</parameter>
+	</function>
+
+	<function name="setHeader" module="HTTP">
+		<parameter>accept-charset</parameter>
+		<parameter>utf-8</parameter>
+	</function>
+
+	<function name="setHeader" module="HTTP">
+		<configuration>SMSCSERVER/MM1MSISDNHEADER</configuration>
+		<variable>MSISDN</variable>
+	</function>
+
+	<!-- Send Get request for message -->
+	<function name="sendGetRequest" module="HTTP">
+		<variable>
+			<parameter>SMSC/</parameter>
+			<configuration>SMSCSERVER/PROTOCOL</configuration>
+			<parameter>/</parameter>
+			<variable>MSISDN</variable>
+			<parameter>/MMS/x_mms_content_location</parameter>
+		</variable>
+	</function>
+
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<function name="decodeMM1Packet" module="SMS">
+		<parameter>PACKET1Response</parameter>
+		<variable>HTTP/BODY/BASE64</variable>
+	</function>
+
+	<!-- Send Notification response-->
+	<function name="sendMM1NotifyResponse" module="SMS">
+		<parameter>retrieved</parameter>
+		<variablepointer>x_mms_transaction_id</variablepointer>
+		<variable>MSISDN/0</variable>
+	</function>
+
+	<function name="checkResponseCode" module="SMS">
+		<parameter>200</parameter>
+		<parameter>204</parameter>
+	</function>
+
+	<!--Remove Retry Policies -->
+	<subtest>../restoreRetryPolicy.xml</subtest>
+
+</test>

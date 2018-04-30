@@ -1,0 +1,36 @@
+<test>
+
+
+
+    <function name="writeRemoteFile" module="Remote">
+        <parameter>wurfl_empty.xml</parameter>
+        <file>wurfl_empty.xml</file>
+    </function>
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+            <parameter>load data wurfl_empty.xml</parameter>
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        <parameter>^Loaded</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+
+    <!-- upload new reqmod configuration-->
+    <function name="writeRemoteFile" module="Remote">
+        <parameter>reqmodTCemptyrules.xml</parameter>
+        <parameter>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;requestModifications&gt;&lt;/requestModifications&gt;</parameter>
+    </function>
+
+    <!-- load new reqmod configuration -->
+    <function name="executeRemoteXMSCommand" module="Remote">
+            <parameter>load data reqmodTCemptyrules.xml</parameter>
+    </function>
+
+    <!-- check if new configuration is successfully loaded -->
+    <function name="queryResponse" module="Remote">
+        <parameter>^Loaded requestmodifications.*</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+
+</test>

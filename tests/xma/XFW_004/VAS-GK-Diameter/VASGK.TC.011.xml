@@ -1,0 +1,86 @@
+<test>
+
+	<name>VASGK.TC.011</name>
+
+	<description>Send XML request with missing header "service-context-id" to VASGK / XMA should process the request</description>
+
+	<!-- Start SecureDiameter server -->
+	<function name="startSecureDiameterServer" module="Diameter">
+		<configuration>DIAMETERSERVER/SECUREPORT</configuration>
+		<xml>
+			<Diameter>
+				<response>
+					<DEVICE_WATCHDOG_REQUEST proxiable="true" error="false" tretr="false">
+						<RESULT_CODE        value="DIAMETER_SUCCESS"    mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<ORIGIN_REALM           value="ORIGIN_REALM"        mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+					</DEVICE_WATCHDOG_REQUEST>
+					<CAPABILITIES_EXCHANGE_REQUEST proxiable="true" error="false" tretr="false">
+						<RESULT_CODE            value="DIAMETER_SUCCESS"    mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<ORIGIN_REALM           value="ORIGIN_REALM"        mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<VENDOR_ID              request="VENDOR_ID" />
+						<PRODUCT_NAME           request="PRODUCT_NAME" />
+						<SUPPORTED_VENDOR_ID    request="SUPPORTED_VENDOR_ID" />
+						<AUTH_APPLICATION_ID    request="AUTH_APPLICATION_ID" />
+						<HOST_IP_ADDRESS        value="0001AC140236" mandatory="true" protected="false" vendorspecific="false"  vendorID="" />
+					</CAPABILITIES_EXCHANGE_REQUEST>
+					<CREDIT_CONTROL_REQUEST proxiable="true" error="false" tretr="false">
+						<SESSION_ID             request="SESSION_ID"/>
+						<RESULT_CODE            value="DIAMETER_SUCCESS"    mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<DESTINATION_REALM      value="DESTINATION_REALM" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<AUTH_APPLICATION_ID    value="4"                   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<SERVICE_CONTEXT_ID value="1" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<CC_REQUEST_TYPE        value="CC_REQUEST_TYPE"   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<CC_REQUEST_NUMBER      request="CC_REQUEST_NUMBER" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+					</CREDIT_CONTROL_REQUEST>
+				</response>
+			</Diameter>
+		</xml>
+		<parameter>120000</parameter>
+	</function>
+
+	<!-- Setting content type for xml payload request -->
+	<function name="setHeader" module="HTTP">
+		<parameter>content-type</parameter>
+		<parameter>text/xml; charset="utf-8"</parameter>
+	</function>
+
+	<!-- Setting post data for xml request without service-context-id for sender -->
+	<function name="setTextPostData" module="HTTP">
+		<parameter>
+			<crlf>&lt;?xml version="1.0"?&gt;</crlf>
+			<crlf>&lt;vasgk-check&gt;</crlf>
+			<crlf>	&lt;request&gt;</crlf>
+		<!-- <crlf>		&lt;service-context-id&gt;vasgk@telecomitalia.it&lt;/service-context-id&gt;</crlf> -->
+			<crlf>		&lt;sender-address address-type="MSISDN"&gt;41794440001&lt;/sender-address&gt;</crlf>
+			<crlf>		&lt;recipient-address address-type="MSISDN"&gt;41794440002&lt;/recipient-address&gt;</crlf>
+			<crlf>		&lt;mobile-originating&gt;</crlf>
+			<crlf>			&lt;message-text&gt;sample message text&lt;/message-text&gt;</crlf>
+			<crlf>		&lt;/mobile-originating&gt;</crlf>
+			<crlf>	&lt;/request&gt;</crlf>
+			<crlf>&lt;/vasgk-check&gt;</crlf>
+		</parameter>
+	</function>
+
+	<!-- Sending XML post request to VAS-GK process -->
+	<function name="sendPostRequest" module="HTTP">
+		<parameter>
+			<parameter>http://</parameter>
+			<configuration>VASGK/Ip</configuration>
+			<parameter>:</parameter>
+			<configuration>VASGK/Port</configuration>
+			<parameter>/</parameter>
+		</parameter>
+	</function>
+
+	<!-- Check response of xml payload -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<!-- Stop SecureDiameter server -->
+	<function name="stopSecureDiameterServer" module="Diameter" />
+
+</test>

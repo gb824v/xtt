@@ -1,0 +1,54 @@
+<test>
+	<!-- Load the Virus Scanning Request Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>REQMOD_VirusScanningRules.xml</parameter>
+		<parameter>
+	<xml>
+<requestModifications>
+        <table name="Enable scanning for certain response data" phase="beforeHttpResponse" context="IM_ContentType is present">
+        <!-- Application/vnd.ms should not be scanned -->
+          <selector context="IM_ContentType matches '^application/vnd.ms'" />
+        <!-- Ajax should not be scanned -->
+          <selector context="IM_ContentType matches '^application/x-xhr'" />
+        <!-- We want to scan only given content types -->
+          <selector context="(IM_ContentType matches '^text/javascript')
+                             or (IM_ContentType matches '^multipart/')
+                             or (IM_ContentType matches '^application/')">
+<!--                             or (IM_ContentType matches '^text/')
+                             or (IM_ContentType matches '^image/')"-->
+            <modifyContext name="Skip_Plugin_VPI_KAV8" value="'false'"/>
+          </selector>
+        </table>
+
+        <table name="Enable scanning for certain request data" phase="httpRequest">
+          <selector context="(IM_Req_ContentType matches '^multipart/')
+				or (IM_Req_ContentType matches '^application/')
+				or (IM_Req_ContentType matches '^image/')" >
+            <modifyContext name="Skip_Plugin_VPI_KAV8" value="'false'"/>
+          </selector>
+        </table>
+<!--
+        <table name="Dont scan any response data" phase="beforeHttpResponse">
+          <selector>
+            <modifyContext name="Skip_Plugin_VPI_KAV8" value="'true'"/>
+          </selector>
+        </table>
+-->
+</requestModifications>
+	</xml>
+		</parameter>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>REQMOD_VirusScanningRules.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded requestmodifications.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	
+</test>

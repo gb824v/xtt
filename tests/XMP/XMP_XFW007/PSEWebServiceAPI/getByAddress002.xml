@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+               xmlns:tns="http://presenceservice.intf.mobilgw.com/">
+    <soap:Body>
+        <tns:getByAddress>
+            <Addr>
+                <type>PSE_ADDRESS_TYPE_IP</type>
+                <value>172.20.5.45</value>
+            </Addr>
+        </tns:getByAddress>
+    </soap:Body>
+</soap:Envelope>

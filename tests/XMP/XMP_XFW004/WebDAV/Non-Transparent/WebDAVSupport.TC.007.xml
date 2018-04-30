@@ -1,0 +1,113 @@
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+WebDAVSupport.TC.007  - Validate PUT Request and its Response are successfully proxied by XMP.
+
+Test Description:
+ 1. Radius Logon
+ 2. Send PUT Request
+ 3. Check Response 
+ 4. Radius Logoff
+ 
+Expected Result:
+ -  XMP should process the PUT request and response through Non Transperant Proxy.
+
+XTT Commands:
+
+1. -  startWebServer
+     
+2.  - Radius log-ON
+
+3.  - setCacheFile
+
+4. -  setTextPostData
+
+5.  - sendFreeRequest 		"HTTP" PUT method to SERVER/IP {configure in XTT config.xml}
+
+6.  - waitForRequests
+
+7.  - Radius log-OFF
+
+8.  - stopWebServer
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- Test Start  -->
+
+
+<test>
+    <name>WebDAVSupport.TC.007</name>
+
+    <description>WebDAV - PUT</description>
+
+    <function name="startWebServer" module="HTTP"/>
+
+	<function name="radiusLogon" module="Radius">
+	    <parameter>xttuser</parameter>
+	    <parameter>12346</parameter>
+    </function>
+
+    <!-- set response code for WEBDAV server -->
+    <function name="setServerReturnCode" module="HTTP">
+        <parameter>201</parameter>
+    </function>
+
+    <!-- set response message for WEBDAV server -->
+    <function name="setServerReturnMessage" module="HTTP">
+        <parameter> Created</parameter>
+    </function>
+    
+    <!-- clear cache file of WEBDAV server -->
+    <function name="clearCache" module="HTTP">
+    </function>
+    
+    <function name="setCacheFile" module="HTTP">
+        <parameter>/file</parameter>
+        <parameter></parameter>
+    </function>
+    
+    <!-- set content-length = 0 for WEBDAV server as there is no body for PUT response-->
+    <function name="setServerHeader" module="HTTP">
+        <parameter>Content-Length</parameter>
+        <parameter>0</parameter>
+    </function>
+	
+	<!-- set PUT request data -->
+	<function name="setTextPostData" module="HTTP">
+        <parameter>
+            <crlf>&lt;HTML&gt;</crlf>
+            <crlf>    &lt;BOBY&gt;</crlf>
+            <crlf>        Hello World</crlf>
+            <crlf>    &lt;/BOBY&gt;</crlf>
+            <crlf>&lt;/HTML&gt;</crlf>
+        </parameter>
+    </function>
+
+    <!-- set PUT request header -->
+    <function name="setHeader" module="HTTP">
+        <parameter>Content-Type</parameter>
+        <parameter>text/xml; charset="utf-8"</parameter>
+    </function>
+
+	<!-- Send PUT request to XMP -->
+    <function name="sendFreeRequest" module="HTTP">
+        <parameter>PUT</parameter>
+        <parameter>true</parameter>
+        <parameter>
+            <parameter>http://</parameter>
+            <configuration>SYSTEM/IP</configuration>
+            <parameter>:</parameter>
+            <configuration>WEBSERVER/PORT</configuration>
+            <parameter>/file</parameter>
+        </parameter>
+        <parameter>response</parameter>
+    </function>
+
+    <function name="waitForRequests" module="HTTP">
+        <parameter>1</parameter>
+    </function>
+
+    <function name="radiusLogoff" module="Radius">
+	    <parameter>xttuser</parameter>
+	    <parameter>12346</parameter>
+    </function>
+	
+    <function name="stopWebServer" module="HTTP"/>
+
+</test>

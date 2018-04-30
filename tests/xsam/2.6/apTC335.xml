@@ -1,0 +1,50 @@
+<test>
+    <configuration>xsam_config.xml</configuration>
+    <function name="testName" module="Basic">
+        <parameter>AP.TC.335</parameter>
+    </function>
+
+    <function name="startSMSCServer" module="SMS">
+        <configuration>SMSCServer/BACKUPPORT</configuration>
+        <parameter>UCP</parameter>
+    </function>
+
+    <function name="openConnection" module="UCP">
+        <parameter>connection1</parameter>
+        <configuration>XSAM/IP</configuration>
+        <configuration>XSAM/PORT</configuration>
+    </function>
+
+    <function name="sendUCPPacket" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>internal</parameter>
+        <parameter>O</parameter>
+        <parameter>60</parameter>
+        <parameter>
+            <parameter>/</parameter>
+            <configuration>XSAM/SHORTCODE</configuration>
+            <parameter>/6/1/1/70617373776F7264//0100//////</parameter>
+        </parameter>
+    </function>
+
+    <function name="queryTextResponse" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>secret</parameter>
+        <parameter>\d\d/\d\d\d\d\d/R/60/A/[^/]++/\w\w</parameter>
+    </function>
+    <function name="setLocalVariable" module="BASIC">
+        <parameter>port</parameter>
+        <parameter>
+            <parameter>SMSC/UCP/</parameter>
+            <configuration>XSAM/SHORTCODE</configuration>
+            <parameter>/xttserverport</parameter>
+        </parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <localvariablepointer>port</localvariablepointer>
+        <configuration>SMSCServer/BACKUPPORT</configuration>
+    </function>
+
+    <function name="stopSMSCServer" module="SMS"/>
+
+</test>

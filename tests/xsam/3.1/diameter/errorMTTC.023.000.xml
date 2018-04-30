@@ -1,0 +1,163 @@
+<test>
+    <name>MBSPPB_ErrorScenarios_MT_TC.023</name>
+    <configuration>../configXSAM.xml</configuration>
+
+    <description>[TPI->MM7] MMSC returns Error Response after successful DIRECT-DEBIT / MBS never generates any REFUND to ISCP after a Delivery Report is Received</description>
+
+<!-- 
+
+Settings / Services
+____________________
+
+ServiceName      ServiceGroup    Template   IscpDirectDebitFailureHandling  IscpInterrogate
+___________________________________________________________________________________________________
+         
+XTT1-509          4001            MMSSubmit    0 = TERMINATE_OR_BUFFER       9 = always interrogate
+
+
+Testscenario
+____________
+
+ISCP (XTT)                          MBS                           TP                     MMSC
+
+   |                                 |                             |                       |
+   | CAPABILITIES_EXCHANGE_REQUEST   |                             |                       |
+   | - - - - - - - - - - - - - - >   |                             |                       |
+   | < - - - - - - - - - - - - - -   |                             |                       |
+   |                                 |           sendMMS           |                       |                         
+   |                                 |        ( Charge 3.456 )     |                       |                         
+   |                                 |  < - - - - - - - - - - -    |                       |
+   |                                 |                             |                       |                         
+   |     CREDIT_CONTROL_REQUEST      |                             |                       |
+   |     (DIRECT_DEBITING )          |                             |                       |
+   | < - - - - - - - - - - - - - -   |                             |                       |
+   |                                 |                             |                       |
+   |     CREDIT_CONTROL_ANSWER       |                             |                       |
+   | - - - - - - - - - - - - - - >   |        submitRequest        |                       |
+   |                                 |    - - - - - - - - - - - - - - - - - - - - - - - >  |
+   |                                 |        submitResponse ( 500 )                       |
+   |                                 |    < - - - - - - - - - - - - - - - - - - - - - - -  |
+   |                                 |                             |                       |
+   |     CREDIT_CONTROL_REQUEST      |                             |
+   |     (REFUND_ACCOUNT)            |                             |
+   | < - - - - - - - - - - - - - -   |                             |
+   |                                 |                             |
+   |     CREDIT_CONTROL_ANSWER       |                             |
+   | - - - - - - - - - - - - - - >   |                             |
+
+
+logscan :
+billingInfoFormat          billingInfo
+________________________________________________
+MESSAGE_UID                1213950549210897001
+MMS_Req_Msisdn             41790000000
+ISCP_Debit_Result_Code     2001
+ISCP_Refund_Result_Code    NIL
+ISCP_Origin_Host           diameter.xtt724.com
+ISCP_Origin_Realm          ISCP-VASOL
+ISCP_Auth_App_Id           4
+ISCP_Charged_Amount        11.734
+ISCP_CC_Money_Value        11734
+ISCP_CC_Money_Exponent     -3
+ISCP_CC_Money_Currency     756
+ISCP_CCA_CCR_AVP_Matches   true
+Send_Message               True
+ISCP_Prepay                Y
+
+
+-->    
+    <function name="setVariable" module="Basic">
+        <parameter>MSISDN</parameter>
+        <parameter>41790000000</parameter>
+    </function>
+
+    <function name="setVariable" module="Basic">
+        <parameter>DELIVERYREPORT</parameter>
+        <parameter>true</parameter>
+    </function>
+
+    <function name="startWebServer" module="HTTP">
+        <configuration>VASP/PORT</configuration>
+        <configuration>WEBSERVER/ROOT</configuration>
+        <configuration>WEBSERVER/TIMEOUT</configuration>
+    </function>
+
+    <function name="setCacheFile" module="HTTP">
+        <configuration>VASP/DIRECTORY</configuration>
+        <parameter>&lt;html&gt;&lt;body&gt;sucessful&lt;/body&gt;&lt;/html&gt;</parameter>
+    </function>
+    <function name="setServerHeader" module="HTTP">
+        <parameter>content-type</parameter>
+        <parameter>text/html</parameter>
+    </function>  
+
+    <function name="restartProcess" module="Remote">
+        <parameter>LOGGER</parameter>
+    </function>
+
+    <function name="setVariable" module="Basic">
+        <parameter>NO_CCR</parameter>
+        <parameter>false</parameter>
+    </function>
+    
+    <function name="setVariable" module="Basic">
+        <parameter>INTERROGATIONLEVEL</parameter>
+        <parameter>9</parameter>
+    </function>
+
+    <function name="setVariable" module="Basic">
+        <parameter>SERVICE-SHORTID</parameter>
+        <parameter>
+            <configuration>xsam/serviceGroupPrefix</configuration>
+            <configuration>xsam/serviceGroupNoMMS</configuration>
+         </parameter>
+    </function>
+    
+    <function name="setVariable" module="Basic">
+        <parameter>SERVICE-NAME</parameter>
+        <parameter>
+            <parameter>XTT</parameter><configuration>xsam/serviceGroupNoMMS</configuration><parameter>-</parameter><configuration>xsam/serviceNoMMS</configuration><variable>INTERROGATIONLEVEL</variable><parameter></parameter>
+        </parameter>
+    </function>
+        
+    <function name="setVariable" module="Basic">
+        <parameter>AMOUNT</parameter>
+        <parameter>3.456</parameter>
+    </function>
+
+    <function name="addExtendedStoreVar" module="Diameter">
+        <parameter>REQUESTED_ACTION</parameter>
+    </function>
+
+    <subtest>sendMMS.xml</subtest>
+
+    <function name="queryBody" module="VASP">
+        <parameter>tpiResponseCode</parameter>
+        <parameter>&lt;state&gt;(1000)&lt;/state&gt;\s+&lt;state-text&gt;</parameter><!--Ok&lt;/state-text&gt;-->
+    </function>
+
+
+
+    <function name="setVariable" module="Basic">
+        <parameter>MMSTATUS</parameter>
+        <parameter>Retrieved</parameter>
+    </function>
+
+    <subtest>sendDeliveryReport.xml</subtest>
+
+
+    <subtest>../logscan.xml</subtest>
+
+    <!-- DirectDebit -->
+    <function name="queryresponse" module="Remote">
+        <parameter>
+             <parameter>(\d+);</parameter>
+             <parameter>41790000000</parameter>
+             <parameter>;2001;NIL;diameter.xtt724.com;ISCP-VASOL;4;3.456;3456;-3;756;true;True;Y</parameter>
+         </parameter>
+    	 <parameter>/dev/null</parameter>
+    </function>
+
+    <function name="stopWebServer" module="HTTP"/>
+
+</test>

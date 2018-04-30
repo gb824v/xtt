@@ -1,0 +1,35 @@
+<test>
+	<function name="testName" module="Basic">
+	
+	<parameter>XSN.DBLoad.RemoveSubscriber.TC.1.13.xml</parameter>
+	</function>
+	
+	<description>Remove Subscriber </description>
+   
+    <function name="sendRemoteCommand" module="Remote">
+    
+    	<parameter>writeFile RemoveSubscriber.xml </parameter> 
+         
+        <file>RemoveSubscriber.xml </file>
+    
+    </function>
+    
+    <function name="sendRemoteCommand" module="Remote">
+    
+        <configuration>xsn/path</configuration>
+        <configuration>xsn/xms</configuration>
+    
+        
+        <parameter>load db RemoveSubscriber.xml </parameter>
+    
+    </function>
+    
+       
+  <function name="queryResponse" module="Remote">
+        
+    <parameter>SUCCESS: XML upload completed</parameter>
+    <parameter>dev/null</parameter>
+    </function>    
+    
+    
+  </test>

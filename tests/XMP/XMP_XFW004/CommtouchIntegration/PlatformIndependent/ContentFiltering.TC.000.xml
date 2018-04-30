@@ -1,0 +1,203 @@
+<test>
+    <function name="testName" module="Basic">
+        <parameter>CONTENTFILTERING.TC.000</parameter>
+     </function>
+	 <description>Load DB file, load BlackList, WhiteList, Datin urlFiles. Categories file</description>
+	 
+	<!-- Prepare & Preload the Categories File. Preloaded Categories are assigend for DB users -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>CategoriesFileForCtengine_ContentFiltering.TC.xml</parameter>
+		<xml>
+  		<xmpCategories>
+				<categories>
+					<category name="Pornography/Sexually Explicit" subscriberFilterable="true" minAge="20"/>
+					<category name="Travel" subscriberFilterable="true" minAge="16"/>								
+				</categories>
+				<categoryMappings>
+					<map externalName="Pornography/Sexually Explicit"  category="Pornography/Sexually Explicit"/>
+					<map externalName="Travel"  category="Travel"/>						
+				</categoryMappings>			
+			</xmpCategories>
+		</xml>
+	</function>
+		
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>CategoriesFileForCtengine_ContentFiltering.TC.xml</parameter>
+		</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded xmpcategories.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>	 
+
+    <!-- load the urlList WhiteList.txt -->
+    <function name="writeRemoteFile" module="Remote">
+        <parameter>WhiteList.txt</parameter>
+        <file>WhiteList.txt</file>
+    </function>
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+            <parameter>load file WhiteList.txt /url/WhiteList.txt</parameter>
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        <parameter>^Loaded '/url/WhiteList.txt' from 'WhiteList.txt'</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+
+    <!-- load the urlList BlackList.txt -->
+    <function name="writeRemoteFile" module="Remote">
+        <parameter>BlackList.txt</parameter>
+        <file>BlackList.txt</file>
+    </function>
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+            <parameter>load file BlackList.txt /url/BlackList.txt</parameter>
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        <parameter>^Loaded '/url/BlackList.txt' from 'BlackList.txt'</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+    
+    <!-- load the urlList Dating.txt -->
+    <function name="writeRemoteFile" module="Remote">
+        <parameter>Dating.txt</parameter>
+        <file>Dating.txt</file>
+    </function>
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+            <parameter>load file Dating.txt /url/Dating.txt</parameter>
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        <parameter>^Loaded '/url/Dating.txt' from 'Dating.txt'</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+    
+    <!-- xms show file -->
+    <function name="executeRemoteXMSCommand" module="Remote">
+            <parameter>show file</parameter>
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        <parameter>WhiteList.txt</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+
+    <function name="queryResponse" module="Remote">
+        <parameter>BlackList.txt</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+
+    <function name="queryResponse" module="Remote">
+        <parameter>Dating.txt</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+
+    <!-- load the dbUpdatesFile -->
+    <function name="writeRemoteFile" module="Remote">
+        <parameter>DatabaseUpdatesFile-ContentFiltering.xml</parameter>
+        <file>DatabaseUpdatesFile-ContentFiltering.xml</file>
+    </function>
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+            <parameter>load db DatabaseUpdatesFile-ContentFiltering.xml</parameter>
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        <parameter>SUCCESS: XML upload completed</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+
+
+ <!-- load SMSConnection dynamic config file -->
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>
+            <configuration>REMOTE/COMMAND</configuration>
+            <parameter>pwcrypt -f </parameter>
+            <configuration>productlicense</configuration>
+            <parameter> </parameter>
+            <configuration>SMSCServer/Password</configuration>
+        </parameter>
+    </function>    
+    
+    <function name="queryResponse" module="Remote">
+        <parameter>.*</parameter>
+        <parameter>PASSWORD</parameter>
+    </function>    
+    
+    <conditional configuration="SMSCSERVER/PROTOCOL" targetValue="UCP">
+        <function name="setVariable" module="Basic">
+            <parameter>xmp_smsconnectionsfile.xml</parameter>
+            <file>xmp_SmsConnectionsFile_UCP.xml</file>
+        </function>
+    </conditional>
+    <conditional configuration="SMSCSERVER/PROTOCOL" targetValue="SMPP">
+        <function name="setVariable" module="Basic">
+            <parameter>xmp_smsconnectionsfile.xml</parameter>
+            <file>xmp_SmsConnectionsFile_SMPP.xml</file>
+        </function>
+    </conditional>
+        
+    <function name="replace" module="Basic">
+        <parameter>xmp_smsconnectionsfile.xml</parameter>
+        <parameter>ipAddress=""</parameter>
+        <parameter>
+            <parameter>ipAddress="</parameter>
+            <configuration>SYSTEM/IP</configuration>
+            <parameter>"</parameter>
+        </parameter>
+    </function>
+
+    <function name="replace" module="Basic">
+        <parameter>xmp_smsconnectionsfile.xml</parameter>
+        <parameter>port=""</parameter>
+        <parameter>
+            <parameter>port="</parameter>
+            <configuration>SMSCSERVER/PORT</configuration>
+            <parameter>"</parameter>
+        </parameter>
+    </function>
+
+    <conditional configuration="SMSCSERVER/PASSWORD" targetValue="null" inverted="true">
+        <function name="replace" module="Basic">
+            <parameter>xmp_smsconnectionsfile.xml</parameter>
+            <parameter>password=""</parameter>
+            <parameter>
+                <parameter>password="</parameter>
+                <variable>PASSWORD</variable>
+                <parameter>"</parameter>
+            </parameter>
+        </function>
+    </conditional>
+    <function name="info" module="Basic">
+        <parameter>xmp_smsconnectionsfile.xml</parameter>
+        <variable>xmp_smsconnectionsfile.xml</variable>
+    </function>    
+
+    <function name="writeRemoteFile" module="Remote">
+        <parameter>xmp_smsconnectionsfile.xml</parameter>
+        <variable>xmp_smsconnectionsfile.xml</variable>
+    </function>
+    
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>load data xmp_smsconnectionsfile.xml</parameter>
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        <parameter>^Loaded</parameter>
+        <parameter>dev/null</parameter>
+    </function>    
+
+
+    <!-- just check if all the processes are running -->
+    <function name="checkAllProcessesStatus" module="Remote">
+        <parameter>Running</parameter>
+    </function>
+
+</test>

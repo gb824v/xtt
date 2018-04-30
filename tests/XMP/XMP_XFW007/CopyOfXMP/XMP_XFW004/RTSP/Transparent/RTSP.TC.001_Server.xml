@@ -1,0 +1,41 @@
+<test>
+	<name>RTSP.TC.001_Server</name>
+	<description>Test RTSP OPTIONS method for Client to Server scenario</description>
+
+    <!-- client side server for responses -->
+    <function name="setVariable" module="Basic">
+        <parameter>SERVER</parameter>
+        <configuration>RTSPSERVER/PORT</configuration>
+    </function>
+	
+	<!-- server side server for requests -->
+    <function name="startRTSPServer" module="RTSP">
+        <variable>SERVER</variable>
+        <configuration>RTSPSERVER/TIMEOUT</configuration>
+        <testpath>rtsp</testpath>
+    </function>
+     
+     <function name="setServerHeader" module="RTSP">
+        <parameter>Public</parameter>
+        <parameter>SETUP</parameter>
+    </function>
+    
+    <function name="waitForVariable" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>SERVER</variable>
+            <parameter>/OPTIONS/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+    <function name="removeVariables" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>SERVER</variable>
+            <parameter>/OPTIONS/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+    <function name="stopRTSPServer" module="RTSP"/>
+
+</test>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://policy.intf.mobilgw.com/">
+  <soap:Body>
+    <tns:create>
+      <arg0>Bush_Family</arg0>
+      <arg1>
+        <userId>1111111111</userId>
+        <name>Dad (Homer Simpson)</name>
+        <wantsNotifications>true</wantsNotifications>
+        <wantsAudit>true</wantsAudit>
+      </arg1>
+      <arg2>
+        <userId>3333333333</userId>
+        <name>Bart Simpson</name>
+      </arg2>
+    </tns:create>
+  </soap:Body>
+</soap:Envelope>

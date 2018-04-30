@@ -1,0 +1,73 @@
+<test>
+    <function name="testName" module="Basic">
+        <parameter>XMP.DOWNLOAD.FDFT</parameter>
+     </function>
+	
+    <description>Download the latest FDFT files</description>
+
+    <configuration>../config.xml</configuration>
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>
+           <parameter>run command chmod ugo+rx </parameter>
+	   <configuration>REMOTE/PATH</configuration>
+           <configuration>XMP41/EXAMPLESDIR</configuration>
+           <configuration>XMP41/DOWNLOADFDFTSCRIPT</configuration>
+        </parameter>
+    </function>
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>
+           <parameter>run command </parameter>
+	   <configuration>REMOTE/PATH</configuration>
+           <configuration>XMP41/EXAMPLESDIR</configuration>
+           <configuration>XMP41/DOWNLOADFDFTSCRIPT</configuration>
+           <parameter> </parameter>
+           <configuration>REMOTE/PATH</configuration>
+           <configuration>XMP41/EXAMPLESDIR</configuration>
+        </parameter>
+    </function>
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>
+           <parameter>run command </parameter>
+           <configuration>XMP41/VALIDATEFDFTSCRIPT</configuration>
+           <parameter> -d </parameter>
+           <configuration>REMOTE/PATH</configuration>
+           <configuration>XMP41/EXAMPLESDIR</configuration>
+        </parameter>
+    </function>
+
+    <function name="queryResponse" module="Remote">
+        <parameter>URLs Processed = 50000</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+
+    <function name="queryResponse" module="Remote">
+        <parameter>URLs Processed = 100000</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+
+    <function name="queryResponse" module="Remote">
+        <parameter>URLs Processed = 150000</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+
+    <function name="queryResponse" module="Remote">
+        <parameter>URLs Processed = 200000</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+
+    <function name="queryResponse" module="Remote">
+        <parameter>URLs Processed = 250000</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+
+    <function name="queryResponseNegative" module="Remote">
+        <parameter>Error Code</parameter>
+    </function>
+
+    <function name="queryResponseNegative" module="Remote">
+        <parameter>Fast Tracker initialization failed</parameter>
+    </function>
+</test>

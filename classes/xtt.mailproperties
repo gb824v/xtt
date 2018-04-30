@@ -1,0 +1,9 @@
+#Thu Feb 28 18:00:13 CET 2008
+MailLogger.mailhost=lenmail01.internal.724.com
+MailLogger.from=cvsbuild@724.com
+#MailLogger.failure.notify=
+MailLogger.success.notify=No
+MailLogger.failure.to=cvsbuild@724.com
+#MailLogger.success.to=
+#MailLogger.failure.subject=
+#MailLogger.success.subject=

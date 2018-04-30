@@ -1,0 +1,17 @@
+<configuration>
+    <mm7DatabaseFile>xsn-MM7-database.xml</mm7DatabaseFile>
+    
+    <noCommunity>
+        <UnknownUser>0041760000000</UnknownUser>
+        <AdultUser>0041790000001</AdultUser>
+        <ChildUserAbove16>0041790000002</ChildUserAbove16>
+        <ChildUserBelow16>0041790000003</ChildUserBelow16>
+        <AdultUserStandardFilter>0041790000004</AdultUserStandardFilter>
+        <ChildUserAbove16StandardFilter>0041790000005</ChildUserAbove16StandardFilter>
+        <ChildUserBelow16StandardFilter>0041790000006</ChildUserBelow16StandardFilter>
+        <AdultUserCustomFilter>0041790000007</AdultUserCustomFilter>
+        <ChildUserAbove16CustomFilter>0041790000008</ChildUserAbove16CustomFilter>
+        <ChildUserBelow16CustomFilter>0041790000009</ChildUserBelow16CustomFilter>
+        <AdultUserCustomFilterNoGames>0041790000010</AdultUserCustomFilterNoGames>
+    </noCommunity>
+</configuration>

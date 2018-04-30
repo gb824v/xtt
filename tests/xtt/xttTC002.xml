@@ -1,0 +1,71 @@
+<test>  
+    <name>XTT.TC.002</name>
+    <description>Test the store function of XTT</description>
+    
+    <function name="store" module="XTT">
+        <parameter>xttTC002</parameter>
+        <parameter>test001</parameter>
+    </function>
+    
+    <function name="compareString" module="Basic">
+        <configuration>xttTC002</configuration>
+        <parameter>test001</parameter>
+    </function>    
+    
+    <function name="store" module="XTT">
+        <parameter>xttTC002/part001</parameter>
+        <parameter>test002</parameter>
+    </function>
+    
+    <function name="compareString" module="Basic">
+        <configuration>xttTC002/part001</configuration>
+        <parameter>test002</parameter>
+    </function>     
+
+    <function name="store" module="XTT">
+        <parameter>xttTC002/part001/part002</parameter>
+        <parameter>test003</parameter>
+    </function>
+    
+    <function name="compareString" module="Basic">
+        <configuration>xttTC002/part001/part002</configuration>
+        <parameter>test003</parameter>
+    </function>
+    
+    <function name="store" module="XTT">
+        <parameter>xttTC002/part001/part002</parameter>
+        <parameter>test004</parameter>
+    </function>
+    
+    <function name="compareString" module="Basic">
+        <configuration>xttTC002/part001/part002</configuration>
+        <parameter>test004</parameter>
+    </function>
+    
+    <function name="store" module="XTT">
+        <parameter>xttTC002/part001/part002</parameter>
+        <!-- remove part002 -->
+    </function>
+    
+    <function name="compareString" module="Basic">
+        <configuration>xttTC002/part001</configuration>
+        <parameter>test002</parameter>
+    </function>
+    
+    <function name="store" module="XTT">
+        <parameter>xttTC002-2/part004/part005</parameter>
+        <parameter>test005</parameter>
+    </function>
+    
+    <function name="compareString" module="Basic">
+        <configuration>xttTC002-2/part004/part005</configuration>
+        <parameter>test005</parameter>
+    </function>
+    
+    <function name="store" module="XTT">
+        <parameter>xttTC002</parameter>
+    </function>
+    <function name="store" module="XTT">
+        <parameter>xttTC002-2</parameter>
+    </function>    
+</test>

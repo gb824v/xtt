@@ -1,0 +1,79 @@
+<test>
+    <name>SERVICE.INITIALIZE</name>
+    <configuration>configXSAM.xml</configuration>
+    <description>Wait till the WFE process is ready</description>
+
+    <function name="createDocument" module="XML">
+        <parameter>listServiceGroups</parameter>
+        <xml>
+            <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://messagebroker.intf.mobilgw.com/">
+                <soap:Body>
+                    <tns:listServiceGroups>
+                    </tns:listServiceGroups>
+                </soap:Body>
+            </soap:Envelope>
+        </xml>
+    </function>
+    <function name="setHeader" module="XML">
+        <parameter>listServiceGroups</parameter>
+        <parameter>content-type</parameter>
+        <parameter>text/xml</parameter>
+    </function>
+
+    <function name="setVariable" module="Basic">
+ 	    <parameter>numRepeats</parameter>
+ 	    <parameter>0</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+ 	    <parameter>maxRepeats</parameter>
+ 	    <configuration>XSAM/ADDSERVICEMAXREPEATS</configuration>
+    </function>
+    <while variable="responseHeader" targetValue="200" inverted="true">
+        <function name="setVariable" module="Basic">
+            <parameter>CONFIGNAME</parameter>
+            <parameter>XMA/POSTPAY/ENABLED/MSISDN</parameter>
+        </function>
+
+    	<function name="sendPostRequest" module="XML">
+    	    <parameter>listServiceGroups</parameter>
+     	    <parameter>listServiceGroupsResp</parameter>
+     	    <parameter>
+     	        <configuration>xsam/provisioningURL</configuration>
+     	    </parameter>
+        </function>
+        <function name="queryHeader" module="XML">
+     	    <parameter>listServiceGroupsResp</parameter>
+     	    <parameter>responseHeader</parameter>
+     	    <parameter>null</parameter>
+            <parameter>HTTP/... (\d\d\d)</parameter>
+        </function>
+        <conditional variable="numRepeats" targetVariable="maxRepeats">
+            <function name="checkResponseCode" module="XML">
+         	    <parameter>listServiceGroupsResp</parameter>
+                <parameter>200</parameter>
+            </function>
+            <function name="fail" module="Basic">
+         	    <parameter>Max Repeats '</parameter>
+         	    <variable>maxRepeats</variable>
+         	    <parameter>' reached, exiting while</parameter>
+            </function>
+            <function name="setVariable" module="Basic">
+         	    <parameter>responseHeader</parameter>
+         	    <parameter>200</parameter>
+            </function>
+        </conditional>
+        <conditional variable="responseHeader" targetValue="200" inverted="true">
+            <function name="info" module="Basic">
+         	    <parameter>WFE Process not yet ready, repeating after 30 seconds</parameter>
+            </function>
+            <function name="addVariable" module="Basic">
+         	    <parameter>numRepeats</parameter>
+         	    <variable>numRepeats</variable>
+         	    <parameter>1</parameter>
+            </function>
+            <function name="sleep" module="Basic">
+         	    <configuration>XSAM/ADDSERVICEWAITTIMEOUT</configuration>
+            </function>
+        </conditional>
+    </while>
+</test>

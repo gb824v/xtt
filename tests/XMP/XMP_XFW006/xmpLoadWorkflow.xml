@@ -1,0 +1,67 @@
+<test>
+    <function name="testName" module="Basic">
+        <parameter>XMP.LOAD.WORKFLOW</parameter>
+     </function>
+	
+    <description>Load the Workflow</description>
+
+    <configuration>config.xml</configuration>
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>
+           <parameter>link work </parameter>
+           <parameter>-out </parameter>
+           <configuration>REMOTE/PATH</configuration>
+           <configuration>XMP41/CFGDIR</configuration>
+           <configuration>XMP41/WORKFLOWCXPDL</configuration>
+           <parameter> </parameter>
+           <configuration>REMOTE/PATH</configuration>
+           <configuration>XMP41/CFGDIR</configuration>
+           <configuration>XMP41/WORKFLOWXPDL</configuration>
+        </parameter>
+    </function>
+    
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>
+           <parameter>load data </parameter>
+           <configuration>REMOTE/PATH</configuration>
+           <configuration>XMP41/CFGDIR</configuration>
+           <configuration>XMP41/WORKFLOWCXPDL</configuration>
+        </parameter>
+    </function>
+
+    <function name="queryResponse" module="Remote">
+        <parameter>^Loaded xpdl</parameter>
+        <parameter>response</parameter>
+    </function>
+    
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>
+           <parameter>load data </parameter>
+           <configuration>REMOTE/PATH</configuration>
+           <configuration>XMP41/EXAMPLESDIR</configuration>
+           <configuration>XMP41/WORKFLOWCONSTANTS</configuration>
+        </parameter>
+    </function>
+
+    <function name="queryResponse" module="Remote">
+        <parameter>^Loaded workflowconstant</parameter>
+        <parameter>response</parameter>
+    </function>
+
+    <!-- xms show data -->
+    <function name="executeRemoteXMSCommand" module="Remote">
+            <parameter>show data</parameter>
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        <parameter>xpdl</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+
+    <function name="queryResponse" module="Remote">
+        <parameter>workflowconstants</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+
+</test>

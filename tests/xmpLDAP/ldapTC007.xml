@@ -1,0 +1,97 @@
+<test>
+	<name>LDAP.TC.007</name>
+    <description>Different MSISDN after timeout time</description>
+
+	<function name="setVariable" module="Basic">
+		<parameter>dummyMSISDN</parameter>
+		<parameter>
+    		<parameter>998_</parameter>
+            <configuration>SYSTEM/IP</configuration>
+		</parameter>
+	</function>
+    <subtest name="deletePSEAll" file="deletePSEAll.xml"/>
+    <subtest name="deletePSEMSISDN" file="deletePSEMSISDN.xml">
+        <parameter>0797777777</parameter>
+        <parameter>0799999999</parameter>
+    </subtest>
+    <subtest name="loadReqmod" file="loadReqmod.xml"/>
+
+	<function name="setVariable" module="Basic">
+		<parameter>ldapconfig</parameter>
+		<file>ldapconfig.xml</file>
+	</function>
+	<function name="replace" module="Basic">
+		<parameter>ldapconfig</parameter>
+		<parameter>IPADDRESSTOKEN</parameter>
+        <configuration>SYSTEM/IP</configuration>
+	</function>
+
+	<function name="startWebServer" module="HTTP"/>
+	<function name="startLDAPServer" module="LDAP">
+		<variable>ldapconfig</variable>
+	</function>
+
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://ldap1.xtt724.com/</parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+	<function name="checkServerHeader" module="HTTP">
+		<parameter>MSISDN</parameter>
+		<parameter>0797777777</parameter>
+	</function>
+	<function name="waitForBind" module="LDAP">
+	    <parameter>cn=Manager,o=wap_ext</parameter>
+	</function>
+	<function name="waitForSearchRequests" module="LDAP">
+		<parameter>1</parameter>
+		<parameter>
+		    <parameter>login-ip=</parameter>
+		    <configuration>SYSTEM/IP</configuration>
+		</parameter>
+	</function>
+	<function name="waitForRequests" module="LDAP">
+		<parameter>2</parameter>
+	</function>
+
+
+	<function name="sleep" module="Basic">
+	    <configuration>LDAPSERVER/SESSIONTIMEOUT</configuration>
+	</function>
+
+
+	<function name="replace" module="Basic">
+		<parameter>ldapconfig</parameter>
+		<parameter>0797777777</parameter>
+        <parameter>0799999999</parameter>
+	</function>
+	<function name="setConfiguration" module="LDAP">
+		<variable>ldapconfig</variable>
+	</function>
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://ldap1.xtt724.com/</parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+	<function name="checkServerHeader" module="HTTP">
+		<parameter>MSISDN</parameter>
+		<parameter>0799999999</parameter>
+	</function>
+	<function name="waitForBind" module="LDAP">
+	    <parameter>cn=Manager,o=wap_ext</parameter>
+	</function>
+	<function name="waitForSearchRequests" module="LDAP">
+		<parameter>2</parameter>
+		<parameter>
+		    <parameter>login-ip=</parameter>
+		    <configuration>SYSTEM/IP</configuration>
+		</parameter>
+	</function>
+
+	<function name="stopLDAPServer" module="LDAP"/>
+	<function name="stopWebServer" module="HTTP"/>
+
+    <subtest name="unloadReqmod" file="unloadReqmod.xml"/>
+</test>

@@ -1,0 +1,107 @@
+<test>
+    <configuration>xsn_config.xml</configuration>
+    <function name="testName" module="Basic">
+        <parameter>SMS-Router.UCP.003.6.2</parameter>
+    </function>
+
+	<description>This is an example test for MT message of type 52_MT(4):Delivery short message operation(Transparent)</description>
+
+    <function name="startSMSCServer" module="SMS"/>
+
+    <!--<function name="setVariable" module="BASIC">
+        <parameter>SMSCAddress</parameter>
+        <parameter>0123456789</parameter>
+    </function>-->
+
+    <function name="openConnection" module="UCP">
+        <parameter>connection1</parameter>
+        <configuration>XSN/IP</configuration>
+        <configuration>XSN/PORT</configuration>
+    </function>
+
+    <function name="sendUCPPacket" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>internal</parameter>
+        <parameter>O</parameter>
+        <parameter>60</parameter>
+        <parameter>
+            <parameter>/</parameter>
+            <configuration>XSN/SHORTCODE</configuration>
+            <parameter>/6/1/1/70617373776F7264//0100//////</parameter>
+        </parameter>
+    </function>
+
+    <function name="queryTextResponse" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>secret</parameter>
+        <parameter>\d\d/\d\d\d\d\d/R/60/A//\w\w</parameter>
+    </function>
+
+	<function name="waitForBind" module="SMS"/>
+
+    <function name="setVariable" module="BASIC">
+        <parameter>pass</parameter>
+        <parameter>SMSC/</parameter>
+        <configuration>SMSCSERVER/PROTOCOL</configuration>
+        <parameter>/</parameter>
+        <configuration>XSN/SHORTCODE</configuration>
+        <parameter>/PWD</parameter>
+    </function>
+
+    <function name="compareString" module="basic">
+        <parameter>password</parameter>
+        <variablepointer>pass</variablepointer>
+    </function>
+
+    <function name="createDateString" module="Basic">
+        <parameter>ddMMyykkmmss</parameter>
+        <parameter>SCTS</parameter>
+        <parameter>3600</parameter>
+        <parameter>GMT</parameter>
+    </function>
+
+    <function name="sendUCPPacket" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>internal</parameter>
+        <parameter>O</parameter>
+        <parameter>52</parameter>
+        <parameter>
+            <parameter>/0123456789/</parameter>
+            <configuration>XSN/SHORTCODE</configuration>
+            <parameter>/////////////</parameter>
+			<variable>SCTS</variable>
+			<parameter>////4//4D455353414745/////////////</parameter> 
+        </parameter>
+    </function>
+
+    <function name="queryTextResponse" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>secret</parameter>
+		<parameter>\d\d/\d\d\d\d\d/R/52/A//</parameter>
+    </function>
+
+    <function name="setVariable" module="BASIC">
+        <parameter>tmsg</parameter>
+        <parameter>SMSC/</parameter>
+        <configuration>SMSCSERVER/PROTOCOL</configuration>
+        <parameter>/0123456789/TMsg</parameter>
+    </function>
+
+    <function name="compareString" module="basic">
+        <parameter>4D455353414745</parameter>
+        <variablepointer>tmsg</variablepointer>
+    </function>
+
+    <thread>
+        <function name="waitSMSCUCPPacket" module="UCP">
+        <parameter>connection1</parameter>
+        </function>
+    </thread>
+
+    <function name="stopSMSCServer" module="SMS"/>
+
+    <function name="closeConnection" module="UCP">
+        <parameter>connection1</parameter>
+    </function>
+
+</test>

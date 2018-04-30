@@ -1,0 +1,24 @@
+<test>
+    <name>MBSPPB.SuccessScenarios.MT.TC.006</name>
+    <configuration>../configXSAM.xml</configuration>
+
+    <description>[TPI->SMS] Successful DIRECT-DEBIT invocation towards ISCP / AMOUNT information received from TP-CP is sent to ISCP / Check Currency Code (756)</description>
+
+    <function name="setVariable" module="Basic">
+        <parameter>AMOUNT</parameter>
+        <parameter>1.000</parameter>
+    </function>
+
+    <subtest>sendSMS.xml</subtest>
+
+    <function name="queryText" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/REQUESTED_SERVICE_UNIT/CC_MONEY/CURRENCY_CODE</parameter>
+        </variable>
+        <parameter>dev/null</parameter>
+        <parameter>756</parameter>
+    </function>
+
+</test>

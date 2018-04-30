@@ -1,0 +1,527 @@
+<test>
+    <name>QueryBugzilla</name>
+
+    <!-- 2007-09-20 10:00:00 -->
+    <function name="createDateString" module="Basic">
+        <parameter>MM</parameter>
+        <parameter>searchFrom-month</parameter>
+    </function> 
+    
+    <!-- If the month isn't 1, subtract one from it -->
+    <conditional variable="searchFrom-month" targetValue="01" inverted="true">
+        <function name="subtractVariable" module="Basic">   
+            <parameter>searchFrom-newMonth</parameter>
+            <variable>searchFrom-month</variable>
+            <parameter>1</parameter>
+        </function> 
+    </conditional>
+        
+    <function name="createDateString" module="Basic">
+        <parameter>yyyy-</parameter>
+        <parameter>searchFrom-prefix</parameter>
+    </function>
+    <function name="createDateString" module="Basic">
+        <parameter> HH:mm:ss</parameter>
+        <parameter>searchFrom-suffix</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+        <parameter>searchFrom</parameter>
+        <parameter>
+            <variable>searchFrom-prefix</variable>
+            <variable>searchFrom-newMonth</variable>
+            <parameter>-01</parameter>
+            <variable>searchFrom-suffix</variable>
+        </parameter>
+    </function>
+
+    <function name="setVariable" module="Basic">
+        <parameter>searchTo</parameter>
+        <parameter>
+            <variable>searchFrom-prefix</variable>
+            <variable>searchFrom-month</variable>
+            <parameter>-01</parameter>
+            <variable>searchFrom-suffix</variable>
+        </parameter>
+    </function>
+    
+    
+
+    <!--function name="setVariable" module="Basic">
+        <parameter>searchFrom</parameter>
+        <parameter>2008-01-01 10:00:00</parameter>
+    </function-->
+
+    <function name="setVariable" module="Basic">
+        <parameter>filename</parameter>
+        <parameter>result.xls</parameter>
+    </function>
+
+    <subtest>xtt-init.xml</subtest>
+
+    <function name="openConnection" module="SQL">
+        <parameter>Bugzilla</parameter>
+        <parameter>com.mysql.jdbc.Driver</parameter>
+        <parameter>jdbc:mysql://127.0.0.1/bugs?useUnicode=false</parameter>
+        <parameter>root</parameter>
+        <parameter></parameter>
+    </function>
+
+    <function name="query" module="SQL">
+        <parameter>Bugzilla</parameter>
+        <parameter>openbugs</parameter>
+        <parameter>SELECT bugs.bug_id, bugs.bug_status, bugs.creation_ts, profiles.realname, bugs.bug_severity, bugs.short_desc, products.name, bugs.bug_file_loc, components.name  FROM bugs,profiles,products,components WHERE components.id = bugs.component_id AND products.id = bugs.product_id AND profiles.userid=bugs.assigned_to AND (bugs.bug_status="NEW" OR bugs.bug_status="ASSIGNED" OR bugs.bug_status="REOPENED") AND bugs.product_id != 1 AND bugs.product_id != 4 AND bugs.product_id != 5 AND bugs.product_id != 7 AND bugs.product_id != 12 ORDER BY bugs.bug_id;</parameter>
+    </function>
+
+    <loop name="bugNum" start="1" stop="openbugs/loop">
+        <function name="query" module="SQL">
+            <parameter>Bugzilla</parameter>
+            <parameter>bugactivity</parameter>
+            <parameter>
+                <parameter>SELECT bug_when, added FROM bugs_activity WHERE bug_id=</parameter>
+                <variable>
+                    <parameter>openbugs/</parameter>
+                    <variable>bugNum</variable>
+                    <parameter>/1</parameter>
+                </variable>
+                <parameter>;</parameter>
+            </parameter>
+        </function>
+
+        <function name="setVariable" module="Basic">
+            <parameter>
+                <parameter>openbugs/</parameter>
+                <variable>bugNum</variable>
+                <parameter>/temporaryTime</parameter>
+            </parameter>
+            <parameter>0</parameter>
+        </function>
+        <function name="setVariable" module="Basic">
+            <parameter>
+                <parameter>openbugs/</parameter>
+                <variable>bugNum</variable>
+                <parameter>/permanentTime</parameter>
+            </parameter>
+            <parameter>0</parameter>
+        </function>
+        <function name="createEpochFromDateString" module="Basic">
+            <parameter>epochOpen</parameter>
+            <parameter>yyyy-MM-dd HH:mm:ss</parameter>
+            <variable>
+                <parameter>openbugs/</parameter>
+                <variable>bugNum</variable>
+                <parameter>/3</parameter>
+            </variable>
+        </function>
+        <function name="createEpochDateString" module="Basic">
+            <variable>epochOpen</variable>
+            <parameter>yyyy-MM-dd'T'HH:mm:ss</parameter>
+            <parameter>
+                <parameter>openbugs/</parameter>
+                <variable>bugNum</variable>
+                <parameter>/3</parameter>
+            </parameter>
+        </function>
+
+        <conditional variable="bugactivity/rows" inverted="true" targetValue="0">
+            <loop name="activityNum" start="1" stop="bugactivity/loop">
+                <function name="setVariable" module="Basic">
+                    <parameter>hasTemporaryFix</parameter>
+                </function>
+                <function name="setVariable" module="Basic">
+                    <parameter>hasPermanentFix</parameter>
+                </function>
+                <function name="setVariable" module="Basic">
+                    <parameter>wasClosed</parameter>
+                </function>
+
+                <function name="queryText" module="Basic">
+                    <variable>
+                        <parameter>bugactivity/</parameter>
+                        <variable>activityNum</variable>
+                        <parameter>/2</parameter>
+                    </variable>
+                    <parameter>hasTemporaryFix</parameter>
+                    <parameter>(TemporaryFix)</parameter>
+                </function>
+                <function name="queryText" module="Basic">
+                    <variable>
+                        <parameter>bugactivity/</parameter>
+                        <variable>activityNum</variable>
+                        <parameter>/2</parameter>
+                    </variable>
+                    <parameter>hasPermanentFix</parameter>
+                    <parameter>(PermanentFix)</parameter>
+                </function>
+                <conditional variable="hasTemporaryFix" inverted="true" targetValue="null">
+                    <!-- Turn the bug open time, and the tempfix time into epoch -->
+                    <function name="createEpochFromDateString" module="Basic">
+                        <parameter>epochTempFix</parameter>
+                        <parameter>yyyy-MM-dd HH:mm:ss</parameter>
+                        <variable>
+                            <parameter>bugactivity/</parameter>
+                            <variable>activityNum</variable>
+                            <parameter>/1</parameter>
+                        </variable>
+                    </function>
+
+                    <function name="calculate" module="Basic">
+                        <parameter>tempFixTime</parameter>
+                        <parameter>
+                            <variable>epochTempFix</variable>
+                            <parameter>-</parameter>
+                            <variable>epochOpen</variable>
+                        </parameter>
+                    </function>
+
+                    <function name="setVariable" module="Basic">
+                        <parameter>
+                            <parameter>openbugs/</parameter>
+                            <variable>bugNum</variable>
+                            <parameter>/temporaryTime</parameter>
+                        </parameter>
+                        <variable>tempFixTime</variable>
+                    </function>
+                </conditional>
+                <conditional variable="hasPermanentFix" inverted="true" targetValue="null">
+                    <!-- Turn the bug open time, and the tempfix time into epoch -->
+                    <function name="createEpochFromDateString" module="Basic">
+                        <parameter>epochPermFix</parameter>
+                        <parameter>yyyy-MM-dd HH:mm:ss</parameter>
+                        <variable>
+                            <parameter>bugactivity/</parameter>
+                            <variable>activityNum</variable>
+                            <parameter>/1</parameter>
+                        </variable>
+                    </function>
+
+                    <function name="calculate" module="Basic">
+                        <parameter>permFixTime</parameter>
+                        <parameter>
+                            <variable>epochPermFix</variable>
+                            <parameter>-</parameter>
+                            <variable>epochOpen</variable>
+                        </parameter>
+                    </function>
+
+                    <function name="setVariable" module="Basic">
+                        <parameter>
+                            <parameter>openbugs/</parameter>
+                            <variable>bugNum</variable>
+                            <parameter>/permanentTime</parameter>
+                        </parameter>
+                        <variable>permFixTime</variable>
+                    </function>
+                </conditional>
+            </loop>
+        </conditional>
+        <!--function name="replace" module="Basic">
+            <variable>
+                <parameter>openbugs/</parameter>
+                <variable>bugNum</variable>
+                <parameter>/6</parameter>
+            </variable>
+            <parameter>"</parameter>
+            <parameter>""</parameter>
+        </function>
+        <function name="setVariable" module="Basic">
+            <parameter>inSeconds</parameter>
+            <variable>
+                <parameter>openbugs/</parameter>
+                <variable>bugNum</variable>
+                <parameter>/3</parameter>
+            </variable>
+        </function-->
+        <!--subtest>xtt-secondsToString.xml</subtest-->
+        <function name="setVariable" module="Basic"><parameter>field1</parameter><variable><parameter>openbugs/</parameter><variable>bugNum</variable><parameter>/1</parameter></variable></function>
+        <function name="setVariable" module="Basic"><parameter>field13</parameter><variable><parameter>openbugs/</parameter><variable>bugNum</variable><parameter>/7</parameter></variable></function>
+        <function name="setVariable" module="Basic"><parameter>field15</parameter><variable><parameter>openbugs/</parameter><variable>bugNum</variable><parameter>/9</parameter></variable></function>
+        <function name="setVariable" module="Basic"><parameter>field14</parameter><variable><parameter>openbugs/</parameter><variable>bugNum</variable><parameter>/8</parameter></variable></function>
+        <function name="setVariable" module="Basic"><parameter>field2</parameter><variable><parameter>openbugs/</parameter><variable>bugNum</variable><parameter>/2</parameter></variable></function>
+        <function name="setVariable" module="Basic"><parameter>field3</parameter><variable><parameter>openbugs/</parameter><variable>bugNum</variable><parameter>/3</parameter></variable></function>
+        <function name="setVariable" module="Basic"><parameter>field4</parameter><variable><parameter>openbugs/</parameter><variable>bugNum</variable><parameter>/4</parameter></variable></function>
+        <function name="setVariable" module="Basic"><parameter>field5</parameter><variable><parameter>openbugs/</parameter><variable>bugNum</variable><parameter>/5</parameter></variable></function>
+        <function name="setVariable" module="Basic"><parameter>field6</parameter><variable><parameter>openbugs/</parameter><variable>bugNum</variable><parameter>/6</parameter></variable></function>
+
+        <function name="setVariable" module="Basic"><parameter>field7</parameter><variable><parameter>openbugs/</parameter><variable>bugNum</variable><parameter>/temporaryTime</parameter></variable></function>
+        <function name="setVariable" module="Basic"><parameter>inSeconds</parameter><variable><parameter>openbugs/</parameter><variable>bugNum</variable><parameter>/temporaryTime</parameter></variable></function>
+        <subtest>xtt-secondsToString.xml</subtest>
+        <function name="setVariable" module="Basic"><parameter>field8</parameter><variable>time</variable></function>
+
+        <function name="setVariable" module="Basic"><parameter>field9</parameter><variable><parameter>openbugs/</parameter><variable>bugNum</variable><parameter>/permanentTime</parameter></variable></function>
+        <function name="setVariable" module="Basic"><parameter>inSeconds</parameter><variable><parameter>openbugs/</parameter><variable>bugNum</variable><parameter>/permanentTime</parameter></variable></function>
+        <subtest>xtt-secondsToString.xml</subtest>
+        <function name="setVariable" module="Basic"><parameter>field10</parameter><variable>time</variable></function>
+
+        <!-- Still open -->
+        <function name="setVariable" module="Basic"><parameter>field11</parameter><parameter>0</parameter></function>
+        <function name="setVariable" module="Basic"><parameter>inSeconds</parameter><parameter>0</parameter></function>
+        <subtest>xtt-secondsToString.xml</subtest>
+        <function name="setVariable" module="Basic"><parameter>field12</parameter><variable>time</variable></function>
+
+        <subtest>xtt-write-xml.xml</subtest>
+    </loop>
+
+    <!-- GET ALL BUGS CLOSED IN THE LAST WEEK -->
+
+    <function name="query" module="SQL">
+        <parameter>Bugzilla</parameter>
+        <parameter>closedbugs</parameter>
+        <parameter>
+            <parameter>SELECT bugs_activity.bug_id,bugs_activity.bug_when FROM bugs_activity,bugs WHERE bugs.bug_id = bugs_activity.bug_id AND (bugs_activity.added="RESOLVED") AND bugs.product_id != 1 AND bugs.product_id != 4 AND bugs.product_id != 5 AND bugs.product_id != 7 AND bugs.product_id != 12 AND (bugs.bug_status="RESOLVED" OR bugs.bug_status="VERIFIED" OR bugs.bug_status="CLOSED") AND bugs_activity.bug_when>="</parameter>
+            <variable>searchFrom</variable>
+            <parameter>" AND bugs_activity.bug_when&lt;"</parameter>
+            <variable>searchTo</variable>
+            <parameter>" ORDER BY bugs_activity.bug_when DESC;</parameter>
+        </parameter>
+    </function>
+
+    <loop name="bugNum" start="1" stop="closedbugs/loop">
+        <function name="setVariable" module="Basic">
+            <parameter>bug_id</parameter>
+        </function>
+        <function name="setVariable" module="Basic">
+            <parameter>bug_id</parameter>
+            <variablepointer>
+                <parameter>closedbugs/</parameter>
+                <variable>bugNum</variable>
+                <parameter>/1</parameter>
+            </variablepointer>
+        </function>
+
+        <conditional variable="bug_id" targetValue="null">
+            <function name="setVariable" module="Basic">
+                <variable>
+                    <parameter>closedbugs/</parameter>
+                    <variable>bugNum</variable>
+                    <parameter>/1</parameter>
+                </variable>
+                <parameter>alreadyUsed</parameter>
+            </function>
+            <function name="query" module="SQL">
+                <parameter>Bugzilla</parameter>
+                <parameter>bugdetail</parameter>
+                <parameter>
+                    <parameter>SELECT bugs.bug_id, bugs.bug_status, bugs.creation_ts, profiles.realname, bugs.bug_severity, bugs.short_desc, products.name, bugs.bug_file_loc, components.name  FROM bugs,profiles,products,components WHERE components.id = bugs.component_id AND products.id = bugs.product_id AND bugs.bug_id=</parameter>
+                    <variable>
+                        <parameter>closedbugs/</parameter>
+                        <variable>bugNum</variable>
+                        <parameter>/1</parameter>
+                    </variable>
+                    <parameter> AND profiles.userid=bugs.assigned_to;</parameter>
+                </parameter>
+            </function>
+
+            <function name="setVariable" module="Basic">
+                <parameter>
+                    <parameter>closedbugs/</parameter>
+                    <variable>bugNum</variable>
+                    <parameter>/temporaryTime</parameter>
+                </parameter>
+                <parameter>0</parameter>
+            </function>
+            <function name="setVariable" module="Basic">
+                <parameter>
+                    <parameter>closedbugs/</parameter>
+                    <variable>bugNum</variable>
+                    <parameter>/permanentTime</parameter>
+                </parameter>
+                <parameter>0</parameter>
+            </function>
+            <!-- Set resolved time -->
+            <function name="createEpochFromDateString" module="Basic">
+                <parameter>epochOpen</parameter>
+                <parameter>yyyy-MM-dd HH:mm:ss</parameter>
+                <variable>
+                    <parameter>bugdetail/1/3</parameter>
+                </variable>
+            </function>
+            <function name="createEpochDateString" module="Basic">
+                <variable>epochOpen</variable>
+                <parameter>yyyy-MM-dd'T'HH:mm:ss</parameter>
+                <parameter>bugdetail/1/3</parameter>
+            </function>
+
+            <function name="createEpochFromDateString" module="Basic">
+                <parameter>epochClosed</parameter>
+                <parameter>yyyy-MM-dd HH:mm:ss</parameter>
+                <variable>
+                    <parameter>closedbugs/</parameter>
+                    <variable>bugNum</variable>
+                    <parameter>/2</parameter>
+                </variable>
+            </function>
+
+            <function name="calculate" module="Basic">
+                <parameter>closedTime</parameter>
+                <parameter>
+                    <variable>epochClosed</variable>
+                    <parameter>-</parameter>
+                    <variable>epochOpen</variable>
+                </parameter>
+            </function>
+
+            <function name="setVariable" module="Basic">
+                <parameter>
+                    <parameter>closedbugs/</parameter>
+                    <variable>bugNum</variable>
+                    <parameter>/closedTime</parameter>
+                </parameter>
+                <variable>closedTime</variable>
+            </function>
+
+            <function name="query" module="SQL">
+                <parameter>Bugzilla</parameter>
+                <parameter>bugactivity</parameter>
+                <parameter>
+                    <parameter>SELECT bug_when, added FROM bugs_activity WHERE bug_id=</parameter>
+                    <variable>
+                        <parameter>closedbugs/</parameter>
+                        <variable>bugNum</variable>
+                        <parameter>/1</parameter>
+                    </variable>
+                    <parameter>;</parameter>
+                </parameter>
+            </function>
+
+            <conditional variable="bugactivity/rows" inverted="true" targetValue="0">
+                <loop name="activityNum" start="1" stop="bugactivity/loop">
+                    <function name="setVariable" module="Basic">
+                        <parameter>hasTemporaryFix</parameter>
+                    </function>
+                    <function name="setVariable" module="Basic">
+                        <parameter>hasPermanentFix</parameter>
+                    </function>
+                    <function name="setVariable" module="Basic">
+                        <parameter>wasClosed</parameter>
+                    </function>
+
+                    <function name="queryText" module="Basic">
+                        <variable>
+                            <parameter>bugactivity/</parameter>
+                            <variable>activityNum</variable>
+                            <parameter>/2</parameter>
+                        </variable>
+                        <parameter>hasTemporaryFix</parameter>
+                        <parameter>(TemporaryFix)</parameter>
+                    </function>
+                    <function name="queryText" module="Basic">
+                        <variable>
+                            <parameter>bugactivity/</parameter>
+                            <variable>activityNum</variable>
+                            <parameter>/2</parameter>
+                        </variable>
+                        <parameter>hasPermanentFix</parameter>
+                        <parameter>(PermanentFix)</parameter>
+                    </function>
+                    <conditional variable="hasTemporaryFix" inverted="true" targetValue="null">
+                        <!-- Turn the bug open time, and the tempfix time into epoch -->
+                        <function name="createEpochFromDateString" module="Basic">
+                            <parameter>epochTempFix</parameter>
+                            <parameter>yyyy-MM-dd HH:mm:ss</parameter>
+                            <variable>
+                                <parameter>bugactivity/</parameter>
+                                <variable>activityNum</variable>
+                                <parameter>/1</parameter>
+                            </variable>
+                        </function>
+
+                        <function name="calculate" module="Basic">
+                            <parameter>tempFixTime</parameter>
+                            <parameter>
+                                <variable>epochTempFix</variable>
+                                <parameter>-</parameter>
+                                <variable>epochOpen</variable>
+                            </parameter>
+                        </function>
+
+                        <function name="setVariable" module="Basic">
+                            <parameter>
+                                <parameter>closedbugs/</parameter>
+                                <variable>bugNum</variable>
+                                <parameter>/temporaryTime</parameter>
+                            </parameter>
+                            <variable>tempFixTime</variable>
+                        </function>
+                    </conditional>
+                    <conditional variable="hasPermanentFix" inverted="true" targetValue="null">
+                        <!-- Turn the bug open time, and the tempfix time into epoch -->
+                        <function name="createEpochFromDateString" module="Basic">
+                            <parameter>epochPermFix</parameter>
+                            <parameter>yyyy-MM-dd HH:mm:ss</parameter>
+                            <variable>
+                                <parameter>bugactivity/</parameter>
+                                <variable>activityNum</variable>
+                                <parameter>/1</parameter>
+                            </variable>
+                        </function>
+
+                        <function name="calculate" module="Basic">
+                            <parameter>permFixTime</parameter>
+                            <parameter>
+                                <variable>epochPermFix</variable>
+                                <parameter>-</parameter>
+                                <variable>epochOpen</variable>
+                            </parameter>
+                        </function>
+
+                        <function name="setVariable" module="Basic">
+                            <parameter>
+                                <parameter>closedbugs/</parameter>
+                                <variable>bugNum</variable>
+                                <parameter>/permanentTime</parameter>
+                            </parameter>
+                            <variable>permFixTime</variable>
+                        </function>
+                    </conditional>
+                </loop>
+            </conditional>
+            <function name="replace" module="Basic">
+                <parameter>bugdetail/1/6</parameter>
+                <parameter>"</parameter>
+                <parameter>""</parameter>
+            </function>
+
+            <conditional variable="bugdetail/1/2" inverted="true" targetValue="REOPENED">
+                <function name="setVariable" module="Basic"><parameter>field1</parameter><variable><parameter>bugdetail/1/1</parameter></variable></function>
+                <function name="setVariable" module="Basic"><parameter>field13</parameter><variable><parameter>bugdetail/1/7</parameter></variable></function>
+                <function name="setVariable" module="Basic"><parameter>field15</parameter><variable><parameter>bugdetail/1/9</parameter></variable></function>
+                <function name="setVariable" module="Basic"><parameter>field14</parameter><variable><parameter>bugdetail/1/8</parameter></variable></function>
+                <function name="setVariable" module="Basic"><parameter>field2</parameter><variable><parameter>bugdetail/1/2</parameter></variable></function>
+                <function name="setVariable" module="Basic"><parameter>field3</parameter><variable><parameter>bugdetail/1/3</parameter></variable></function>
+                <function name="setVariable" module="Basic"><parameter>field4</parameter><variable><parameter>bugdetail/1/4</parameter></variable></function>
+                <function name="setVariable" module="Basic"><parameter>field5</parameter><variable><parameter>bugdetail/1/5</parameter></variable></function>
+                <function name="setVariable" module="Basic"><parameter>field6</parameter><variable><parameter>bugdetail/1/6</parameter></variable></function>
+
+                <function name="setVariable" module="Basic"><parameter>field7</parameter><variable><parameter>closedbugs/</parameter><variable>bugNum</variable><parameter>/temporaryTime</parameter></variable></function>
+                <function name="setVariable" module="Basic"><parameter>inSeconds</parameter><variable><parameter>closedbugs/</parameter><variable>bugNum</variable><parameter>/temporaryTime</parameter></variable></function>
+                <subtest>xtt-secondsToString.xml</subtest>
+                <function name="setVariable" module="Basic"><parameter>field8</parameter><variable>time</variable></function>
+
+                <function name="setVariable" module="Basic"><parameter>field9</parameter><variable><parameter>closedbugs/</parameter><variable>bugNum</variable><parameter>/permanentTime</parameter></variable></function>
+                <function name="setVariable" module="Basic"><parameter>inSeconds</parameter><variable><parameter>closedbugs/</parameter><variable>bugNum</variable><parameter>/permanentTime</parameter></variable></function>
+                <subtest>xtt-secondsToString.xml</subtest>
+                <function name="setVariable" module="Basic"><parameter>field10</parameter><variable>time</variable></function>
+
+                <function name="setVariable" module="Basic"><parameter>field16</parameter><variable><parameter>closedbugs/</parameter><variable>bugNum</variable><parameter>/2</parameter></variable></function>
+                <function name="setVariable" module="Basic"><parameter>field11</parameter><variable><parameter>closedbugs/</parameter><variable>bugNum</variable><parameter>/closedTime</parameter></variable></function>
+                <function name="setVariable" module="Basic"><parameter>inSeconds</parameter><variable><parameter>closedbugs/</parameter><variable>bugNum</variable><parameter>/closedTime</parameter></variable></function>
+                <subtest>xtt-secondsToString.xml</subtest>
+                <function name="setVariable" module="Basic"><parameter>field12</parameter><variable>time</variable></function>
+
+                <subtest>xtt-write-xml.xml</subtest>
+            </conditional>
+        </conditional>
+    </loop>
+    <function name="closeConnection" module="SQL">
+        <parameter>Bugzilla</parameter>
+    </function>
+    <function name="documentToVariable" module="XML">
+        <parameter>spreadsheet</parameter>
+        <parameter>viewspreadsheet</parameter>
+    </function>
+    <function name="writeFile" module="Basic">
+        <variable>filename</variable>
+        <variable>viewspreadsheet</variable>
+    </function>
+    <subtest>xtt-sendmail.xml</subtest>
+</test>

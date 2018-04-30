@@ -1,0 +1,34 @@
+<test>	    
+	<name>XMP.ICAP.TC.001</name>
+    <description>GET with no ICAP call</description>
+
+    <subtest name="loadReqmod" file="loadReqmod.xml"/>
+
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+	<function name="startICAPServer" module="ICAP"/>
+	<function name="startWebServer" module="HTTP"/>
+
+	<function name="sendGetRequest" module="HTTP">
+        <parameter>
+    		<parameter>http://icap4.xtt724.com/</parameter>
+        </parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>	
+	<function name="waitForTimeoutRequests" module="ICAP">
+		<parameter>5000</parameter>
+	</function>	
+
+    <subtest name="unloadReqmod" file="unloadReqmod.xml"/>
+
+	<function name="stopWebServer" module="HTTP"/>
+	<function name="stopICAPServer" module="ICAP"/>
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function> 
+</test>

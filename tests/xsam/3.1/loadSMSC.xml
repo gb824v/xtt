@@ -1,0 +1,79 @@
+<test>
+    <name>SMSC.INITIALIZE</name>
+    <configuration>configXSAM.xml</configuration>
+    <description>Load the SMSC configuration file</description>
+
+    <function name="writeRemoteFile" module="Remote">
+        <parameter>vasp.xml</parameter>
+        <parameter>
+        <parameter>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;xsamSmsConnections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="xsnsmsconnections.xsd" &gt;
+&lt;channels&gt;
+    &lt;connectChannel name="ConnectUCP" protocol="UCP" settings="UcpConnectSettings" &gt;
+        &lt;connection address="30080" password="tantau30080" /&gt; 
+        &lt;remoteAddress ipAddress="</parameter><configuration>SYSTEM/IP</configuration><parameter>" port="</parameter><configuration>SMSCSERVER/PORT</configuration><parameter>" /&gt; 
+    &lt;/connectChannel&gt;
+&lt;/channels&gt;
+&lt;settings&gt;
+    &lt;ucpSettings name="UcpConnectSettings" maxConcurrentReq="1" maxMessagesPerSecond="1000" maxPduSize="4096" mode="active" throttleIncomingTcp="false" use60Open="true" linkDownRetryTimeoutSeconds="30" &gt;
+        &lt;connectionOptions npi="5" ton="6" /&gt; 
+            &lt;messageOptionSets&gt;
+                &lt;messageOptions optionName="" sendOperation="51"  notificationRequest=""  messageClass="1" messageType="3" /&gt; 
+            &lt;/messageOptionSets&gt;
+    &lt;/ucpSettings&gt;
+&lt;/settings&gt;
+&lt;/xsamSmsConnections&gt;</parameter>
+        </parameter>
+    </function>
+
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>load data vasp.xml</parameter>
+    </function>
+    <function name="queryResponse" module="Remote">
+        <parameter>^Loaded</parameter>
+        <parameter>response</parameter>
+    </function>
+
+
+    <function name="openConnection" module="SQL">
+        <parameter>SQL1</parameter>
+        <configuration>xsam/sql/driver</configuration>
+        <configuration>xsam/sql/jdbcconnection</configuration>
+        <configuration>xsam/sql/database</configuration>
+        <configuration>xsam/sql/password</configuration>
+    </function>
+    
+    <function name="update" module="SQL">
+        <parameter>SQL1</parameter>
+        <parameter>query1</parameter>
+        <parameter>DELETE FROM SAM_SMSCS WHERE CHANNELS_CHANNEL_PK='ConnectUCP'</parameter>
+    </function>
+
+    <function name="update" module="SQL">
+        <parameter>SQL1</parameter>
+        <parameter>insert1</parameter>
+        <parameter>
+            <parameter>INSERT INTO SAM_SMSCS (SMSC_PK,SMSC_NAME,IP_ADDRESS,PORT,CHANNELS_CHANNEL_PK) VALUES ('XTT0000000000000001','XTTSMSC','</parameter>
+            <configuration>SYSTEM/IP</configuration>
+            <parameter>','</parameter>
+            <configuration>SMSCSERVER/PORT</configuration>
+            <parameter>','ConnectUCP')</parameter>
+        </parameter>
+    </function>
+    <function name="query" module="SQL">
+        <parameter>SQL1</parameter>
+        <parameter>query1</parameter>
+        <parameter>SELECT SMSC_PK,SMSC_NAME,IP_ADDRESS,PORT,CHANNELS_CHANNEL_PK FROM SAM_SMSCS</parameter>
+    </function>
+
+    <function name="closeConnection" module="SQL">
+        <parameter>SQL1</parameter>
+    </function>
+
+
+	<function name="restartProcess" module="Remote">
+		<parameter>WFE</parameter>
+	</function>  
+
+</test>

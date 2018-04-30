@@ -1,0 +1,48 @@
+<test>
+    <function name="testName" module="Basic">
+        <parameter>XMP.CONTENTFILTERING.TC.011</parameter>
+     </function>
+	
+    <description>Standard Filter: Gambling (444) / subscriberFilterable=false, User is in DB [age=24], URL is accessible</description>
+        
+    <!-- Radius logon - User is in DB [age=24] -->
+    <function name="radiusLogon" module="Radius">
+	<parameter>0787367502</parameter>
+	<parameter>0787367502</parameter>
+	<configuration>system/Ip</configuration>
+    </function> 
+      
+    <!-- http://www.poker.com : category="Gambling" : URL is accessible -->
+    <function name="sendGetRequest" module="HTTP">
+	 <parameter>http://www.poker.com/</parameter>
+    </function>
+	
+    <function name="checkResponseCode" module="HTTP">
+	<parameter>200</parameter>
+    </function>
+    
+    <!-- http://www.pokerhouse.de : category="Gambling" : URL is accessible -->
+    <function name="sendGetRequest" module="HTTP">
+	 <parameter>http://www.pokerhouse.de/</parameter>
+    </function>
+	
+    <function name="checkResponseCode" module="HTTP">
+	<parameter>200</parameter>
+    </function>
+    
+    <!-- http://www.theedgepoker.com : category="Gambling" : URL is accessible -->
+    <function name="sendGetRequest" module="HTTP">
+	 <parameter>http://www.theedgepoker.com/</parameter>
+    </function>
+	
+    <function name="checkResponseCode" module="HTTP">
+	<parameter>200</parameter>
+    </function>
+    
+    <!-- Radius logoff - User is in DB [age=24] -->
+    <function name="radiusLogoff" module="Radius">
+	<parameter>0787367502</parameter>
+	<parameter>0787367502</parameter>
+	<configuration>system/Ip</configuration>
+    </function> 
+</test>

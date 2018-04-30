@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test>
+    <name>xttmsrpTC002BTOA.xml</name>
+    <description>[B --> A] sendMSRPRequest</description>
+    <configuration>configMSRP.xml</configuration>
+    
+    <!--
+     Testscenario
+     ____________
+
+     Alice(CLIENT)                       Bob(SERVER)
+        |                                 |
+        |     SEND MSRP REQUEST           |
+        | <- - - - - - - - - - - - - -    |
+        |     MSRP 200 OK                 |
+        |  - - - - - - - - - - - - - ->   |
+        |                                 |
+
+     -->
+
+    <function name="setVariable" module="Basic">
+        <parameter>CLIENT</parameter>
+        <configuration>MSRPSERVER/CLIENTPORT</configuration>
+    </function>
+
+    <function name="setVariable" module="Basic">
+        <parameter>SERVER</parameter>
+        <configuration>MSRPSERVER/PORT</configuration>
+    </function>
+
+    <function name="startMSRPServer" module="MSRP">
+        <variable>SERVER</variable>
+        <configuration>MSRPSERVER/TIMEOUT</configuration>
+    </function>
+
+    <function name="waitForRequests" module="MSRP">
+        <parameter>1</parameter>
+    </function>
+
+    <function name="getConnection" module="MSRP">
+        <parameter>one</parameter>
+        <variable>SERVER</variable>
+    </function>
+
+    <function name="setHeader" module="MSRP">
+        <parameter>one</parameter>
+        <parameter>To-Path</parameter>
+        <!--<parameter>msrp://10.21.0.36:849/9di4eae923wzd;tcp</parameter>-->
+        <parameter>
+            <parameter>msrp://</parameter>
+            <configuration>MSRPSERVER/REMOTEIPADDRESS</configuration>
+            <parameter>:</parameter>
+            <variable>CLIENT</variable>
+            <parameter>/9di4eae923wzd;tcp</parameter>
+        </parameter>
+    </function>
+
+    <function name="setHeader" module="MSRP">
+        <parameter>one</parameter>
+        <parameter>From-Path</parameter>
+        <!--<parameter>msrp://10.21.1.105:493/iau39soe2843z;tcp</parameter>-->
+        <parameter>
+            <parameter>msrp://</parameter>
+            <configuration>SYSTEM/IP</configuration>
+            <parameter>:</parameter>
+            <variable>SERVER</variable>
+            <parameter>/iau39soe2843z;tcp</parameter>
+        </parameter>
+    </function>
+
+    <function name="setHeader" module="MSRP">
+        <parameter>one</parameter>
+        <parameter>Message-ID</parameter>
+        <parameter>12339sdqwer</parameter>
+    </function>
+
+    <function name="setHeader" module="MSRP">
+        <parameter>one</parameter>
+        <parameter>Byte-Range</parameter>
+        <parameter>1-5/19</parameter>
+    </function>
+
+    <function name="setHeader" module="MSRP">
+        <parameter>one</parameter>
+        <parameter>Content-Type</parameter>
+        <parameter>text/plain</parameter>
+    </function>
+
+    <function name="setVariable" module="Basic">
+        <parameter>msrpbody2</parameter>
+        <parameter>Hi, Alice! I'm Bob!</parameter>
+    </function>
+
+    <function name="sendMSRPRequest" module="MSRP">
+        <parameter>one</parameter>
+        <parameter>SEND</parameter>
+        <base64encode>
+            <variable>msrpbody2</variable>
+        </base64encode>
+        <parameter>dkei38sd</parameter>
+    </function>
+
+    <function name="waitForVariable" module="Basic">
+        <parameter>
+            <parameter>MSRP/RESPONSE/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+    <function name="removeVariables" module="Basic">
+        <parameter>
+            <parameter>MSRP/RESPONSE/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+    <function name="waitForResponses" module="MSRP">
+        <parameter>1</parameter>
+    </function>
+    
+    <function name="sleep" module="Basic">
+		<parameter>500</parameter>
+	</function>
+
+    <function name="stopMSRPServer" module="MSRP"/>
+</test>

@@ -1,0 +1,182 @@
+<test>
+    <configuration>xsam_config.xml</configuration>
+    <function name="testName" module="Basic">
+        <parameter>AP.TC.316</parameter>
+    </function>
+
+    <function name="startSMSCServer" module="SMS"/>
+
+    <function name="openConnection" module="UCP">
+        <parameter>connection1</parameter>
+        <configuration>XSAM/IP</configuration>
+        <configuration>XSAM/PORT</configuration>
+    </function>
+
+    <function name="sendUCPPacket" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>internal</parameter>
+        <parameter>O</parameter>
+        <parameter>60</parameter>
+        <parameter>
+            <parameter>/</parameter>
+            <configuration>XSAM/SHORTCODE</configuration>
+            <parameter>/6/1/1/70617373776F7264//0100//////</parameter>
+        </parameter>
+    </function>
+
+    <function name="waitForBind" module="SMS"/>
+
+    <function name="createDateString" module="Basic">
+        <parameter>ddMMyykkmmss</parameter>
+        <parameter>DDT</parameter>
+        <parameter>300</parameter>
+        <parameter>GMT</parameter>
+    </function>
+
+    <function name="sendUCPPacket" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>internal</parameter>
+        <parameter>O</parameter>
+        <parameter>51</parameter>
+        <parameter>
+            <parameter>/0123456789/</parameter>
+            <configuration>XSAM/SHORTCODE</configuration>
+            <parameter>/////////1/</parameter>
+            <variable>DDT</variable>
+            <parameter>///////2//00000000000000009876543/////////////</parameter>
+        </parameter>
+    </function>
+
+    <function name="queryTextResponse" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>timestamp</parameter>
+        <parameter>\d\d/\d\d\d\d\d/R/51/A//[^/:]++:([^/]++)/\w\w</parameter>
+    </function>
+
+    <function name="queryVariable" module="Basic">
+        <parameter>timestamp</parameter>
+        <parameter>year</parameter>
+        <parameter>\d\d\d\d(\d\d)\d\d\d\d\d\d</parameter>
+    </function>
+    <function name="queryVariable" module="Basic">
+        <parameter>timestamp</parameter>
+        <parameter>month</parameter>
+        <parameter>\d\d(\d\d)\d\d\d\d\d\d\d\d</parameter>
+    </function>
+    <function name="queryVariable" module="Basic">
+        <parameter>timestamp</parameter>
+        <parameter>day</parameter>
+        <parameter>(\d\d)\d\d\d\d\d\d\d\d\d\d</parameter>
+    </function>
+    <function name="queryVariable" module="Basic">
+        <parameter>timestamp</parameter>
+        <parameter>time</parameter>
+        <parameter>\d\d\d\d\d\d(\d\d\d\d\d\d)</parameter>
+    </function>
+
+    <function name="createASCIIString" module="Basic">
+        <parameter>deleteTime</parameter>
+        <parameter>
+            <variable>year</variable>
+            <variable>month</variable>
+            <variable>day</variable>
+            <variable>time</variable>
+        </parameter>
+    </function>
+
+    <function name="setVariable" module="BASIC">
+        <parameter>nmsg</parameter>
+        <parameter>
+            <parameter>SMSC/</parameter>
+            <configuration>SMSCSERVER/PROTOCOL</configuration>
+            <parameter>/0123456789/NMsg</parameter>
+        </parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <parameter>00000000000000009876543</parameter>
+        <variablepointer>nmsg</variablepointer>
+    </function>
+
+    <function name="sendUCPPacket" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>internal</parameter>
+        <parameter>O</parameter>
+        <parameter>56</parameter>
+        <parameter>
+            <parameter>/0123456789/</parameter>
+            <configuration>XSAM/SHORTCODE</configuration>
+            <parameter>/////////////////3//</parameter>
+            <variable>deleteTime</variable>
+            <parameter>/////////////</parameter>
+        </parameter>
+    </function>
+    <function name="queryTextResponse" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>var</parameter>
+        <parameter>\d\d/\d\d\d\d\d/R/56/A//[^/]++/\w\w</parameter>
+    </function>
+
+    <thread>
+        <function name="waitSMSCUCPPacket" module="UCP">
+            <parameter>connection1</parameter>
+        </function>
+    </thread>
+
+
+    <function name="createASCIIString" module="Basic">
+        <parameter>toNumberEnc</parameter>
+        <parameter>0123456789</parameter>
+    </function>
+
+    <function name="setVariable" module="BASIC">
+        <parameter>lamsg</parameter>
+        <parameter>
+            <parameter>44657374696E6174696F6E20</parameter>
+            <variable>toNumberEnc</variable>
+            <parameter>206964656E74696669636174696F6E3A</parameter>
+            <variable>deleteTime</variable>
+            <parameter>20686173206265656E2064656C65746564</parameter>
+        </parameter>
+    </function>
+
+
+    <function name="sendSMSCUCPPacket" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>0</parameter>
+        <parameter>internal</parameter>
+        <parameter>O</parameter>
+        <parameter>58</parameter>
+        <parameter>
+            <parameter>/0123456789</parameter>
+            <parameter>//////////////////3//</parameter>
+            <variable>lamsg</variable>
+            <parameter>/////////////</parameter>
+        </parameter>
+    </function>
+    <function name="queryTextResponse" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>var</parameter>
+        <parameter>\d\d/\d\d\d\d\d/R/58/A//[^/]++/\w\w</parameter>
+    </function>
+    <function name="stopSMSCServer" module="SMS"/>
+
+    <function name="setVariable" module="BASIC">
+        <parameter>amsg</parameter>
+        <parameter>
+            <parameter>SMSC/</parameter>
+            <configuration>SMSCSERVER/PROTOCOL</configuration>
+            <parameter>/0123456789/AMsg</parameter>
+        </parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>lamsg</variable>
+        <variablepointer>amsg</variablepointer>
+    </function>
+
+
+    <function name="closeConnection" module="UCP">
+        <parameter>connection1</parameter>
+    </function>
+
+
+</test>

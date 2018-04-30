@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<intercept>
+<machine name="aruba" >
+
+<rule>
+  <modifier sticky="true" />
+	<source ipAddress="172.20.2.118" >
+	    <port value="0" />
+	</source>
+<destination ipAddress="172.20.2.119" >
+    <portRange exclude="true" from="21" to="25" />
+</destination>
+
+<redirectTo>
+    <target ipAddress="172.20.2.51" port="4010" />
+</redirectTo>
+</rule>
+
+
+<rule>
+<modifier sticky="true" />
+
+<source ipAddress="172.20.2.118" >
+    <port value="0" />
+</source>
+
+<destination ipAddress="172.20.2.119" >
+    <port exclude="true"  value="8999" />
+</destination>
+
+<redirectTo>
+    <target ipAddress="172.20.2.51" port="4010" />
+</redirectTo>
+</rule>
+
+</machine>
+</intercept>

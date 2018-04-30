@@ -1,0 +1,39 @@
+<test>
+    <function name="testName" module="Basic">
+        <parameter>XMP.CONTENTFILTERING.TC.004</parameter>
+     </function>
+	
+    <description>Global Filter: alwaysAllow [www.yahoo.com] / urlList instead of urlPattern, User is in DB [age=24], URL is accessible</description>
+        
+    <!-- Radius logon - User is in DB [age=24] -->
+    <function name="radiusLogon" module="Radius">
+	<parameter>0787367502</parameter>
+	<parameter>0787367502</parameter>
+	<configuration>system/Ip</configuration>
+    </function> 
+
+    <!-- http://www.google.com : urlCategories : alwaysAllow -->
+    <function name="sendGetRequest" module="HTTP">
+	 <parameter>http://www.google.com/</parameter>
+    </function>
+	
+    <function name="checkResponseCode" module="HTTP">
+	<parameter>200</parameter>
+    </function>
+	    
+    <!-- http://www.yahoo.com : urlCategories : alwaysAllow -->
+    <function name="sendGetRequest" module="HTTP">
+	 <parameter>http://www.yahoo.com/</parameter>
+    </function>
+	
+    <function name="checkResponseCode" module="HTTP">
+	<parameter>200</parameter>
+    </function>
+      
+    <!-- Radius logoff - User is in DB [age=24] -->
+    <function name="radiusLogoff" module="Radius">
+	<parameter>0787367502</parameter>
+	<parameter>0787367502</parameter>
+	<configuration>system/Ip</configuration>
+    </function> 
+</test>

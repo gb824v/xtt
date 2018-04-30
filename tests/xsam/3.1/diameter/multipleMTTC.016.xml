@@ -1,0 +1,256 @@
+<test>
+    <name>MBSPPB.MultipleRecipients.MT.TC.016</name>
+    <configuration>../configXSAM.xml</configuration>
+
+    <description>[TPI->SMS] 1000 Recipients / 1000 DIRECT-DEBIT passed - 500 successful Message Delivery - 500 Failed Message Delivery / 200 REFUND passed / 300 REFUND failed - 300 REFUND CDR Expected</description>
+
+    <function name="setVariable" module="Basic">
+        <parameter>AMOUNT</parameter>
+        <parameter>3.456</parameter>
+    </function>
+
+    <function name="setOverrideNumber" module="SIS">
+         <parameter>41790000005</parameter>
+    </function>
+    
+    <function name="setVariable" module="Basic">
+         <parameter>SKIP_DIAMETER</parameter>
+         <parameter>true</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+         <parameter>SKIP_SMSC</parameter>
+         <parameter>true</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+        <parameter>SKIP_VASPQUERY</parameter>
+        <parameter>true</parameter>
+    </function>
+    <function name="startSMSCServer" module="SMS"/>
+    <function name="setOverridePattern" module="SMS">
+        <parameter>60000000[5-9]\d\d</parameter>
+    </function>
+
+    <function name="restartProcess" module="Remote">
+        <parameter>LOGGER</parameter>
+    </function>
+
+    <function name="startDiameterServer" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT</configuration>
+        <parameter>
+            <parameter>
+&lt;Diameter&gt;
+    &lt;response&gt;
+        &lt;DISCONNECT_PEER_REQUEST proxiable="true" error="false" tretr="false"&gt;
+            &lt;RESULT_CODE            value="DIAMETER_SUCCESS"    mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_REALM           value="ORIGIN_REALM"        mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+        &lt;/DISCONNECT_PEER_REQUEST&gt;
+        &lt;DEVICE_WATCHDOG_REQUEST proxiable="true" error="false" tretr="false"&gt;
+            &lt;RESULT_CODE            value="DIAMETER_SUCCESS"    mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_REALM           value="ORIGIN_REALM"        mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+        &lt;/DEVICE_WATCHDOG_REQUEST&gt;
+        &lt;CAPABILITIES_EXCHANGE_REQUEST proxiable="true" error="false" tretr="false"&gt;
+            &lt;RESULT_CODE            value="DIAMETER_SUCCESS"    mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_REALM           value="ORIGIN_REALM"        mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;VENDOR_ID              request="VENDOR_ID" /&gt;
+            &lt;PRODUCT_NAME           request="PRODUCT_NAME" /&gt;
+            &lt;SUPPORTED_VENDOR_ID    request="SUPPORTED_VENDOR_ID" /&gt;
+            &lt;AUTH_APPLICATION_ID    request="AUTH_APPLICATION_ID" /&gt;
+        &lt;/CAPABILITIES_EXCHANGE_REQUEST&gt;
+        &lt;CREDIT_CONTROL_REQUEST proxiable="true" error="true" tretr="false" matchAVP="SUBSCRIPTION_ID_DATA" matchREGEX="60000000[7-9]\d\d" matchAVP0="REQUESTED_ACTION" matchREGEX0="REFUND_ACCOUNT" responsedelay="2"&gt;
+            &lt;SESSION_ID             request="SESSION_ID"/&gt;
+            &lt;RESULT_CODE            value="DIAMETER_AUTHENTICATION_REJECTED"    mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_REALM           request="DESTINATION_REALM" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;AUTH_APPLICATION_ID    value="4"                   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;CC_REQUEST_TYPE        request="CC_REQUEST_TYPE"   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;CC_REQUEST_NUMBER      request="CC_REQUEST_NUMBER" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+        &lt;/CREDIT_CONTROL_REQUEST&gt;
+        &lt;CREDIT_CONTROL_REQUEST proxiable="true" error="false" tretr="false"&gt;
+            &lt;SESSION_ID             request="SESSION_ID"/&gt;
+            &lt;RESULT_CODE            value="DIAMETER_SUCCESS"    mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_REALM           request="DESTINATION_REALM" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;AUTH_APPLICATION_ID    value="4"                   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;CC_REQUEST_TYPE        request="CC_REQUEST_TYPE"   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;CC_REQUEST_NUMBER      request="CC_REQUEST_NUMBER" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;GRANTED_SERVICE_UNIT                               mandatory="true" protected="false" vendorspecific="false"  vendorID=""&gt;
+                &lt;CC_MONEY                                       mandatory="true" protected="false" vendorspecific="false"  vendorID=""&gt;
+                    &lt;UNIT_VALUE                                 mandatory="true" protected="false" vendorspecific="false"  vendorID=""&gt;
+                        &lt;VALUE_DIGITS  request="VALUE_DIGITS"   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+                        &lt;EXPONENT      request="EXPONENT"       mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+                        &lt;CURRENCY_CODE request="CURRENCY_CODE"  mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+                    &lt;/UNIT_VALUE&gt;
+                &lt;/CC_MONEY&gt;
+                &lt;CC_SERVICE_SPECIFIC_UNITS value="1"            mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;/GRANTED_SERVICE_UNIT&gt;
+        &lt;/CREDIT_CONTROL_REQUEST&gt;
+    &lt;/response&gt;
+&lt;/Diameter&gt;
+            </parameter>
+        </parameter>
+        <configuration>DIAMETERSERVER/TIMEOUT</configuration>
+    </function>
+     
+    
+    <function name="addExtendedStoreVar" module="Diameter">
+        <parameter>SUBSCRIPTION_ID_DATA</parameter>
+    </function>
+    <function name="addExtendedStoreVar" module="Diameter">
+        <parameter>REQUESTED_ACTION</parameter>
+    </function>
+    
+    <function name="waitForSpecificRequests" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT</configuration>
+        <parameter>CAPABILITIES_EXCHANGE_REQUEST</parameter>
+        <parameter>1</parameter>
+    </function>
+
+
+    <function name="setVariable" module="Basic">
+        <parameter>MSISDNSTART</parameter>
+        <parameter>60000000000</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+        <parameter>MSISDNBREAK</parameter>
+        <parameter>60000000500</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+        <parameter>MSISDNBREAK2</parameter>
+        <parameter>60000000700</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+        <parameter>MSISDNSTOP</parameter>
+        <parameter>60000001000</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+        <parameter>MSISDNSIS</parameter>
+        <parameter>8</parameter>
+    </function>
+
+    <function name="waitForBind" module="SMS"/> 
+    <subtest>sendMultiSMS.xml</subtest>
+
+    <function name="checkResponseCode" module="VASP">
+        <parameter>200</parameter>
+    </function>
+    
+    <function name="queryBody" module="VASP">
+        <parameter>tpiResponseCode</parameter>
+        <parameter>&lt;state&gt;(1000)&lt;/state&gt;\s+&lt;state-text&gt;</parameter><!--Ok&lt;/state-text&gt;-->
+    </function>
+
+    <function name="waitForSpecificRequests" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT</configuration>
+        <parameter>CREDIT_CONTROL_REQUEST</parameter>
+        <parameter>1000</parameter>
+    </function>
+
+    <!--function name="sleep" module="Basic">
+        <parameter>240000</parameter>
+    </function-->
+
+    <function name="waitForSpecificRequests" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT</configuration>
+        <parameter>CREDIT_CONTROL_REQUEST</parameter>
+        <parameter>1500</parameter>
+    </function>
+
+    <loop name="MSISDNLOOP" start="MSISDNSTART" stop="MSISDNBREAK" step="MSISDNSTEP">
+        <function name="compareString" module="Basic">
+            <variable>
+                <parameter>DIAMETER/</parameter>
+                <configuration>DIAMETERSERVER/PORT</configuration>
+                <parameter>/AVP/REQUESTED_SERVICE_UNIT/CC_MONEY/UNIT_VALUE/</parameter>
+                <variable>MSISDNLOOP</variable>
+                <parameter>DIRECT_DEBITING</parameter>
+                <parameter>/VALUE_DIGITS</parameter>
+            </variable>
+            <parameter>3456</parameter>
+        </function> 
+        <function name="queryVariableNegative" module="Basic">
+            <parameter>
+                <parameter>DIAMETER/</parameter>
+                <configuration>DIAMETERSERVER/PORT</configuration>
+                <parameter>/AVP/REQUESTED_SERVICE_UNIT/CC_MONEY/UNIT_VALUE/</parameter>
+                <variable>MSISDNLOOP</variable>
+                <parameter>REFUND_ACCOUNT</parameter>
+                <parameter>/VALUE_DIGITS</parameter>
+            </parameter>
+        </function> 
+    </loop>
+    <loop name="MSISDNLOOP" start="MSISDNBREAK" stop="MSISDNSTOP" step="MSISDNSTEP">
+        <function name="compareString" module="Basic">
+            <variable>
+                <parameter>DIAMETER/</parameter>
+                <configuration>DIAMETERSERVER/PORT</configuration>
+                <parameter>/AVP/REQUESTED_SERVICE_UNIT/CC_MONEY/UNIT_VALUE/</parameter>
+                <variable>MSISDNLOOP</variable>
+                <parameter>REFUND_ACCOUNT</parameter>
+                <parameter>/VALUE_DIGITS</parameter>
+            </variable>
+            <parameter>3456</parameter>
+        </function> 
+        <function name="compareString" module="Basic">
+            <variable>
+                <parameter>DIAMETER/</parameter>
+                <configuration>DIAMETERSERVER/PORT</configuration>
+                <parameter>/AVP/REQUESTED_SERVICE_UNIT/CC_MONEY/UNIT_VALUE/</parameter>
+                <variable>MSISDNLOOP</variable>
+                <parameter>DIRECT_DEBITING</parameter>
+                <parameter>/VALUE_DIGITS</parameter>
+            </variable>
+            <parameter>3456</parameter>
+        </function> 
+    </loop>
+
+    <!--function name="sleep" module="Basic">
+        <parameter>60000</parameter>
+    </function-->
+
+    <function name="waitForTimeoutSpecificRequests" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT</configuration>
+        <parameter>CREDIT_CONTROL_REQUEST</parameter>
+        <configuration>DIAMETERSERVER/WAITTIMEOUT</configuration>
+        <parameter>1500</parameter>
+    </function>
+
+    <function name="stopDiameterServer" module="Diameter"/>
+    <function name="stopSMSCServer" module="SMS"/>
+
+    <subtest>../logscan.xml</subtest>
+
+
+    <loop name="MSISDNLOOP" start="MSISDNSTART" stop="MSISDNSTOP" step="MSISDNSTEP">
+        <function name="queryresponse" module="Remote">
+            <parameter>
+        	    <parameter>(\d+;</parameter>
+                <variable>MSISDNLOOP</variable>
+        	    <parameter>;2001;NIL;diameter.xtt724.com;gy01;4;3.456;3456;-3;756;true;True;Y)</parameter>
+            </parameter>
+    	    <parameter>dev/null</parameter>
+        </function>
+    </loop>
+    <loop name="MSISDNLOOP" start="MSISDNBREAK" stop="MSISDNBREAK2" step="MSISDNSTEP">
+        <function name="queryresponse" module="Remote">
+            <parameter>
+        	    <parameter>(\d+;</parameter>
+                <variable>MSISDNLOOP</variable>
+        	    <parameter>;2001;2001;diameter.xtt724.com;gy01;4;3.456;3456;-3;756;true;True;Y)</parameter>
+            </parameter>
+    	    <parameter>dev/null</parameter>
+        </function>
+    </loop>
+    <!--loop name="MSISDNLOOP" start="MSISDNBREAK2" stop="MSISDNSTOP" step="MSISDNSTEP">
+        <function name="queryresponse" module="Remote">
+            <parameter>
+        	    <parameter>[29/May/2008:09:54:34],(\d+;</parameter>
+                <variable>MSISDNLOOP</variable>
+        	    <parameter>;2001;2001;diameter.xtt724.com;gy01;4;3.456;3456;-3;756;true;True;Y)</parameter>
+            </parameter>
+    	    <parameter>dev/null</parameter>
+        </function>
+    </loop-->
+</test>

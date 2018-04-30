@@ -1,0 +1,37 @@
+<test>
+    <function name="testName" module="Basic">
+        <parameter>XMP.CONTENTFILTERING.TC.046</parameter>
+     </function>
+	
+    <description>HTTPS Request</description>
+        
+    <!-- Radius logon - User not in DB -->
+    <function name="radiusLogon" module="Radius">
+	<parameter>0787367499</parameter>
+	<parameter>0787367499</parameter>
+	<configuration>system/Ip</configuration>
+    </function> 
+
+    <function name="disableFollowRedirects" module="HTTP" />
+    <!-- https://www.google.com : urlCategories : alwaysAllow -->
+    <function name="sendGetRequest" module="HTTP">
+	 <parameter>https://www.google.com/</parameter>
+    </function>
+	
+    <function name="checkResponseCode" module="HTTP">
+	<parameter>302</parameter>
+    </function>
+
+    <function name="queryHeader" module="HTTP">
+	 <parameter>dev/null</parameter>
+	 <parameter>location</parameter>
+         <parameter>http://www.google.com$</parameter>		
+    </function>		
+	    
+    <!-- Radius logoff - User not in DB -->
+    <function name="radiusLogoff" module="Radius">
+	<parameter>0787367499</parameter>
+	<parameter>0787367499</parameter>
+	<configuration>system/Ip</configuration>
+    </function>  
+</test>

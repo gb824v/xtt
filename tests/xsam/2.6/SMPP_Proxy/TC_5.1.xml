@@ -1,0 +1,78 @@
+<test>
+<configuration>xsam_config.xml</configuration>
+    <function name="testName" module="Basic">
+        <parameter>TC_5.1</parameter>
+    </function>
+
+<description>SMPP-bind_transceiver (Positive) CP connects to SMSC
+------------------------------------------------------------------------------------------------------------
+Step1: Simulate a CP using XTT.
+Step2: Simulate a SMSC using XTT.
+Step3: The IP of the machine on which CP is Simulated using XTT should be whitelisted in XSAM.
+Step4: XSAM should be configured with the listen port (Incoming Channel).The Outgoing Channel should be properly configured
+Step 5: A SMS proxy service on the correct Outgoing Channel and the connection short code, should be provisioned and active.
+Step 6: In the XTT tool, configure proper TCP settings by providing the Remote  IP address / port with the IP/port (Incoming Channel) on which XSAM is listening for connections.
+Step 7: Provision a "bind_transceiver" message PDU in the XTT tool and verify that all the properties have correct values.
+Step 8: Send "bind_transceiver" message PDU using XTT Tool.
+------------------------------------------------------------------------------------------------------------------
+</description>
+
+      <function name="startSMSCServer" module="SMS">
+         <configuration>SMSCServer/SMPPPort</configuration>
+         <parameter>SMPP</parameter>
+      </function>
+
+       <function name="openConnection" module="SMPP">
+         <parameter>connection</parameter>
+         <configuration>XSAM/IP</configuration>
+         <configuration>XSAM/SMPPPort</configuration>       
+      </function>
+
+      <function name="sendSMPPPacket" module="SMPP">
+         <parameter>connection</parameter>
+         <parameter>BIND_TRANSCEIVER</parameter>
+         <parameter>internal</parameter>
+         <parameter>systemid</parameter>
+         <parameter>password</parameter>
+         <parameter>system_type</parameter>
+         <parameter>0x50</parameter>
+         <parameter>0</parameter>
+         <parameter>0</parameter>
+         <configuration>XSAM/SMPPSHORTCODE</configuration>
+       	<parameter>0</parameter>
+      </function>
+
+       <function name="info" module="BASIC">
+         <variable>SMSC/SMPP/connection/system_id</variable>
+       </function>
+
+       <function name="compareString" module="BASIC">
+          <variable>SMSC/SMPP/connection/system_id</variable>
+          <parameter>XTT-724-SMSC</parameter>
+       </function>
+
+       <function name="info" module="BASIC">
+        <variable>SMSC/SMPP/connection/command_status</variable>
+       </function>
+ 
+      <function name="compareString" module="BASIC">
+        <variable>SMSC/SMPP/connection/command_status</variable>
+        <parameter>0x00000000</parameter>
+      </function>
+
+      <function name="info" module="BASIC">
+        <variable>SMSC/SMPP/connection/command_id</variable>
+      </function>
+
+      <function name="compareString" module="BASIC">
+        <variable>SMSC/SMPP/connection/command_id</variable>
+        <parameter>0x80000009</parameter>
+      </function>
+
+	  <function name="closeConnection" module="SMPP">
+         <parameter>connection</parameter>
+      </function>
+
+     <function name="stopSMSCServer" module="SMS"/>
+
+</test>

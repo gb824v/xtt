@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- @(#)$Id: xmp_WorkflowConstants.xml,v 1.14.4.8.2.7 2011/09/05 14:16:21 jhancock Exp $ -->
+<workflowConstants>
+
+  <!-- advertDisplaySeconds is used by the optional advert insertion module.
+  
+     It is used by the insertAdvert workflow. When that workflow decides to insert an interstitial 
+     advert, it tells the advert servlet to set the refresh headers in the advert to display the advert f
+     or the time specified by this workflow constant.-->
+  <workflowConstant name="advertDisplaySeconds">2</workflowConstant>
+
+  <!-- ageIsUnknownUrlis used by the optional content filtering module.
+
+     It is used by the filterContent workflow. It specifies the URL to which a request is to be 
+     redirected if the request is blocked because the subscriber’s age is not known. -->
+  <workflowConstant name="ageIsUnknownUrl">http://www.telco.com/Blocked/AgeUnknown.html</workflowConstant>
+
+  <!-- alwaysBlockUrl is used by the optional content filtering module.
+
+     It is used by the filterContent workflow. It specifies the URL to which a request is to be 
+     redirected if the request is blocked because it matches a global filter. -->
+  <workflowConstant name="alwaysBlockUrl">http://www.telco.com/Blocked/AlwaysBlock.html</workflowConstant>
+
+  <!-- bannerPath is used by the optional advert insertion module.
+  
+       It is used by the replaceBanner workflow. It identifies the servlet that you want to call to 
+       supply the banner advert content. This is a servlet that is running in a WEB-APP process.  The 
+       value is what you would normally type as the path on the URL. The rest of the URL is automatically 
+       generated. -->
+  <workflowConstant name="bannerPath">advert/banner</workflowConstant>
+
+  <!-- blockApplicationRetryAfter is used by the optional application update control module.
+
+       Set this workflow constant if you want XMP to set the HTTP Retry-After header when it 
+       blocks an application update with error 503 (server busy). This header gives a hint to the 
+       sender of the HTTP request to say when it might be worth re-trying the request. It tells 
+       the sender how long to wait (in seconds) before sending the request again.
+       If this workflow constant is missing, XMP does not set the Retry-After header. -->
+  <workflowConstant name="blockApplicationRetryAfter">600</workflowConstant>
+
+    <!-- blockApplicationUpdateNames is used by the optional application update control module.
+
+       Set this workflow constant if you want XMP to display an interstitial application update 
+       preferences page to find out which updates the subscriber wants to block. It configures the 
+       list of names that are passed to the servlet that implements the application update preferences 
+       page.
+       
+       The reference servlet displays these names on the application update preferences page, with 
+       a checkbox beside each name that the subscriber checks if they want to block that application 
+       update.
+       
+       The value is a list of names separated by vertical bars. Each name must consists of only 
+       alphanumeric characters, and space and underscore characters. -->
+  <workflowConstant name="blockApplicationUpdateNames">Apple|Flash player|Java|Microsoft</workflowConstant>
+
+  <!-- blockApplicationUpdatePath is used by the optional application update control module.
+
+       Set this workflow constant if you want XMP to display an interstitial application update 
+       preferences page to find out which updates the subscriber wants to block. This is the path 
+       part of the URL of the application update preferences page. The rest of the URL is 
+       automatically generated.
+
+       If this workflow constant is missing, then XMP blocks all configured application updates 
+       and does not display an interstitial application update preferences page.  -->
+  <workflowConstant name="blockApplicationUpdatePath">/appupdate/preference</workflowConstant>
+
+
+  <!-- blockedByCommunityFiltersUrl is used by the optional content filtering module.
+
+     It is used by the filterContent workflow. It specifies the URL to which a request is to be 
+     redirected if the request is blocked because it matches a community filter. -->
+  <workflowConstant name="blockedByCommunityFiltersUrl">http://www.telco.com/Blocked/CommunityFilters.html</workflowConstant>
+
+  <!-- blockedByPersonalFiltersUrl is used by the optional content filtering module.
+
+     It is used by the filterContent workflow. It specifies the URL to which a request is to be 
+     redirected if the request is blocked because it matches one of the subscriber’s personal filters. -->
+  <workflowConstant name="blockedByPersonalFiltersUrl">http://www.telco.com/Blocked/PersonalFilters.html</workflowConstant>
+
+  <!-- blockedBySystemFiltersUrl is used by the optional content filtering module.
+
+     It is used by the filterContent workflow. It specifies the URL to which a request is to be 
+     redirected if the request is blocked because it matches an age-based filter. -->
+  <workflowConstant name="blockedBySystemFiltersUrl">http://www.telco.com/Blocked/SystemFilters.html</workflowConstant>
+
+  <!-- blockedByVirusScannerUrl is used by the optional virus scanner module.
+
+     It is used by the handleHttp workflow. It specifies the URL to which a request is to be redirected
+     if the request is blocked because it has a virus.
+     The handleHttp workflow checks whether the value returned in KSPRSKY_Result is "INFECTED" or 
+     "NOT_CURED", and if so, redirects the request to the URL defined by blockedByVirusScannerUrl. -->
+  <workflowConstant name="blockedByVirusScannerUrl">http://www.telco.com/Blocked/Virus.html</workflowConstant>
+
+  <!-- callStatchlet is a boolean that controls whether the STATCHLET component is called. 
+        This component is in HTTP-PROXY and TCP-ROUTER processes. If the value is "true", 
+        the STATCHLET component is called for HTTP requests processed by the handleHttp workflow. 
+        It is called just before the request modification rules for the HTTP request phase are applied.
+        
+        The STATCHLET component is not called if the constant is not defined in the workflow 
+        constants file or it is "false".
+        
+        For more information, see the chapter on statistics in the book "Operator Handbook: Monitoring" -->
+  <workflowConstant name="callStatchlet">false</workflowConstant>
+  
+  <!--  defaultAuthenticationType can have the same values as FTR_AuthenticationType:
+           *  “ldap”
+           *  “none”
+           *  "pcrf"
+           *  “radius”
+        Before the authentication phase reqmod rules are applied, the workflow copies the value of 
+        this workflow constant (if it exists) to FTR_AuthenticationType.  -->
+  <workflowConstant name="defaultAuthenticationType">ldap</workflowConstant>
+  
+  <!-- diameterSubscriptionIdType is used by the optional PCEF and PCRF modules.
+  
+     You use it to specify which Subscription-Id AVP in the incoming Diameter message contains the 
+     subscriber ID. It contains the value of the Subscription-Id-Type that is associated with the 
+     subscriber ID.  -->
+  <workflowConstant name="diameterSubscriptionIdType">END_USER_E164</workflowConstant>  
+
+  <!-- enableWurfl is a boolean that controls whether WURFL support is enabled. It is disabled by default.  
+        To enable it, set enableWurfl to "true". -->
+  <workflowConstant name="enableWurfl">false</workflowConstant>
+  
+  <!-- interstitialPath is used by the optional advert insertion module.
+  
+       It is used by the insertAdvert workflow.  It identifies the servlet that you want to call to supply the 
+       interstitial advert content. This is a servlet that is running in a WEB-APP process.  The value is what you 
+       would normally type as the path on the URL. The rest of the URL is automatically generated. -->
+  <workflowConstant name="interstitialPath">advert/interstitial</workflowConstant>
+
+  <!-- ldapGetSubscriberIdKey is used only if you have enabled support for LDAP to be used as the presence feed.
+
+     This constant is used by the getSubscriberId workflow if you use the LDAP presence feed. The workflow 
+     makes an LDAP query called GetSubscriberId to find out the subscriber ID associated with the subscriber’s
+     IP address. 
+
+     This workflow constant says which attribute returned by the LDAP server contains the subscriber ID. The 
+     workflow copies the value of this attribute to the Internal_NAI context element.   -->
+  <!--workflowConstant name="ldapGetSubscriberIdKey">CHLDAP_QueryLDAPEntries/0/msisdn</workflowConstant-->
+  <workflowConstant name="ldapGetSubscriberIdKey">CHLDAP_QueryLDAPEntries/[AttrName=Msisdn]/Value</workflowConstant>
+
+  <!-- ldapValiditySecs is used only if you have enabled support for LDAP to be used as the presence feed.
+
+     It says how long data read from the presence store is valid for, when the data was obtained from an LDAP 
+     server. After this time, the data is read again from the LDAP server. 
+     
+      When a subscriber’s session ends, it is essential that their IP address is not re-assigned to another 
+     subscriber within the period configured by the ldapValiditySecs workflow constant. We recommend 
+     that you allow a large margin of safety and that the system does not re-use an IP address until twice 
+     the time configured by ldapValiditySecs has elapsed since the end of the original subscriber’s session. -->
+  <workflowConstant name="ldapValiditySecs">10</workflowConstant>
+  <workflowConstant name="noAuthValiditySecs">10</workflowConstant>
+
+  <!-- notificationSmsChannel is used by the optional content filtering and PCRF modules.
+
+     It is used by the filterContent and diameterInProcess workflows. It is the name of the SMS channel to use 
+     to deliver SMS messages. -->
+  <workflowConstant name="notificationSmsChannel">SmsChannel</workflowConstant>
+
+  <!-- notificationSmsConnection is used by the optional content filtering and PCRF modules.
+
+     It is used by the filterContent and diameterInProcess workflows. It is the name of the SMS connection to 
+     use to deliver SMS messages. -->
+  <workflowConstant name="notificationSmsConnection">SmsConnection</workflowConstant>
+
+  <!-- notificationSmsMessageOptions is used by the optional content filtering and PCRF modules.
+
+     It is used by the filterContent and diameterInProcess workflows. It is the name of the set of SMS message 
+     options to use to deliver SMS messages. -->
+  <workflowConstant name="notificationSmsMessageOptions">DEFAULT</workflowConstant>
+  
+  <!-- pcefCcrMaxRetries and pcefCcrRetryIntervalSecs are used by the PCEF module.
+  
+      They configure the retry policy that is implemented if XMP sends a CCR message to the PCRF and does 
+      not get a response.  See also the description of pcefUserIdPrefix below. -->
+  <workflowConstant name="ppcefCcrMaxRetries">1</workflowConstant>
+  <workflowConstant name="pcefCcrRetryIntervalSecs">5</workflowConstant>
+
+  <!-- pcefDisableSessionControlCcrt is used by the PCEF module's subscriber session control use case. 
+ 
+     It controls whether XMP sends a CCR-T message to the PCRF after sending it the RAA-T message.  The value 
+     can be “true” or “false”. If this context element is absent, XMP behaves as if it had been set to “false”. -->
+  <workflowConstant name="pcefDisableSessionControlCcrt">false</workflowConstant>
+
+  <!-- pcefUserIdPrefix is used by the PCEF module's subscriber session control use case. 
+ 
+     If it is set, and XMP sends a CCR-I message to obtain the subscriber ID and the PCRF does not respond 
+     after the retries configured by pcefCcrMaxRetries, then XMP generates a dummy subscriber ID by 
+     prefixing the subscriber's IP address with the specified string. -->
+  <workflowConstant name="pcefUserIdPrefix">999_</workflowConstant>
+
+  <!-- pcrfEnableSmsNotifications is used by the optional PCRF module.
+
+     It controls whether the diameterInProcess workflow can send SMS messages.  It specifies whether the 
+     customizePcrfSendSms workflow is called. The value is "true" (call the customizePcrfSendSms workflow) 
+     or "false" (don’t call the customizePcrfSendSms workflow).-->
+  <workflowConstant name="pcrfEnableSmsNotifications">false</workflowConstant>
+
+  <!-- pcrfSmsOutOfCreditMessage is used by the optional PCRF module.
+
+     It is used by the customizePcrfSendSms workflow, which is called by the diameterInProcess workflow. 
+     It is the default text of the SMS message that is sent when an OUT_OF_CREDIT event occurs. -->
+  <workflowConstant name="pcrfSmsOutOfCreditMessage">You have run out of credit. You can top up your credit by visiting http://www.telco.com/topup</workflowConstant>
+  
+  <!-- pcrfSmsSourceAddress is used by the optional PCRF module.
+
+     It is used by the diameterInProcess workflow. It is the source (from) address to use in the outgoing 
+     SMS messages. -->
+  <workflowConstant name="pcrfSmsSourceAddress"></workflowConstant>
+  
+  <!-- pcrfValiditySecs is used used only if you use the optional PCEF module. It is used by the PCEF 
+     module's session control use case.
+
+     It says for how long the subscriber ID to subscriber IP address mapping information is valid that is 
+     supplied by the PCRF. After this time, XMP sends the PCRF a Diameter CCR update message to request
+     the mapping information again. 
+     
+     When a subscriber’s session ends, it is essential that their IP address is not re-assigned to another 
+     subscriber within the period configured by the pcrfValiditySecs workflow constant. We recommend 
+     that you allow a large margin of safety and that the system does not re-use an IP address until twice 
+     the time configured by pcrfValiditySecs has elapsed since the end of the original subscriber’s session.-->
+  <workflowConstant name="pcrfValiditySecs">180</workflowConstant>
+
+  <!-- proxyThrottlingMaxRetryIntervalSecs is used if you use the throttling dynamic 
+     configuration file to configure throttling policies for pull requests sent to 
+     proxy servers.
+     
+     It is a decimal number that specifies how long the workflow can spend implementing
+     retry logic when a request matches a throttling limit.  -->
+  <workflowConstant name="proxyThrottlingMaxRetryIntervalSecs">0</workflowConstant>
+
+  <!-- Push_SmsChannel is used only if you have configured push support.
+
+     It is the name of the SMS channel to use to deliver push messages via SMS. -->
+  <workflowConstant name="Push_SmsChannel">SmsChannel</workflowConstant>
+
+  <!-- Push_SmsConnection is used only if you have configured push support.
+
+     It is the name of the SMS connection to use to deliver push messages via SMS. -->
+  <workflowConstant name="Push_SmsConnection">SmsConnection</workflowConstant>
+
+  <!-- radiusValiditySecs is used only if you have configured a live RADIUS feed.
+
+     It says how long data read from the presence store is valid for, when the data was obtained from a RADIUS 
+     feed. After this time, the data is read again from the presence store. 
+     
+      When a subscriber’s session ends, it is essential that their IP address is not re-assigned to another 
+     subscriber within the period configured by the radiusValiditySecs workflow constant. We recommend 
+     that you allow a large margin of safety and that the system does not re-use an IP address until twice 
+     the time configured by radiusValiditySecs has elapsed since the end of the original subscriber’s session.-->
+  <workflowConstant name="radiusValiditySecs">180</workflowConstant>
+
+  <!-- subscriberInfoValiditySecs is used by the getSubscriberId workflow.
+
+     It says how long the subscriber profile data is valid for. After this time, the subscriber profile data is 
+     read again, for example from the XMP database. -->
+  <workflowConstant name="subscriberInfoValiditySecs">600</workflowConstant>
+  
+  <!-- videoOptimizationFailureRetriesMax is used by the new video optimization engine in versions
+     after XMP 4.1.4. -->
+  <workflowConstant name="videoOptimizationFailureRetriesMax">3</workflowConstant>  
+
+  <!-- videoOptimizationFailureRetentionSecs is used by optional video optimization module.
+
+     This controls what happens when the offline transcoder attempts to transcode a video but the 
+     attempt fails, for example because the TCP connection failed or the offline transcoder could not 
+     handle the content because it was invalid.
+     
+     XMP keeps the offline transcoding task item in the store for failed conversions because otherwise 
+     a VOE process might add the same item again and the offline transcoder will try to optimize the 
+     video again and the attempt to optimize the video will fail again if the problem is that the video 
+     content is invalid.
+     
+     You use this workflow constant to configure how long an offline transcoding task item when the 
+     attempt to transcode the item offline failed. The value of this workflow constant must be an integer 
+     greater than or equal to 1. If this workflow constant is not defined, or you set it to an invalid value, 
+     a default value of 604800 seconds (1 week) is used.
+-->
+<workflowConstant name="videoOptimizationFailureRetentionSecs">21600</workflowConstant>
+</workflowConstants>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://policy.intf.mobilgw.com/">
+  <soap:Body>
+    <tns:setSubscriberFilter>
+      <arg0>1000100002</arg0>
+      <arg1>
+        <scheme>2</scheme>
+        <blockedCategories>Gambling</blockedCategories>
+        <blockedUrls>http://poker.com</blockedUrls>
+        <exceptionUrls>http://724.com</exceptionUrls>
+        <blockedMmsServices>
+          <shortcodePattern/>
+          <keywords/>
+        </blockedMmsServices>
+        <exceptionMmsServices>
+          <shortcodePattern/>
+          <keywords/>
+        </exceptionMmsServices>
+        <blockedSmsServices>
+          <shortcodePattern/>
+          <keywords/>
+        </blockedSmsServices>
+        <exceptionSmsServices>
+          <shortcodePattern/>
+          <keywords/>
+        </exceptionSmsServices>
+      </arg1>
+    </tns:setSubscriberFilter>
+  </soap:Body>
+</soap:Envelope>

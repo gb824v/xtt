@@ -1,0 +1,5 @@
+./tests/XMP/XMP_XFW006/PCRF/VimpelCom/PCEF_PULL_Advert_VC.xml
+./tests/XMP/XMP_XFW006/PCRF/VimpelCom/PCEF_PULL_CF_VC.xml
+./tests/XMP/XMP_XFW006/PCRF/VimpelCom/PCEF_PULL_VO_VC.xml
+./tests/XMP/XMP_XFW006/PCRF/VimpelCom/PCEF_PUSH_AV_Rules_Replacment_VC.xml
+./tests/XMP/XMP_XFW006/PCRF/VimpelCom/PCEF_PUSH_VO_VC.xml

@@ -1,0 +1,111 @@
+<test>
+    <configuration>xsam_config.xml</configuration>
+    <function name="testName" module="Basic">
+        <parameter>TC_1.4.5</parameter>
+    </function>
+    <description>Update white list(When new white list IP already exists)</description> 
+
+	<!-- Add CP With Short Code "1972"-->
+
+	 <function name="SOAPClient" module="SOAP_API" >
+		<configuration>XSAM/PROVISIONINGURL</configuration>
+		<xml><soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsdl="http://www.724solutions.com/wsdl">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <wsdl:addContentProvider soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+         <String_1 xsi:type="xsd:string">1972</String_1>
+		 <String_2 xsi:type="xsd:string">Manoj</String_2>
+      </wsdl:addContentProvider>
+   </soapenv:Body>
+</soapenv:Envelope></xml>
+		<parameter>Body/return</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function> 
+
+	<!--Add Whitelist-->
+	<function name="SOAPClient" module="SOAP_API" >
+		<configuration>XSAM/PROVISIONINGURL</configuration>
+		<xml><soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsdl="http://www.724solutions.com/wsdl">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <wsdl:addWhitelistForContentProvider soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+         <String_1 xsi:type="xsd:string">1972</String_1>
+         <String_2 xsi:type="xsd:string">172.16.64.6</String_2>
+      </wsdl:addWhitelistForContentProvider>
+   </soapenv:Body>
+</soapenv:Envelope></xml>
+		<parameter>Body/return</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+
+	<!--update whitelist-->
+
+     <function name="SOAPClient" module="SOAP_API" >
+		<configuration>XSAM/PROVISIONINGURL</configuration>
+		<xml><soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsdl="http://www.724solutions.com/wsdl">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <wsdl:updateWhitelistForContentProvider soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+         <String_1 xsi:type="xsd:string">1972</String_1>
+         <String_2 xsi:type="xsd:string">172.16.64.6</String_2>
+		 <String_3 xsi:type="xsd:string">172.16.64.6</String_3>
+      </wsdl:updateWhitelistForContentProvider>
+   </soapenv:Body>
+</soapenv:Envelope></xml>
+		<parameter>Body/return</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>500</parameter>
+	</function>
+
+
+	<function name="info" module="BASIC">
+		 <variable>SOAP_API/BODY/PLAIN</variable>
+	</function>
+
+	
+	<function name="queryText" module="BASIC">
+		<variable>SOAP_API/BODY/PLAIN</variable>
+		<parameter>dev/null</parameter>
+		<parameter>&lt;errorCode.*&gt;110&lt;/errorCode&gt;</parameter>
+	</function>
+	
+	<function name="queryText" module="BASIC">
+		<variable>SOAP_API/BODY/PLAIN</variable>
+		<parameter>dev/null</parameter>
+		<parameter>&lt;message.*&gt;*.*White list IP address '172.16.64.6' already exists for content provider SMS short code '1972'*.*&lt;/message&gt;</parameter>
+	</function>
+
+	
+ 
+
+	<!--Delete CP "Manoj"-->
+
+  <function name="SOAPClient" module="SOAP_API" >
+		<configuration>XSAM/PROVISIONINGURL</configuration>
+		<xml><soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsdl="http://www.724solutions.com/wsdl">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <wsdl:deleteContentProvider soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+         <String_1 xsi:type="xsd:string">1972</String_1>
+	  </wsdl:deleteContentProvider>
+   </soapenv:Body>
+</soapenv:Envelope></xml>
+		<parameter>Body/return</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+
+
+   
+
+</test>

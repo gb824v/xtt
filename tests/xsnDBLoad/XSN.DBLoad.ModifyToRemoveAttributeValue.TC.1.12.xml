@@ -1,0 +1,34 @@
+<test>
+	<function name="testName" module="Basic">
+	
+	<parameter>XSN.DBLoad.ModifyToRemoveAttributeValue.TC.1.12.xml</parameter>
+	</function>
+	
+	<description>Modify To Remove AttributeValue </description>
+   
+    <function name="sendRemoteCommand" module="Remote">
+    
+    	<parameter>writeFile ModifyToRemoveAttributeValue.xml </parameter> 
+         
+        <file>ModifyToRemoveAttributeValue.xml </file>
+    
+    </function>
+    
+    <function name="sendRemoteCommand" module="Remote">
+    
+        <configuration>xsn/path</configuration>
+        <configuration>xsn/xms</configuration>
+    
+        
+        <parameter>load db ModifyToRemoveAttributeValue.xml </parameter>
+    
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        
+    <parameter>Attribute 'value' must appear on element 'firstName'</parameter>
+    <!-- <parameter>ERROR: XML upload encountered problems and ended prematurely</parameter> -->
+    <parameter>dev/null</parameter>
+    </function>    
+    
+  </test>

@@ -1,0 +1,202 @@
+<test>
+    <configuration>xsam_config.xml</configuration>
+    <function name="testName" module="Basic">
+        <parameter>AP.TC.317</parameter>
+    </function>
+
+    <conditional configuration="XSAM/INTERNALSMSC" targetValue="">
+        <function name="startSMSCServer" module="SMS"/>
+    </conditional>
+
+    <function name="openConnection" module="UCP">
+        <parameter>connection1</parameter>
+        <configuration>XSAM/IP</configuration>
+        <configuration>XSAM/PORT</configuration>
+    </function>
+
+    <function name="sendUCPPacket" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>internal</parameter>
+        <parameter>O</parameter>
+        <parameter>60</parameter>
+        <parameter>
+            <parameter>/</parameter>
+            <configuration>XSAM/SHORTCODE</configuration>
+            <parameter>/6/1/1/70617373776F7264//0100//////</parameter>
+        </parameter>
+    </function>
+
+    <function name="queryTextResponse" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>secret</parameter>
+        <parameter>\d\d/\d\d\d\d\d/R/60/A/[^/]++/\w\w</parameter>
+    </function>
+
+    <conditional configuration="XSAM/INTERNALSMSC" targetValue="">
+        <function name="setVariable" module="BASIC">
+            <parameter>pass</parameter>
+            <parameter>
+                <parameter>SMSC/</parameter>
+                <configuration>SMSCSERVER/PROTOCOL</configuration>
+                <parameter>/</parameter>
+                <configuration>XSAM/SHORTCODE</configuration>
+                <parameter>/PWD</parameter>
+            </parameter>
+        </function>
+        <function name="compareString" module="basic">
+            <parameter>password</parameter>
+            <variablepointer>pass</variablepointer>
+        </function>
+    </conditional>
+
+    <function name="sendUCPPacket" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>internal</parameter>
+        <parameter>O</parameter>
+        <parameter>51</parameter>
+        <parameter>
+            <parameter>/0123456789/</parameter>
+            <configuration>XSAM/SHORTCODE</configuration>
+            <parameter>/a/b/c/d/e/f/g/h/i/j/k/l/m/n/o/p/2/q/12345678901234567890/r/s/t/u/v/w/x/y/z/0/2/3/</parameter>
+        </parameter>
+    </function>
+
+    <function name="queryTextResponse" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>secret</parameter>
+        <parameter>\d\d/\d\d\d\d\d/R/51/A//[^/]++/\w\w</parameter>
+    </function>
+
+    <conditional configuration="XSAM/INTERNALSMSC" targetValue="">
+        <function name="stopSMSCServer" module="SMS"/>
+        <function name="compareString" module="basic">
+            <parameter>a</parameter>
+            <variable>SMSC/UCP/0123456789/AC</variable>
+        </function>
+        <function name="compareString" module="basic">
+            <parameter>b</parameter>
+            <variable>SMSC/UCP/0123456789/NRq</variable>
+        </function>
+        <function name="compareString" module="basic">
+            <parameter>c</parameter>
+            <variable>SMSC/UCP/0123456789/NAdC</variable>
+        </function>
+        <function name="compareString" module="basic">
+            <parameter>d</parameter>
+            <variable>SMSC/UCP/0123456789/NT</variable>
+        </function>
+        <function name="compareString" module="basic">
+            <parameter>e</parameter>
+            <variable>SMSC/UCP/0123456789/NPID</variable>
+        </function>
+        <function name="compareString" module="basic">
+            <parameter>f</parameter>
+            <variable>SMSC/UCP/0123456789/LRq</variable>
+        </function>
+        <function name="compareString" module="basic">
+            <parameter>g</parameter>
+            <variable>SMSC/UCP/0123456789/LRAd</variable>
+        </function>
+        <function name="compareString" module="basic">
+            <parameter>h</parameter>
+            <variable>SMSC/UCP/0123456789/LPID</variable>
+        </function>
+        <function name="compareString" module="basic">
+            <parameter>i</parameter>
+            <variable>SMSC/UCP/0123456789/DD</variable>
+        </function>
+        <function name="compareString" module="basic">
+            <parameter>j</parameter>
+            <variable>SMSC/UCP/0123456789/DDT</variable>
+        </function>
+        <function name="compareString" module="basic">
+            <parameter>k</parameter>
+            <variable>SMSC/UCP/0123456789/VP</variable>
+        </function>
+        <function name="compareString" module="basic">
+            <parameter>l</parameter>
+            <variable>SMSC/UCP/0123456789/RPID</variable>
+        </function>
+        <function name="compareString" module="basic">
+            <parameter>m</parameter>
+            <variable>SMSC/UCP/0123456789/SCTS</variable>
+        </function>
+        <function name="compareString" module="basic">
+            <parameter>n</parameter>
+            <variable>SMSC/UCP/0123456789/Dst</variable>
+        </function>
+        <function name="compareString" module="basic">
+            <parameter>o</parameter>
+            <variable>SMSC/UCP/0123456789/Rsn</variable>
+        </function>
+        <function name="compareString" module="basic">
+            <parameter>p</parameter>
+            <variable>SMSC/UCP/0123456789/DSCTS</variable>
+        </function>
+        <function name="compareString" module="basic">
+            <parameter>2</parameter>
+            <variable>SMSC/UCP/0123456789/MT</variable>
+        </function>
+        <function name="compareString" module="basic">
+            <parameter>q</parameter>
+            <variable>SMSC/UCP/0123456789/NB</variable>
+        </function>
+        <function name="compareString" module="basic">
+            <parameter>12345678901234567890</parameter>
+            <variable>SMSC/UCP/0123456789/NMsg</variable>
+        </function>
+        <function name="compareString" module="basic">
+            <parameter>r</parameter>
+            <variable>SMSC/UCP/0123456789/MMS</variable>
+        </function>
+        <function name="compareString" module="basic">
+            <parameter>s</parameter>
+            <variable>SMSC/UCP/0123456789/PR</variable>
+        </function>
+        <function name="compareString" module="basic">
+            <parameter>t</parameter>
+            <variable>SMSC/UCP/0123456789/DCs</variable>
+        </function>
+        <function name="compareString" module="basic">
+            <parameter>u</parameter>
+            <variable>SMSC/UCP/0123456789/MCLs</variable>
+        </function>
+        <function name="compareString" module="basic">
+            <parameter>v</parameter>
+            <variable>SMSC/UCP/0123456789/RPI</variable>
+        </function>
+        <function name="compareString" module="basic">
+            <parameter>w</parameter>
+            <variable>SMSC/UCP/0123456789/CPg</variable>
+        </function>
+        <function name="compareString" module="basic">
+            <parameter>x</parameter>
+            <variable>SMSC/UCP/0123456789/RPLy</variable>
+        </function>
+        <function name="compareString" module="basic">
+            <parameter>y</parameter>
+            <variable>SMSC/UCP/0123456789/OTOA</variable>
+        </function>
+        <function name="compareString" module="basic">
+            <parameter>z</parameter>
+            <variable>SMSC/UCP/0123456789/HPLMN</variable>
+        </function>
+        <function name="compareString" module="basic">
+            <parameter>0</parameter>
+            <variable>SMSC/UCP/0123456789/XSer</variable>
+        </function>
+        <function name="compareString" module="basic">
+            <parameter>2</parameter>
+            <variable>SMSC/UCP/0123456789/RES4</variable>
+        </function>
+        <function name="compareString" module="basic">
+            <parameter>3</parameter>
+            <variable>SMSC/UCP/0123456789/RES5</variable>
+        </function>
+
+    </conditional>
+
+    <function name="closeConnection" module="UCP">
+        <parameter>connection1</parameter>
+    </function>
+</test>

@@ -1,0 +1,85 @@
+<test>
+	<name>RTSP.TC.008_Server</name>
+	<description>Test RTSP GET_PARAMETER method for Client to Server scenario</description>
+   
+    <!-- client side server for responses -->
+    <function name="setVariable" module="Basic">
+        <parameter>CLIENT</parameter>
+        <configuration>RTSPSERVER/CLIENTPORT</configuration>
+    </function>
+
+	<!-- client side server for responses -->
+    <function name="setVariable" module="Basic">
+        <parameter>SERVER</parameter>
+        <configuration>RTSPSERVER/PORT</configuration>
+    </function>
+
+    <!-- server side server for requests -->
+    <function name="startRTSPServer" module="RTSP">
+        <variable>SERVER</variable>
+        <configuration>RTSPSERVER/TIMEOUT</configuration>
+        <testpath>rtsp</testpath>
+    </function>
+
+    <function name="waitForVariable" module="Basic">
+	<parameter>
+		<parameter>RTSP/</parameter>
+		<variable>SERVER</variable>
+		<parameter>/SETUP/FINISHED/REQUEST</parameter>
+	</parameter>
+	</function>
+	
+	<function name="removeVariables" module="Basic">
+	<parameter>
+		<parameter>RTSP/</parameter>
+		<variable>SERVER</variable>
+		<parameter>/SETUP/FINISHED/REQUEST</parameter>
+	</parameter>
+	</function>
+
+	<function name="setVariable" module="Basic">
+	    <parameter>content</parameter>
+		<parameter>
+			<crlf>packets_received</crlf>
+			<crlf>jitter</crlf>
+		</parameter>
+	</function>
+
+	<function name="setServerHeader" module="RTSP">
+        <parameter>Content-Length</parameter>
+		<base64bytelength><variable>content</variable></base64bytelength>
+    </function>
+	
+	<function name="setServerHeader" module="RTSP">
+        <parameter>Content-Type</parameter>
+        <parameter>text/parameters</parameter>
+    </function>
+
+	 <function name="setServerHeader" module="RTSP">
+        <parameter>packets_received</parameter>
+        <parameter>10</parameter>
+    </function>
+
+	<function name="setServerHeader" module="RTSP">
+        <parameter>jitter</parameter>
+        <parameter>0.3838</parameter>
+    </function>
+
+     <function name="waitForVariable" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>SERVER</variable>
+            <parameter>/GET_PARAMETER/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+    <function name="removeVariables" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>SERVER</variable>
+            <parameter>/GET_PARAMETER/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+    <function name="stopRTSPServer" module="RTSP"/>
+
+</test>

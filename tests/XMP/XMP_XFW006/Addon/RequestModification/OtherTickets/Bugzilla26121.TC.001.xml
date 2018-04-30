@@ -1,0 +1,519 @@
+<test>	    
+	<name>Bugzilla26121.TC.001.xml</name>
+	<description>Validate Request Modification File in combination with combinedPathandQueryStringKeys and Url List File Features work as expected</description>
+
+
+	<function name="disableFollowRedirects" module="HTTP" />
+	
+	
+	<!-- Load list1.url -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>list1.url</parameter>
+		<parameter>http://*/{.*test1.*}
+http://*/{.*test2\?.*}
+http://*/{.*\?test3.*}
+http://*/{test4a\?test4b=test4c}
+http://a/{.*b.*}
+http://a/{.*b\?.*c.*}
+http://a/{.*b.*c.}
+http://a/{.*test1.*}</parameter>
+	</function>
+	
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load file </parameter>
+			<parameter>list1.url</parameter>
+		</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>Loaded '/url/list1.url' from 'list1.url'</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+
+	<!-- Load Request Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>reqmod1.xml</parameter>
+		<xml>
+<requestModifications>
+	<table name="GetParms1" phase="httpRequest" processType="all" matchType="longest" combinePathAndQueryStringKeys="true">
+		<selector urlList="list1.url">
+			<modifyUrl value="'http://www.matched.com/'" method="redirect" />
+			<modifyContext name="HTA_RespHdr_MatchedPattern" value="REQMOD_MatchedPattern" />
+		</selector>
+		<selector>
+			<modifyUrl value="'http://www.not-matched.com/'" method="redirect" />
+		</selector>
+	</table>
+</requestModifications>
+		</xml>
+	</function>
+
+    
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>reqmod1.xml</parameter>
+		</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>Loaded requestmodifications</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	
+	
+	<!-- Radius Accounting Start for the Subscriber -->
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+	
+	
+	
+	
+	
+	<!-- Send HTTP GET Request -->
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://links.local/test1</parameter>
+	</function>
+	
+	<!-- Check Response Code sent by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>302</parameter>
+	</function>	
+	
+	<!-- Check Response Headers -->
+	<function name="queryHeader" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>location</parameter>
+		<parameter>^http://www.matched.com:80/$</parameter>
+	</function>
+	<function name="queryHeader" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>MatchedPattern</parameter>
+		<parameter>^http://\*/\{\.\*test1\.\*\}$</parameter>
+	</function>
+	
+	
+	<!-- Send HTTP GET Request -->
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://links.local/nix?bla=test1</parameter>
+	</function>
+	
+	<!-- Check Response Code sent by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>302</parameter>
+	</function>	
+	
+	<!-- Check Response Headers -->
+	<function name="queryHeader" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>location</parameter>
+		<parameter>^http://www.matched.com:80/$</parameter>
+	</function>
+	<function name="queryHeader" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>MatchedPattern</parameter>
+		<parameter>^http://\*/\{\.\*test1\.\*\}$</parameter>
+	</function>
+	
+	
+	<!-- Send HTTP GET Request -->
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://links.local/nix?test1=bla</parameter>
+	</function>
+	
+	<!-- Check Response Code sent by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>302</parameter>
+	</function>	
+	
+	<!-- Check Response Headers -->
+	<function name="queryHeader" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>location</parameter>
+		<parameter>^http://www.matched.com:80/$</parameter>
+	</function>
+	<function name="queryHeader" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>MatchedPattern</parameter>
+		<parameter>^http://\*/\{\.\*test1\.\*\}$</parameter>
+	</function>
+	
+	
+	<!-- Send HTTP GET Request -->
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://links.local/test1?nix=bla</parameter>
+	</function>
+	
+	<!-- Check Response Code sent by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>302</parameter>
+	</function>	
+	
+	<!-- Check Response Headers -->
+	<function name="queryHeader" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>location</parameter>
+		<parameter>^http://www.matched.com:80/$</parameter>
+	</function>
+	<function name="queryHeader" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>MatchedPattern</parameter>
+		<parameter>^http://\*/\{\.\*test1\.\*\}$</parameter>
+	</function>
+	
+	
+	<!-- Send HTTP GET Request -->
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://links.local/test2</parameter>
+	</function>
+	
+	<!-- Check Response Code sent by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>302</parameter>
+	</function>	
+	
+	<!-- Check Response Headers -->
+	<function name="queryHeader" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>location</parameter>
+		<parameter>^http://www.not-matched.com:80/$</parameter>
+	</function>
+	
+	
+	<!-- Send HTTP GET Request -->
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://links.local/nix?bla=test2</parameter>
+	</function>
+	
+	<!-- Check Response Code sent by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>302</parameter>
+	</function>	
+	
+	<!-- Check Response Headers -->
+	<function name="queryHeader" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>location</parameter>
+		<parameter>^http://www.not-matched.com:80/$</parameter>
+	</function>
+	
+	
+	<!-- Send HTTP GET Request -->
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://links.local/nix?test2=bla</parameter>
+	</function>
+	
+	<!-- Check Response Code sent by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>302</parameter>
+	</function>	
+	
+	<!-- Check Response Headers -->
+	<function name="queryHeader" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>location</parameter>
+		<parameter>^http://www.not-matched.com:80/$</parameter>
+	</function>
+	
+	
+	<!-- Send HTTP GET Request -->
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://links.local/test2?nix=bla</parameter>
+	</function>
+	
+	<!-- Check Response Code sent by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>302</parameter>
+	</function>	
+	
+	<!-- Check Response Headers -->
+	<function name="queryHeader" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>location</parameter>
+		<parameter>^http://www.matched.com:80/$</parameter>
+	</function>
+	<function name="queryHeader" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>MatchedPattern</parameter>
+		<parameter>^http://\*/\{\.\*test2\\\?\.\*\}$</parameter>
+	</function>
+	
+	
+	<!-- Send HTTP GET Request -->
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://links.local/test3</parameter>
+	</function>
+	
+	<!-- Check Response Code sent by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>302</parameter>
+	</function>	
+	
+	<!-- Check Response Headers -->
+	<function name="queryHeader" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>location</parameter>
+		<parameter>^http://www.not-matched.com:80/$</parameter>
+	</function>
+	
+	
+	<!-- Send HTTP GET Request -->
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://links.local/nix?bla=test3</parameter>
+	</function>
+	
+	<!-- Check Response Code sent by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>302</parameter>
+	</function>	
+	
+	<!-- Check Response Headers -->
+	<function name="queryHeader" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>location</parameter>
+		<parameter>^http://www.not-matched.com:80/$</parameter>
+	</function>
+	
+	
+	<!-- Send HTTP GET Request -->
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://links.local/nix?test3=bla</parameter>
+	</function>
+	
+	<!-- Check Response Code sent by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>302</parameter>
+	</function>	
+	
+	<!-- Check Response Headers -->
+	<function name="queryHeader" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>location</parameter>
+		<parameter>^http://www.matched.com:80/$</parameter>
+	</function>
+	<function name="queryHeader" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>MatchedPattern</parameter>
+		<parameter>^http://\*/\{\.\*\\\?test3\.\*\}$</parameter>
+	</function>
+	
+	
+	<!-- Send HTTP GET Request -->
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://links.local/test3?nix=bla</parameter>
+	</function>
+	
+	<!-- Check Response Code sent by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>302</parameter>
+	</function>	
+	
+	<!-- Check Response Headers -->
+	<function name="queryHeader" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>location</parameter>
+		<parameter>^http://www.not-matched.com:80/$</parameter>
+	</function>
+	
+	
+	<!-- Send HTTP GET Request -->
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://links.local/test4a?test4b=test4c</parameter>
+	</function>
+	
+	<!-- Check Response Code sent by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>302</parameter>
+	</function>	
+	
+	<!-- Check Response Headers -->
+	<function name="queryHeader" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>location</parameter>
+		<parameter>^http://www.matched.com:80/$</parameter>
+	</function>
+	<function name="queryHeader" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>MatchedPattern</parameter>
+		<parameter>^http://\*/\{test4a\\\?test4b=test4c\}$</parameter>
+	</function>
+	
+	
+	<!-- Send HTTP GET Request -->
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://links.local/test4a</parameter>
+	</function>
+	
+	<!-- Check Response Code sent by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>302</parameter>
+	</function>	
+	
+	<!-- Check Response Headers -->
+	<function name="queryHeader" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>location</parameter>
+		<parameter>^http://www.not-matched.com:80/$</parameter>
+	</function>
+	
+	
+	<!-- Send HTTP GET Request -->
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://a/b</parameter>
+	</function>
+	
+	<!-- Check Response Code sent by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>302</parameter>
+	</function>	
+	
+	<!-- Check Response Headers -->
+	<function name="queryHeader" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>location</parameter>
+		<parameter>^http://www.matched.com:80/$</parameter>
+	</function>
+	<function name="queryHeader" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>MatchedPattern</parameter>
+		<parameter>^http://a/\{\.\*b\.\*\}$</parameter>
+	</function>
+	
+	
+	<!-- Send HTTP GET Request -->
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://a/?x=b</parameter>
+	</function>
+	
+	<!-- Check Response Code sent by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>302</parameter>
+	</function>	
+	
+	<!-- Check Response Headers -->
+	<function name="queryHeader" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>location</parameter>
+		<parameter>^http://www.matched.com:80/$</parameter>
+	</function>
+	<function name="queryHeader" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>MatchedPattern</parameter>
+		<parameter>^http://a/\{\.\*b\.\*\}$</parameter>
+	</function>
+	
+	
+	<!-- Send HTTP GET Request -->
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://a/b?x=c</parameter>
+	</function>
+	
+	<!-- Check Response Code sent by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>302</parameter>
+	</function>	
+	
+	<!-- Check Response Headers -->
+	<function name="queryHeader" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>location</parameter>
+		<parameter>^http://www.matched.com:80/$</parameter>
+	</function>
+	<function name="queryHeader" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>MatchedPattern</parameter>
+		<parameter>^http://a/\{\.\*b\\\?\.\*c\.\*\}$</parameter>
+	</function>
+	
+	
+	<!-- Send HTTP GET Request -->
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://a/b/c</parameter>
+	</function>
+	
+	<!-- Check Response Code sent by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>302</parameter>
+	</function>	
+	
+	<!-- Check Response Headers -->
+	<function name="queryHeader" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>location</parameter>
+		<parameter>^http://www.matched.com:80/$</parameter>
+	</function>
+	<function name="queryHeader" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>MatchedPattern</parameter>
+		<parameter>^http://a/\{\.\*b\.\*\}$</parameter>
+	</function>
+	
+	
+	<!-- Send HTTP GET Request -->
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://a/b?x=c</parameter>
+	</function>
+	
+	<!-- Check Response Code sent by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>302</parameter>
+	</function>	
+	
+	<!-- Check Response Headers -->
+	<function name="queryHeader" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>location</parameter>
+		<parameter>^http://www.matched.com:80/$</parameter>
+	</function>
+	<function name="queryHeader" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>MatchedPattern</parameter>
+		<parameter>^http://a/\{\.\*b\\\?\.\*c\.\*\}$</parameter>
+	</function>
+	
+	
+
+	
+	
+	
+
+	<!-- Radius Accounting Stop for the Subscriber -->
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function> 
+	
+
+	<!-- Load Empty Request Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>reqmodTCemptyrules.xml</parameter>
+		<parameter>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;requestModifications&gt;&lt;/requestModifications&gt;</parameter>
+	</function>
+	
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>load data reqmodTCemptyrules.xml</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>Loaded requestmodifications</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	
+	
+	<!-- Remove list1.url -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>delete file </parameter>
+			<parameter>list1.url</parameter>
+		</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>Deleted file '/url/list1.url'</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+</test>

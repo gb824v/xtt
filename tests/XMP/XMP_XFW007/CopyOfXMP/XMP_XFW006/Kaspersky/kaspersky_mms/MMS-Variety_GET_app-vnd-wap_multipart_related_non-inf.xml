@@ -1,0 +1,100 @@
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+This scenario will verify that the scanning and identifying is done 
+as expected when the MMS is multipart related and not infected.
+
+Test Description:
+ 1. Start web server and MMSC
+ 2. Send clean data in HTTP Get Proxy Request
+ 3. Check Response Code
+ 4. Check body
+ 5. Check logscan for non infection
+ 6. Stop web server and MMSC
+
+Expected Result:
+ -  XMP should not Block this request and responed with notification MMS.
+
+XTT Commands:
+        startWebServer
+ 1.   - startMMSCServer
+ 2.   - sendGetRequest 		"HTTP"
+ 3.   - checkResponseCode	"HTTP" "200"
+ 4.   - queryBody "HTTP" 
+ 5.   - queryResponse "Remote"
+ 6.   - stopMMSCServer
+        stopWebServer
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+        <!-- Test Start  -->
+
+<test>
+	<function name="testName" module="Basic">
+		<parameter>MMS-Variety_app-vnd-wap_multipart_related_non-inf</parameter>
+	</function>
+
+	<description>MMS Variety application/vnd.wap.multipart.related non infected</description>
+
+	<!-- Start Web Server and MMSC -->
+	<function name="startWebServer" module="HTTP" />
+	<function name="startMMSCServer" module="MMSC" >
+	</function>
+
+    <function name="setServerHeader" module="HTTP">
+        <parameter>content-type</parameter>
+        <parameter>application/vnd.wap.mms-message</parameter>
+    </function>
+
+	<!-- Send virus Infected data in HTTP Get Proxy Request -->
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>
+			<parameter>http://</parameter>
+			<configuration>SYSTEM/IP</configuration>
+			<parameter>/mms/multipart-related_non-infected.mms</parameter>
+		</parameter>
+	</function>
+
+	<!-- Validate Response Code Send by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+  <!-- Verify reponse is having the notification text -->
+  	<function name="queryBodyNegative" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>Message content blocked because it was infected by a virus</parameter>
+	</function>
+
+	<function name="sleep" module="Basic">
+		<parameter>1000</parameter>
+	</function>
+
+  <!--  save the latest logscan into temp log file  -->
+    <function name="getNewestRemoteFileName" module="Remote">
+        <parameter>newestlogfile</parameter>
+	    <configuration>remote/logpath</configuration>
+        <parameter>XMP</parameter>
+    </function>
+    <function name="executeRemoteXMSCommand" module="Remote">
+    	<parameter>
+            <configuration>remote/command</configuration>
+    	    <parameter>logscan -in </parameter>
+    	    <variable>newestlogfile</variable>
+            <parameter> -out </parameter>
+    	      <parameter>x.log</parameter>
+    	</parameter>
+    </function>
+
+  <!-- verify KAV8_RspResult param is exist -->
+    <function name="executeRemoteCommand" module="Remote">
+        <parameter>/bin/grep KAV8_RspResult x.log | tail -1</parameter>
+    </function>
+
+  <!-- check the value of KAV8_RspResult param -->
+	<function name="queryResponse" module="Remote">
+		<parameter>KAV8_RspResult: CLEAN</parameter>
+		<parameter>data</parameter>
+	</function>
+
+	<!-- Stop Web Server and MMSC -->
+	<function name="stopMMSCServer" module="MMSC" />
+	<function name="stopWebServer" module="HTTP"/>
+
+</test>

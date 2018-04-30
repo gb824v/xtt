@@ -1,0 +1,291 @@
+<test>	    
+	<name>XMP.MULTIPART.TC.006</name>
+	<description>MULTIPART WURFL presetting of "root" nodes value of WURFL_C_multipart_support</description>
+
+	<subtest>deleteCacheAll.xml</subtest>
+
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>MULTIPARTTC006_img1.gif</parameter>
+		<base64File>gif.gif</base64File>
+    </function>
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>MULTIPARTTC006_img2.png</parameter>
+		<base64File>png.png</base64File>
+    </function>
+    <function name="setCacheFile" module="HTTP">
+		<parameter>MULTIPARTTC006.html</parameter>
+        <parameter>
+<parameter>&lt;html&gt;
+&lt;head&gt;
+&lt;/head&gt;
+&lt;body&gt;
+This is the initial file FILLTO64CHARACTERSXXXXXXXXXXXXXXXXXXXXX
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC006_img1.gif"/&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC006_img2.png"/&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</parameter>
+        </parameter>
+    </function>
+
+    <function name="writeRemoteFile" module="Remote">
+        <parameter>wurfl.xml</parameter>
+        <file>wurfl.xml</file>
+    </function>
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>
+            <configuration>remote/loaddata</configuration>
+            <parameter>wurfl.xml</parameter>
+        </parameter>
+    </function>
+    <function name="queryResponse" module="Remote">
+        <parameter>^Loaded</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+
+    <function name="setVariable" module="Basic">
+        <parameter>rootNodeREQMODfalse</parameter>
+        <xml>
+<requestModifications xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="requestmodifications.xsd">
+	<table name="setWURFLRootNode">
+		<selector context="WURFL_C_multipart_support equals ''">
+		    <modifyContext name="WURFL_C_multipart_support" value="'%MULTIPARTVALUE%'"/>
+		</selector>
+	</table>
+	<table name="SetMobileAccelerationDefaults">
+		<selector>
+			<bypassContentCache value="false"/>
+			<disableMimeMultipart value="false"/>
+			<disablePrefetch value="false"/>
+			<disableCompression algorithm="gzip" value="false"/>
+			<disableCompression algorithm="deflate" value="false"/>
+			<disableCompression algorithm="lzw" value="false"/>
+			<removeInterlacing value="false"/>
+		</selector>
+	</table>
+	<table name="CheckDeviceMimeMultipartSupport">
+		<selector context="WURFL_C_multipart_support != 'true'">
+			<disableMimeMultipart value="true"/>
+		</selector>
+	</table>
+	<table name="CheckDeviceColors">
+		<selector context="HTA_ReqHdr_ua-color equals 'mono2'">
+			<setMaxImageColors colors="'4'" greyscale="true"/>
+		</selector>
+		<selector context="HTA_ReqHdr_ua-color equals 'mono4'">
+			<setMaxImageColors colors="'16'" greyscale="true"/>
+		</selector>
+		<selector context="HTA_ReqHdr_ua-color equals 'color8'">
+			<setMaxImageColors colors="'256'" greyscale="false"/>
+		</selector>
+		<selector context="HTA_ReqHdr_ua-color equals 'color16'">
+			<setMaxImageColors colors="'32768'" greyscale="false"/>
+		</selector>
+		<selector context="HTA_ReqHdr_ua-color equals 'color24'">
+			<setMaxImageColors colors="'16777216'" greyscale="false"/>
+		</selector>
+		<selector context="HTA_ReqHdr_ua-color equals 'color32'">
+			<setMaxImageColors colors="'4294967296'" greyscale="false"/>
+		</selector>
+		<selector context="not(WURFL_C_colors equals '')">
+			<setMaxImageColors colors="WURFL_C_colors"/> 
+		</selector>
+		<selector context="WURFL_C_greyscale equals 'true'">
+			<setMaxImageColors greyscale="true"/> 
+		</selector>
+	</table>
+	<table name="CheckDeviceScreenSize">
+		<selector context="HTA_ReqHdr_ua-pixels != ''">
+			<applyRegexp pattern="([0-9]+)x([0-9]+)" value="HTA_ReqHdr_ua-pixels"/>
+			<setMaxImageSize height="'$1'" width="'$2'"/>
+		</selector>
+		<selector context="(WURFL_C_height != '') and (WURFL_C_width != '') ">
+			<setMaxImageSize height="WURFL_C_height" width="WURFL_C_width"/>
+		</selector>
+	</table>
+</requestModifications>
+	        </xml>
+    </function>
+    <function name="setVariable" module="Basic">
+        <parameter>rootNodeREQMODtrue</parameter>
+        <variable>rootNodeREQMODfalse</variable>
+    </function>
+    <function name="replace" module="Basic">
+        <parameter>rootNodeREQMODfalse</parameter>
+        <parameter>%MULTIPARTVALUE%</parameter>
+        <parameter>false</parameter>
+    </function>
+    <function name="replace" module="Basic">
+        <parameter>rootNodeREQMODtrue</parameter>
+        <parameter>%MULTIPARTVALUE%</parameter>
+        <parameter>true</parameter>
+    </function>
+
+
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+	<function name="startWebServer" module="HTTP"/>
+
+    <function name="info" module="Basic">
+        <parameter>WURFL_C_multipart_support = 'false'</parameter>
+	</function>	
+
+    <function name="writeRemoteFile" module="Remote">
+        <parameter>rootNodeREQMODfalse.xml</parameter>
+        <variable>rootNodeREQMODfalse</variable>
+    </function>
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>
+            <configuration>remote/loaddata</configuration>
+            <parameter>rootNodeREQMODfalse.xml</parameter>
+        </parameter>
+    </function>
+    <function name="queryResponse" module="Remote">
+        <parameter>^Loaded requestmodifications.*</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+    
+	<function name="setHeader" module="HTTP">
+		<parameter>User-Agent</parameter>
+		<parameter>XTT/multipart</parameter>
+	</function>	
+	<function name="sendGetRequest" module="HTTP">
+        <parameter>
+    		<parameter>http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC006.html</parameter>
+        </parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>	
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>This is the initial file FILLTO64CHARACTERSXXXXXXXXXXXXXXXXXXXXX</parameter>
+    </function>
+	<function name="checkHeaderPart" module="HTTP">
+		<parameter>content-type</parameter>
+		<parameter>multipart/related;boundary=</parameter>
+	</function>	
+	<function name="queryHeader" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>warning</parameter>
+		<parameter>214 [a-z0-9]++ "Transformation applied"</parameter>
+	</function>	
+
+	<function name="setHeader" module="HTTP">
+		<parameter>User-Agent</parameter>
+		<parameter>XTT/notfound</parameter>
+	</function>	
+	<function name="sendGetRequest" module="HTTP">
+        <parameter>
+    		<parameter>http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC006.html</parameter>
+        </parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>	
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>This is the initial file FILLTO64CHARACTERSXXXXXXXXXXXXXXXXXXXXX</parameter>
+    </function>
+	<function name="checkHeaderPart" module="HTTP">
+		<parameter>content-type</parameter>
+		<parameter>text/html</parameter>
+	</function>	
+	<function name="checkHeader" module="HTTP">
+		<parameter>warning</parameter>
+		<parameter>null</parameter>
+	</function>	
+
+
+    <function name="info" module="Basic">
+        <parameter>WURFL_C_multipart_support = 'true'</parameter>
+	</function>	
+
+    <function name="writeRemoteFile" module="Remote">
+        <parameter>rootNodeREQMODtrue.xml</parameter>
+        <variable>rootNodeREQMODtrue</variable>
+    </function>
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>
+            <configuration>remote/loaddata</configuration>
+            <parameter>rootNodeREQMODtrue.xml</parameter>
+        </parameter>
+    </function>
+    <function name="queryResponse" module="Remote">
+        <parameter>^Loaded requestmodifications.*</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+    
+	<function name="setHeader" module="HTTP">
+		<parameter>User-Agent</parameter>
+		<parameter>XTT/notfound</parameter>
+	</function>	
+	<function name="sendGetRequest" module="HTTP">
+        <parameter>
+    		<parameter>http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC006.html</parameter>
+        </parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>	
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>This is the initial file FILLTO64CHARACTERSXXXXXXXXXXXXXXXXXXXXX</parameter>
+    </function>
+	<function name="checkHeaderPart" module="HTTP">
+		<parameter>content-type</parameter>
+		<parameter>multipart/related;boundary=</parameter>
+	</function>	
+	<function name="queryHeader" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>warning</parameter>
+		<parameter>214 [a-z0-9]++ "Transformation applied"</parameter>
+	</function>	
+
+	<function name="setHeader" module="HTTP">
+		<parameter>User-Agent</parameter>
+		<parameter>XTT/nomultipart</parameter>
+	</function>	
+	<function name="sendGetRequest" module="HTTP">
+        <parameter>
+    		<parameter>http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC006.html</parameter>
+        </parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>	
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>This is the initial file FILLTO64CHARACTERSXXXXXXXXXXXXXXXXXXXXX</parameter>
+    </function>
+	<function name="checkHeaderPart" module="HTTP">
+		<parameter>content-type</parameter>
+		<parameter>text/html</parameter>
+	</function>	
+	<function name="checkHeader" module="HTTP">
+		<parameter>warning</parameter>
+		<parameter>null</parameter>
+	</function>	
+
+	<subtest>emptyWURFL.xml</subtest>
+
+	<function name="stopWebServer" module="HTTP"/>
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function> 
+</test>

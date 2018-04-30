@@ -1,0 +1,10 @@
+<test>
+    <name>MBSPPB_ErrorScenarios_MT_TC.011.000</name>
+    <configuration>../configXSAM.xml</configuration>
+
+    <function name="stopDiameterServer" module="Diameter"/>
+    <function name="stopMMSCServer" module="MMSC"/>
+    <function name="stopSMSCServer" module="SMS"/>
+    <subtest>../sisSTOP.xml</subtest>
+
+</test>

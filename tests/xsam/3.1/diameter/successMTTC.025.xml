@@ -1,0 +1,148 @@
+<test>
+    <name>MBSPPB.SuccessScenarios.MT.TC.025</name>
+    <configuration>../configXSAM.xml</configuration>
+
+    <description>[TPI->MM7] Successful DIRECT-DEBIT invocation towards ISCP / AMOUNT information received from TP-CP is sent to ISCP/ check UNIT_VALUE</description>
+
+    <function name="setVariable" module="Basic">
+        <parameter>AMOUNT</parameter>
+        <parameter>11.734</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+         <parameter>MSISDN</parameter>
+         <configuration>XSAM/MSISDN/REDIRECTTEST</configuration>
+    </function>
+
+    <function name="setVariable" module="Basic">
+         <parameter>SKIP_DIAMETER</parameter>
+         <parameter>true</parameter>
+    </function>
+
+    <function name="startDiameterServer" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT</configuration>
+        <parameter>
+            <parameter>
+&lt;Diameter&gt;
+    &lt;response&gt;
+        &lt;DEVICE_WATCHDOG_REQUEST proxiable="true" error="false" tretr="false"&gt;
+            &lt;RESULT_CODE            value="DIAMETER_SUCCESS"    mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_REALM           value="ORIGIN_REALM"        mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+        &lt;/DEVICE_WATCHDOG_REQUEST&gt;
+        &lt;CAPABILITIES_EXCHANGE_REQUEST proxiable="true" error="false" tretr="false"&gt;
+            &lt;RESULT_CODE            value="DIAMETER_SUCCESS"    mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_REALM           value="ORIGIN_REALM"        mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;VENDOR_ID              request="VENDOR_ID" /&gt;
+            &lt;PRODUCT_NAME           request="PRODUCT_NAME" /&gt;
+            &lt;SUPPORTED_VENDOR_ID    request="SUPPORTED_VENDOR_ID" /&gt;
+            &lt;AUTH_APPLICATION_ID    request="AUTH_APPLICATION_ID" /&gt;
+        &lt;/CAPABILITIES_EXCHANGE_REQUEST&gt;
+        &lt;CREDIT_CONTROL_REQUEST proxiable="true" error="true" tretr="false" matchAVP="SUBSCRIPTION_ID_DATA" matchREGEX="</parameter><configuration>XSAM/MSISDN/REDIRECTTEST</configuration><parameter>"&gt;
+            &lt;SESSION_ID             request="SESSION_ID"/&gt;
+            &lt;RESULT_CODE            value="DIAMETER_SUCCESS"    mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_REALM           request="DESTINATION_REALM" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;AUTH_APPLICATION_ID    value="4"                   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;CC_REQUEST_TYPE        request="CC_REQUEST_TYPE"   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;CC_REQUEST_NUMBER      request="CC_REQUEST_NUMBER" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;GRANTED_SERVICE_UNIT                               mandatory="true" protected="false" vendorspecific="false"  vendorID=""&gt;
+                &lt;CC_MONEY                                       mandatory="true" protected="false" vendorspecific="false"  vendorID=""&gt;
+                    &lt;UNIT_VALUE                                 mandatory="true" protected="false" vendorspecific="false"  vendorID=""&gt;
+                        &lt;VALUE_DIGITS  request="VALUE_DIGITS"   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+                        &lt;EXPONENT      request="EXPONENT"       mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+                        &lt;CURRENCY_CODE request="CURRENCY_CODE"  mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+                    &lt;/UNIT_VALUE&gt;
+                &lt;/CC_MONEY&gt;
+                &lt;CC_SERVICE_SPECIFIC_UNITS value="1"            mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;/GRANTED_SERVICE_UNIT&gt;
+            &lt;REDIRECT_HOST           value="aaa://diameter.xtt724.com:</parameter><configuration>DIAMETERSERVER/PORT3</configuration><parameter>;transport=tcp;protocol=diameter" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;REDIRECT_HOST_USAGE     value="DONT_CACHE"         mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;REDIRECT_MAX_CACHE_TIME value="0"                  mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+        &lt;/CREDIT_CONTROL_REQUEST&gt;
+        &lt;CREDIT_CONTROL_REQUEST proxiable="true" error="false" tretr="false"&gt;
+            &lt;SESSION_ID             request="SESSION_ID"/&gt;
+            &lt;RESULT_CODE            value="DIAMETER_SUCCESS"    mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_REALM           request="DESTINATION_REALM" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;AUTH_APPLICATION_ID    value="4"                   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;CC_REQUEST_TYPE        request="CC_REQUEST_TYPE"   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;CC_REQUEST_NUMBER      request="CC_REQUEST_NUMBER" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;GRANTED_SERVICE_UNIT                               mandatory="true" protected="false" vendorspecific="false"  vendorID=""&gt;
+                &lt;CC_MONEY                                       mandatory="true" protected="false" vendorspecific="false"  vendorID=""&gt;
+                    &lt;UNIT_VALUE                                 mandatory="true" protected="false" vendorspecific="false"  vendorID=""&gt;
+                        &lt;VALUE_DIGITS  request="VALUE_DIGITS"   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+                        &lt;EXPONENT      request="EXPONENT"       mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+                        &lt;CURRENCY_CODE request="CURRENCY_CODE"  mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+                    &lt;/UNIT_VALUE&gt;
+                &lt;/CC_MONEY&gt;
+                &lt;CC_SERVICE_SPECIFIC_UNITS value="1"            mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;/GRANTED_SERVICE_UNIT&gt;
+        &lt;/CREDIT_CONTROL_REQUEST&gt;
+        &lt;DISCONNECT_PEER_REQUEST proxiable="true" error="false" tretr="false"&gt;
+            &lt;RESULT_CODE            value="DIAMETER_SUCCESS"    mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_REALM           value="ORIGIN_REALM"        mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+        &lt;/DISCONNECT_PEER_REQUEST&gt;
+    &lt;/response&gt;
+&lt;/Diameter&gt;
+            </parameter>
+        </parameter>
+        <configuration>DIAMETERSERVER/TIMEOUT</configuration>
+    </function>
+
+    <function name="startDiameterServer" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT3</configuration>
+    </function>
+
+    <function name="waitForSpecificRequests" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT</configuration>
+        <parameter>CAPABILITIES_EXCHANGE_REQUEST</parameter>
+        <parameter>1</parameter>
+    </function>
+
+    <thread>
+        <function name="waitForSpecificRequests" module="Diameter">
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>CREDIT_CONTROL_REQUEST</parameter>
+            <parameter>1</parameter>
+        </function>
+        <function name="waitForTimeoutSpecificRequests" module="Diameter">
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>CREDIT_CONTROL_REQUEST</parameter>
+            <configuration>DIAMETERSERVER/WAITTIMEOUT</configuration>
+            <parameter>1</parameter>
+        </function>
+    </thread>
+    <thread>
+        <function name="waitForTimeoutSpecificRequests" module="Diameter">
+            <configuration>DIAMETERSERVER/PORT3</configuration>
+            <parameter>CREDIT_CONTROL_REQUEST</parameter>
+            <configuration>DIAMETERSERVER/WAITTIMEOUT</configuration>
+            <parameter>0</parameter>
+        </function>
+    </thread>
+    <subtest>sendMMS.xml</subtest>
+
+
+    <function name="queryText" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/REQUESTED_SERVICE_UNIT/CC_MONEY/UNIT_VALUE/VALUE_DIGITS</parameter>
+        </variable>
+        <parameter>dev/null</parameter>
+        <parameter>11734</parameter>
+    </function>
+    <function name="queryText" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/REQUESTED_SERVICE_UNIT/CC_MONEY/UNIT_VALUE/EXPONENT</parameter>
+        </variable>
+        <parameter>dev/null</parameter>
+        <parameter>-3</parameter>
+    </function>
+
+    <function name="stopDiameterServer" module="Diameter"/>
+</test>

@@ -1,0 +1,40 @@
+<test>
+    <function name="testName" module="Basic">
+        <parameter>XMP.CONTENTFILTERING.TC.008</parameter>
+     </function>
+	
+    <description>Global Filter: alwaysBlock [www.penthouse.com] / urlList instead of urlPattern, User is in DB [age=24], URL is inaccessible</description>
+        
+    <!-- Radius logon - User is in DB [age=24] -->
+    <function name="radiusLogon" module="Radius">
+	<parameter>0787367502</parameter>
+	<parameter>0787367502</parameter>
+	<configuration>system/Ip</configuration>
+    </function> 
+    
+    <!-- alwaysBlock -->  
+    <!-- XMP forwards blocked request to its WebServer -->
+    <function name="disableFollowRedirects" module="HTTP" />
+
+    <!-- http://www.sex.com : urlCategories : alwaysBlock -->
+    <function name="sendGetRequest" module="HTTP">
+	 <parameter>http://www.penthouse.com/</parameter>
+    </function>
+	
+    <function name="checkResponseCode" module="HTTP">
+	<parameter>302</parameter>
+    </function>
+	
+    <function name="queryHeader" module="HTTP">
+	 <parameter>dev/null</parameter>
+	 <parameter>location</parameter>
+         <parameter>XMPBlocked/always.html$</parameter>		
+    </function>		
+
+    <!-- Radius logoff - User is in DB [age=24] -->
+    <function name="radiusLogoff" module="Radius">
+	<parameter>0787367502</parameter>
+	<parameter>0787367502</parameter>
+	<configuration>system/Ip</configuration>
+    </function> 
+</test>

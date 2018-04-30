@@ -1,0 +1,97 @@
+<test>
+    <name>MBSPPB.Error.MO.TC.012</name>
+    <configuration>../configXSAM.xml</configuration>
+
+    <description>[AXML->TPI] TP is unreachable / Successful DIRECT-DEBIT invocation towards ISCP</description>
+
+    <function name="setVariable" module="Basic">
+        <parameter>MSISDN</parameter>
+        <parameter>41790000005</parameter>
+    </function>
+    <function name="startDiameterServer" module="Diameter"/>
+    <subtest>../sisSTART.xml</subtest>
+
+    <function name="waitForSpecificRequests" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT</configuration>
+        <parameter>CAPABILITIES_EXCHANGE_REQUEST</parameter>
+        <parameter>1</parameter>
+    </function>
+
+    <function name="createDocument" module="XML">
+        <parameter>axml</parameter>
+        <parameter>
+            <parameter>&lt;service id="XTT</parameter>
+            <configuration>xsam/serviceGroupNoSMSMO</configuration>
+            <parameter>-</parameter>
+            <configuration>xsam/serviceNoSMS</configuration>
+            <parameter>0</parameter>
+            <parameter>"&gt;
+    &lt;phonenumber&gt;</parameter>
+            <variable>MSISDN</variable>
+            <parameter>&lt;/phonenumber&gt;
+    &lt;servicenumber&gt;</parameter>
+            <configuration>XSAM/SERVICEGROUPPREFIX</configuration>
+            <configuration>XSAM/SERVICEGROUPNOSMSMO</configuration>
+            <parameter>&lt;/servicenumber&gt;
+    &lt;parameters&gt;
+        &lt;parameter id="1"&gt;
+            &lt;name&gt;keywordPattern&lt;/name&gt;
+            &lt;value&gt;SMSMO&lt;/value&gt;
+        &lt;/parameter&gt;
+    &lt;/parameters&gt;
+&lt;/service&gt;</parameter>
+        </parameter>
+    </function>
+
+    <function name="setHeader" module="XML">
+        <parameter>axml</parameter>
+        <parameter>content-type</parameter>
+        <parameter>text/xml</parameter>
+    </function>
+
+    <function name="setDocType" module="XML">
+        <parameter>axml</parameter>
+        <parameter>service</parameter>
+        <!--parameter>service.dtd</parameter-->
+    </function>
+
+    <function name="documentToVariable" module="XML">
+        <parameter>axml</parameter>
+        <parameter>info</parameter>
+    </function>
+
+    <function name="info" module="Basic">
+        <parameter>
+</parameter>
+        <variable>info</variable>
+    </function>
+
+	<function name="validateXML" module="XML">
+	    <parameter>axml</parameter>
+ 	    <parameter></parameter>
+    </function>
+
+	<function name="sendPostRequest" module="XML">
+	    <parameter>axml</parameter>
+ 	    <parameter>response</parameter>
+ 	    <configuration>XSAM/AXMLINURL</configuration>
+    </function>
+    <function name="queryText" module="Basic">
+        <variable>XML/BODY/PLAIN</variable>
+        <parameter>dev/null</parameter>
+        <parameter>&lt;result&gt;0&lt;/result&gt;\s+&lt;result_message&gt;Request accepted&lt;/result_message&gt;</parameter>
+    </function>
+
+    <function name="waitForSISCalls" module="SIS">
+        <parameter>1</parameter>
+    </function>
+    <function name="waitForSpecificRequests" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT</configuration>
+        <parameter>CREDIT_CONTROL_REQUEST</parameter>
+        <parameter>1</parameter>
+    </function>
+    
+    <function name="waitOnThreads" module="Basic"/>
+    <function name="stopDiameterServer" module="Diameter"/>
+    <subtest>../sisSTOP.xml</subtest>
+</test>

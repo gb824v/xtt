@@ -1,0 +1,44 @@
+<test>
+
+    <configuration>xsnhttp.xml</configuration>
+
+	<function name="testName" module="Basic">
+		<parameter>XSN.HTTP.TC.013</parameter>
+	</function>
+	
+	<description>Check Community Internet Rules.</description>
+    
+    <function name="disableFollowRedirects" module="HTTP" />
+    
+    <function name="setHeader" module="HTTP">
+        <parameter>SubscriberIdHdr</parameter>
+        <configuration>xsn/subscribers/communityInternetRulesUser</configuration>
+    </function>
+    
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://www.gnu.org/</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>302</parameter>
+	</function>	
+
+	<function name="queryHeader" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>location</parameter>
+        <parameter>
+            <parameter>^</parameter>
+            <configuration>xsn/redirect/url</configuration>
+            <parameter>/</parameter>
+            <configuration>xsn/redirect/blockedByCommunityFiltersScreen</configuration>
+        </parameter>		
+	</function>
+	
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://www.thehun.com/</parameter>
+	</function>
+		
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>	
+</test>

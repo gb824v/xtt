@@ -1,0 +1,66 @@
+<test>	    
+	<name>Bugzilla26156.TC.001.xml</name>
+	<description>Validate combinedPathandQueryStringKeys Option of reqmodpat Utility</description>
+
+
+	<!-- Load list1.url -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>list1.txt</parameter>
+		<parameter>http://live.vodafone.com/{cae/access/.*}
+http://live.vodafone.com/{cae/access/upgrade.do}</parameter>
+	</function>
+
+
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>run command reqmodpat -k -ml -p  http://live.vodafone.com/cae/access/upgrade.do @list1.txt</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>reqmodpat: value 'http://live\.vodafone\.com/cae/access/upgrade\.do' matched pattern 'http://live\.vodafone\.com/\{cae/access/upgrade\.do\}'</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	
+	
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>run command reqmodpat      -mf -p  http://live.vodafone.com/cae/access/upgrade.do @list1.txt</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>reqmodpat: value 'http://live\.vodafone\.com/cae/access/upgrade\.do' matched pattern 'http://live\.vodafone\.com/\{cae/access/\.\*\}'</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	
+	
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>run command reqmodpat      -ml -p  http://live.vodafone.com/cae/access/upgrade.do @list1.txt</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>reqmodpat: value 'http://live\.vodafone\.com/cae/access/upgrade\.do' matched pattern 'http://live\.vodafone\.com/\{cae/access/upgrade\.do\}'</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	
+	
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>run command reqmodpat -k  -mf -p  http://live.vodafone.com/cae/access/upgrade.do @list1.txt</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>reqmodpat: value 'http://live\.vodafone\.com/cae/access/upgrade\.do' matched pattern 'http://live\.vodafone\.com/\{cae/access/\.\*\}'</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	
+	
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>run command reqmodpat -k  -ml -p  http://live.vodafone.com/cae/access/upgrade.do @list1.txt</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>reqmodpat: value 'http://live\.vodafone\.com/cae/access/upgrade\.do' matched pattern 'http://live\.vodafone\.com/\{cae/access/upgrade\.do\}'</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+
+	
+</test>

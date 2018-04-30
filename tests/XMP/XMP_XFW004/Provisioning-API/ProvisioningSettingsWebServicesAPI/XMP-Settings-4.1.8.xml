@@ -1,0 +1,54 @@
+<test>
+       
+      <description> SOAP-API-Settings{(setSubscriberFilter( )}: Testing for Scheme set to any other Value other than 0, 1, 2 . </description>
+      
+	 <function name="testName" module="Basic">
+		<parameter>XMP-Settings-4.1.8.0</parameter>
+	</function>
+
+	<function name="SOAPClient" module="SOAP_API" >
+		<parameter>
+			<configuration>XMP/PROTOCOL</configuration>
+			<configuration>XMP/IP</configuration>
+			<parameter>:</parameter>
+			<configuration>XMP/PORT/</configuration>
+			<parameter>/jaxws-provisioning-core/provisioning</parameter>
+		</parameter>
+		<file>adduser.xml</file>
+		<parameter>Body/return</parameter>
+	</function>
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+
+	<function name="SOAPClient" module="SOAP_API" >
+		<parameter>
+			<configuration>XMP/PROTOCOL</configuration>
+			<configuration>XMP/IP</configuration>
+			<parameter>:</parameter>
+			<configuration>XMP/PORT/</configuration>
+			 <parameter>/jaxws-policy-settings/settings</parameter>
+		</parameter>
+		<file>setSubscriberFilter-scheme-set-to-3.xml</file>
+		<parameter>Body/return</parameter>
+	</function>
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>500</parameter>
+	</function>
+
+	<function name="SOAPClient" module="SOAP_API" >
+		<parameter>
+			<configuration>XMP/PROTOCOL</configuration>
+			<configuration>XMP/IP</configuration>
+			<parameter>:</parameter>
+			<configuration>XMP/PORT/</configuration>
+			<parameter>/jaxws-provisioning-core/provisioning</parameter>
+		</parameter>
+		<file>removeuser.xml</file>
+		<parameter>Body/return</parameter>
+	</function>
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+        
+ </test>

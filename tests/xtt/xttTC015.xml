@@ -1,0 +1,91 @@
+<test>
+    <name>XTT.TC.015</name>
+    <description>Remove variables</description>
+
+    <function name="setVariable" module="Basic">
+        <parameter>some/name</parameter>
+        <parameter>0</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+        <parameter>some/name2</parameter>
+        <parameter>9</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+        <parameter>some/name/or/else</parameter>
+        <parameter>1</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+        <parameter>SOME/name/or/else2</parameter>
+        <parameter>2</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+        <parameter>some/name2/or/else</parameter>
+        <parameter>3</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+        <parameter>SOME/name2/or/else2</parameter>
+        <parameter>4</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+        <parameter>some2/name/or/else</parameter>
+        <parameter>5</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+        <parameter>SOME2/name/or/else2</parameter>
+        <parameter>6</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+        <parameter>some2/name2/or/else</parameter>
+        <parameter>7</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+        <parameter>SOME2/name2/or/else2</parameter>
+        <parameter>8</parameter>
+    </function>
+
+    <function name="removeVariables" module="Basic">
+        <parameter>^some2</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+        <parameter>some/name</parameter>
+    </function>    
+    <function name="queryVariable" module="Basic">
+        <parameter>some/name2</parameter>
+        <parameter>dev/null</parameter>
+        <parameter>9</parameter>
+    </function>    
+
+    <function name="queryVariable" module="Basic">
+        <parameter>some/name/or/else</parameter>
+        <parameter>dev/null</parameter>
+        <parameter>1</parameter>
+    </function>
+    <function name="queryVariable" module="Basic">
+        <parameter>some/name/or/else2</parameter>
+        <parameter>dev/null</parameter>
+        <parameter>2</parameter>
+    </function>
+    <function name="queryVariable" module="Basic">
+        <parameter>some/name2/or/else</parameter>
+        <parameter>dev/null</parameter>
+        <parameter>3</parameter>
+    </function>
+    <function name="queryVariable" module="Basic">
+        <parameter>some/name2/or/else2</parameter>
+        <parameter>dev/null</parameter>
+        <parameter>4</parameter>
+    </function>
+    <function name="queryVariableNegative" module="Basic">
+        <parameter>some2/name/or/else</parameter>
+    </function>
+    <function name="queryVariableNegative" module="Basic">
+        <parameter>some2/name/or/else2</parameter>
+    </function>
+    <function name="queryVariableNegative" module="Basic">
+        <parameter>some2/name2/or/else</parameter>
+    </function>
+    <function name="queryVariableNegative" module="Basic">
+        <parameter>some2/name2/or/else2</parameter>
+    </function>
+
+</test>

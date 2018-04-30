@@ -1,0 +1,53 @@
+<test>
+    <function name="testName" module="Basic">
+        <parameter>UCP.SMSC.TC.002</parameter>
+    </function>
+
+    <function name="startSMSCServer" module="SMS">
+        <configuration>SMSCSERVER/PORT</configuration>
+        <parameter>UCP</parameter>
+    </function>
+
+        <function name="openConnection" module="UCP">
+            <parameter>connection</parameter>
+            <configuration>SYSTEM/IP</configuration>
+            <configuration>SMSCSERVER/PORT</configuration>
+        </function>
+
+        <function name="sendUCPPacket" module="UCP">
+            <parameter>connection</parameter>
+            <parameter>internal</parameter>
+            <parameter>O</parameter>
+            <parameter>02</parameter>
+            <parameter>/5/01111/02222/03333/04444/05555/0123456789//2/563444/</parameter>
+        </function>
+
+        <function name="queryTextResponse" module="UCP">
+            <parameter>connection</parameter>
+            <parameter>dev/null</parameter>
+            <parameter>\d\d/\d\d\d\d\d/R/02/A/[^/]++/\w\w</parameter>
+        </function>
+
+        <function name="sendUCPPacket" module="UCP">
+            <parameter>connection</parameter>
+            <parameter>internal</parameter>
+            <parameter>O</parameter>
+            <parameter>02</parameter>
+            <parameter>/3/01111/02222/03333/0123456789//3/534D5343/</parameter>
+        </function>
+
+        <function name="queryTextResponse" module="UCP">
+            <parameter>connection</parameter>
+            <parameter>dev/null</parameter>
+            <parameter>\d\d/\d\d\d\d\d/R/02/A/[^/]++/\w\w</parameter>
+        </function>
+
+        <function name="closeConnection" module="UCP">
+            <parameter>connection</parameter>
+        </function>
+
+
+    <function name="waitOnThreads" module="Basic"/>
+    <function name="stopSMSCServer" module="SMS"/>
+
+</test>

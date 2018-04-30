@@ -1,0 +1,143 @@
+<test>
+	<name>XTT.TC.014</name>
+
+	<description>Test the MM1 encoder/decoder</description>
+
+	<function name="createMM1Packet" module="SMS">
+		<parameter>fistPacket</parameter>
+		<parameter>M_NOTIFICATION_IND</parameter>
+		<parameter>XTTTRANSACTIONID0001</parameter>
+		<parameter>0x11</parameter>
+		<parameter>128</parameter>
+		<parameter>1024</parameter>
+		<parameter>false</parameter>
+		<parameter>3600</parameter>
+		<parameter>http://some.server.xtt724.com/THEDOWNLOADURL</parameter>
+	</function>
+	<function name="createMM1PacketOptions" module="SMS">
+		<parameter>fistPacket</parameter>
+		<parameter>X_MMS_DELIVERY_REPORT</parameter>
+		<parameter>true</parameter>
+	</function>
+	<function name="storeMM1Packet" module="SMS">
+		<parameter>fistPacketBase64</parameter>
+		<parameter>fistPacket</parameter>
+	</function>
+
+	<function name="decodeMM1Packet" module="SMS">
+		<parameter>PACKET</parameter>
+		<variable>fistPacketBase64</variable>
+	</function>
+
+	<function name="createMM1Packet" module="SMS">
+		<parameter>swordPacket</parameter>
+		<parameter>M_SEND_REQ</parameter>
+		<parameter>XTTTRANSACTIONID0001</parameter>
+		<parameter>0x11</parameter>
+		<parameter>41791234567</parameter>
+		<parameter>text/plain</parameter>
+		<parameter>utf-8</parameter>
+	</function>
+	<function name="createMM1PacketOptions" module="SMS">
+		<parameter>swordPacket</parameter>
+		<parameter>X_MMS_DELIVERY_REPORT</parameter>
+		<parameter>false</parameter>
+	</function>
+	<function name="createMM1PacketOptions" module="SMS">
+		<parameter>swordPacket</parameter>
+		<parameter>X_MMS_READ_REPORT</parameter>
+		<parameter>true</parameter>
+	</function>
+	<function name="createMM1PacketOptions" module="SMS">
+		<parameter>swordPacket</parameter>
+		<parameter>X_MMS_DELIVERY_TIME</parameter>
+		<parameter>false</parameter>
+		<parameter>60</parameter>
+	</function>
+	<function name="createMM1PacketContent" module="SMS">
+		<parameter>swordPacket</parameter>
+		<base64encode>Hello World!</base64encode>
+	</function>
+	<function name="storeMM1Packet" module="SMS">
+		<parameter>swordPacketBase64</parameter>
+		<parameter>swordPacket</parameter>
+	</function>
+
+	<function name="decodeMM1Packet" module="SMS">
+		<parameter>PACKET2</parameter>
+		<variable>swordPacketBase64</variable>
+	</function>
+
+
+    <function name="createMM1Packet" module="SMS">
+        <parameter>sendPacketV12</parameter>
+        <parameter>M_SEND_REQ</parameter>
+        <parameter>XTTTRANSACTIONID0001</parameter>
+        <parameter>0x17</parameter>
+        <parameter>123456789</parameter>
+        <parameter>987654321</parameter>
+        <parameter>application/vnd.wap.multipart.mixed</parameter>
+    </function>
+    <function name="createMM1PacketOptions" module="SMS">
+        <parameter>sendPacketV12</parameter>
+        <parameter>X_MMS_DELIVERY_REPORT</parameter>
+        <parameter>true</parameter>
+    </function>
+    <function name="createMM1PacketOptions" module="SMS">
+        <parameter>sendPacketV12</parameter>
+        <parameter>X_MMS_READ_REPORT</parameter>
+        <parameter>true</parameter>
+    </function>
+    <function name="createMM1PacketOptions" module="SMS">
+        <parameter>sendPacketV12</parameter>
+        <parameter>SUBJECT</parameter>
+        <parameter>No, they're all going to laugh at you!</parameter>
+    </function>
+    <function name="createMM1PacketOptions" module="SMS">
+        <parameter>sendPacketV12</parameter>
+        <parameter>X_MMS_MESSAGE_CLASS</parameter>
+        <parameter>128</parameter>
+    </function>
+    <function name="createMM1PacketOptions" module="SMS">
+        <parameter>sendPacketV12</parameter>
+        <parameter>X_MMS_PRIORITY</parameter>
+        <parameter>130</parameter>
+    </function>
+    <function name="createMM1PacketOptions" module="SMS">
+        <parameter>sendPacketV12</parameter>
+        <parameter>X_MMS_SENDER_VISIBILITY</parameter>
+        <parameter>129</parameter>
+    </function>
+    <!--function name="createMM1PacketOptions" module="SMS">
+        <parameter>sendPacketV12</parameter>
+        <parameter>X_MMS_DELIVERY_TIME</parameter>
+        <parameter>false</parameter>
+        <parameter>0</parameter>
+    </function-->
+    <function name="createMM1PacketContentMultipart" module="SMS">
+        <parameter>sendPacketV12</parameter>
+        <base64file>xttTC014.mms.01.bin</base64file>
+        <parameter>text/plain</parameter>
+        <parameter>plaintext.txt</parameter>
+    </function>
+    <function name="createMM1PacketContentMultipart" module="SMS">
+        <parameter>sendPacketV12</parameter>
+        <base64file>xttTC014.mms.02.bin</base64file>
+        <parameter>audio/mpeg</parameter>
+        <parameter>sound.mp3</parameter>
+    </function>
+    <function name="setMM1PacketContentMultipartNumber" module="SMS">
+        <parameter>sendPacketV12</parameter>
+        <parameter>2</parameter>
+    </function>
+    <function name="storeMM1Packet" module="SMS">
+        <parameter>sendPacketV12Base64</parameter>
+        <parameter>sendPacketV12</parameter>
+    </function>
+
+    <function name="decodeMM1Packet" module="SMS">
+        <parameter>PACKETV12Request</parameter>
+        <variable>sendPacketV12Base64</variable>
+    </function>
+
+</test>

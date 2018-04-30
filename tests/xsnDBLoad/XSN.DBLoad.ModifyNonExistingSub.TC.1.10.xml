@@ -1,0 +1,33 @@
+<test>
+	<function name="testName" module="Basic">
+	
+	<parameter>XSN.DBLoad.ModifyNonExistingSub.TC.1.10.xml</parameter>
+	</function>
+	
+	<description>Modify NonExisting Subscriber </description>
+   
+    <function name="sendRemoteCommand" module="Remote">
+    
+    	<parameter>writeFile ModifyNonExistingSub.xml </parameter> 
+         
+        <file>ModifyNonExistingSub.xml</file>
+    
+    </function>
+    
+    <function name="sendRemoteCommand" module="Remote">
+    
+        <configuration>xsn/path</configuration>
+        <configuration>xsn/xms</configuration>
+    
+        
+        <parameter>load db ModifyNonExistingSub.xml</parameter>
+    
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        
+    <parameter>ERROR: XML upload encountered problems and ended prematurely</parameter>
+    <parameter>dev/null</parameter>
+    </function>    
+    
+  </test>

@@ -1,0 +1,119 @@
+<test>	    
+	<name>BlueCoatIntegration.TC.034</name>
+	<description>BlueCoat returns 200 OK / X-vf-categories-policy: [empty], X-vf-categories-local: pending, X-vf-categories-bluecoat: [Non_Sensitive1;Sensitive1;Sensitive2], X-vf-category: [absent] / XMP should block</description>
+
+	
+	<!-- Radius Accounting Start for the Subscriber -->
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+	
+	
+	<!-- Start Target Web Server -->
+	<function name="startWebServer" module="HTTP">
+		<parameter>80</parameter>
+		<testpath/>
+		<parameter>30000</parameter>
+	</function>
+
+	<!-- Start BlueCoat Proxy Server -->
+	<function name="startWebServer" module="HTTP">
+		<parameter>8444</parameter>
+		<testpath/>
+		<parameter>30000</parameter>
+	</function>
+	
+	<function name="setServerDelayms" module="HTTP">
+		<parameter>3000</parameter>
+	</function>
+	
+	<function name="disableFollowRedirects" module="HTTP">
+	</function>	
+	
+		
+	<!-- Define Response Code & the Headers that need to be sent by the BlueCoat Proxy Server -->
+	<function name="setServerReturnCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+	<function name="setServerReturnMessage" module="HTTP">
+		<parameter> OK</parameter>
+	</function>
+	<function name="setServerHeader" module="HTTP">
+		<parameter>X-vf-categories-policy</parameter>
+		<parameter></parameter>
+	</function>
+	<function name="setServerHeader" module="HTTP">
+		<parameter>X-vf-categories-local</parameter>
+		<parameter>pending</parameter>
+	</function>
+	<function name="setServerHeader" module="HTTP">
+		<parameter>X-vf-categories-bluecoat</parameter>
+		<parameter>Non Sensitive Category 001;Sensitive Category 001;Sensitive Category 002</parameter>
+	</function>
+
+	
+	<thread>
+		<function name="waitForRequests" module="HTTP">
+			<parameter>1</parameter>
+		</function>
+		<!-- Check URL sent to the BlueCoat Proxy by XMP -->
+		<function name="checkServerURL" module="HTTP">
+			<parameter>
+				<parameter>http://</parameter>
+				<configuration>system/ip</configuration>
+				<parameter>/page034.html</parameter>
+			</parameter>
+		</function>
+		
+		<!-- Check Headers sent to the BlueCoat Proxy by XMP -->
+		<function name="checkServerHeader" module="HTTP">
+			<parameter>Host</parameter>
+			<configuration>system/ip</configuration>
+		</function>
+		<function name="checkServerHeader" module="HTTP">
+			<parameter>User-Agent</parameter>
+			<parameter>VF Access Layer</parameter>
+		</function>
+		<function name="checkServerHeader" module="HTTP">
+			<parameter>X-vf-category-only</parameter>
+			<parameter>CAT-AL</parameter>
+		</function>
+	</thread>
+		
+	
+	<!-- Send Request from HTTP Client to XMP -->
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>
+			<parameter>http://</parameter>
+			<configuration>system/ip</configuration>
+			<parameter>/page034.html</parameter>
+		</parameter>
+	</function>
+	<!-- Check Response Code sent by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>302</parameter>
+	</function>	
+	<!-- Check Headers sent by XMP -->
+	<function name="checkHeader" module="HTTP">
+		<parameter>location</parameter>
+		<parameter>http://www.freespeechcoalition.com/</parameter>
+	</function>
+	
+	
+	<!-- Make Sure no request is sent to the Target Web Server -->
+	<function name="waitForTimeoutRequests" module="HTTP">
+		<parameter>10000</parameter>
+		<parameter>1</parameter>
+	</function>
+	
+	
+	<!-- Stop all Web Servers -->
+	<function name="stopWebServer" module="HTTP"/>
+	
+	<!-- Radius Accounting Stop for the Subscriber -->
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function> 
+</test>

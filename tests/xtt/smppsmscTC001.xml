@@ -1,0 +1,271 @@
+<test>
+    <function name="testName" module="Basic">
+        <parameter>SMPP.SMSC.TC.001</parameter>
+    </function>
+
+    <function name="startSMSCServer" module="SMS">
+        <configuration>SMSCSERVER/PORT</configuration>
+        <parameter>SMPP</parameter>
+    </function>
+
+        <function name="openConnection" module="SMPP">
+            <parameter>connection</parameter>
+            <configuration>SYSTEM/IP</configuration>
+            <configuration>SMSCSERVER/PORT</configuration>
+        </function>
+
+        <function name="sendSMPPPacket" module="SMPP">
+            <parameter>connection</parameter>
+            <parameter>BIND_TRANSMITTER</parameter>
+            <parameter>internal</parameter>
+            <parameter>systemid</parameter>
+            <parameter>password</parameter>
+            <parameter>system_type</parameter>
+            <parameter>0x50</parameter>
+            <parameter>0</parameter>
+            <parameter>0</parameter>
+            <parameter>0</parameter>
+            <parameter>address_range</parameter>
+        </function>
+
+        <function name="addTLV" module="SMPP">
+            <parameter>connection</parameter>
+            <parameter>CONGESTION_STATE</parameter>
+            <parameter>58</parameter>
+        </function>
+
+    <!--pointer=addBytesToArray(packet,pointer,service_type            );
+                pointer=addBytesToArray(packet,pointer,source_addr_ton         );
+                pointer=addBytesToArray(packet,pointer,source_addr_npi         );
+                pointer=addBytesToArray(packet,pointer,source_address          );
+                pointer=addBytesToArray(packet,pointer,dest_addr_ton           );
+                pointer=addBytesToArray(packet,pointer,dest_addr_npi           );
+                pointer=addBytesToArray(packet,pointer,destination_addr        );
+                pointer=addBytesToArray(packet,pointer,esm_class               );
+                pointer=addBytesToArray(packet,pointer,protocol_id             );
+                pointer=addBytesToArray(packet,pointer,priority_flag           );
+                pointer=addBytesToArray(packet,pointer,schedule_delivery_time  );
+                pointer=addBytesToArray(packet,pointer,validity_period         );
+                pointer=addBytesToArray(packet,pointer,registered_delivery     );
+                pointer=addBytesToArray(packet,pointer,replace_if_present_flag );
+                pointer=addBytesToArray(packet,pointer,data_coding             );
+                pointer=addBytesToArray(packet,pointer,sm_default_msg_id       );
+                pointer=addBytesToArray(packet,pointer,sm_length               );
+                pointer=addBytesToArray(packet,pointer,short_message           );
+                pointer=addBytesToArray(packet,pointer,c.getTLVs()             );
+                -->
+
+<!--
+
+'service_type', () ... 00
+'source_addr_ton', (2) ... 02
+'source_addr_npi', (8) ... 08
+'source_addr', (555) ... 35 35 35 00
+'dest_addr_ton', (1) ... 01
+'dest_addr_npi', (1) ... 01
+'dest_addr', (555555555) ... 35 35 35 35 35 35 35 35 35 00
+'esm_class', (0) ... 00
+'protocol_id', (0) ... 00
+'priority_flag', (0) ... 00
+'schedule_delivery_time', () ... 00
+'validity_period', () ... 00
+'registered_delivery', (0) ... 00
+'replace_if_present_flag', (0) ... 00
+'data_coding', (0) ... 00
+'sm_default_msg_id', (0) ... 00
+'sm_length', (15) ... 0F
+'short_message', (Hello wikipedia) ... 48 65 6C 6C 6F 20 77 69 6B 69 70 65 64 69 61'
+
+-->
+    <function name="sendSMPPPacket" module="SMPP">
+            <parameter>connection</parameter><!--connection-->
+            <parameter>SUBMIT_SM</parameter><!--commandID-->
+            <parameter>internal</parameter><!--sequence-->
+            <parameter>STYP</parameter><!--service type-->
+            <parameter>0</parameter><!--source_addr_ton-->
+            <parameter>0</parameter><!--source_addr_npi-->
+            <parameter>+41794122345</parameter><!--source_address-->
+            <parameter>0</parameter><!--dest_addr_ton-->
+            <parameter>0</parameter><!--dest_addr_npi-->
+            <parameter>+41790001234</parameter><!--destination_addr-->
+            <parameter>0</parameter><!--esm_class-->
+            <parameter>0</parameter><!--protocol_id-->
+            <parameter>0</parameter><!--priority_flag-->
+            <parameter></parameter><!--schedule_delivery_time-->
+            <parameter></parameter><!--validity_period-->
+            <parameter>0</parameter><!--registered_delivery-->
+            <parameter>0</parameter><!--replace_if_present_flag-->
+            <parameter>0</parameter><!--data_coding-->
+            <parameter>0</parameter><!--sm_default_msg_id-->
+            <!--sm_length-->
+            <parameter>This is the Message</parameter><!--short_message-->
+            <!--getTLVs-->
+        </function>
+
+        <function name="clearTLVs" module="SMPP">
+            <parameter>connection</parameter>
+        </function>
+        <function name="addTLV" module="SMPP">
+            <parameter>connection</parameter>
+            <parameter>CONGESTION_STATE</parameter>
+            <parameter>66</parameter>
+        </function>
+        <function name="sendSMPPPacket" module="SMPP">
+            <parameter>connection</parameter>
+            <parameter>SUBMIT_MULTI</parameter>
+            <parameter>internal</parameter>
+            <parameter>STYP</parameter>
+            <parameter>0</parameter>
+            <parameter>0</parameter>
+            <parameter>+41794122345</parameter>
+            <parameter>4</parameter>
+                <parameter>1</parameter>
+                <parameter>0</parameter>
+                <parameter>0</parameter>
+                <parameter>+41790001234</parameter>
+                <parameter>2</parameter>
+                <parameter>somelist</parameter>
+                <parameter>1</parameter>
+                <parameter>0</parameter>
+                <parameter>0</parameter>
+                <parameter>+41790005678</parameter>
+                <parameter>2</parameter>
+                <parameter>otherlist</parameter>
+            <parameter>0</parameter>
+            <parameter>0</parameter>
+            <parameter>0</parameter>
+            <parameter></parameter>
+            <parameter></parameter>
+            <parameter>0</parameter>
+            <parameter>0</parameter>
+            <parameter>0</parameter>
+            <parameter>0</parameter>
+            <parameter>This is the Message</parameter>
+        </function>
+        <function name="clearTLVs" module="SMPP">
+            <parameter>connection</parameter>
+        </function>
+
+        <function name="sendSMPPPacket" module="SMPP">
+            <parameter>connection</parameter>
+            <parameter>UNBIND</parameter>
+            <parameter>internal</parameter>
+        </function>
+
+        <function name="closeConnection" module="SMPP">
+            <parameter>connection</parameter>
+        </function>
+
+
+    <!-- SERVER CONNECTION -->
+        <function name="createServerConnection" module="SMPP">
+            <parameter>servercon</parameter>
+            <configuration>SYSTEM/IP</configuration>
+            <configuration>SMSCSERVER/PORT</configuration>
+        </function>
+
+        <function name="sendSMPPPacket" module="SMPP">
+            <parameter>servercon</parameter>
+            <parameter>BIND_TRANSMITTER</parameter>
+            <parameter>internal</parameter>
+            <parameter>systemid</parameter>
+            <parameter>password</parameter>
+            <parameter>system_type</parameter>
+            <parameter>0x50</parameter>
+            <parameter>0</parameter>
+            <parameter>0</parameter>
+            <parameter>0</parameter>
+            <parameter>address_range</parameter>
+        </function>
+
+        <function name="addTLV" module="SMPP">
+            <parameter>servercon</parameter>
+            <parameter>CONGESTION_STATE</parameter>
+            <parameter>58</parameter>
+        </function>
+        <function name="sendSMPPPacket" module="SMPP">
+            <parameter>servercon</parameter>
+            <parameter>SUBMIT_SM</parameter>
+            <parameter>internal</parameter>
+            <parameter>STYP</parameter>
+            <parameter>0</parameter>
+            <parameter>0</parameter>
+            <parameter>+41794122345</parameter>
+            <parameter>0</parameter>
+            <parameter>0</parameter>
+            <parameter>+41790001234</parameter>
+            <parameter>0</parameter>
+            <parameter>0</parameter>
+            <parameter>0</parameter>
+            <parameter></parameter>
+            <parameter></parameter>
+            <parameter>0</parameter>
+            <parameter>0</parameter>
+            <parameter>0</parameter>
+            <parameter>0</parameter>
+            <parameter>This is the Message</parameter>
+        </function>
+
+        <function name="clearTLVs" module="SMPP">
+            <parameter>servercon</parameter>
+        </function>
+        <function name="addTLV" module="SMPP">
+            <parameter>servercon</parameter>
+            <parameter>CONGESTION_STATE</parameter>
+            <parameter>66</parameter>
+        </function>
+        <function name="sendSMPPPacket" module="SMPP">
+            <parameter>servercon</parameter>
+            <parameter>SUBMIT_MULTI</parameter>
+            <parameter>internal</parameter>
+            <parameter>STYP</parameter>
+            <parameter>0</parameter>
+            <parameter>0</parameter>
+            <parameter>+41794122345</parameter>
+            <parameter>4</parameter>
+                <parameter>1</parameter>
+                <parameter>0</parameter>
+                <parameter>0</parameter>
+                <parameter>+41790001234</parameter>
+                <parameter>2</parameter>
+                <parameter>somelist</parameter>
+                <parameter>1</parameter>
+                <parameter>0</parameter>
+                <parameter>0</parameter>
+                <parameter>+41790005678</parameter>
+                <parameter>2</parameter>
+                <parameter>otherlist</parameter>
+            <parameter>0</parameter>
+            <parameter>0</parameter>
+            <parameter>0</parameter>
+            <parameter></parameter>
+            <parameter></parameter>
+            <parameter>0</parameter>
+            <parameter>0</parameter>
+            <parameter>0</parameter>
+            <parameter>0</parameter>
+            <parameter>This is the Message</parameter>
+        </function>
+        <function name="clearTLVs" module="SMPP">
+            <parameter>servercon</parameter>
+        </function>
+
+        <function name="sendSMPPPacket" module="SMPP">
+            <parameter>servercon</parameter>
+            <parameter>UNBIND</parameter>
+            <parameter>internal</parameter>
+        </function>
+
+        <function name="sleep" module="basic">
+            <parameter>2000</parameter>
+        </function>
+
+        <function name="closeConnection" module="SMPP">
+            <parameter>servercon</parameter>
+        </function>
+
+
+    <function name="waitOnThreads" module="Basic"/>
+    <function name="stopSMSCServer" module="SMS"/>
+
+</test>

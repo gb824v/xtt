@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<xmpSmsConnections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<channels>
+		<connectChannel 
+				maxSegmentPduSize="100" 
+				name="SmsChannel" 
+				policy="backup" 
+				protocol="UCP" 
+				settings="UcpSettings">
+			<connection address="30080" name="SmsConnection" password="" username="xmp"/>
+			<remoteAddress ipAddress="" port=""/>
+		</connectChannel>
+	</channels>
+	<settings>
+		<ucpSettings 
+				disableAuthentication="false" 
+				linkDownMaxRetries="1" 
+				linkDownRetryTimeoutSeconds="30" 
+				maxConcurrentReq="1" 
+				maxMessagesPerSecond="0" 
+				maxPduSize="4096" 
+				mode="active" 
+				name="UcpSettings" 
+				throttleIncomingTcp="false" 
+				use60Open="true">
+			<ucpConnectionOptions authenticationCode="" npi="5" ton="6"/>
+			<ucpMessageOptionSets>
+			 	<ucpMessageOptionSet optionSetName="DEFAULT"
+					sendOperation="51"
+					sourceAddr="30080"
+					lastResortAddress="30080"
+					lastResortId="0539"
+					messageClass="0" />
+				<ucpMessageOptionSet 
+					messageType="3" 
+					optionSetName="SmsMessageOptions" 
+					sendOperation="51"/>
+				<ucpMessageOptionSet 
+					messageType="3" 
+					optionSetName="SmsMessageOptionsDnNeeded" 
+					sendOperation="51" 
+					notificationRequest="1" 
+					notificationType="3"/>
+			</ucpMessageOptionSets>
+		</ucpSettings>
+	</settings>
+</xmpSmsConnections>

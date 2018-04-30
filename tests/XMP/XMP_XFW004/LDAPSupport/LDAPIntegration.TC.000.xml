@@ -1,0 +1,54 @@
+<test>	    
+	<name>LDAPIntegration.TC.000</name>
+	<description>Setup LDAP test Environment</description>
+
+	<!-- Load LDAP Request Modification File -->
+	<function name="setVariable" module="Basic">
+				<parameter>reqmodRule</parameter>
+				<file>LDAPSupport.rule.xml</file>
+    </function>
+
+	<function name="replace" module="Basic">
+					<parameter>reqmodRule</parameter>
+					<parameter>%IPADDRESS%</parameter>
+					<configuration>SYSTEM/IP</configuration>
+	</function>
+
+	<function name="writeRemoteFile" module="Remote">
+					<parameter>LDAPSupport.rule.xml</parameter>
+					<variable>reqmodRule</variable>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+					<parameter>
+					<parameter>load data </parameter>
+					<parameter>LDAPSupport.rule.xml</parameter>
+					</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+					<parameter>^Loaded requestmodifications.*</parameter>
+					<parameter>dev/null</parameter>
+				</function>
+		
+	<!-- Extract Current (Original) Workflow Constans File -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>extract data workflowconstants LDAP_pre_WorkflowConstants.xml</parameter>
+	</function>
+	
+	
+	<!-- Load LDAP_WorkflowConstants.xml -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>LDAP_WorkflowConstants.xml</parameter>
+		<file>LDAP_WorkflowConstants.xml</file>
+	</function>
+		
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>load data LDAP_WorkflowConstants.xml</parameter>
+	</function>
+		
+	<function name="queryResponse" module="Remote">
+		<parameter>Loaded workflowconstants</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+</test>

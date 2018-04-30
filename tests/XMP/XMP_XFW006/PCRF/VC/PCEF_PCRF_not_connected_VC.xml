@@ -1,0 +1,308 @@
+<test>
+<name>No connection to PCRF causes error 403 - Not Authenticated</name>
+<qcid></qcid>
+<description>
+This test will validate that the XMP block service to the user if the PCRF server is not connected.We will validate that the XMP recognize the disconnection using the transaction logs.
+</description>
+<steps>
+Write "logging" file to remote XTT
+Load logging file
+Verify logging file loaded
+Remark prefix for anonymous user in workflowconstants file
+Load workflowconstants data file
+Verify new WorkflowConstants file loaded
+Write reqmod file to remote XTT
+Load reqmod
+Verify reqmod loaded
+Restart LOGGER proc for new log file
+Start web server
+Send GET request
+Verify 403 "Not authenticated"
+Get user's details from PSE
+Grep user's details from the PSE
+Verify user not exist in the PSE
+Sleep 2 secs
+Get newest log file
+Logscan the log to a tmp file
+Grep result message - unable to open connection
+Verify expected result
+Grep for result - FAIL
+Verify expected result
+Write empty reqmod to remote XTT
+Load reqmod
+Verify reqmod loaded successfully
+Load original logging file
+Verify original logging file loaded
+Verify original logging file loaded
+Delete temporary files
+Stop web server
+Unremark prefix for anonymous user in workflowconstants file
+Load workflowconstants data file
+Verify new WorkflowConstants file loaded
+</steps>
+<designer>Administrator </designer>
+<creationdate>2012-02-28 10:23:39 </creationdate>
+<testlevel>Regression</testlevel>
+<xfwVersion>XMP_XFW006</xfwVersion>
+<mandatory>false</mandatory>
+<stepname>Write "logging" file to remote XTT</stepname>
+<stepid>1</stepid>
+<function name="writeRemoteFile" module="Remote">
+<parameter>logging.xml</parameter>
+<xml>&lt;?xml version="1.0"?&gt;
+<logging>
+  <process namePattern="^HTTP-PROXY|^TCP-ROUTER|^WAP1-PROXY">
+    <includeElements>
+      <element name="DIAM*" />
+      <element name="PACE_*" />
+    </includeElements>
+  </process>
+  <process namePattern="^PRESENCE-STORE">
+    <includeElements>
+      <element name="PSE_*" />
+      <element name="RADIUS_*" />
+    </includeElements>
+    <excludeElements>
+      <element name="PSE_ALREADY_LOGGED_ON" />
+    </excludeElements>
+  </process>
+  <process namePattern="^STATS-COLLECTOR">
+    <includeElements>
+      <element name="STATMON_*" />
+    </includeElements>
+  </process>
+  <process namePattern="^DASHBOARD">
+    <includeElements>
+      <element name="TCP_RemoteAddress" />
+    </includeElements>
+  </process>
+</logging>
+
+</xml>
+</function>
+<mandatory>false</mandatory>
+<stepname>Load logging file</stepname>
+<stepid>2</stepid>
+<function name="executeRemoteXMSCommand" module="Remote">
+<parameter>load data logging.xml</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Verify logging file loaded</stepname>
+<stepid>3</stepid>
+<function name="queryResponse" module="Remote">
+<parameter>Loaded logging</parameter>
+<parameter>test</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Remark prefix for anonymous user in workflowconstants file</stepname>
+<stepid>4</stepid>
+<function name="executeRemoteCommand" module="Remote">
+<parameter>sed -i 's/^&lt;workflowConstant name=\"pcefUserIdPrefix\"&gt;999_&lt;\/workflowConstant&gt;/&lt;!--&lt;workflowConstant name=\"pcefUserIdPrefix\"&gt;999_&lt;\/workflowConstant&gt;--&gt;/' /opt/xmp/examples/xmp_WorkflowConstants.xml</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Load workflowconstants data file</stepname>
+<stepid>5</stepid>
+<function name="executeRemoteXMSCommand" module="Remote">
+<parameter>load data /opt/xmp/examples/xmp_WorkflowConstants.xml</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Verify new WorkflowConstants file loaded</stepname>
+<stepid>6</stepid>
+<function name="queryResponse" module="Remote">
+<parameter>Loaded workflowconstants.*</parameter>
+<parameter>nothing</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Write reqmod file to remote XTT</stepname>
+<stepid>7</stepid>
+<function name="writeRemoteFile" module="Remote">
+<parameter>reqmodPCEF.xml</parameter>
+<file>reqmod_combined.xml</file>
+</function>
+<mandatory>false</mandatory>
+<stepname>Load reqmod</stepname>
+<stepid>8</stepid>
+<function name="executeRemoteXMSCommand" module="Remote">
+<parameter>load data reqmodPCEF.xml</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Verify reqmod loaded</stepname>
+<stepid>9</stepid>
+<function name="queryResponse" module="Remote">
+<parameter>^Loaded requestmodifications.*</parameter>
+<parameter>test</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Restart LOGGER proc for new log file</stepname>
+<stepid>10</stepid>
+<function name="restartProcess" module="Remote">
+<parameter>LOGGER.*</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Start web server</stepname>
+<stepid>11</stepid>
+<function name="startWebServer" module="HTTP"/>
+<mandatory>false</mandatory>
+<stepname>Send GET request</stepname>
+<stepid>12</stepid>
+<function name="sendGetRequest" module="HTTP">
+<parameter>
+<parameter>http://</parameter>
+<configuration>system/ip</configuration>
+<parameter>/test.html</parameter>
+</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Verify 403 "Not authenticated"</stepname>
+<stepid>13</stepid>
+<function name="checkResponseCode" module="HTTP">
+<parameter>403</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Get user's details from PSE</stepname>
+<stepid>14</stepid>
+<function name="executeRemoteXMSCommand" module="Remote">
+<parameter>
+<configuration>remote/command</configuration>
+<parameter>pse3cli -a </parameter>
+<configuration>system/ip</configuration>
+<parameter> rbng > /tmp/tmp.tmp</parameter>
+</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Grep user's details from the PSE</stepname>
+<stepid>15</stepid>
+<function name="executeRemoteCommand" module="Remote">
+<parameter>wc -l /tmp/tmp.tmp | awk '{ print $1 }'</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Verify user not exist in the PSE</stepname>
+<stepid>16</stepid>
+<function name="queryResponse" module="Remote">
+<parameter>0</parameter>
+<parameter>response</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Sleep 2 secs</stepname>
+<stepid>17</stepid>
+<function name="sleep" module="Basic">
+<parameter>2000</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Get newest log file</stepname>
+<stepid>18</stepid>
+<function name="getNewestRemoteFileName" module="Remote">
+<parameter>newestlogfile</parameter>
+<configuration>remote/logpath</configuration>
+<parameter>XMP</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Logscan the log to a tmp file</stepname>
+<stepid>19</stepid>
+<function name="executeRemoteXMSCommand" module="Remote">
+<parameter>
+<configuration>remote/command</configuration>
+<parameter>logscan -in </parameter>
+<variable>newestlogfile</variable>
+<parameter> -out x.log</parameter>
+</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Grep result message - unable to open connection</stepname>
+<stepid>20</stepid>
+<function name="executeRemoteCommand" module="Remote">
+<parameter>/bin/grep DIAMCTX_ResultMsg: x.log</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Verify expected result</stepname>
+<stepid>21</stepid>
+<function name="queryResponse" module="Remote">
+<parameter>unable to open connection</parameter>
+<parameter>initial</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Grep for result - FAIL</stepname>
+<stepid>22</stepid>
+<function name="executeRemoteCommand" module="Remote">
+<parameter>/bin/grep DIAMCTX_Result: x.log</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Verify expected result</stepname>
+<stepid>23</stepid>
+<function name="queryResponse" module="Remote">
+<parameter>FAIL</parameter>
+<parameter>initial</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Write empty reqmod to remote XTT</stepname>
+<stepid>24</stepid>
+<function name="writeRemoteFile" module="Remote">
+<parameter>REQMOD_EmptyRules.xml</parameter>
+<parameter>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;requestModifications&gt;&lt;/requestModifications&gt;</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Load reqmod</stepname>
+<stepid>25</stepid>
+<function name="executeRemoteXMSCommand" module="Remote">
+<parameter>
+<parameter>load data </parameter>
+<parameter>REQMOD_EmptyRules.xml</parameter>
+</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Verify reqmod loaded successfully</stepname>
+<stepid>26</stepid>
+<function name="queryResponse" module="Remote">
+<parameter>^Loaded requestmodifications.*</parameter>
+<parameter>dev/null</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Load original logging file</stepname>
+<stepid>27</stepid>
+<function name="executeRemoteXMSCommand" module="Remote">
+<parameter>load data /opt/xmp/examples/xmp_Logging.xml</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Verify original logging file loaded</stepname>
+<stepid>28</stepid>
+<function name="queryResponse" module="Remote">
+<parameter>Loaded logging</parameter>
+<parameter>test</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Verify original logging file loaded</stepname>
+<stepid>29</stepid>
+<function name="queryResponse" module="Remote">
+<parameter>Loaded logging</parameter>
+<parameter>test</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Delete temporary files</stepname>
+<stepid>30</stepid>
+<function name="executeRemoteCommand" module="Remote">
+<parameter>rm -f x.log /tmp/tmp.tmp</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Stop web server</stepname>
+<stepid>31</stepid>
+<function name="stopWebServer" module="HTTP"/>
+<mandatory>false</mandatory>
+<stepname>Unremark prefix for anonymous user in workflowconstants file</stepname>
+<stepid>32</stepid>
+<function name="executeRemoteCommand" module="Remote">
+<parameter>sed -i 's/&lt;!--&lt;workflowConstant name=\"pcefUserIdPrefix\"&gt;999_&lt;\/workflowConstant&gt;--&gt;/&lt;workflowConstant name=\"pcefUserIdPrefix\"&gt;999_&lt;\/workflowConstant&gt;/' /opt/xmp/examples/xmp_WorkflowConstants.xml</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Load workflowconstants data file</stepname>
+<stepid>33</stepid>
+<function name="executeRemoteXMSCommand" module="Remote">
+<parameter>load data /opt/xmp/examples/xmp_WorkflowConstants.xml</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Verify new WorkflowConstants file loaded</stepname>
+<stepid>34</stepid>
+<function name="queryResponse" module="Remote">
+<parameter>Loaded workflowconstants.*</parameter>
+<parameter>nothing</parameter>
+</function>
+</test>

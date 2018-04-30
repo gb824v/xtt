@@ -1,0 +1,598 @@
+<test>
+    <name>XTT.TC.016</name>
+    <description>Test the decodeHTML function</description>
+
+    <function name="setVariable" module="Basic">
+    <parameter>text</parameter>
+    <xml><html>
+        <head></head>
+        <body>this is the Page
+            <A HREF="http://www.google.ch">Google</A>
+            <a href="http://www.ibm.com/">ibm</a>
+            <a class="blah" href="http://www.ibm.com/">http://www.ibm.com/</a>
+            <A href="http://www.google.ch/">google again</A>
+            <A href="http://groups.google.ch/">Groups at google</A>
+            <A class="blah" href="http://www.microsoft.com/windows/" somethingelse="12">Microsoft Windows</A>
+            <A href="/pictures/index.html">/pictures/index.html</A>
+            <A href="http://xtt.724.com/test1">X</A>
+            <A href="http://xtt.724.com/test2/test1/index.html">Test</A>
+            <A href="http://xtt.724.com/test2/test1/index.html">http://xtt.724.com/test2/test1/index.html</A>
+            <A href="http://xtt.724.com/test2/test1/index.xml">http://xtt.724.com/test2/test1/index.xml</A>
+            
+            <img src="/somepicture1.jpg" width="132" height="63" border="0" alt=""/>
+            <img src="/directory/somepicture1.gif" width="132" height="63" border="0" alt=""/>
+            <img SRC="/directory/somepicture1.gif" width="132" height="63" border="0" alt=""/>
+            
+            <img width="132" height="63"  src="/somepicture2.jpg" border="0" alt=""/>
+            <img src="/somepicture2.jpg" width="132" height="63" border="0" alt=""/>
+            <img width="132" height="63" border="0" alt="bah!" src="http://xtt.724.com/somepicture2.jpg" />
+            <img src="pic/somepicture2.jpg" width="132" height="63" border="0" alt=""></img>
+            <img src="pictures/somepicture2.jpg" width="132" height="63" border="0" alt=""/>
+            <IMG src="pictures2/somepicture2.jpg" width="132" height="63" border="0" alt=""></IMG>
+            <img src="somepicture2.jpg" width="132" height="63" border="0" alt=""/>
+            
+            <img width="132" height="63" border="0" alt="bah!" src="http://xtt.724.com/somepicture3.jpg" />
+            <imG src="/somepicture3.jpg" width="132" height="63" border="0" alt=""/>
+            <img width="132" height="63"  src="/somepicture3.jpg" border="0" alt=""/>
+            <iMg width="132" height="63" border="0" alt="bah!" src="http://xtt.724.com/somepicture4.jpg" />
+            <img width="132" height="63"  src="/somepicture4.jpg" border="0" alt=""/>
+            <imG sRc="/directory/somepicture4.gif" width="132" height="63" border="0" alt=""/>
+        </body>
+        </html></xml>
+    </function>
+
+    <function name="decodeHTML" module="http">
+        <parameter>store</parameter>
+        <parameter></parameter>
+        <variable>text</variable>
+    </function>
+    
+    <function name="compareString" module="basic">
+        <variable>store/image/length</variable>
+        <parameter>13</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/0</variable>
+        <parameter>/directory/somepicture1.gif</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/1</variable>
+        <parameter>/directory/somepicture4.gif</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/2</variable>
+        <parameter>/somepicture1.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/3</variable>
+        <parameter>/somepicture2.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/4</variable>
+        <parameter>/somepicture3.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/5</variable>
+        <parameter>/somepicture4.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/6</variable>
+        <parameter>http://xtt.724.com/somepicture2.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/7</variable>
+        <parameter>http://xtt.724.com/somepicture3.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/8</variable>
+        <parameter>http://xtt.724.com/somepicture4.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/9</variable>
+        <parameter>pic/somepicture2.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/10</variable>
+        <parameter>pictures/somepicture2.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/11</variable>
+        <parameter>pictures2/somepicture2.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/12</variable>
+        <parameter>somepicture2.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/length</variable>
+        <parameter>9</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/0</variable>
+        <parameter>/pictures/index.html</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/1</variable>
+        <parameter>http://groups.google.ch/</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/2</variable>
+        <parameter>http://www.google.ch</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/3</variable>
+        <parameter>http://www.google.ch/</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/4</variable>
+        <parameter>http://www.ibm.com/</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/5</variable>
+        <parameter>http://www.microsoft.com/windows/</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/6</variable>
+        <parameter>http://xtt.724.com/test1</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/7</variable>
+        <parameter>http://xtt.724.com/test2/test1/index.html</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/8</variable>
+        <parameter>http://xtt.724.com/test2/test1/index.xml</parameter>
+    </function>
+    
+    
+    <function name="decodeHTML" module="http">
+        <parameter>store2</parameter>
+        <parameter>http://xtt.724.com/pictures/index.html</parameter>
+        <variable>text</variable>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store2/image/length</variable>
+        <parameter>10</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store2/image/0</variable>
+        <parameter>http://xtt.724.com/directory/somepicture1.gif</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store2/image/1</variable>
+        <parameter>http://xtt.724.com/directory/somepicture4.gif</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store2/image/2</variable>
+        <parameter>http://xtt.724.com/pictures/pic/somepicture2.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store2/image/3</variable>
+        <parameter>http://xtt.724.com/pictures/pictures/somepicture2.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store2/image/4</variable>
+        <parameter>http://xtt.724.com/pictures/pictures2/somepicture2.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store2/image/5</variable>
+        <parameter>http://xtt.724.com/pictures/somepicture2.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store2/image/6</variable>
+        <parameter>http://xtt.724.com/somepicture1.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store2/image/7</variable>
+        <parameter>http://xtt.724.com/somepicture2.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store2/image/8</variable>
+        <parameter>http://xtt.724.com/somepicture3.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store2/image/9</variable>
+        <parameter>http://xtt.724.com/somepicture4.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store2/link/length</variable>
+        <parameter>9</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store2/link/0</variable>
+        <parameter>http://groups.google.ch/</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store2/link/1</variable>
+        <parameter>http://www.google.ch</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store2/link/2</variable>
+        <parameter>http://www.google.ch/</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store2/link/3</variable>
+        <parameter>http://www.ibm.com/</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store2/link/4</variable>
+        <parameter>http://www.microsoft.com/windows/</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store2/link/5</variable>
+        <parameter>http://xtt.724.com/pictures/index.html</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store2/link/6</variable>
+        <parameter>http://xtt.724.com/test1</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store2/link/7</variable>
+        <parameter>http://xtt.724.com/test2/test1/index.html</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store2/link/8</variable>
+        <parameter>http://xtt.724.com/test2/test1/index.xml</parameter>
+    </function>
+    
+    
+    
+    <function name="decodeHTML" module="http">
+        <parameter>store</parameter>
+        <parameter>http://xtt.724.com/</parameter>
+        <variable>text</variable>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/length</variable>
+        <parameter>9</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/0</variable>
+        <parameter>http://xtt.724.com/directory/somepicture1.gif</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/1</variable>
+        <parameter>http://xtt.724.com/directory/somepicture4.gif</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/2</variable>
+        <parameter>http://xtt.724.com/pic/somepicture2.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/3</variable>
+        <parameter>http://xtt.724.com/pictures/somepicture2.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/4</variable>
+        <parameter>http://xtt.724.com/pictures2/somepicture2.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/5</variable>
+        <parameter>http://xtt.724.com/somepicture1.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/6</variable>
+        <parameter>http://xtt.724.com/somepicture2.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/7</variable>
+        <parameter>http://xtt.724.com/somepicture3.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/8</variable>
+        <parameter>http://xtt.724.com/somepicture4.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/length</variable>
+        <parameter>9</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/0</variable>
+        <parameter>http://groups.google.ch/</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/1</variable>
+        <parameter>http://www.google.ch</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/2</variable>
+        <parameter>http://www.google.ch/</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/3</variable>
+        <parameter>http://www.ibm.com/</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/4</variable>
+        <parameter>http://www.microsoft.com/windows/</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/5</variable>
+        <parameter>http://xtt.724.com/pictures/index.html</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/6</variable>
+        <parameter>http://xtt.724.com/test1</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/7</variable>
+        <parameter>http://xtt.724.com/test2/test1/index.html</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/8</variable>
+        <parameter>http://xtt.724.com/test2/test1/index.xml</parameter>
+    </function>
+    
+    
+    
+    <function name="decodeHTML" module="http">
+        <parameter>store</parameter>
+        <parameter>http://xtt.724.com/index.html</parameter>
+        <variable>text</variable>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/length</variable>
+        <parameter>9</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/0</variable>
+        <parameter>http://xtt.724.com/directory/somepicture1.gif</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/1</variable>
+        <parameter>http://xtt.724.com/directory/somepicture4.gif</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/2</variable>
+        <parameter>http://xtt.724.com/pic/somepicture2.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/3</variable>
+        <parameter>http://xtt.724.com/pictures/somepicture2.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/4</variable>
+        <parameter>http://xtt.724.com/pictures2/somepicture2.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/5</variable>
+        <parameter>http://xtt.724.com/somepicture1.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/6</variable>
+        <parameter>http://xtt.724.com/somepicture2.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/7</variable>
+        <parameter>http://xtt.724.com/somepicture3.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/8</variable>
+        <parameter>http://xtt.724.com/somepicture4.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/length</variable>
+        <parameter>9</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/0</variable>
+        <parameter>http://groups.google.ch/</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/1</variable>
+        <parameter>http://www.google.ch</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/2</variable>
+        <parameter>http://www.google.ch/</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/3</variable>
+        <parameter>http://www.ibm.com/</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/4</variable>
+        <parameter>http://www.microsoft.com/windows/</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/5</variable>
+        <parameter>http://xtt.724.com/pictures/index.html</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/6</variable>
+        <parameter>http://xtt.724.com/test1</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/7</variable>
+        <parameter>http://xtt.724.com/test2/test1/index.html</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/8</variable>
+        <parameter>http://xtt.724.com/test2/test1/index.xml</parameter>
+    </function>
+    
+    
+    
+    <function name="decodeHTML" module="http">
+        <parameter>store</parameter>
+        <parameter>http://xtt.724.com/pic/pac/puc/</parameter>
+        <variable>text</variable>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/length</variable>
+        <parameter>10</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/0</variable>
+        <parameter>http://xtt.724.com/directory/somepicture1.gif</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/1</variable>
+        <parameter>http://xtt.724.com/directory/somepicture4.gif</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/2</variable>
+        <parameter>http://xtt.724.com/pic/pac/puc/pic/somepicture2.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/3</variable>
+        <parameter>http://xtt.724.com/pic/pac/puc/pictures/somepicture2.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/4</variable>
+        <parameter>http://xtt.724.com/pic/pac/puc/pictures2/somepicture2.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/5</variable>
+        <parameter>http://xtt.724.com/pic/pac/puc/somepicture2.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/6</variable>
+        <parameter>http://xtt.724.com/somepicture1.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/7</variable>
+        <parameter>http://xtt.724.com/somepicture2.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/8</variable>
+        <parameter>http://xtt.724.com/somepicture3.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/9</variable>
+        <parameter>http://xtt.724.com/somepicture4.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/length</variable>
+        <parameter>9</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/0</variable>
+        <parameter>http://groups.google.ch/</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/1</variable>
+        <parameter>http://www.google.ch</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/2</variable>
+        <parameter>http://www.google.ch/</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/3</variable>
+        <parameter>http://www.ibm.com/</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/4</variable>
+        <parameter>http://www.microsoft.com/windows/</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/5</variable>
+        <parameter>http://xtt.724.com/pictures/index.html</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/6</variable>
+        <parameter>http://xtt.724.com/test1</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/7</variable>
+        <parameter>http://xtt.724.com/test2/test1/index.html</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/8</variable>
+        <parameter>http://xtt.724.com/test2/test1/index.xml</parameter>
+    </function>
+    
+    
+    
+    <function name="decodeHTML" module="http">
+        <parameter>store</parameter>
+        <parameter>http://xtt.724.com/pic/pac/puc/index.html</parameter>
+        <variable>text</variable>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/length</variable>
+        <parameter>10</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/0</variable>
+        <parameter>http://xtt.724.com/directory/somepicture1.gif</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/1</variable>
+        <parameter>http://xtt.724.com/directory/somepicture4.gif</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/2</variable>
+        <parameter>http://xtt.724.com/pic/pac/puc/pic/somepicture2.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/3</variable>
+        <parameter>http://xtt.724.com/pic/pac/puc/pictures/somepicture2.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/4</variable>
+        <parameter>http://xtt.724.com/pic/pac/puc/pictures2/somepicture2.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/5</variable>
+        <parameter>http://xtt.724.com/pic/pac/puc/somepicture2.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/6</variable>
+        <parameter>http://xtt.724.com/somepicture1.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/7</variable>
+        <parameter>http://xtt.724.com/somepicture2.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/8</variable>
+        <parameter>http://xtt.724.com/somepicture3.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/image/9</variable>
+        <parameter>http://xtt.724.com/somepicture4.jpg</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/length</variable>
+        <parameter>9</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/0</variable>
+        <parameter>http://groups.google.ch/</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/1</variable>
+        <parameter>http://www.google.ch</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/2</variable>
+        <parameter>http://www.google.ch/</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/3</variable>
+        <parameter>http://www.ibm.com/</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/4</variable>
+        <parameter>http://www.microsoft.com/windows/</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/5</variable>
+        <parameter>http://xtt.724.com/pictures/index.html</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/6</variable>
+        <parameter>http://xtt.724.com/test1</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/7</variable>
+        <parameter>http://xtt.724.com/test2/test1/index.html</parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <variable>store/link/8</variable>
+        <parameter>http://xtt.724.com/test2/test1/index.xml</parameter>
+    </function>
+
+</test>

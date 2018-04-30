@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<videoOptimization accessRateThreshold="2">
+    <optimizationSettings>
+         <selector context="(MS_Name matches '^http://*' and MEDIA_Format=='flv'  and MS_Quality=='A') or MS_Name matches 'googlevideo.com'"
+                  stream="true"
+                  mediaFormat="'flv'" 
+                  audioCodec="'libfaac'" 
+                  audioChannels="2"
+                  audioSampleRate="48000"
+                  audioKBitRate="32" 
+                  videoCodec="'libx264'"
+                  frameRate="6"
+                  videoKBitRate="64"
+                  paceMicros="(8 * 8192 * 300) / (VIDEOOPTIMIZATION_SetVideoKBitRate + VIDEOOPTIMIZATION_SetAudioKBitRate)" />
+       <selector context="(MS_Name matches '^http://*' and MEDIA_Format=='flv'  and MS_Quality=='B') or MS_Name matches 'googlevideo.com'"
+                  stream="true"
+                  mediaFormat="'flv'" 
+                  audioCodec="'libfaac'" 
+                  audioChannels="2"
+                  audioSampleRate="48000"
+                  audioKBitRate="48" 
+                  videoCodec="'libx264'"
+                  frameRate="10"
+                  videoKBitRate="96"
+                  paceMicros="(8 * 8192 * 300) / (VIDEOOPTIMIZATION_SetVideoKBitRate + VIDEOOPTIMIZATION_SetAudioKBitRate)" /> 
+        <selector context="(MS_Name matches '^http://*' and MEDIA_Format=='flv'  and MS_Quality=='C') or MS_Name matches 'googlevideo.com'"
+                  stream="true"
+                  mediaFormat="'flv'" 
+                  audioCodec="'libfaac'" 
+                  audioChannels="2"
+                  audioSampleRate="48000"
+                  audioKBitRate="64" 
+                  videoCodec="'libx264'"
+                  frameRate="14"
+                  videoKBitRate="128"
+                  paceMicros="(8 * 8192 * 300) / (VIDEOOPTIMIZATION_SetVideoKBitRate + VIDEOOPTIMIZATION_SetAudioKBitRate)" />  
+        <selector mediaFormat="'flv'" 
+                  stream="true"
+                  audioCodec="'libfaac'" 
+                  audioChannels="2" 
+                  audioKBitRate="32"
+                  videoCodec="'libx264'"
+                  frameRate="2"
+                  videoKBitRate="16" /> 
+        <!--selector mediaFormat="'m4v'" 
+                  stream="true"
+                  audioCodec="'libfaac'" 
+                  audioChannels="2"
+                  audioSampleRate="64000"
+                  audioKBitRate="32" 
+                  videoCodec="'libx264'"
+                  frameRate="16"
+                  frameHeight="80"
+                  frameWidth="80"
+                  videoKBitRate="16"/-->
+    </optimizationSettings>
+</videoOptimization>
+
+<!-- (8 * 8192 * 1000) / (AUDIO_KBitRate + VIDEO_KBitRate) -->
+<!-- mp3, mp4, mov, m4v, wmv, avi, mpg4 -->

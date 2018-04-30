@@ -1,0 +1,9 @@
+<configuration>
+    <Vasp>
+        <RemoteIp>172.20.14.1</RemoteIp>
+        <RemotePort>4007</RemotePort>
+        <RemoteProxyIp>172.20.2.83</RemoteProxyIp>
+        <RemoteProxyPort>5556</RemoteProxyPort>
+    </Vasp>
+
+</configuration>

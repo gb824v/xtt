@@ -1,0 +1,220 @@
+<test>
+<name>LDAPSupport.TC.006</name>
+<qcid></qcid>
+<description>
+Entry with msisdn value X send HTTP Request for the second time and query the LDAP server for different msisdn (Y). - - - Valid msisdn recieved.
+
+Test Description:
+ 1. Load LDAP and web servers
+ 2. Send HTTP Get Proxy Request
+ 3. Verify responses
+
+Expected Result:
+ -  Verify that LDAP sends the Response with msisdn+ipaddress (with extra ldap attributes) although the user exist already in the PSE.
+
+XTT Commands:
+      startWebServer
+	  startLDAPServer
+ 1.   - Load ReqMod and workFlowConstants files
+ 2.   - sendGetRequest 	 "http://www.724xtt.com/index/test1.html"
+ 3.   - checkResponseCode	 "HTTP 200"
+ 4.   - verify LDAP responses via logscan
+ 4.   - Load Empty Request Modification File
+      stopLDAPServer
+      stopWebServer
+</description>
+<steps>
+# Sleep 12 seconds for the configured timeout (10s) to end
+# Setting LDAP server with response
+# Replace attr with current user ip
+# Restarting the LOGGER proc
+# Starting web server
+# Start LDAP server
+# Send GET request for new entry
+# Checking response code
+# Sleep for writing to PSE
+# Check presence-store db for new user entry
+# Validate the output of the PSE
+# Sleep 12 seconds for the configured timeout (10s) to end
+# CopyOf Replace attr with current user ip
+# CopyOf Stop LDAP server
+# CopyOf Start LDAP server
+# Setting cache file
+# Send GET request
+# Checking response code
+# Query the response body
+# Wait for LDAP server bind
+# Wait for bind searchRequestEntry
+# Wait for bind 2 requests to LDAp
+# Sleep 3s for the transactiona logs to be written
+# Determine lastest log
+# Writing transaction log to a file
+# Grep LDAP params from x.log
+# Validating "grep" response
+# CopyOf Check presence-store db for new user entry
+# CopyOf Validate the output of the PSE
+# Remove x.log
+# Stop LDAP server
+# Stop web server
+# Clean presence-store db
+</steps>
+<designer>Administrator </designer>
+<creationdate>2011-12-13 16:19:47 </creationdate>
+<testlevel>Regression</testlevel>
+<xfwVersion>XMP_XFW006</xfwVersion>
+<stepname>Sleep 12 seconds for the configured timeout (10s) to end</stepname>
+<function name="sleep" module="Basic">
+<parameter>12000</parameter>
+</function>
+<stepname>Setting LDAP server with response</stepname>
+<function name="setVariable" module="Basic">
+<parameter>ldapconfig</parameter>
+<file>ldapconfig.xml</file>
+</function>
+<stepname>Replace attr with current user ip</stepname>
+<function name="replace" module="Basic">
+<parameter>ldapconfig</parameter>
+<parameter>IPADDRESSTOKEN</parameter>
+<configuration>SYSTEM/IP</configuration>
+</function>
+<stepname>Restarting the LOGGER proc</stepname>
+<function name="restartProcess" module="Remote">
+<parameter>LOGGER.*</parameter>
+</function>
+<stepname>Starting web server</stepname>
+<function name="startWebServer" module="HTTP"/>
+<stepname>Start LDAP server</stepname>
+<function name="startLDAPServer" module="LDAP">
+<variable>ldapconfig</variable>
+</function>
+<stepname>Send GET request for new entry</stepname>
+<function name="sendGetRequest" module="HTTP">
+<parameter>http://www.google.co.il/images/srpr/logo3w.png</parameter>
+</function>
+<stepname>Checking response code</stepname>
+<function name="checkResponseCode" module="HTTP">
+<parameter>200</parameter>
+</function>
+<stepname>Sleep for writing to PSE</stepname>
+<function name="sleep" module="Basic">
+<parameter>2000</parameter>
+</function>
+<stepname>Check presence-store db for new user entry</stepname>
+<function name="executeRemoteCommand" module="Remote">
+<parameter>pse3cli rbng | grep 111111 | cut -d">" -f2 | cut -d"&lt;" -f1</parameter>
+</function>
+<stepname>Validate the output of the PSE</stepname>
+<function name="queryResponse" module="Remote">
+<parameter>111111</parameter>
+</function>
+<stepname>Sleep 12 seconds for the configured timeout (10s) to end</stepname>
+<function name="sleep" module="Basic">
+<parameter>12000</parameter>
+</function>
+<stepname>CopyOf Replace attr with current user ip</stepname>
+<function name="replace" module="Basic">
+<parameter>ldapconfig</parameter>
+<parameter>111111</parameter>
+<parameter>999999</parameter>
+</function>
+<stepname>CopyOf Stop LDAP server</stepname>
+<function name="stopLDAPServer" module="LDAP"/>
+<stepname>CopyOf Start LDAP server</stepname>
+<function name="startLDAPServer" module="LDAP">
+<variable>ldapconfig</variable>
+</function>
+<stepname>Setting cache file</stepname>
+<function name="setCacheFile" module="HTTP">
+<parameter>index/test1.html</parameter>
+<xml>&lt;?xml version="1.0"?&gt;
+<html>
+  <body>
+This is the contents of the page... Enjoy it.
+</body>
+</html>
+
+</xml>
+</function>
+<stepname>Send GET request</stepname>
+<function name="sendGetRequest" module="HTTP">
+<parameter>http://10.11.2.3/index/test1.html</parameter>
+</function>
+<stepname>Checking response code</stepname>
+<function name="checkResponseCode" module="HTTP">
+<parameter>200</parameter>
+</function>
+<stepname>Query the response body</stepname>
+<function name="queryBody" module="HTTP">
+<parameter>dev/null</parameter>
+<parameter>This is the contents of the page\.\.\. Enjoy it\.</parameter>
+</function>
+<stepname>Wait for LDAP server bind</stepname>
+<function name="waitForBind" module="LDAP">
+<parameter>cn=Manager,o=wap_ext</parameter>
+</function>
+<stepname>Wait for bind searchRequestEntry</stepname>
+<function name="waitForSearchRequests" module="LDAP">
+<parameter>1</parameter>
+<parameter>
+<parameter>Number=</parameter>
+<configuration>SYSTEM/IP</configuration>
+</parameter>
+</function>
+<stepname>Wait for bind 2 requests to LDAp</stepname>
+<function name="waitForRequests" module="LDAP">
+<parameter>2</parameter>
+</function>
+<stepname>Sleep 3s for the transactiona logs to be written</stepname>
+<function name="sleep" module="Basic">
+<parameter>3000</parameter>
+</function>
+<stepname>Determine lastest log</stepname>
+<function name="getNewestRemoteFileName" module="Remote">
+<parameter>newestlogfile</parameter>
+<configuration>remote/logpath</configuration>
+<parameter>XMP</parameter>
+</function>
+<stepname>Writing transaction log to a file</stepname>
+<function name="executeRemoteXMSCommand" module="Remote">
+<parameter>
+<configuration>remote/command</configuration>
+<parameter>logscan -in </parameter>
+<variable>newestlogfile</variable>
+<parameter> -out x.log</parameter>
+</parameter>
+</function>
+<stepname>Grep LDAP params from x.log</stepname>
+<function name="executeRemoteCommand" module="Remote">
+<parameter>egrep "^CHLDAP_QueryLDAPEntries\/.*\/AttrName:|^Internal_NAI" x.log</parameter>
+</function>
+<stepname>Validating "grep" response</stepname>
+<function name="queryResponse" module="Remote">
+<parameter>CHLDAP_QueryLDAPEntries/0/AttrName: Msisdn
+CHLDAP_QueryLDAPEntries/1/AttrName: BearerInfo
+CHLDAP_QueryLDAPEntries/2/AttrName: RoamingInfo
+CHLDAP_QueryLDAPEntries/3/AttrName: CalledStationId
+CHLDAP_QueryLDAPEntries/4/AttrName: ageControl
+Internal_NAI: 111111</parameter>
+<parameter>data</parameter>
+</function>
+<stepname>CopyOf Check presence-store db for new user entry</stepname>
+<function name="executeRemoteCommand" module="Remote">
+<parameter>pse3cli rbng | egrep "111111|999999" | cut -d">" -f2 | cut -d"&lt;" -f1</parameter>
+</function>
+<stepname>CopyOf Validate the output of the PSE</stepname>
+<function name="queryResponse" module="Remote">
+<parameter>999999</parameter>
+</function>
+<stepname>Remove x.log</stepname>
+<function name="executeRemoteCommand" module="Remote">
+<parameter>rm -f x.log</parameter>
+</function>
+<stepname>Stop LDAP server</stepname>
+<function name="stopLDAPServer" module="LDAP"/>
+<stepname>Stop web server</stepname>
+<function name="stopWebServer" module="HTTP"/>
+<stepname>Clean presence-store db</stepname>
+<function name="executeRemoteCommand" module="Remote">
+<parameter>pse3cli da!</parameter>
+</function>
+</test>

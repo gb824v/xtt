@@ -1,0 +1,33 @@
+<!-- 
+BannerAdvertisement.Trans.Server.TC.002  - Start Web-Server to Access	the	xmp-clickthrough page before entering xmp-banner / The request should be rejected with a proper response code (404 Not Found) during Transparent Proxy Condition.
+
+Test Description:
+ 1. Start Web Server.
+ 2. Wait for get request.
+ 3. Stop Web Server.
+
+Expected Result:
+ -  XMP should rejected the xmp-clickthrough page request with a proper response code (404 Not Found).
+
+XTT Commands:
+
+ 1.  - startWebServer
+ 2.  - waitForRequests
+ 3.  - stopWebServer
+--><test>
+
+	<function name="testName" module="Basic">
+		<parameter>BannerAdvertisement.Trans.Server.TC.002</parameter>
+	</function>
+
+	<description>Start Web-Server to Access	the	xmp-clickthrough page before entering xmp-banner / The request should be rejected with a proper response code (404 Not Found) during Transparent Proxy Condition.</description>
+
+	<function name="startWebServer" module="HTTP"/>
+
+	<function name="waitForRequests" module="HTTP">
+		<parameter>1</parameter>
+	</function>
+
+	<function name="stopWebServer" module="HTTP"/>
+
+</test>

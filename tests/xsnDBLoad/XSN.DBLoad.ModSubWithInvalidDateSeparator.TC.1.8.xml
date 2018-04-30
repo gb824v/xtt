@@ -1,0 +1,33 @@
+<test>
+	<function name="testName" module="Basic">
+	
+	<parameter>XSN.DBLoad.ModSubWithInvalidDateSeparator.TC.1.8.xml</parameter>
+	</function>
+	
+	<description>ModifySubWithInvalidDateSeparator.xml </description>
+   
+    <function name="sendRemoteCommand" module="Remote">
+    
+    	<parameter>writeFile ModifySubWithInvalidDateSeparator.xml </parameter>
+         
+        <file>ModifySubWithInvalidDateSeparator.xml</file>
+    
+    </function>
+    
+    <function name="sendRemoteCommand" module="Remote">
+    
+        <configuration>xsn/path</configuration>
+        <configuration>xsn/xms</configuration>
+    
+        
+        <parameter>load db ModifySubWithInvalidDateSeparator.xml</parameter>
+    
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        
+    <parameter>ERROR: XML upload encountered problems and ended prematurely</parameter>
+    <parameter>dev/null</parameter>
+    </function>    
+    
+  </test>

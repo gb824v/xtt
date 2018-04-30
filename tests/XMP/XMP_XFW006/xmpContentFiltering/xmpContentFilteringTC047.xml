@@ -1,0 +1,36 @@
+<test>
+    <function name="testName" module="Basic">
+        <parameter>XMP.CONTENTFILTERING.TC.047</parameter>
+     </function>
+	
+    <description>WAP Request</description>
+        
+    <!-- Radius logon - User is in DB [age=24] -->
+    <function name="radiusLogon" module="Radius">
+	<parameter>0787367502</parameter>
+	<parameter>0787367502</parameter>
+	<configuration>system/Ip</configuration>
+    </function> 
+
+    <function name="connectGateway" module="WAP"/>
+
+    <function name="sendGetRequest" module="WAP">
+       <parameter>
+    	  <parameter>http://www.google.com/</parameter>
+        </parameter>
+     </function>
+     
+	<function name="checkResponseCode" module="WAP">
+		<parameter>302</parameter>
+	</function>	
+
+    <function name="disconnectGateway" module="WAP" />
+
+    <!-- Radius logoff - User is in DB [age=24] -->
+    <function name="radiusLogoff" module="Radius">
+	<parameter>0787367502</parameter>
+	<parameter>0787367502</parameter>
+	<configuration>system/Ip</configuration>
+    </function> 
+ 
+</test>

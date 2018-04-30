@@ -1,0 +1,31 @@
+<test>
+    <function name="writeFile" module="Basic">
+        <variable>filename</variable>
+        <parameter></parameter>
+    </function>
+
+    <function name="createDocument" module="XML">
+        <parameter>spreadsheet</parameter>
+        <file>xtt-rawspreadsheet.xml</file>
+    </function>
+
+    <function name="addNamespace" module="XML">
+        <parameter>ss</parameter>
+        <parameter>urn:schemas-microsoft-com:office:spreadsheet</parameter>
+    </function>
+    
+    <!--function name="setVariable" module="Basic"><parameter>field1</parameter><parameter>Bug Num</parameter></function>
+    <function name="setVariable" module="Basic"><parameter>field13</parameter><parameter>Product</parameter></function>
+    <function name="setVariable" module="Basic"><parameter>field2</parameter><parameter>Status</parameter></function>
+    <function name="setVariable" module="Basic"><parameter>field3</parameter><parameter>Creation Date</parameter></function>
+    <function name="setVariable" module="Basic"><parameter>field4</parameter><parameter>Assigned Engineer</parameter></function>
+    <function name="setVariable" module="Basic"><parameter>field5</parameter><parameter>Severity</parameter></function>
+    <function name="setVariable" module="Basic"><parameter>field6</parameter><parameter>Summary</parameter></function>
+    <function name="setVariable" module="Basic"><parameter>field7</parameter><parameter>Seconds to Temporary Fix</parameter></function>
+    <function name="setVariable" module="Basic"><parameter>field8</parameter><parameter>Time to Temporary Fix</parameter></function>
+    <function name="setVariable" module="Basic"><parameter>field9</parameter><parameter>Seconds to Permanent Fix</parameter></function>
+    <function name="setVariable" module="Basic"><parameter>field10</parameter><parameter>Time to Permanent Fix</parameter></function>
+    <function name="setVariable" module="Basic"><parameter>field11</parameter><parameter>Seconds to Resolved</parameter></function>
+    <function name="setVariable" module="Basic"><parameter>field12</parameter><parameter>Time to Resolved</parameter></function>
+    <subtest>xtt-write-xml.xml</subtest-->
+</test>

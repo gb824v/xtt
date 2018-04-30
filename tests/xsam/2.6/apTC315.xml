@@ -1,0 +1,130 @@
+<test>
+    <configuration>xsam_config.xml</configuration>
+    <function name="testName" module="Basic">
+        <parameter>AP.TC.315</parameter>
+    </function>
+
+    <function name="startSMSCServer" module="SMS"/>
+
+    <function name="openConnection" module="UCP">
+        <parameter>connection1</parameter>
+        <configuration>XSAM/IP</configuration>
+        <configuration>XSAM/PORT</configuration>
+    </function>
+
+    <function name="sendUCPPacket" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>internal</parameter>
+        <parameter>O</parameter>
+        <parameter>60</parameter>
+        <parameter>
+            <parameter>/</parameter>
+            <configuration>XSAM/SHORTCODE</configuration>
+            <parameter>/6/1/1/70617373776F7264//0100//////</parameter>
+        </parameter>
+    </function>
+
+    <function name="waitForBind" module="SMS"/>
+
+    <function name="createDateString" module="Basic">
+        <parameter>ddMMyykkmmss</parameter>
+        <parameter>DDT</parameter>
+        <parameter>300</parameter>
+        <parameter>GMT</parameter>
+    </function>
+
+    <function name="sendUCPPacket" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>internal</parameter>
+        <parameter>O</parameter>
+        <parameter>51</parameter>
+        <parameter>
+            <parameter>/0123456789/</parameter>
+            <configuration>XSAM/SHORTCODE</configuration>
+            <parameter>/////////1/</parameter>
+            <variable>DDT</variable>
+            <parameter>///////2//00000000000000009876543/////////////</parameter>
+        </parameter>
+    </function>
+
+    <function name="queryTextResponse" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>var</parameter>
+        <parameter>\d\d/\d\d\d\d\d/R/51/A//[^/]++/\w\w</parameter>
+    </function>
+
+    <function name="setVariable" module="BASIC">
+        <parameter>nmsg</parameter>
+        <parameter>
+            <parameter>SMSC/</parameter>
+            <configuration>SMSCSERVER/PROTOCOL</configuration>
+            <parameter>/0123456789/NMsg</parameter>
+        </parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <parameter>00000000000000009876543</parameter>
+        <variablepointer>nmsg</variablepointer>
+    </function>
+
+    <function name="sendUCPPacket" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>internal</parameter>
+        <parameter>O</parameter>
+        <parameter>55</parameter>
+        <parameter>
+            <parameter>/0123456789/</parameter>
+            <configuration>XSAM/SHORTCODE</configuration>
+            <parameter>////////////////////////////////</parameter>
+        </parameter>
+    </function>
+    <function name="queryTextResponse" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>var</parameter>
+        <parameter>\d\d/\d\d\d\d\d/R/55/A//[^/]++/\w\w</parameter>
+    </function>
+
+    <thread>
+        <function name="waitSMSCUCPPacket" module="UCP">
+            <parameter>connection1</parameter>
+        </function>
+    </thread>
+
+
+    <function name="sendSMSCUCPPacket" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>0</parameter>
+        <parameter>internal</parameter>
+        <parameter>O</parameter>
+        <parameter>57</parameter>
+        <parameter>
+            <parameter>/0123456789</parameter>
+            <parameter>//////////////////3//53746F726564/////////////</parameter>
+        </parameter>
+    </function>
+    <function name="queryTextResponse" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>var</parameter>
+        <parameter>\d\d/\d\d\d\d\d/R/57/A///\w\w</parameter>
+    </function>
+    <function name="stopSMSCServer" module="SMS"/>
+
+    <function name="setVariable" module="BASIC">
+        <parameter>amsg</parameter>
+        <parameter>
+            <parameter>SMSC/</parameter>
+            <configuration>SMSCSERVER/PROTOCOL</configuration>
+            <parameter>/0123456789/AMsg</parameter>
+        </parameter>
+    </function>
+    <function name="compareString" module="basic">
+        <parameter>53746F726564</parameter>
+        <variablepointer>amsg</variablepointer>
+    </function>
+
+
+    <function name="closeConnection" module="UCP">
+        <parameter>connection1</parameter>
+    </function>
+
+
+</test>

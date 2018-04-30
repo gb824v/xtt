@@ -1,0 +1,120 @@
+<test>
+    <name>MBSPPB.MultipleRecipients.MT.TC.004</name>
+    <configuration>../configXSAM.xml</configuration>
+
+    <description>[TPI->SMS] 1000 Recipients / 1000 DIRECT-DEBIT passed - 1000 failed Message Delivery / 1000 REFUND passed</description>
+
+    <function name="setVariable" module="Basic">
+        <parameter>AMOUNT</parameter>
+        <parameter>3.456</parameter>
+    </function>
+
+    <function name="setOverrideNumber" module="SIS">
+         <parameter>41790000005</parameter>
+    </function>
+    
+    <function name="setVariable" module="Basic">
+         <parameter>SKIP_DIAMETER</parameter>
+         <parameter>true</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+         <parameter>SKIP_SMSC</parameter>
+         <parameter>true</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+        <parameter>SKIP_VASPQUERY</parameter>
+        <parameter>true</parameter>
+    </function>
+
+    <function name="startDiameterServer" module="Diameter"/>
+    
+    
+    <function name="addExtendedStoreVar" module="Diameter">
+        <parameter>SUBSCRIPTION_ID_DATA</parameter>
+    </function>
+    <function name="addExtendedStoreVar" module="Diameter">
+        <parameter>REQUESTED_ACTION</parameter>
+    </function>
+    
+    <function name="waitForSpecificRequests" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT</configuration>
+        <parameter>CAPABILITIES_EXCHANGE_REQUEST</parameter>
+        <parameter>1</parameter>
+    </function>
+
+
+    <!--function name="setVariable" module="Basic">
+        <parameter>MSISDNSTART</parameter>
+        <parameter>60000000000</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+        <parameter>MSISDNSTOP</parameter>
+        <parameter>60000001000</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+        <parameter>MSISDNSIS</parameter>
+        <parameter>8</parameter>
+    </function-->
+
+    <subtest>sendMultiSMS.xml</subtest>
+
+    <function name="checkResponseCode" module="VASP">
+        <parameter>200</parameter>
+    </function>
+    
+    <function name="queryBody" module="VASP">
+        <parameter>tpiResponseCode</parameter>
+        <parameter>&lt;state&gt;(1000)&lt;/state&gt;\s+&lt;state-text&gt;</parameter><!--Ok&lt;/state-text&gt;-->
+    </function>
+
+    <function name="waitForSpecificRequests" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT</configuration>
+        <parameter>CREDIT_CONTROL_REQUEST</parameter>
+        <parameter>1000</parameter>
+    </function>
+
+    <function name="sleep" module="Basic">
+        <parameter>240000</parameter>
+    </function>
+
+    <function name="waitForSpecificRequests" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT</configuration>
+        <parameter>CREDIT_CONTROL_REQUEST</parameter>
+        <parameter>2000</parameter>
+    </function>
+
+    <loop name="MSISDNLOOP" start="MSISDNSTART" stop="MSISDNSTOP" step="MSISDNSTEP">
+        <function name="compareString" module="Basic">
+            <variable>
+                <parameter>DIAMETER/</parameter>
+                <configuration>DIAMETERSERVER/PORT</configuration>
+                <parameter>/AVP/REQUESTED_SERVICE_UNIT/CC_MONEY/UNIT_VALUE/</parameter>
+                <variable>MSISDNLOOP</variable>
+                <parameter>REFUND_ACCOUNT</parameter>
+                <parameter>/VALUE_DIGITS</parameter>
+            </variable>
+            <parameter>3456</parameter>
+        </function> 
+        <function name="compareString" module="Basic">
+            <variable>
+                <parameter>DIAMETER/</parameter>
+                <configuration>DIAMETERSERVER/PORT</configuration>
+                <parameter>/AVP/REQUESTED_SERVICE_UNIT/CC_MONEY/UNIT_VALUE/</parameter>
+                <variable>MSISDNLOOP</variable>
+                <parameter>DIRECT_DEBITING</parameter>
+                <parameter>/VALUE_DIGITS</parameter>
+            </variable>
+            <parameter>3456</parameter>
+        </function> 
+    </loop>
+
+    <function name="waitForTimeoutSpecificRequests" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT</configuration>
+        <parameter>CREDIT_CONTROL_REQUEST</parameter>
+        <configuration>DIAMETERSERVER/WAITTIMEOUT</configuration>
+        <parameter>2000</parameter>
+    </function>
+
+    <function name="stopDiameterServer" module="Diameter"/>
+
+</test>

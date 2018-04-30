@@ -1,0 +1,148 @@
+<!--
+InterstitialAdvertisement.Trans.Client.TC.004  - Validate the example workflow inserts up to 5 interstitial adverts per site during Transparent proxy condition [16 requests to XMP].
+
+Test Description:
+ 1. Disable Proxy settings.
+ 2. Radius Logon.
+ 3. Send Get request		 for 3 times up to 5 loops.
+ 4. Send Get request		 to page after loop.
+ 5. Check Response code.
+ 6. Radius Logoff.
+ 
+Expected Result:
+ -  XMP should insert up to 5 interstitial adverts per site [16 requests to XMP].
+
+XTT Main Commands:
+
+ 1.  - disableProxy
+ 2.  - Radius log-ON
+ 3.  - sendGetRequest		for 3 times up to 5 loops.
+ 4.  - sendGetRequest		to page after loop.
+ 5.  - checkResponseCode
+ 6.  - Radius log-OFF
+-->
+
+<test>
+
+	<function name="testName" module="Basic">
+		<parameter>InterstitialAdvertisement.Trans.Client.TC.004</parameter>
+	</function>
+
+	<description>Validate the example workflow inserts up to 5 interstitial adverts per site during Transparent proxy condition [16 requests to XMP].</description>
+
+	<function name="disableProxy" module="HTTP" />
+
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12345</parameter>
+	</function>
+
+	<!-- Loop Starts here -->
+	<loop name="processLoop" start="1" stop="6" step="1">
+		<function name="sendGetRequest" module="HTTP">
+			<parameter>
+			<parameter>http://</parameter>
+			<configuration>SERVER/IP</configuration>
+			<parameter>:</parameter>
+			<configuration>WEBSERVER/PORT</configuration>
+			<parameter>/</parameter>
+			</parameter>
+		</function>
+
+		<function name="sleep" module="BASIC">
+			<parameter>2000</parameter>
+		</function>
+
+		<function name="checkResponseCode" module="HTTP">
+			<parameter>200</parameter>
+		</function>
+
+		<function name="setVariable" module="Basic">
+			<parameter>seconds</parameter>
+			<parameter>seconds</parameter>
+		</function>
+		
+		<function name="queryText" module="Basic">
+			<variable>HTTP/BODY/PLAIN</variable>
+			<variable>seconds</variable>
+			<parameter>content=\n"(\d+)</parameter>
+		</function>
+
+		<function name="setVariable" module="Basic">
+			<parameter>image</parameter>
+			<parameter>image</parameter>
+		</function>
+
+		<function name="queryText" module="Basic">
+			<variable>HTTP/BODY/PLAIN</variable>
+			<variable>image</variable>
+			<parameter>&lt;div&gt;&lt;img src=(.*)"&gt;&lt;/div&gt;</parameter>
+		</function>
+
+		<function name="setVariable" module="Basic">
+			<parameter>click</parameter>
+			<parameter>click</parameter>
+		</function>
+
+		<function name="queryBody" module="HTTP">
+			<variable>click</variable>
+			<parameter>&lt;a href="(.*)"</parameter>
+		</function>
+
+		<function name="sendGetRequest" module="HTTP">
+			<parameter>
+				<variable>click</variable>
+			</parameter>
+		</function>
+
+		<function name="checkResponseCode" module="HTTP">
+			<parameter>200</parameter>
+		</function>
+
+		<function name="sleep" module="Basic">
+			<parameter>
+			<variable>seconds</variable>
+			<parameter>000</parameter>
+			</parameter>
+		</function>
+
+		<function name="sendGetRequest" module="HTTP">
+			<parameter>
+			<parameter>http://</parameter>
+			<configuration>SERVER/IP</configuration>
+			<parameter>:</parameter>
+			<configuration>WEBSERVER/PORT</configuration>
+			<parameter>/</parameter>
+			</parameter>
+		</function>
+
+		<function name="checkResponseCode" module="HTTP">
+			<parameter>200</parameter>
+		</function>
+
+		<function name="sleep" module="Basic">
+			<parameter>7500</parameter>
+		</function>
+	</loop>
+	<!-- Loop Ends here -->
+
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>
+		<parameter>http://</parameter>
+			<configuration>SERVER/IP</configuration>
+			<parameter>:</parameter>
+			<configuration>WEBSERVER/PORT</configuration>
+			<parameter>/</parameter>
+		</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12345</parameter>
+	</function>
+
+</test>

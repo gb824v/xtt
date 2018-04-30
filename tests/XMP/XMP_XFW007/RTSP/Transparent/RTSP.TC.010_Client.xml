@@ -1,0 +1,97 @@
+<test>
+	<name>RTSP.TC.010_Client</name>
+	<description>Test RTSP REDIRECT method for Client to Server scenario</description>
+
+    <function name="radiusLogon" module="Radius">
+      <parameter>xttuser</parameter>
+      <parameter>12346</parameter>
+    </function>
+
+    <!-- client side server for responses -->
+    <function name="setVariable" module="Basic">
+        <parameter>CLIENT</parameter>
+        <configuration>RTSPSERVER/CLIENTPORT</configuration>
+    </function>
+    
+    <!-- client side server for responses -->
+    <function name="startRTSPServer" module="RTSP">
+        <variable>CLIENT</variable>
+        <configuration>RTSPSERVER/TIMEOUT</configuration>
+        <testpath>rtsp</testpath>
+    </function>	  
+
+	<function name="setVariable" module="Basic">
+	    <parameter>SERVER</parameter>
+		<configuration>RTSPSERVER/PORT</configuration>
+	</function>
+
+   <function name="createConnection" module="RTSP">
+        <parameter>one</parameter>
+        <variable>CLIENT</variable>
+    </function>
+
+	<function name="setHeader" module="RTSP">
+        <parameter>one</parameter>
+        <parameter>Transport</parameter>
+        <parameter>RTP/AVP;unicast;client_port=3056-3057</parameter>
+    </function>
+
+    <function name="sendRTSPRequest" module="RTSP">
+        <parameter>one</parameter>
+        <parameter>SETUP</parameter>
+        <parameter>
+            <parameter>rtsp://</parameter>
+            <configuration>RTSPSERVER/SERVERIP</configuration>
+            <parameter>:</parameter>
+            <variable>SERVER</variable>
+            <parameter>/snafu</parameter>
+        </parameter>
+        <parameter></parameter>
+    </function>
+
+    <function name="waitForResponses" module="RTSP">
+        <parameter>1</parameter>
+    </function>     
+
+    <function name="waitForVariable" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>CLIENT</variable>
+            <parameter>/RESPONSE/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+    <function name="removeVariables" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+	    <variable>CLIENT</variable>
+            <parameter>/RESPONSE/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+	 <function name="waitForVariable" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>CLIENT</variable>
+            <parameter>/REDIRECT/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+    <function name="removeVariables" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>CLIENT</variable>
+            <parameter>/REDIRECT/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+	<function name="closeConnection" module="RTSP">
+        <parameter>one</parameter>
+    </function>
+
+	<function name="stopRTSPServer" module="RTSP"/>
+    
+	<function name="radiusLogoff" module="Radius">
+      <parameter>xttuser</parameter>
+      <parameter>12346</parameter>
+    </function>
+   
+</test>

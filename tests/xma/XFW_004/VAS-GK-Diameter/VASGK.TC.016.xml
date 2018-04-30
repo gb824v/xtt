@@ -1,0 +1,63 @@
+<test>
+
+	<name>VASGK.TC.016</name>
+
+	<description>Send XML request with missing mandatory header Message type "mobile-terminating" to VASGK / XMA should reject the request</description>
+
+	<!-- Setting content type for xml payload request -->
+	<function name="setHeader" module="HTTP">
+		<parameter>content-type</parameter>
+		<parameter>text/xml; charset="utf-8"</parameter>
+	</function>
+
+	<!-- Setting post data for xml request without message type -->
+	<function name="setTextPostData" module="HTTP">
+		<parameter>
+			<crlf>&lt;?xml version="1.0"?&gt;</crlf>
+			<crlf>&lt;vasgk-check&gt;</crlf>
+			<crlf>	&lt;request&gt;</crlf>
+			<crlf>		&lt;sender-address address-type="NUMERIC_SHORTCODE"&gt;1234&lt;/sender-address&gt;</crlf>
+			<crlf>		&lt;recipient-address address-type="MSISDN"&gt;41794440002&lt;/recipient-address&gt;</crlf>
+		<!-- <crlf>		&lt;mobile-terminating&gt;</crlf>
+			<crlf>			&lt;auxiliary-info&gt;id_application@id_price@id_autorization&lt;/auxiliary-info&gt;</crlf>
+			<crlf>		&lt;/mobile-terminating&gt;</crlf> -->
+			<crlf>	&lt;/request&gt;</crlf>
+			<crlf>&lt;/vasgk-check&gt;</crlf>
+		</parameter>
+	</function>
+
+	<!-- Sending XML post request to VAS-GK process -->
+	<function name="sendPostRequest" module="HTTP">
+		<parameter>
+			<parameter>http://</parameter>
+			<configuration>VASGK/Ip</configuration>
+			<parameter>:</parameter>
+			<configuration>VASGK/Port</configuration>
+			<parameter>/</parameter>
+		</parameter>
+	</function>
+
+	<!-- Check response of xml payload -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<!-- Validate error response by VAS-GK -->
+	<function name="queryText" module="Basic">
+		<base64decode><variable>HTTP/DEFAULT/BODY/BASE64</variable></base64decode>
+		<parameter>dev/null</parameter>
+		<parameter>
+			<parameter>&lt;validation-error error-code="1"&gt;</parameter>
+		</parameter>
+	</function>
+
+	<!-- Validate error description by VAS-GK -->
+	<function name="queryText" module="Basic">
+		<base64decode><variable>HTTP/DEFAULT/BODY/BASE64</variable></base64decode>
+		<parameter>dev/null</parameter>
+		<parameter>
+			<parameter>&lt;error-description&gt;mobile-originating or mobile-terminating must be specified&lt;/error-description&gt;</parameter>
+		</parameter>
+	</function>
+
+</test>

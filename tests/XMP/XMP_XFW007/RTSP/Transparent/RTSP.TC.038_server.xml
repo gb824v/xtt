@@ -1,0 +1,141 @@
+ <test>
+	<name>RTSP.TC.038_server</name>
+	<description>Validate Live Media Presentation Using Multicast (Server file)</description>
+
+	<function name="startWebServer" module="HTTP"/>
+
+	<function name="setCacheFile" module="HTTP">
+        <parameter>concert.sdp</parameter>
+        <parameter>
+				<file>concert.sdp</file>
+		</parameter>
+    </function>
+	
+	<function name="setServerHeader" module="HTTP">
+		<parameter>content-type</parameter>
+		<parameter>application/x-rtsl</parameter>
+	</function>
+
+	<function name="setServerReturnCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	 <function name="waitForRequests" module="HTTP">
+        <parameter>1</parameter>
+    </function>
+
+   <function name="stopWebServer" module="HTTP"/>
+
+
+	 <!-- client side server for responses -->
+    <function name="setVariable" module="Basic">
+        <parameter>CLIENT</parameter>
+        <configuration>RTSPSERVER/CLIENTPORT</configuration>
+    </function>
+    <!-- client side server for responses -->
+    <function name="setVariable" module="Basic">
+        <parameter>SERVER</parameter>
+        <configuration>RTSPSERVER/PORT</configuration>
+    </function>
+
+	
+    <!-- client side server for responses -->
+    <function name="startRTSPServer" module="RTSP">
+        <variable>SERVER</variable>
+        <configuration>RTSPSERVER/TIMEOUT</configuration>
+        <testpath>rtsp</testpath>
+    </function>
+
+	<function name="setVariable" module="Basic">
+        <parameter>content</parameter>
+        <parameter>
+			<crlf>v=0</crlf>
+			<crlf>o=- 2890844526 2890842807 IN IP4 192.16.24.202</crlf>
+			<crlf>s=RTSP Session</crlf>
+			<crlf>m=audio 3456 RTP/AVP 0</crlf>
+			<crlf>a=control:rtsp://172.20.2.119/concert/audio</crlf>
+			<crlf>c=IN IP4 224.2.0.1/16</crlf>
+        </parameter>
+    </function>
+
+    <function name="setServerHeader" module="RTSP">
+        <parameter>Content-Type</parameter>
+        <parameter>application/sdp</parameter>
+    </function>	
+
+    <function name="setServerHeader" module="RTSP">
+        <parameter>Content-Length</parameter>
+        <base64bytelength><variable>content</variable></base64bytelength>
+    </function>
+
+   <function name="setCacheFile" module="RTSP">
+        <parameter>DESCRIBE</parameter>
+        <parameter>/concert/audio</parameter>
+        <variable>content</variable>
+   </function>
+
+ <function name="waitForVariable" module="Basic">
+	<parameter>
+		<parameter>RTSP/</parameter>
+		<variable>SERVER</variable>
+		<parameter>/DESCRIBE/FINISHED/REQUEST</parameter>
+	</parameter>
+	</function>
+
+	<function name="removeVariables" module="Basic">
+		<parameter>
+			<parameter>RTSP/</parameter>
+			<variable>SERVER</variable>
+			<parameter>/DESCRIBE/FINISHED/REQUEST</parameter>
+		</parameter>
+	</function>
+
+  <function name="clearServerHeader" module="RTSP" />
+
+ <function name="setServerHeader" module="RTSP">
+        <parameter>Transport</parameter>
+        <parameter>RTP/AVP;multicast;destination=224.2.0.1;port=3456-3457;ttl=16</parameter>
+ </function>
+
+  <function name="waitForVariable" module="Basic">
+	<parameter>
+		<parameter>RTSP/</parameter>
+		<variable>SERVER</variable>
+		<parameter>/SETUP/FINISHED/REQUEST</parameter>
+	</parameter>
+	</function>
+
+	<function name="removeVariables" module="Basic">
+		<parameter>
+			<parameter>RTSP/</parameter>
+			<variable>SERVER</variable>
+			<parameter>/SETUP/FINISHED/REQUEST</parameter>
+		</parameter>
+	</function>
+
+   <function name="clearServerHeader" module="RTSP" />
+
+   <function name="waitForVariable" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>SERVER</variable>
+            <parameter>/PLAY/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+    <function name="removeVariables" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>SERVER</variable>
+            <parameter>/PLAY/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+	<!--function name="sleep" module="Basic">
+		<parameter>1000</parameter>
+	</function-->
+
+    <function name="stopRTSPServer" module="RTSP"/>
+	
+
+</test>

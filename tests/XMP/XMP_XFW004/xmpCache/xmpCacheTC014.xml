@@ -1,0 +1,88 @@
+<test>
+	<name>XMP.CACHE.TC.014</name>
+	<description>One file retrieved from cache - Validation of maxSizeMBytes Configuration</description>
+<!-- Maximum Size of Cache = 1 MB
+     Maximum Size of Item = 1024 KB
+-->
+	<subtest>deleteCacheAll.xml</subtest>
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+	<function name="startWebServer" module="HTTP"/>
+	<function name="setServerHeader" module="HTTP">
+		<parameter>Last-Modified</parameter>
+		<parameter>Wed, 15 Nov 1995 04:58:08 GMT</parameter>
+	</function>
+	<function name="setCacheFile" module="HTTP">
+		<parameter>cacheTC001.html</parameter>
+		<file>1024KBFile.txt</file>
+	</function>
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>
+			<parameter>http://</parameter>
+			<configuration>system/ip</configuration>
+			<parameter>/cacheTC001.html</parameter>
+		</parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+	<!--function name="queryBody" module="HTTP">
+		<parameter>dev/null</parameter>
+		<file>1024KBFile.txt</file>
+	</function-->
+	<function name="setCacheFile" module="HTTP">
+		<parameter>cacheTC002.html</parameter>
+		<xml>
+			<html>
+				<body>This is the file that should be cached!</body>
+			</html>
+		</xml>
+	</function>
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>
+			<parameter>http://</parameter>
+			<configuration>system/ip</configuration>
+			<parameter>/cacheTC002.html</parameter>
+		</parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+	<function name="queryBody" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>This is the file that should be cached!</parameter>
+	</function>
+	<function name="setCacheFile" module="HTTP">
+		<parameter>cacheTC002.html</parameter>
+		<xml>
+			<html>
+				<body>New Server Content</body>
+			</html>
+		</xml>
+	</function>
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>
+			<parameter>http://</parameter>
+			<configuration>system/ip</configuration>
+			<parameter>/cacheTC002.html</parameter>
+		</parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+	<function name="queryBody" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>This is the file that should be cached!</parameter>
+	</function>
+	<function name="queryBodyNegative" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>New Server Content</parameter>
+	</function>
+	<function name="stopWebServer" module="HTTP"/>
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+</test>

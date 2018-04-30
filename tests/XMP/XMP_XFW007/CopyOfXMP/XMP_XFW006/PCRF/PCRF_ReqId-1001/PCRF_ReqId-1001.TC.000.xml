@@ -1,0 +1,9 @@
+<test>
+
+	<name>PCRF_ReqId-1001.TC.000.xml</name>
+	<description>load Dynamic Configuration Files</description>
+
+	<!-- Load PCC Modification File -->
+	<subtest>../loadConfiguration.xml</subtest>
+	
+</test>

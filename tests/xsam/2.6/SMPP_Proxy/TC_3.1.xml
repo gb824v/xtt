@@ -1,0 +1,81 @@
+<test>
+<configuration>xsam_config.xml</configuration>
+
+    <function name="testName" module="Basic">
+        <parameter>TC_3.1</parameter>
+    </function>
+
+<description>Action: PASS
+------------------------------------------------------------------------------------------------------------
+Step1: Provision an Outgoing Channel 
+Step2: Provision a XSAM Listen Port (Incoming Channel)
+Step3: Simulate a SMSC using XTT Tool listening for incoming connecions. 
+Step4: Create a SMPP Proxy Service using the Outgoing Channel. SMPP Proxy Service created for this test should be active. Provide a CP such that the CP will be whitelisted for the "bind_transceiver" request.
+Step5:  From the CP XTT tool send a "bind_transceiver" request. Connection should be opened.
+Step6:  Request should be received by XSAM which should issue a PASS to the request.
+------------------------------------------------------------------------------------------------------------------
+</description>
+
+
+         <function name="startSMSCServer" module="SMS">
+           <configuration>SMSCSERVER/SMPPPORT</configuration>
+           <parameter>SMPP</parameter>
+        </function>
+
+         <function name="openConnection" module="SMPP">
+            <parameter>connection</parameter>
+            <configuration>XSAM/IP</configuration>
+            <configuration>XSAM/SMPPPort</configuration>
+        </function>
+
+        <function name="sendSMPPPacket" module="SMPP">
+            <parameter>connection</parameter>
+            <parameter>BIND_TRANSCEIVER</parameter>
+            <parameter>internal</parameter>
+            <parameter>systemid</parameter>
+            <parameter>password</parameter>
+            <parameter>system_type</parameter>
+            <parameter>0x50</parameter>
+            <parameter>0</parameter>
+            <parameter>0</parameter>
+            <configuration>XSAM/SMPPSHORTCODE</configuration>
+			<parameter>0</parameter>
+        </function>
+
+        <function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/system_id</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/system_id</variable>
+            <parameter>XTT-724-SMSC</parameter>
+        </function>
+        
+
+		 <function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_status</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_status</variable>
+            <parameter>0x00000000</parameter>
+        </function>
+
+        <function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_id</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_id</variable>
+            <parameter>0x80000009</parameter>
+        </function>
+       
+
+        <function name="closeConnection" module="SMPP">
+            <parameter>connection</parameter>
+        </function>
+
+     
+    <function name="stopSMSCServer" module="SMS"/>
+
+</test>

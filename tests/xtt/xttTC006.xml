@@ -1,0 +1,127 @@
+<test>
+    <name>XTT.TC.006</name>
+    <description>Test the function module xml</description>
+
+    <function name="startWebServer" module="HTTP"/>
+
+    <function name="createDocument" module="XML">
+        <parameter>bxml</parameter>
+        <parameter>&lt;?xml version="1.0"?&gt;
+&lt;!DOCTYPE service SYSTEM "service"&gt;
+            &lt;service id="1293939439"&gt;
+                &lt;phonenumber&gt;41791234567&lt;/phonenumber&gt;
+                &lt;servicenumber&gt;123&lt;/servicenumber&gt;
+                &lt;parameters&gt;
+                    &lt;parameter id="1"&gt;
+                        &lt;name&gt;kanton&lt;/name&gt;
+                        &lt;value&gt;vaud&lt;/value&gt;
+                    &lt;/parameter&gt;
+                    &lt;parameter id="2"&gt;
+                        &lt;name&gt;sprache&lt;/name&gt;
+                        &lt;value&gt;fr&lt;/value&gt;
+                    &lt;/parameter&gt;
+                &lt;/parameters&gt;
+            &lt;/service&gt;        
+        </parameter>
+    </function>
+
+    <function name="createDocument" module="XML">
+        <parameter>axml</parameter>
+        <xml>
+            <service id="1293939439">
+                <phonenumber>41791234567</phonenumber>
+                <servicenumber>123</servicenumber>
+                <parameters>
+                    <parameter id="1">
+                        <name>kanton</name>
+                        <value>vaud</value>
+                    </parameter>
+                    <parameter id="2">
+                        <name>sprache</name>
+                        <value>fr</value>
+                    </parameter>
+                </parameters>
+            </service>        
+        </xml>
+    </function>
+
+    <function name="setHeader" module="XML">
+        <parameter>axml</parameter>
+        <parameter>content-type</parameter>
+        <parameter>text/xml</parameter>
+    </function>
+
+    <function name="setDocType" module="XML">
+        <parameter>axml</parameter>
+        <parameter>service</parameter>
+        <!--parameter>service.dtd</parameter-->
+    </function>
+
+    <function name="documentToVariable" module="XML">
+        <parameter>axml</parameter>
+        <parameter>info</parameter>
+    </function>
+
+    <function name="info" module="Basic">
+        <parameter>
+</parameter>
+        <variable>info</variable>
+    </function>
+
+	<function name="validateXML" module="XML">
+	    <parameter>axml</parameter>
+ 	    <parameter></parameter>
+    </function>
+
+	<function name="sendPostRequest" module="XML">
+	    <parameter>axml</parameter>
+ 	    <parameter>response</parameter>
+ 	    <parameter>http://127.0.0.1/</parameter>
+    </function>
+
+	<function name="validateXML" module="XML">
+	    <parameter>response</parameter>
+ 	    <parameter></parameter>
+    </function>
+
+	<function name="queryHeader" module="XML">
+	    <parameter>response</parameter>
+	    <parameter>dev/null</parameter>
+ 	    <parameter>content-type</parameter>
+ 	    <parameter>text/html</parameter>
+    </function>
+	<function name="queryHeader" module="XML">
+	    <parameter>response</parameter>
+	    <parameter>dev/null</parameter>
+ 	    <parameter>content-type</parameter>
+ 	    <parameter>/</parameter>
+    </function>
+
+	<function name="validateXML" module="XML">
+	    <xml>
+<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+   <env:Header>
+       <mm7:TransactionID xmlns:mm7="http://www.3gpp.org/ftp/Specs/archive/23_series/23.140/schema/REL-5-MM7-1-2" env:mustUnderstand="1">xttvasp-0001</mm7:TransactionID>
+   </env:Header>
+<env:Body>
+   <SubmitRsp xmlns="http://www.3gpp.org/ftp/Specs/archive/23_series/23.140/schema/REL-5-MM7-1-2">
+       <MM7Version>5.3.0</MM7Version>
+       <Status>
+           <StatusCode>1000</StatusCode>
+           <StatusText>Success</StatusText>
+       </Status>
+       <MessageID>XTT1150448113906</MessageID>
+   </SubmitRsp>
+</env:Body>
+</env:Envelope>	    
+	    </xml>
+ 	    <parameter></parameter>
+        <parameter>http://schemas.xmlsoap.org/soap/envelope/</parameter>
+        <parameter>../sendMM7/soapEnvelope.xsd</parameter>
+        <parameter>http://www.3gpp.org/ftp/Specs/archive/23_series/23.140/schema/REL-5-MM7-1-0</parameter>
+        <parameter>../sendMM7/REL-5-MM7-1-3.xsd</parameter>
+    </function>
+
+    <function name="stopWebServer" module="HTTP"/>
+
+</test>

@@ -1,0 +1,29 @@
+<test>
+ 
+      <!-- [xmpAddMemberCommunitiesTC004] Communities_addMember -->
+       
+      <description> SOAP-API: Communities : Communities_addMember</description>
+
+	 <function name="testName" module="Basic">
+		<parameter>xmpAddMemberCommunitiesTC004</parameter>
+	</function>
+      
+	<function name="SOAPClient" module="SOAP_API" >
+		<parameter>
+			 <parameter>http://</parameter>
+			 <configuration>XSN/IP</configuration>
+			 <parameter>:</parameter>
+			 <configuration>XSN/PORT</configuration>
+			 <parameter>/jaxws-policy-communities/communities</parameter>
+		</parameter>
+		<file>Communities_addMember.xml</file>
+		<parameter>Body/return</parameter>
+	</function>
+
+    
+
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+        
+ </test>

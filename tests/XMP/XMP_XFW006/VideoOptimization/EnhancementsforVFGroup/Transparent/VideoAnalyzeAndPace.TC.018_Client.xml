@@ -1,0 +1,200 @@
+<test>
+
+	<function name="testName" module="Basic">
+		<parameter>VideoAnalyzeAndPace.TC.018</parameter>
+	</function>
+
+	<description>Transparent Proxy Mode/ Validate the "pacing" works for direct video retrieval use case involving PACE and VAN components</description>
+
+
+	<!-- Delete Message Store -->
+	<subtest>deleteMediaStoreAll.xml</subtest>
+
+	<function name="disableProxy" module="HTTP" />
+
+	<function name="disableKeepAlive" module="HTTP"/>
+
+	<!-- Query the name of the active MEDIA-STORE process -->
+	<function name="activeProcessToVar" module="Remote">
+		<parameter>MEDIA-STORE</parameter>
+		<parameter>Media_Store_Process_Name</parameter>
+	</function>
+
+	<function name="activeProcessToVar" module="Remote">
+		<parameter>TCP-ROUTER</parameter>
+		<parameter>TCP-ROUTER</parameter>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>restart process </parameter>
+			<variable>TCP-ROUTER/0</variable>
+		</parameter>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>enable trac -v PACE TCP-ROUTER.*.*</parameter>
+	</function>
+
+	<!-- Prepare the Request Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>vo_reqmod_online_opt.xml</parameter>
+		<xml>
+		<requestModifications xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="requestmodifications.xsd">
+		<table name="DisableThings" phase="httpRequest">
+			<selector>
+				<modifyContext name="Skip_CACHE" value="'true'"/>
+				<modifyContext name="Skip_VIRUSSCANNER" value="'true'"/>
+				<modifyContext name="FTR_HtmlTidyDisable" value="'true'"/>
+				<modifyContext name="Skip_COOKIE" value="'true'"/>
+				<modifyContext name="Skip_ICC" value="'true'"/>
+				<modifyContext name="FTR_MultipartCompose_Disable" value="'true'"/>
+				<modifyContext name="FTR_Prefetch_Disable" value="'true'"/>
+				<modifyContext name="FTR_Deflate_Disable" value="'true'"/>
+				<modifyContext name="FTR_Gzip_Disable" value="'true'"/>
+			</selector>
+		</table>
+		<table name="Add Category to the HTTP Header" phase="httpResponse" >
+			<selector>
+				<modifyContext name="HTA_RespHdr_PACE_Bitrate" value="PACE_Bitrate" />
+				<modifyContext name="HTA_RespHdr_PACE_Buffersize" value="PACE_Buffersize" />
+				<modifyContext name="HTA_RespHdr_IM_ContentLength" value="IM_ContentLength" />
+			</selector>
+		</table>
+		<table name="XTT_videoOptimization" phase="httpRequest">
+			<selector urlPattern="http://*/videos/{.*\.flv}">
+				<modifyContext name="FTR_PaceVideo" value="'true'"/>
+			</selector>
+		</table>
+		</requestModifications>
+		</xml>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>vo_reqmod_online_opt.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded requestmodifications.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Radius Login -->
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+	<!-- Send the video retrieval request -->
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>
+			<parameter>http://</parameter>
+			<configuration>server/ip</configuration>
+			<parameter>/videos/Tarabonner-FlightControl637.flv</parameter>
+		</parameter>
+	</function>
+
+	<!-- Validate Response Code Send by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<!-- Checking PACE_Bitrate value -->
+	<function name="queryText" module="BASIC">
+		<variable>HTTP/HEADER/PACE_Bitrate</variable>
+	<parameter>PACE_Bitrate</parameter>
+		<parameter>(\d++)</parameter>
+	</function>
+
+	<function name="info" module="Basic">
+		<parameter>PACE_Bitrate=</parameter>
+		<variable>PACE_Bitrate</variable>
+	</function>
+
+	<function name="queryText" module="BASIC">
+		<variable>HTTP/HEADER/PACE_Buffersize</variable>
+	<parameter>PACE_Buffersize</parameter>
+		<parameter>(\d++)</parameter>
+	</function>
+
+	<function name="info" module="Basic">
+		<parameter>PACE_Buffersize=</parameter>
+		<variable>PACE_Buffersize</variable>
+	</function>
+
+	<!-- Check for Content length both should be same for direct video retrival-->
+	<function name="compareString" module="basic">
+		<variable>HTTP/HEADER/Content-Length</variable>
+		<variable>HTTP/HEADER/IM_ContentLength</variable>
+	</function>
+
+	<function name="executeRemoteCommand" module="Remote">
+		<parameter>
+			<parameter>/bin/grep :I:PACE:.*:PACE_processResponseData </parameter>
+			<configuration>remote/procpath</configuration>
+			<parameter>/</parameter>
+			<variable>TCP-ROUTER/0</variable>
+			<parameter>/</parameter>
+			<variable>TCP-ROUTER/0</variable>
+			<parameter>.out</parameter>
+		</parameter>
+	</function>
+
+	<!-- Check for no delay of pacing chunks -->
+	<function name="queryResponse" module="Remote">
+		<parameter>timepos=\d++us now=\d++us no delay</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Check for delay in pacing chunks -->
+	<function name="queryResponse" module="Remote">
+		<parameter>timepos=\d++us now=\d++us delaying for \d++us</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Radius Logoff -->
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+	<!-- Check for Media Store it should not store any items -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>run command amocli -k count TI:F.CEE.</parameter>
+			<variable>Media_Store_Process_Name</variable>
+			<parameter>:AMO</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>amocli: 0 items counted</parameter>
+		<parameter>response</parameter>
+	</function>
+
+	<!-- Purge the Request Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>REQMOD_EmptyRules.xml</parameter>
+		<parameter>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;requestModifications&gt;&lt;/requestModifications&gt;</parameter>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>REQMOD_EmptyRules.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded requestmodifications.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>disable trac -v </parameter>
+	</function>
+
+</test>

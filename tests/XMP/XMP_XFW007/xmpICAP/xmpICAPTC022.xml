@@ -1,0 +1,44 @@
+<test>	    
+	<name>XMP.ICAP.TC.022</name>
+    <description>GET with REQMOD/RESPMOD call, Webserver responds 403 and no body</description>
+    <subtest name="loadReqmod" file="loadReqmod.xml"/>
+
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+	<function name="startICAPServer" module="ICAP"/>
+	<function name="startWebServer" module="HTTP"/>
+
+	<function name="setServerReturnCode" module="HTTP">
+		<parameter>403</parameter>
+	</function>	
+	<function name="setCacheFile" module="HTTP">
+		<parameter>403</parameter>
+		<parameter></parameter>
+	</function>	
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://icap1.xtt724.com/403</parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>403</parameter>
+	</function>	
+
+	<function name="waitForREQMOD" module="ICAP">
+		<parameter>1</parameter>
+	</function>	
+	<function name="waitForRESPMOD" module="ICAP">
+		<parameter>1</parameter>
+	</function>	
+
+    <subtest name="unloadReqmod" file="unloadReqmod.xml"/>
+
+	<function name="stopWebServer" module="HTTP"/>
+
+	<function name="stopICAPServer" module="ICAP"/>
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function> 
+
+</test>

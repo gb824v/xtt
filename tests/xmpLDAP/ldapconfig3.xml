@@ -1,0 +1,37 @@
+<LDAP>
+    <logins>
+        <login>
+            <name>cn=Manager,o=wap_ext</name>
+            <password>secret</password>
+        </login>
+        <login>
+            <name>null</name>
+            <password>null</password>
+        </login>
+    </logins>
+    <directory>
+        <entry>
+            <baseDN>cn=sis,o=wap_ext</baseDN>
+            <data>
+                <filter>login-ip=127.0.0.1</filter>
+                <dn>login-ip=127.0.0.1,cn=sis,o=wap_ext</dn>
+                <attribute>
+                    <name>clid</name>
+                    <type>0x04</type>
+                    <value>0791234567</value>
+                </attribute>
+                <attribute>
+                    <name>mcc</name>
+                    <type>0x04</type>
+                    <value>228</value>
+                </attribute>
+                <attribute>
+                    <name>mnc</name>
+                    <type>0x04</type>
+                    <value>001</value>
+                </attribute>
+                <oid>2.16.840.1.113730.3.4.2</oid>
+            </data>
+        </entry>
+    </directory>
+</LDAP>

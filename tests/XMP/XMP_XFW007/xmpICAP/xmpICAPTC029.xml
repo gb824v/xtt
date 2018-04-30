@@ -1,0 +1,56 @@
+<test>	    
+	<name>XMP.ICAP.TC.029</name>
+    <description>ISERVER10: Missing null-body in Encapsulated header.</description>
+    <subtest name="loadReqmod" file="loadReqmod.xml"/>
+
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+	<function name="startICAPServer" module="ICAP"/>
+	<function name="startWebServer" module="HTTP"/>
+
+	<function name="setServerICAPHeader" module="ICAP">
+		<parameter>encapsulated</parameter>
+		<parameter>req-hdr=0</parameter>
+	</function>	
+	<function name="setServerReturnCode" module="HTTP">
+		<parameter>403</parameter>
+	</function>	
+	<function name="setCacheFile" module="HTTP">
+		<parameter>403</parameter>
+		<parameter></parameter>
+	</function>	
+	<thread>
+    	<function name="waitForREQMOD" module="ICAP">
+    		<parameter>1</parameter>
+    	</function>	
+    	<function name="setServerICAPHeader" module="ICAP">
+    		<parameter>encapsulated</parameter>
+    		<parameter>res-hdr=0</parameter>
+    	</function>	
+	</thread>
+
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://icap1.xtt724.com/403?delay=1</parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>403</parameter>
+	</function>	
+
+	<function name="waitForRESPMOD" module="ICAP">
+		<parameter>1</parameter>
+	</function>	
+
+    <subtest name="unloadReqmod" file="unloadReqmod.xml"/>
+
+	<function name="stopWebServer" module="HTTP"/>
+
+	<function name="stopICAPServer" module="ICAP"/>
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function> 
+
+</test>

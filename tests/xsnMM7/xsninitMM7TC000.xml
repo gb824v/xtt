@@ -1,0 +1,64 @@
+<test>
+    <configuration>xsnUserConfig.xml</configuration>
+    <function name="testName" module="Basic">
+        <parameter>XSN.INIT.MM7.TC.000</parameter>
+    </function>
+    <description>Load all initial xsn configuration</description>
+
+    <function name="sendRemoteCommand" module="Remote">
+        <configuration>xsn/path</configuration>
+        <configuration>xsn/xms</configuration>
+        <configuration>xsn/extractcat</configuration>
+        <parameter>xttOldCategories.xml</parameter>
+    </function>
+    <function name="queryResponse" module="Remote">
+        <parameter>^Extracted</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+
+    <function name="sendRemoteCommand" module="Remote">
+        <parameter>writeFile xttMM7Categories.xml </parameter>
+        <file>xttMM7Categories.xml</file>
+    </function>
+    <function name="sendRemoteCommand" module="Remote">
+        <configuration>xsn/path</configuration>
+        <configuration>xsn/xms</configuration>
+        <configuration>xsn/loaddata</configuration>
+        <parameter>xttMM7Categories.xml</parameter>
+    </function>
+    <function name="queryResponse" module="Remote">
+        <parameter>^Loaded</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+    
+    <function name="sendRemoteCommand" module="Remote">
+        <parameter>writeFile xsn-MM7-database.xml </parameter>
+        <file>xsn-MM7-database.xml</file>
+    </function>
+    <function name="sendRemoteCommand" module="Remote">
+        <configuration>xsn/path</configuration>
+        <configuration>xsn/xms</configuration>
+        <configuration>xsn/loaddatabase</configuration>
+        <parameter>xsn-MM7-database.xml</parameter>
+    </function>
+    <function name="queryResponse" module="Remote">
+        <parameter>SUCCESS: XML upload completed</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+    
+    <!-- elaborate check on success -->
+    <function name="queryResponse" module="Remote">
+        <parameter>\s++\d++\s++\d++\s++none /dbupdates/subscribers/add</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+    <function name="queryResponse" module="Remote">
+        <parameter>\s++\d++\s++\d++\s++none /dbupdates/communities/add</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+    <function name="queryResponse" module="Remote">
+        <parameter>\s++\d++\s++\d++\s++none /dbupdates/xsnFilters/set</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+        
+    
+</test>

@@ -1,0 +1,210 @@
+<test>
+    <configuration>xsam_config_32.xml</configuration>
+    <function name="testName" module="Basic">
+        <parameter>AP.TC.332</parameter>
+    </function>
+
+    <function name="startSMSCServer" module="SMS"/>
+
+    <function name="setVariable" module="BASIC">
+        <parameter>SMSCAddress</parameter>
+        <parameter>999111999</parameter>
+    </function>
+    <function name="setVariable" module="BASIC">
+        <parameter>tonumber</parameter>
+        <parameter>0796022207</parameter>
+    </function>
+
+    <loop name="repeatNTimes" start="0" stop="1" step="1">
+        <loop name="shortCode" start="1500" stop="1600" step="1">
+            <thread>
+                <function name="openConnection" module="UCP">
+                    <localvariable>shortCode</localvariable>
+                    <configuration>XSAM/IP</configuration>
+                    <configuration>XSAM/PORT</configuration>
+                </function>
+
+                <function name="sendUCPPacket" module="UCP">
+                    <localvariable>shortCode</localvariable>
+                    <parameter>internal</parameter>
+                    <parameter>O</parameter>
+                    <parameter>60</parameter>
+                    <parameter>
+                        <parameter>/</parameter>
+                        <localvariable>shortCode</localvariable>
+                        <parameter>/6/1/1/70617373776F7264//0100//////</parameter>
+                    </parameter>
+                </function>
+
+                <function name="queryTextResponse" module="UCP">
+                    <localvariable>shortCode</localvariable>
+                    <parameter>response60</parameter>
+                    <parameter>\d\d/\d\d\d\d\d/R/60/A/[^/]++/\w\w</parameter>
+                </function>
+                <function name="setVariable" module="BASIC">
+                    <parameter>pass</parameter>
+                    <parameter>
+                        <parameter>SMSC/</parameter>
+                        <configuration>SMSCSERVER/PROTOCOL</configuration>
+                        <parameter>/</parameter>
+                        <localvariable>shortCode</localvariable>
+                        <parameter>/PWD</parameter>
+                    </parameter>
+                </function>
+                <function name="compareString" module="basic">
+                    <parameter>password</parameter>
+                    <variablepointer>pass</variablepointer>
+                </function>
+
+
+                <loop name="loop" start="1" stop="5" step="1">
+                    <function name="sendWindowedUCPPacket" module="UCP">
+                        <localvariable>shortCode</localvariable>
+                        <parameter>internal</parameter>
+                        <parameter>O</parameter>
+                        <parameter>51</parameter>
+                        <parameter>
+                            <parameter>/</parameter>
+                            <variable>tonumber</variable>
+                            <parameter>/</parameter>
+                            <localvariable>shortCode</localvariable>
+                            <parameter>/////////////////2//22220000</parameter>
+                            <variable>loop</variable>
+                            <parameter>/////////////</parameter>
+                        </parameter>
+                    </function>
+                </loop>
+
+                <loop name="iterate100" start="0" stop="100" step="1">
+                    <function name="readWindowedUCPPacket" module="UCP">
+                        <localvariable>shortCode</localvariable>
+                    </function>
+
+                    <function name="queryTextResponse" module="UCP">
+                        <localvariable>shortCode</localvariable>
+                        <parameter>readOne</parameter>
+                        <parameter>\d\d/\d\d\d\d\d/R/51/A//[^/]*+/\w\w</parameter>
+                    </function>
+
+                    <function name="sendWindowedUCPPacket" module="UCP">
+                        <localvariable>shortCode</localvariable>
+                        <parameter>internal</parameter>
+                        <parameter>O</parameter>
+                        <parameter>51</parameter>
+                        <parameter>
+                            <parameter>/</parameter>
+                            <variable>tonumber</variable>
+                            <parameter>/</parameter>
+                            <localvariable>shortCode</localvariable>
+                            <parameter>/////////////////2//22220000</parameter>
+                            <variable>loop</variable>
+                            <parameter>/////////////</parameter>
+                        </parameter>
+                    </function>
+
+                    <!--
+                            <function name="sendUCPPacket" module="UCP">
+                                <localvariable>shortCode</localvariable>
+                                <parameter>internal</parameter>
+                                <parameter>O</parameter>
+                                <parameter>51</parameter>
+                                <parameter>/0123456789/</parameter>
+                                <localvariable>shortCode</localvariable>
+                                <parameter>/////////////////2//12345678901234567890/////////////</parameter>
+                            </function>
+
+                            <function name="queryTextResponse" module="UCP">
+                                <localvariable>shortCode</localvariable>
+                                <parameter>response51</parameter>
+                                <parameter>\d\d/\d\d\d\d\d/R/51/A//[^/]++/\w\w</parameter>
+                            </function>
+
+                            <function name="setVariable" module="BASIC">
+                                <parameter>nmsg</parameter>
+                                <parameter>
+                                    <parameter>SMSC/</parameter>
+                                    <configuration>SMSCSERVER/PROTOCOL</configuration>
+                                    <parameter>/0123456789/NMsg</parameter>
+                                <parameter>
+                            </function>
+                            <function name="compareString" module="basic">
+                                <parameter>12345678901234567890</parameter>
+                                <variablepointer>nmsg</variablepointer>
+                            </function>
+                    -->
+                    <!-- does not work. SendSMSCUCPPacket needs a worker ID which only works when we have a
+                         controlled envirement which we do NOT have inside loops with threads etc.
+                            <thread>
+                                <function name="sleep" module="Basic">
+                                    <parameter>100</parameter>
+                                </function>
+
+                                <function name="createDateString" module="Basic">
+                                    <parameter>ddMMyykkmmss</parameter>
+                                    <parameter>SCTS</parameter>
+                                    <parameter>3600</parameter>
+                                    <parameter>GMT</parameter>
+                                </function>
+
+                                <function name="sendSMSCUCPPacket" module="UCP">
+                                    <localvariable>shortCode</localvariable>
+                                    <parameter>0</parameter>
+                                    <parameter>internal</parameter>
+                                    <parameter>O</parameter>
+                                    <parameter>52</parameter>
+                                    <parameter>/</parameter>
+                                    <localvariable>shortCode</localvariable>
+                                    <parameter>/0123456789/////////////</parameter>
+                                    <variable>SCTS</variable>
+                                    <parameter>////3//4D455353414745/////////////</parameter>
+                                </function>
+
+                            </thread>
+
+                            <function name="waitSMSCUCPPacket" module="UCP">
+                                <localvariable>shortCode</localvariable>
+                            </function>
+                                <function name="queryTextResponse" module="UCP">
+                                    <localvariable>shortCode</localvariable>
+                                    <parameter>response52</parameter>
+                                    <parameter>\d\d/\d\d\d\d\d/R/52/A//[^/]++/\w\w</parameter>
+                                </function>
+
+                                <function name="setVariable" module="BASIC">
+                                    <parameter>amsg</parameter>
+                                    <parameter>
+                                        <parameter>SMSC/</parameter>
+                                        <configuration>SMSCSERVER/PROTOCOL</configuration>
+                                        <parameter>/</parameter>
+                                        <localvariable>shortCode</localvariable>
+                                        <parameter>/AMsg</parameter>
+                                    <parameter>
+                                </function>
+                                <function name="compareString" module="basic">
+                                    <parameter>4D455353414745</parameter>
+                                    <variablepointer>amsg</variablepointer>
+                                </function>
+                    -->
+
+                </loop>
+                <loop name="loop" start="1" stop="5" step="1">
+                    <function name="readWindowedUCPPacket" module="UCP">
+                        <localvariable>shortCode</localvariable>
+                    </function>
+
+                    <function name="queryTextResponse" module="UCP">
+                        <localvariable>shortCode</localvariable>
+                        <parameter>readRest</parameter>
+                        <parameter>\d\d/\d\d\d\d\d/R/51/A//[^/]*+/\w\w</parameter>
+                    </function>
+                </loop>
+                <function name="closeConnection" module="UCP">
+                    <localvariable>shortCode</localvariable>
+                </function>
+            </thread>
+        </loop>
+    </loop>
+
+    <function name="waitOnThreads" module="Basic"/>
+    <function name="stopSMSCServer" module="SMS"/>
+</test>

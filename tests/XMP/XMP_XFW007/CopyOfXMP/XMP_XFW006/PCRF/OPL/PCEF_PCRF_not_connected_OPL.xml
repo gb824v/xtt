@@ -1,0 +1,274 @@
+<test>
+<name>No connection to PCRF doesn't stop user's experience</name>
+<qcid>1337</qcid>
+<description>
+This test will validate that the XMP keeps giving service although the PCRF server is not connected.We will validate that the XMP recognize the disconnection using the transaction logs.
+</description>
+<steps>
+Write "logging" file to remote XTT
+Load logging file
+Verify logging file loaded
+Write reqmod file to remote XTT
+Load reqmod
+Verify reqmod loaded
+Start web server
+Restart LOGGER proc for new lof file
+Radius login
+Send GET request
+Verify 200 OK
+Get user's details from PSE
+Verify GxSession exist
+Radius logoff
+Sleep 5secs
+Get newest log file
+Logscan the log to a tmp file
+Grep result message - unable to open connection
+Verify expected result
+Grep for result - FAIL
+Verify expected result
+Write empty reqmod to remote XTT
+Load reqmod
+Verify reqmod loaded successfully
+Load original logging file
+Verify original logging file loaded
+Verify original logging file loaded
+Delete temporary files
+Stop web server
+</steps>
+<designer>Administrator </designer>
+<creationdate>2012-02-15 19:07:39 </creationdate>
+<testlevel>Regression</testlevel>
+<xfwVersion>XMP_XFW006</xfwVersion>
+<mandatory>false</mandatory>
+<stepname>Write "logging" file to remote XTT</stepname>
+<stepid>1</stepid>
+<function name="writeRemoteFile" module="Remote">
+<parameter>logging.xml</parameter>
+<xml>&lt;?xml version="1.0"?&gt;
+<logging>
+  <process namePattern="^HTTP-PROXY|^TCP-ROUTER|^WAP1-PROXY">
+    <includeElements>
+      <element name="*" />
+      <!-- The following 2 lines configure additional context elements needed for video optimization KPI statistics. -->
+      <element name="VO_*" />
+      <element name="PACE_*" />
+    </includeElements>
+  </process>
+  <process namePattern="^PRESENCE-STORE">
+    <includeElements>
+      <element name="PSE_*" />
+    </includeElements>
+    <excludeElements>
+      <element name="PSE_ALREADY_LOGGED_ON" />
+    </excludeElements>
+  </process>
+  <process namePattern="^STATS-COLLECTOR">
+    <includeElements>
+      <element name="STATMON_*" />
+    </includeElements>
+  </process>
+  <process namePattern="^DASHBOARD">
+    <includeElements>
+      <element name="TCP_RemoteAddress" />
+    </includeElements>
+  </process>
+</logging>
+
+</xml>
+</function>
+<mandatory>false</mandatory>
+<stepname>Load logging file</stepname>
+<stepid>2</stepid>
+<function name="executeRemoteXMSCommand" module="Remote">
+<parameter>load data logging.xml</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Verify logging file loaded</stepname>
+<stepid>3</stepid>
+<function name="queryResponse" module="Remote">
+<parameter>Loaded logging</parameter>
+<parameter>test</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Write reqmod file to remote XTT</stepname>
+<stepid>4</stepid>
+<function name="writeRemoteFile" module="Remote">
+<parameter>reqmodPCEF.xml</parameter>
+<file>reqmod_combined.xml</file>
+</function>
+<mandatory>false</mandatory>
+<stepname>Load reqmod</stepname>
+<stepid>5</stepid>
+<function name="executeRemoteXMSCommand" module="Remote">
+<parameter>load data reqmodPCEF.xml</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Verify reqmod loaded</stepname>
+<stepid>6</stepid>
+<function name="queryResponse" module="Remote">
+<parameter>^Loaded requestmodifications.*</parameter>
+<parameter>test</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Start web server</stepname>
+<stepid>7</stepid>
+<function name="startWebServer" module="HTTP"/>
+<mandatory>false</mandatory>
+<stepname>Restart LOGGER proc for new lof file</stepname>
+<stepid>8</stepid>
+<function name="restartProcess" module="Remote">
+<parameter>LOGGER.*</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Radius login</stepname>
+<stepid>9</stepid>
+<function name="radiusLogon" module="Radius">
+<parameter>417894570</parameter>
+<parameter>xttuser</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Send GET request</stepname>
+<stepid>10</stepid>
+<function name="sendGetRequest" module="HTTP">
+<parameter>
+<parameter>http://</parameter>
+<configuration>system/ip</configuration>
+<parameter>/test.html</parameter>
+</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Verify 200 OK</stepname>
+<stepid>11</stepid>
+<function name="checkResponseCode" module="HTTP">
+<parameter>200</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Get user's details from PSE</stepname>
+<stepid>12</stepid>
+<function name="executeRemoteXMSCommand" module="Remote">
+<parameter>
+<configuration>remote/command</configuration>
+<parameter>pse3cli -a </parameter>
+<configuration>system/ip</configuration>
+<parameter> rbng</parameter>
+</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Verify GxSession exist</stepname>
+<stepid>13</stepid>
+<function name="queryResponse" module="Remote">
+<parameter>&lt;addressType&gt;GxSessionId-Pcef&lt;/addressType&gt;</parameter>
+<parameter>response</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Radius logoff</stepname>
+<stepid>14</stepid>
+<function name="radiusLogoff" module="Radius">
+<parameter>417894570</parameter>
+<parameter>xttuser</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Sleep 5secs</stepname>
+<stepid>15</stepid>
+<function name="sleep" module="Basic">
+<parameter>5000</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Get newest log file</stepname>
+<stepid>16</stepid>
+<function name="getNewestRemoteFileName" module="Remote">
+<parameter>newestlogfile</parameter>
+<configuration>remote/logpath</configuration>
+<parameter>XMP</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Logscan the log to a tmp file</stepname>
+<stepid>17</stepid>
+<function name="executeRemoteXMSCommand" module="Remote">
+<parameter>
+<configuration>remote/command</configuration>
+<parameter>logscan -in </parameter>
+<variable>newestlogfile</variable>
+<parameter> -out x.log</parameter>
+</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Grep result message - unable to open connection</stepname>
+<stepid>18</stepid>
+<function name="executeRemoteCommand" module="Remote">
+<parameter>/bin/grep DIAMCTX_ResultMsg: x.log</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Verify expected result</stepname>
+<stepid>19</stepid>
+<function name="queryResponse" module="Remote">
+<parameter>unable to open connection</parameter>
+<parameter>initial</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Grep for result - FAIL</stepname>
+<stepid>20</stepid>
+<function name="executeRemoteCommand" module="Remote">
+<parameter>/bin/grep DIAMCTX_Result: x.log</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Verify expected result</stepname>
+<stepid>21</stepid>
+<function name="queryResponse" module="Remote">
+<parameter>FAIL</parameter>
+<parameter>initial</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Write empty reqmod to remote XTT</stepname>
+<stepid>22</stepid>
+<function name="writeRemoteFile" module="Remote">
+<parameter>REQMOD_EmptyRules.xml</parameter>
+<parameter>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;requestModifications&gt;&lt;/requestModifications&gt;</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Load reqmod</stepname>
+<stepid>23</stepid>
+<function name="executeRemoteXMSCommand" module="Remote">
+<parameter>
+<parameter>load data </parameter>
+<parameter>REQMOD_EmptyRules.xml</parameter>
+</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Verify reqmod loaded successfully</stepname>
+<stepid>24</stepid>
+<function name="queryResponse" module="Remote">
+<parameter>^Loaded requestmodifications.*</parameter>
+<parameter>dev/null</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Load original logging file</stepname>
+<stepid>25</stepid>
+<function name="executeRemoteXMSCommand" module="Remote">
+<parameter>load data /opt/xmp/examples/xmp_Logging.xml</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Verify original logging file loaded</stepname>
+<stepid>26</stepid>
+<function name="queryResponse" module="Remote">
+<parameter>Loaded logging</parameter>
+<parameter>test</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Verify original logging file loaded</stepname>
+<stepid>27</stepid>
+<function name="queryResponse" module="Remote">
+<parameter>Loaded logging</parameter>
+<parameter>test</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Delete temporary files</stepname>
+<stepid>28</stepid>
+<function name="executeRemoteCommand" module="Remote">
+<parameter>rm -f x.log </parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Stop web server</stepname>
+<stepid>29</stepid>
+<function name="stopWebServer" module="HTTP"/>
+</test>

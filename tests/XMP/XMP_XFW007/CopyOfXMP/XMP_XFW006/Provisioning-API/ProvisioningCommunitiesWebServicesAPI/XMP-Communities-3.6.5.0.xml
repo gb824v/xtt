@@ -1,0 +1,234 @@
+<test>
+       
+      <description> SOAP-API-Communities{(getCommunitiesByName( )}: Test for getCommunitiesByName. </description>
+      
+	 <function name="testName" module="Basic">
+		<parameter>XMP-Communities-3.6.5.0</parameter>
+	</function>
+
+	<function name="SOAPClient" module="SOAP_API" >
+		<parameter>
+			 <configuration>XMP/PROTOCOL</configuration>
+			 <configuration>XMP/IP</configuration>
+			 <parameter>:</parameter>
+			 <configuration>XMP/PORT/</configuration>
+			 <parameter>/jaxws-policy-communities/communities</parameter>
+		</parameter>
+		<file>XMP-create-Community-COM1.xml</file>
+		<parameter>Body/return</parameter>
+	</function>
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+
+	<function name="SOAPClient" module="SOAP_API" >
+		<parameter>
+			 <configuration>XMP/PROTOCOL</configuration>
+			 <configuration>XMP/IP</configuration>
+			 <parameter>:</parameter>
+			 <configuration>XMP/PORT/</configuration>
+			 <parameter>/jaxws-policy-communities/communities</parameter>
+		</parameter>
+		<file>XMP-Create-Community-COM2-.xml</file>
+		<parameter>Body/return</parameter>
+	</function>
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+
+	<function name="SOAPClient" module="SOAP_API" >
+		<parameter>
+			 <configuration>XMP/PROTOCOL</configuration>
+			 <configuration>XMP/IP</configuration>
+			 <parameter>:</parameter>
+			 <configuration>XMP/PORT/</configuration>
+			 <parameter>/jaxws-policy-communities/communities</parameter>
+		</parameter>
+		<file>XMP-create-Community-COM3.xml</file>
+		<parameter>Body/return</parameter>
+	</function>
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+
+	<function name="SOAPClient" module="SOAP_API" >
+		<parameter>
+			 <configuration>XMP/PROTOCOL</configuration>
+			 <configuration>XMP/IP</configuration>
+			 <parameter>:</parameter>
+			 <configuration>XMP/PORT/</configuration>
+			 <parameter>/jaxws-policy-communities/communities</parameter>
+		</parameter>
+		<file>XMP-create-Community-COM4.xml</file>
+		<parameter>Body/return</parameter>
+	</function>
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+
+	<function name="SOAPClient" module="SOAP_API" >
+		<parameter>
+			 <configuration>XMP/PROTOCOL</configuration>
+			 <configuration>XMP/IP</configuration>
+			 <parameter>:</parameter>
+			 <configuration>XMP/PORT/</configuration>
+			 <parameter>/jaxws-policy-communities/communities</parameter>
+		</parameter>
+		<file>XMP-create-Community-COM5.xml</file>
+		<parameter>Body/return</parameter>
+	</function>
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+
+	<function name="SOAPClient" module="SOAP_API" >
+		<parameter>
+			 <configuration>XMP/PROTOCOL</configuration>
+			 <configuration>XMP/IP</configuration>
+			 <parameter>:</parameter>
+			 <configuration>XMP/PORT/</configuration>
+			 <parameter>/jaxws-policy-communities/communities</parameter>
+		</parameter>
+		<file>XMP-create-Community-COMA1.xml</file>
+		<parameter>Body/return</parameter>
+	</function>
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+
+	<function name="SOAPClient" module="SOAP_API" >
+		<parameter>
+			 <configuration>XMP/PROTOCOL</configuration>
+			 <configuration>XMP/IP</configuration>
+			 <parameter>:</parameter>
+			 <configuration>XMP/PORT/</configuration>
+			 <parameter>/jaxws-policy-communities/communities</parameter>
+		</parameter>
+		<file>XMP-create-Community-COMA2.xml</file>
+		<parameter>Body/return</parameter>
+	</function>
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+	
+	<function name="SOAPClient" module="SOAP_API" >
+		<parameter>
+			 <configuration>XMP/PROTOCOL</configuration>
+			 <configuration>XMP/IP</configuration>
+			 <parameter>:</parameter>
+			 <configuration>XMP/PORT/</configuration>
+			 <parameter>/jaxws-policy-communities/communities</parameter>
+		</parameter>
+		<file>XMP-getCommunitiesByName-match-character.xml</file>
+		<parameter>Body/return</parameter>
+	</function>
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+
+	<function name="SOAPClient" module="SOAP_API" >
+		<parameter>
+			 <configuration>XMP/PROTOCOL</configuration>
+			 <configuration>XMP/IP</configuration>
+			 <parameter>:</parameter>
+			 <configuration>XMP/PORT/</configuration>
+			 <parameter>/jaxws-policy-communities/communities</parameter>
+		</parameter>
+		<file>XMP-destory-Community-COM1.xml</file>
+		<parameter>Body/return</parameter>
+	</function>
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+
+	<function name="SOAPClient" module="SOAP_API" >
+		<parameter>
+			 <configuration>XMP/PROTOCOL</configuration>
+			 <configuration>XMP/IP</configuration>
+			 <parameter>:</parameter>
+			 <configuration>XMP/PORT/</configuration>
+			 <parameter>/jaxws-policy-communities/communities</parameter>
+		</parameter>
+		<file>XMP-destory-Community-COM2.xml</file>
+		<parameter>Body/return</parameter>
+	</function>
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+
+	<function name="SOAPClient" module="SOAP_API" >
+		<parameter>
+			 <configuration>XMP/PROTOCOL</configuration>
+			 <configuration>XMP/IP</configuration>
+			 <parameter>:</parameter>
+			 <configuration>XMP/PORT/</configuration>
+			 <parameter>/jaxws-policy-communities/communities</parameter>
+		</parameter>
+		<file>XMP-destory-Community-COM3.xml</file>
+		<parameter>Body/return</parameter>
+	</function>
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+
+	<function name="SOAPClient" module="SOAP_API" >
+		<parameter>
+			 <configuration>XMP/PROTOCOL</configuration>
+			 <configuration>XMP/IP</configuration>
+			 <parameter>:</parameter>
+			 <configuration>XMP/PORT/</configuration>
+			 <parameter>/jaxws-policy-communities/communities</parameter>
+		</parameter>
+		<file>XMP-destory-Community-COM4.xml</file>
+		<parameter>Body/return</parameter>
+	</function>
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+
+	<function name="SOAPClient" module="SOAP_API" >
+		<parameter>
+			 <configuration>XMP/PROTOCOL</configuration>
+			 <configuration>XMP/IP</configuration>
+			 <parameter>:</parameter>
+			 <configuration>XMP/PORT/</configuration>
+			 <parameter>/jaxws-policy-communities/communities</parameter>
+		</parameter>
+		<file>XMP-destory-Community-COM5.xml</file>
+		<parameter>Body/return</parameter>
+	</function>
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+
+	<function name="SOAPClient" module="SOAP_API" >
+		<parameter>
+			 <configuration>XMP/PROTOCOL</configuration>
+			 <configuration>XMP/IP</configuration>
+			 <parameter>:</parameter>
+			 <configuration>XMP/PORT/</configuration>
+			 <parameter>/jaxws-policy-communities/communities</parameter>
+		</parameter>
+		<file>XMP-destory-Community-COMA1.xml</file>
+		<parameter>Body/return</parameter>
+	</function>
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+
+	<function name="SOAPClient" module="SOAP_API" >
+		<parameter>
+			 <configuration>XMP/PROTOCOL</configuration>
+			 <configuration>XMP/IP</configuration>
+			 <parameter>:</parameter>
+			 <configuration>XMP/PORT/</configuration>
+			 <parameter>/jaxws-policy-communities/communities</parameter>
+		</parameter>
+		<file>XMP-destory-Community-COMA2.xml</file>
+		<parameter>Body/return</parameter>
+	</function>
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+        
+ </test>

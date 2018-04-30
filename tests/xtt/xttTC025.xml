@@ -1,0 +1,107 @@
+<test>
+    <name>XTT.TC.025</name>
+    <description>Test case to show how DeliveryReportReq and ReadReplyReq can be sent using the new function "sendDRRequest"</description>
+
+	<!-- Start Web Server in order to receive & response MM7 Read Reply Reports -->
+    <function name="startMMSCServer" module="MMSC">
+        <configuration>VASP/REMOTEPORT</configuration>
+        <configuration>WEBSERVER/ROOT</configuration>
+        <configuration>WEBSERVER/TIMEOUT</configuration>
+    </function>
+    
+    <function name="setVariable" module="Basic">
+        <parameter>MSISDN</parameter>
+		<parameter>41751110000</parameter>
+    </function>
+   
+    <function name="setVariable" module="Basic">
+        <parameter>SENDERMSISDN</parameter>
+		<parameter>41751110001</parameter>
+    </function>
+   
+    <!-- Originator VASP server sends MM7_submit.REQ to XMA. In MM7_submit.REQ please set the following attributes: DeliveryReport=No,ReadReply=No -->
+    <function name="createMM7Soap" module="VASP">
+        <parameter>SubmitReq</parameter>
+        <configuration>VASP/VASPID</configuration>
+        <configuration>VASP/VASID</configuration>
+    </function>
+
+    <function name="setMessageBoundary" module="VASP">
+        <parameter>000001message</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SubmitReq']</parameter>
+        <parameter>Recipients</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='Recipients']</parameter>
+        <parameter>To</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='To'][last()]</parameter>
+        <parameter>Number</parameter>
+        <variable>MSISDN</variable>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SubmitReq']</parameter>
+        <parameter>DeliveryReport</parameter>
+        <parameter>True</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SubmitReq']</parameter>
+        <parameter>ReadReply</parameter>
+        <parameter>True</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SubmitReq']</parameter>
+        <parameter>Content</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='Content']</parameter>
+        <parameter>href</parameter>
+        <parameter>cid:xtt-test001</parameter>
+    </function>
+    <function name="addContent" module="VASP">
+        <file>sendMM7data.txt</file>
+    </function>
+    
+	<function name="previewRequest" module="VASP" />
+   
+     <!--Send SubmitReq -->
+	<function name="sendPostRequest" module="VASP"/>
+    
+	<function name="checkResponseCode" module="VASP">
+        <parameter>200</parameter>
+    </function>
+    <function name="queryBody" module="VASP">
+        <parameter>temp</parameter>
+        <parameter>&lt;StatusCode&gt;1000&lt;/StatusCode&gt;</parameter>
+    </function>
+
+	<!-- send Delivery Report Request -->
+	<function name="sendDRRequest" module="VASP">
+        <parameter>Retrieved</parameter>
+    </function>
+
+
+	<function name="checkResponseCode" module="VASP">
+        <parameter>200</parameter>
+    </function>
+    
+    <!-- send Read Reply Request -->
+	<function name="sendRRRequest" module="VASP">
+	 <parameter>deleted</parameter>
+     </function>
+
+	<function name="checkResponseCode" module="VASP">
+        <parameter>200</parameter>
+    </function>
+
+
+     <function name="waitForRequests" module="MMSC">
+        <parameter>3</parameter>
+     </function>
+
+	<!-- Stop SMSC Server -->
+    <function name="stopMMSCServer" module="MMSC"/>   
+</test>

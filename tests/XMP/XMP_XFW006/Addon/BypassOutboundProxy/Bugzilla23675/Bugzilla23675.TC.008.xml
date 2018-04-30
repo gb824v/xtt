@@ -1,0 +1,110 @@
+<test>
+	<name>Bugzilla23675.TC.008</name>
+
+	<description>Validate XMP sends HTTP GET Request if all the proxy servers in a proxy set are down according to the feedbacks of health checker/
+        RM helper is configured/PSC_CFG_DirectRequestIfAllProxiesAreDown is FALSE (proxy set contains 2 proxy servers) / XMP Replies the Request with Gateway Timeout
+    </description>
+
+	<!-- Start Target Web Server -->
+	<function name="startWebServer" module="HTTP" />
+
+    <!-- Define The Content in the Target Web Server -->
+	<function name="setCacheFile" module="HTTP">
+			<parameter>index/test1.html</parameter>
+<xml><html>
+<body>
+This is the contents of the page... Enjoy it.
+</body>
+</html>
+</xml>
+	</function>
+
+	<function name="activeProcessToVar" module="Remote">
+		<parameter><configuration>HttpProxy/ProcessName</configuration><parameter>.*1</parameter></parameter>
+		<parameter>Name_Of_Tcp_Router_Process</parameter>
+	</function>
+
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>run command cmu -c </parameter>
+			<variable>Name_Of_Tcp_Router_Process</variable>
+		</parameter>
+	</function>
+
+    <!-- check if PSC_CFG_DirectRequestIfAllProxiesAreDown = false -->
+	<function name="queryResponse" module="Remote">
+		<parameter>PSC_CFG_DirectRequestIfAllProxiesAreDown[\s]++:[\s]++false</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+    <!-- Radius Login -->
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+	<!-- Prepare the Request Modification File so that all HTTP requests are routed to 'ProxySet_2' defined in PV-->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>REQMOD_Bugzilla23675.TC.008.xml</parameter>
+		<xml>
+			<requestModifications xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="requestmodifications.xsd">
+                <table name="Set ProxySet">
+                      <selector>
+                         <modifyContext name="Internal_HTGProxySetName" value="'ProxySet_2'"/>
+                      </selector>
+                   </table>
+			</requestModifications>
+		</xml>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>REQMOD_Bugzilla23675.TC.008.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded requestmodifications.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+   
+	<!-- Send HTTP GET Request -->
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://www.724xtt.com/index/test1.html</parameter>
+	</function>
+
+	<!-- Validate Gateway Timeout Response Code sent by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>503</parameter>
+	</function>
+
+	<!-- Purge the Request Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>REQMOD_EmptyRules.xml</parameter>
+		<parameter>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;requestModifications&gt;&lt;/requestModifications&gt;</parameter>
+    </function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>REQMOD_EmptyRules.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded requestmodifications.*</parameter>
+		<parameter>dev/null</parameter>
+    </function>
+
+	<!-- Radius Logoff -->
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+	<!-- Stop Web Server -->
+	<function name="stopWebServer" module="HTTP"/>
+
+</test>

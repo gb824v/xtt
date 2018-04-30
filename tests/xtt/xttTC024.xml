@@ -1,0 +1,45 @@
+<test>
+    <name>XTT.TC.024</name>
+    <description>Test the chunked encoding of the server</description>
+
+    <function name="startWebServer" module="HTTP"/>
+
+    <div nocomment="Test the chunked encoding of the server">
+        <function name="createConnection" module="HTTP">
+            <parameter>CHUNKED</parameter>
+        </function>
+
+        <function name="setServerHeader" module="HTTP">
+            <parameter>content-type</parameter>
+            <parameter>video/x-flv</parameter>
+        </function>
+
+        <thread>
+            <function name="sleep" module="Basic">
+                <parameter>200</parameter>
+            </function>
+
+            <function name="closeConnection" module="HTTP">
+                <parameter>CHUNKED</parameter>
+            </function>
+        </thread>
+
+        <function name="sendGetRequestNoFailOnException" module="HTTP">
+            <parameter>CHUNKED</parameter>
+            <parameter>
+                <parameter>http://127.0.0.1:</parameter>
+                <configuration>WEBSERVER/PORT</configuration>
+                <parameter>/videos/Ddspringle1-OpenOceanTorrus105.flv?chunks=20</parameter>
+            </parameter>
+        </function>
+
+        <function name="checkResponseCode" module="HTTP">
+            <parameter>CHUNKED</parameter>
+            <parameter>200</parameter>
+        </function>
+
+    </div>
+
+    <function name="stopWebServer" module="HTTP"/>
+
+</test>

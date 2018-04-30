@@ -1,0 +1,43 @@
+<test>
+    <name>MMSC.INITIALIZE</name>
+    <description>Load the MMSC to the database</description>
+    
+    <function name="openConnection" module="SQL">
+        <parameter>SQL1</parameter>
+        <configuration>xsam/sql/driver</configuration>
+        <configuration>xsam/sql/jdbcconnection</configuration>
+        <configuration>xsam/sql/database</configuration>
+        <configuration>xsam/sql/password</configuration>
+    </function>
+    
+    <function name="update" module="SQL">
+        <parameter>SQL1</parameter>
+        <parameter>query1</parameter>
+        <parameter>DELETE FROM SAM_MMS_CHANNELS WHERE CHANNELNAME='XTTMMSC'</parameter>
+    </function>
+    <function name="update" module="SQL">
+        <parameter>SQL1</parameter>
+        <parameter>insert1</parameter>
+        <parameter>
+            <parameter>INSERT INTO SAM_MMS_CHANNELS (ID,CHANNELNAME,URL,EXTENSION_TYPE) VALUES ('0000000AABBCCDDEEFF1','XTTMMSC','http://</parameter>
+            <configuration>SYSTEM/IP</configuration>
+            <parameter>:</parameter>
+            <configuration>MMSCSERVER/PORT</configuration>
+            <parameter>/','None')</parameter>
+        </parameter>
+    </function>
+    <function name="query" module="SQL">
+        <parameter>SQL1</parameter>
+        <parameter>query1</parameter>
+        <parameter>SELECT ID,CHANNELNAME,URL,EXTENSION_TYPE FROM SAM_MMS_CHANNELS</parameter>
+    </function>
+
+    <function name="closeConnection" module="SQL">
+        <parameter>SQL1</parameter>
+    </function>
+
+	<function name="restartProcess" module="Remote">
+		<parameter>WFE</parameter>
+	</function>  
+
+</test>

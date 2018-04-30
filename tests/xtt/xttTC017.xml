@@ -1,0 +1,24 @@
+<test>
+	<name>XTT.TC.017</name>
+	<description>Show the CRLF parameter tag</description>
+    <function name="info" module="Basic">
+        <parameter>Test1Test2
+Test3Test4
+Test5Test6
+Test7
+Test8</parameter>
+    </function>
+    <function name="info" module="Basic">
+        <parameter>Test1</parameter>
+        <parameter>Test2</parameter>
+        <crlf/>
+        <parameter>Test3</parameter>
+        <crlf>Test4</crlf>
+        <parameter>Test5</parameter>
+        <parameter>Test6</parameter>
+        <crlf/>
+        <crlf>Test7</crlf>
+        <parameter>Test8</parameter>
+    </function>
+
+</test>

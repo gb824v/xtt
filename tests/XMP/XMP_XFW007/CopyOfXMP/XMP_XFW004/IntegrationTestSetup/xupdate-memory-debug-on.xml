@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<modifications xmlns="http://www.xmldb.org/xupdate" version="1.0">
+    <append select="/component-view/processgroup">
+        <element name="env-variable">
+            <attribute name="extensible">false</attribute>
+            <attribute name="name">CEECFG_MemoryDebug</attribute>
+            <element name="value">true</element>
+        </element>
+    </append>
+    <append select="/component-view/processgroup">
+        <element name="env-variable">
+            <attribute name="extensible">false</attribute>
+            <attribute name="name">CEECFG_TraceFail</attribute>
+            <element name="value">.</element>
+        </element>
+    </append>
+</modifications>

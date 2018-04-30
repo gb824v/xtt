@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<requestModifications>
+
+<table name="authentication" phase="authentication" >
+        <selector urlPattern="*://*/*" >
+                <modifyContext name="FTR_AuthenticationType" value="'radius'" />
+                <modifyContext name="FTR_SubscriberId" value="TCP_RemoteIpAddress" />
+        </selector>
+</table>
+
+	<table name="RetrieveBannerImage" phase="httpRequest">
+			<selector urlPattern="http://*/xmp-banner">
+			<modifyContext name="FTR_Advert" value="'banner'"/>
+			</selector>
+	</table>
+
+	<table name="RedirectToClickthroughUrl" phase="httpRequest">
+			<selector urlPattern="http://*/xmp-clickthrough">
+			<modifyContext name="FTR_Advert" value="'clickthrough'"/>
+			</selector>
+	</table>
+
+</requestModifications>

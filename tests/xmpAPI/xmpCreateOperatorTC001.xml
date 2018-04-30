@@ -1,0 +1,29 @@
+<test>
+ 
+      <!-- Test case 7.3.3.0: [xmpOperatorTC002] Operator_create -->
+       
+      <description> SOAP-API: Operator : Operator_create</description>
+
+	 <function name="testName" module="Basic">
+		<parameter>xmpOperatorTC002</parameter>
+	</function>
+      
+	<function name="SOAPClient" module="SOAP_API" >
+		<parameter>
+			 <parameter>http://</parameter>
+			 <configuration>XSN/IP</configuration>
+			 <parameter>:</parameter>
+			 <configuration>XSN/PORT</configuration>
+			 <parameter>/jaxws-policy-operators/operators</parameter>
+		</parameter>
+		<file>Operator_create.xml</file>
+		<parameter>Body/create</parameter>
+	</function>
+
+    
+
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+        
+ </test>

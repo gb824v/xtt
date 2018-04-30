@@ -1,0 +1,142 @@
+<test>  
+ 
+    <name>loadConfiguration.xml.xml</name>
+    <description>load Dynamic Configuration Files</description>
+
+
+
+	<!-- Load WorkflowConstants file -->
+	<function name="setVariable" module="Basic">
+		<parameter>xmpWorkfloConstants</parameter>
+		<file>../IntegrationTestSetup/xmp_WorkflowConstants.xml</file>
+	</function>
+
+
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>xmp_WorkflowConstants.xml</parameter>
+		<variable>xmpWorkfloConstants</variable>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>xmp_WorkflowConstants.xml</parameter>
+		</parameter>
+	</function>
+	
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>Loaded workflowconstants</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+
+
+
+
+
+
+
+
+
+
+	<!-- Load PCC Modification File -->
+	<function name="setVariable" module="Basic">
+		<parameter>PCCModiciation</parameter>
+		<file>pcc_modifications.xml</file>
+	</function>
+
+
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>pcc_modification.xml</parameter>
+		<variable>PCCModiciation</variable>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>pcc_modification.xml</parameter>
+		</parameter>
+	</function>
+	
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>Loaded pccmodifications</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	
+	
+	<!-- Load PCC Rules File -->
+	<function name="setVariable" module="Basic">
+		<parameter>PCCRules</parameter>
+		<file>pcc_rules.xml</file>
+	</function>
+
+
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>pcc_rules.xml</parameter>
+		<variable>PCCRules</variable>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>pcc_rules.xml</parameter>
+		</parameter>
+	</function>	
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>Loaded pccrules</parameter>
+		<parameter>dev/null</parameter>
+	</function>	
+	
+	
+	<!-- Load Subscriber DB Update File -->
+	<function name="setVariable" module="Basic">
+		<parameter>xmp_pcrf_DatabaseUpdateFile</parameter>
+		<file>xmp_pcrf_DatabaseUpdateFile.xml</file>
+	</function>
+
+
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>xmp_pcrf_DatabaseUpdateFile.xml</parameter>
+		<variable>xmp_pcrf_DatabaseUpdateFile</variable>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load db </parameter>
+			<parameter>xmp_pcrf_DatabaseUpdateFile.xml</parameter>
+		</parameter>
+	</function>		
+	
+    <function name="queryResponse" module="Remote">
+        <parameter>SUCCESS: XML upload completed</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+    
+    
+    <!-- check that all processes are running - no core files -->
+    
+    <!-- just check of there are any corefiles -->
+    <function name="executeRemoteCommand" module="Remote">
+        <parameter>
+            <parameter>find </parameter>
+            <configuration>REMOTE/PROCPATH</configuration>
+            <parameter> -name *.core</parameter>
+        </parameter>
+    </function>
+
+    <function name="queryResponse" module="Remote">
+        <parameter></parameter>
+        <parameter>result</parameter>
+    </function>
+
+    <!-- just check if all the processes are running -->
+    <function name="checkAllProcessesStatus" module="Remote">
+        <parameter>Running</parameter>
+    </function>
+    
+
+</test>
+

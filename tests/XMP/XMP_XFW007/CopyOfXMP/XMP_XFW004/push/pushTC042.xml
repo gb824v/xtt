@@ -1,0 +1,208 @@
+<test>
+    <configuration>push.xml</configuration>
+    <!--configuration>../config.xml</configuration-->
+    <name>PUSH.TC.042</name>
+
+    <!-- load security info -->
+    
+   
+        <function name="executeRemoteXMSCommand" module="Remote">
+            <parameter>
+                <configuration>REMOTE/COMMAND</configuration>
+                <parameter>pwcrypt -f </parameter>
+                <configuration>productlicense</configuration>
+                <parameter> demo1234</parameter>
+            </parameter>
+        </function>    
+        
+        <function name="queryResponse" module="Remote">
+            <parameter>.*</parameter>
+            <parameter>PASSWORD</parameter>
+    </function>    
+
+
+        <function name="setVariable" module="Basic">
+            <parameter>xmp-security.xml</parameter>
+            <file>security.xml</file>
+        </function>
+        
+         <function name="replace" module="Basic">
+	            <parameter>xmp-security.xml</parameter>
+	            <parameter>privateKeyPassword="(.*)"</parameter>
+	            <parameter>
+	                <parameter>privateKeyPassword="</parameter>
+	                <variable>PASSWORD</variable>
+	                <parameter>"</parameter>
+	            </parameter>
+        </function>
+
+    <function name="writeRemoteFile" module="Remote">
+        <parameter>xmp-security.xml</parameter>
+        <variable>xmp-security.xml</variable>
+    </function>
+
+    <function name="writeRemoteFile" module="Remote">
+        <parameter>securityBlank.xml</parameter>
+        <file>securityBlank.xml</file>
+    </function>
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>
+            <parameter>load file </parameter>
+            <configuration>REMOTE/PATH</configuration>
+            <parameter>key/demo_inet_server_private_key.der</parameter>
+        </parameter>
+    </function>
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>
+            <parameter>load file </parameter>
+            <configuration>REMOTE/PATH</configuration>
+            <parameter>key/demo_inet_client_private_key.der</parameter>
+        </parameter>
+    </function>
+    
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>
+            <parameter>load file </parameter>
+            <configuration>REMOTE/PATH</configuration>
+            <parameter>key/demo_inet_client_certificate.der</parameter>
+        </parameter>
+    </function>
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>
+            <parameter>load file </parameter>
+            <configuration>REMOTE/PATH</configuration>
+            <parameter>key/demo_inet_client_ca_certificate.der</parameter>
+        </parameter>
+    </function>
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>
+            <parameter>load file </parameter>
+            <configuration>REMOTE/PATH</configuration>
+            <parameter>key/demo_wap1_server_certificate.wtls</parameter>
+        </parameter>
+    </function>
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>
+            <parameter>load file </parameter>
+            <configuration>REMOTE/PATH</configuration>
+            <parameter>key/demo_wap1_server_private_key.der</parameter>
+        </parameter>
+    </function>
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>
+            <parameter>load file </parameter>
+            <configuration>REMOTE/PATH</configuration>
+            <parameter>key/Swisskey_Root_CA.cer</parameter>
+        </parameter>
+    </function>
+    
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>
+            <parameter>load file </parameter>
+            <configuration>REMOTE/PATH</configuration>
+            <parameter>key/VeriSign_Class3_Public_Primary_CA-2028.cer</parameter>
+        </parameter>
+    </function>    
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>
+            <parameter>load file </parameter>
+            <configuration>REMOTE/PATH</configuration>
+            <parameter>key/Thawte_Personal_Premium_CA.cer</parameter>
+        </parameter>
+    </function>
+    
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>
+            <parameter>load file </parameter>
+            <configuration>REMOTE/PATH</configuration>
+            <parameter>key/demo_inet_server_certificate.der</parameter>
+        </parameter>
+    </function>    
+    
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>
+            <parameter>load file </parameter>
+            <configuration>REMOTE/PATH</configuration>
+            <parameter>key/demo_inet_server_ca_certificate.der</parameter>
+        </parameter>
+    </function>
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>load data xmp-security.xml</parameter>
+    </function>
+
+    <function name="queryResponse" module="Remote">
+        <parameter>^Loaded </parameter>
+        <parameter>dev/null</parameter>
+    </function> 
+
+    <!-- start up, initialize -->
+
+    <function name="startSMSCServer" module="SMS"/>
+
+    <function name="waitForBind" module="SMS"/>
+
+    <!-- configure message -->
+
+    <function name="setPostData" module="Push">
+        <file>push-OnlyMandatory.txt</file>
+    </function>
+
+    <function name="timeToVariable" module="Basic">
+        <parameter>currentTime</parameter>
+    </function>    
+    
+    <function name="replaceAttribute" module="Push">
+        <parameter>push-id</parameter>
+        <parameter>
+            <parameter>XTT</parameter>
+            <variable>currentTime</variable>
+        </parameter>
+    </function>
+
+    <function name="replaceAttribute" module="Push">
+        <parameter>address-value</parameter>
+        <configuration>pushTestSpecific/msisdn</configuration>
+    </function>
+
+    <function name="replaceAttribute" module="Push">
+        <parameter>href</parameter>
+        <configuration>pushTestSpecific/href</configuration>
+    </function>
+
+    <function name="sendPushRequest" module="Push">
+        <!--parameter>true</parameter-->
+    </function>
+    
+    <function name="checkResponseCode" module="Push">
+        <parameter>202</parameter>
+    </function>
+
+    <function name="checkPAPCode" module="Push">
+        <parameter>1001</parameter>
+    </function>
+    
+    <function name="waitForWSPMessages" module="SMS">
+        <parameter>1</parameter>
+    </function>  
+
+    <!-- clean up -->
+ 
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>load data securityBlank.xml</parameter>
+    </function>
+
+    <function name="queryResponse" module="Remote">
+        <parameter>^Loaded </parameter>
+        <parameter>dev/null</parameter>
+    </function> 
+       
+    <function name="stopSMSCServer" module="SMS"/>
+</test>

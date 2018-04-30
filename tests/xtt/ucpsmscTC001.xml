@@ -1,0 +1,94 @@
+<test>
+    <function name="testName" module="Basic">
+        <parameter>UCP.SMSC.TC.001</parameter>
+    </function>
+
+    <function name="startSMSCServer" module="SMS">
+        <configuration>SMSCSERVER/PORT</configuration>
+        <parameter>UCP</parameter>
+        <parameter>-1</parameter>
+        <parameter>1</parameter>
+        <parameter>0</parameter>
+        <parameter>0</parameter>
+        <parameter>0</parameter>
+        <parameter>0</parameter>
+        <parameter>0</parameter>
+        <parameter>yes</parameter>
+        <parameter>0</parameter>
+        <parameter>0</parameter>
+        <parameter>200</parameter>
+    </function>
+
+<loop name="connection" start="1" step="1" stop="5">
+<thread>
+        <function name="openConnection" module="UCP">
+            <localvariable>connection</localvariable>
+            <configuration>SYSTEM/IP</configuration>
+            <configuration>SMSCSERVER/PORT</configuration>
+        </function>
+
+        <function name="sendUCPPacket" module="UCP">
+            <localvariable>connection</localvariable>
+            <parameter>internal</parameter>
+            <parameter>O</parameter>
+            <parameter>60</parameter>
+            <parameter>/5555/6/1/1/70617373776F7264//0100//////</parameter>
+        </function>
+
+        <function name="queryTextResponse" module="UCP">
+            <localvariable>connection</localvariable>
+            <parameter>secret</parameter>
+            <parameter>\d\d/\d\d\d\d\d/R/60/A/[^/]++/\w\w</parameter>
+        </function>
+
+    <loop name="repetition" start="1" stop="50000" step="1">
+        <function name="sendUCPPacket" module="UCP">
+            <localvariable>connection</localvariable>
+            <parameter>internal</parameter>
+            <parameter>O</parameter>
+            <parameter>51</parameter>
+            <parameter>
+                <parameter>/0123456789/5555/////////1/</parameter>
+                <parameter>///////2//12345678901234567890/////////////</parameter>
+            </parameter>
+        </function>
+
+        <function name="queryTextResponse" module="UCP">
+            <localvariable>connection</localvariable>
+            <parameter>secret</parameter>
+            <parameter>\d\d/\d\d\d\d\d/R/51/A//[^/]++/\w\w</parameter>
+        </function>
+
+        <function name="waitSMSCUCPPacket" module="UCP">
+            <localvariable>connection</localvariable>
+         </function>
+    </loop>
+    </thread>
+</loop>
+
+<!--
+        <function name="sendSMSCUCPPacket" module="UCP">
+            <parameter>connection</parameter>
+            <parameter>internal</parameter>
+            <parameter>O</parameter>
+            <parameter>53</parameter>
+            <parameter>
+                <parameter>/0123456789/5555/////////1/</parameter>
+                <parameter>///////2//12345678901234567890/////////////</parameter>
+            </parameter>
+        </function>
+        <function name="waitSMSCUCPPacket" module="UCP">
+            <parameter>connection</parameter>
+         </function>
+
+        <function name="closeConnection" module="UCP">
+            <parameter>connection</parameter>
+        </function>
+
+
+-->
+    
+    <function name="waitOnThreads" module="Basic"/>
+    <function name="stopSMSCServer" module="SMS"/>
+
+</test>

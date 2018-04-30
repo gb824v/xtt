@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsnCategories xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="xsncategories.xsd">
+	<categories>
+		<category name="alwaysBlock" subscriberFilterable="false" />
+		<category name="alwaysAllow" subscriberFilterable="false" />
+		<category name="mapAdultSexuallyExplicit" standardFilter="block" minAge="18"/>
+		<category name="mapadvertisements" />
+		<category name="mapArtsEntertainment" />
+		<category name="mapChat" />
+		<category name="mapComputingInternet" />
+		<category name="mapCriminalSkills" standardFilter="block" minAge="16"/>
+		<category name="mapDrugsAlcoholTobacco" minAge="16"/>
+		<category name="mapEducation" />
+		<category name="mapFinanceInvestment" />
+		<category name="mapFoodDrink" />
+		<category name="mapGambling" minAge="18"/>
+		<category name="mapGames" />
+		<category name="mapGlamourIntimateApparel" />
+		<category name="mapGovernmentPolitics" />
+		<category name="mapHacking" minAge="18"/>
+		<category name="mapHateSpeech" standardFilter="block" minAge="16"/>
+		<category name="mapHealthMedicine" />
+		<category name="mapHobbiesRecreation" />
+		<category name="mapHostingSites" />
+		<category name="mapJobSearchCareerDevelopment" />
+		<category name="mapKidsSites" />
+		<category name="mapLifestyleCulture" />
+		<category name="mapMotorVehicles" />
+		<category name="mapNews" />
+		<category name="mapPersonalsDating" minAge="18"/>
+		<category name="mapPhotoSearches" />
+		<category name="mapRealEstate" />
+		<category name="mapReference" />
+		<category name="mapReligion" />
+		<category name="mapRemoteProxies" standardFilter="block" minAge="18"/>
+		<category name="mapSearchEngines" />
+		<category name="mapSexEducation" />
+		<category name="mapShopping" />
+		<category name="mapSports" />
+		<category name="mapStreamingMedia" />
+		<category name="mapNotExistingCat" />
+		<category name="mapTravel" />
+		<category name="mapUsenetNews" />
+		<category name="mapViolence" minAge="16"/>
+		<category name="mapWeapons" minAge="16"/>
+		<category name="mapWebBasedEmail" />
+	</categories>
+	<categoryMappings>
+		<map category="mapAdultSexuallyExplicit" externalName="Adult/Sexually Explicit"/>
+		<map category="mapadvertisements" externalName="Advertisements"/>
+		<map category="mapArtsEntertainment" externalName="Arts &amp; Entertainment"/>
+		<map category="mapChat" externalName="Chat"/>
+		<map category="mapComputingInternet" externalName="Computing &amp; Internet"/>
+		<map category="mapCriminalSkills" externalName="Criminal Skills"/>
+		<map category="mapDrugsAlcoholTobacco" externalName="Drugs, Alcohol &amp; Tobacco"/>
+		<map category="mapEducation" externalName="Education"/>
+		<map category="mapFinanceInvestment" externalName="Finance &amp; Investment"/>
+		<map category="mapFoodDrink" externalName="Food &amp; Drink"/>
+		<map category="mapGambling" externalName="Gambling"/>
+		<map category="mapGames" externalName="Games"/>
+		<map category="mapGlamourIntimateApparel" externalName="Glamour &amp; Intimate Apparel"/>
+		<map category="mapGovernmentPolitics" externalName="Government &amp; Politics"/>
+		<map category="mapHacking" externalName="Hacking"/>
+		<map category="mapHateSpeech" externalName="Hate Speech"/>
+		<map category="mapHealthMedicine" externalName="Health &amp; Medicine"/>
+		<map category="mapHobbiesRecreation" externalName="Hobbies &amp; Recreation"/>
+		<map category="mapHostingSites" externalName="Hosting Sites"/>
+		<map category="mapJobSearchCareerDevelopment" externalName="Job Search &amp; Career Development"/>
+		<map category="mapKidsSites" externalName="Kids Sites"/>
+		<map category="mapLifestyleCulture" externalName="Lifestyle &amp; Culture"/>
+		<map category="mapMotorVehicles" externalName="Motor Vehicles"/>
+		<map category="mapNews" externalName="News"/>
+		<map category="mapPersonalsDating" externalName="Personals &amp; Dating"/>
+		<map category="mapPhotoSearches" externalName="Photo Searches"/>
+		<map category="mapRealEstate" externalName="Real Estate"/>
+		<map category="mapReference" externalName="Reference"/>
+		<map category="mapReligion" externalName="Religion"/>
+		<map category="mapRemoteProxies" externalName="Remote Proxies"/>
+		<map category="mapSearchEngines" externalName="Search Engines"/>
+		<map category="mapSexEducation" externalName="Sex Education"/>
+		<map category="mapShopping" externalName="Shopping"/>
+		<map category="mapSports" externalName="Sports"/>
+		<map category="mapStreamingMedia" externalName="Streaming Media"/>
+		<map category="mapNotExistingCat" externalName="NotExistingCat"/>
+		<map category="mapUsenetNews" externalName="Usenet News"/>
+		<map category="mapViolence" externalName="Violence"/>
+		<map category="mapWeapons" externalName="Weapons"/>
+		<map category="mapWebBasedEmail" externalName="Web-based Email"/>
+		<map category="mapTravel" externalName="Travel"/>
+	</categoryMappings>
+	<urlCategories>
+		<category name="alwaysBlock" urlPattern="http://www.724.com"/>
+		<category name="alwaysAllow" urlPattern="http://www.nzz.com"/>
+	</urlCategories>
+	<mmsCategories>
+		<!-- stdfilter, 18 -->
+		<category name="mapAdultSexuallyExplicit" keywords="sex"/>
+		<category name="mapAdultSexuallyExplicit" serviceProviderAddress="666"/>
+		<category name="mapAdultSexuallyExplicit" serviceCode="666"/>
+		<category name="mapAdultSexuallyExplicit" vasId="XXX"/>
+		<category name="mapAdultSexuallyExplicit" vaspId="XXX"/>
+		<category name="mapAdultSexuallyExplicit" contentType="image/tiff"/>
+		<!-- 18 -->
+		<category name="mapPersonalsDating" keywords="dating"/>
+		<category name="mapGambling" keywords="gambling"/>
+
+		<!-- stdfilter, 16 -->
+		<category name="mapHateSpeech" keywords="hatespeech"/>
+		<!-- 16 -->
+		<category name="mapViolence" keywords="violence"/>
+		<category name="mapDrugsAlcoholTobacco" keywords="drugs"/>
+		
+		<!-- custom -->
+		<category name="mapSports" keywords="sport"/>
+		<category name="mapGames" keywords="games"/>
+
+	</mmsCategories>
+</xsnCategories>

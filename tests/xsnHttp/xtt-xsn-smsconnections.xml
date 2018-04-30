@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by Philippe Jost (724 Solutions Inc.) -->
+<xsnSmsConnections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="S:\source\xsd\xsnConnectUCPions.xsd">
+	<settings>
+		<ucpSettings name="UcpSettings" maxMessagesPerSecond="1" mode="active" use60Open="true">
+			<messageOptionSets>
+                <messageOptions optionName="" sendOperation="51" messageClass="1" messageType="3"/>
+			</messageOptionSets>
+			<connectionOptions npi="5" ton="6"/>
+		</ucpSettings>
+		<!--ucpSettings name="UcpListenSettings" maxMessagesPerSecond="1" mode="passive">
+			<messageOptionSets>
+                <messageOptions optionName="" sendOperation="52" messageClass="1" messageType="3"/>
+			</messageOptionSets>
+			<connectionOptions npi="5" ton="6"/>
+		</ucpSettings-->		
+	</settings>
+	<channels>
+		<connectChannel protocol="UCP" name="ConnectUCP" settings="UcpSettings">
+            <connection name="NOTIFICATION-CONNECTION" address="30080" password="tantau30080"/>
+            <connection name="FASTSMS" address="1111" password="password"/>
+			<remoteAddress ipAddress="172.20.14.11" port="2776"/>
+		</connectChannel>
+        <!--listenChannel name="ListenUCP" protocol="UCP" settings="UcpListenSettings" >
+            <connection address="1111" password="password" settings="UcpSettings" />
+        </listenChannel-->		
+	</channels>
+</xsnSmsConnections>

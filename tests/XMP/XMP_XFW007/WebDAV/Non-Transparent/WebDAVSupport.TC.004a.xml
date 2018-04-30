@@ -1,0 +1,94 @@
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+WebDAVSupport.TC.004  - Validate  HEAD for Collections Request and its Response are successfully proxied by XMP.
+
+Test Description:
+ 1. Radius Logon
+ 2. HEAD Request
+ 3. Check Response 
+ 4. Radius Logoff
+ 
+Expected Result:
+ -  XMP should process the  HEAD for Collections request and response through Non Transperant Proxy.
+
+XTT Commands:
+
+1. -  startWebServer
+     
+2.  - Radius log-ON
+
+3.  - setCacheFile
+
+4.  - sendFreeRequest 		"HTTP"  HEAD method to SERVER/IP {configure in XTT config.xml}
+
+5.  - waitForRequests
+
+6.  - Radius log-OFF
+
+7.  - stopWebServer
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- Test Start  -->
+<test>
+    <name>WebDAVSupport.TC.004a</name>
+
+    <description>WebDAV - HEAD</description>
+
+    <function name="startWebServer" module="HTTP"/>
+
+	<function name="radiusLogon" module="Radius">
+	    <parameter>xttuser</parameter>
+	    <parameter>12346</parameter>
+    </function>
+
+    <function name="setServerHeader" module="HTTP">
+        <parameter>content-type</parameter>
+        <parameter>text/xml; charset="utf-8"</parameter>
+    </function>
+
+    <function name="setServerReturnCode" module="HTTP">
+        <parameter>200</parameter>
+    </function>
+
+    <function name="setServerReturnMessage" module="HTTP">
+        <parameter> OK</parameter>
+    </function>
+
+<!-- Received response from server using setCacheFile -->
+
+    <function name="setCacheFile" module="HTTP">
+        <parameter>/file</parameter>
+        <parameter>
+        <crlf>&lt;HTML&gt;</crlf>
+            <crlf>    &lt;BOBY&gt;</crlf>
+            <crlf>        Hello World</crlf>
+            <crlf>    &lt;/BOBY&gt;</crlf>
+            <crlf>&lt;/HTML&gt;</crlf>
+        </parameter>
+    </function>
+
+<!-- Send HEAD request to XMP -->
+
+    <function name="sendFreeRequest" module="HTTP">
+        <parameter>HEAD</parameter>
+        <parameter>false</parameter>
+        <parameter>
+            <parameter>http://</parameter>
+            <configuration>SYSTEM/IP</configuration>
+            <parameter>:</parameter>
+            <configuration>WEBSERVER/PORT</configuration>
+            <parameter>/file</parameter>
+        </parameter>
+        <parameter>response</parameter>
+    </function>
+
+    <function name="waitForRequests" module="HTTP">
+        <parameter>1</parameter>
+    </function>
+
+	<function name="radiusLogoff" module="Radius">
+	    <parameter>xttuser</parameter>
+	    <parameter>12346</parameter>
+    </function>
+
+    <function name="stopWebServer" module="HTTP"/>
+
+</test>

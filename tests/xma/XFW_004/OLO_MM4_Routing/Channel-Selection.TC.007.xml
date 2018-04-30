@@ -1,0 +1,214 @@
+<test>
+
+	<name>Channel-Selection.TC.007</name>
+
+	<description>Multiple recipients- MM7 - MM4 : Send messages to 10 OLO recipients, XMA should select MM4 delivery via configurable x-olo-recipient header.</description>
+
+	<!-- Load xma config file -->
+	<configuration>../xmaConfig.xml</configuration>
+
+	<!-- Start SMTP server to get mails -->
+	<function name="startSMTPServer" module="SMTP"/>
+
+	<!-- Delete Message Store -->
+	<subtest>../deleteMessagestoreAll.xml</subtest>
+
+	<!-- Load MNO file -->
+	<subtest>../loadMNO1.xml</subtest> 
+
+	<loop name="loop" start="0" stop="10" step="1">
+		<function name="setVariable" module="Basic">
+			<parameter><parameter>OFFNETMSISDN</parameter><variable>loop</variable></parameter>
+			<configuration><parameter>XMA/UNKNOWN/PARTNER/MSISDN</parameter><variable>loop</variable></configuration>
+		</function>
+
+		<function name="setVariable" module="Basic">
+			<parameter><parameter>OFFNETMMSADDRESS</parameter><variable>loop</variable></parameter>
+			<parameter>
+				<parameter>+</parameter>
+				<variable><parameter>OFFNETMSISDN</parameter><variable>loop</variable></variable>
+				<parameter>/TYPE=PLMN</parameter>
+			</parameter>
+		</function>
+
+		<function name="setVariable" module="Basic">
+			<parameter><parameter>OFFNETEMAIL</parameter><variable>loop</variable></parameter>
+			<parameter>
+				<variable><parameter>OFFNETMMSADDRESS</parameter><variable>loop</variable></variable>
+				<configuration>XMA/PARTNERDOMAIN</configuration>
+			</parameter>
+		</function>
+	</loop>
+
+	<!-- Originator VASP server sends MM7_submit.REQ to XMA. In MM7_submit.REQ please set the following attributes: DeliveryReport=No, ReadReply=No -->
+	<function name="createMM7Soap" module="VASP">
+		<parameter>SubmitReq</parameter>
+		<configuration>VASP/VASPID</configuration>
+		<configuration>VASP/VASID</configuration>
+	</function>
+
+	<function name="setMessageBoundary" module="VASP">
+		<parameter>000001message</parameter>
+	</function>
+
+	<function name="setSoapData" module="VASP">
+		<parameter>//*[local-name()='SubmitReq']</parameter>
+		<parameter>Recipients</parameter>
+	</function>
+
+	<function name="setSoapData" module="VASP">
+		<parameter>//*[local-name()='Recipients']</parameter>
+		<parameter>To</parameter>
+	</function>
+
+	<loop name="loop" start="0" stop="10" step="1">
+		<function name="addSoapData" module="VASP">
+			<parameter>//*[local-name()='Recipients']</parameter>
+			<parameter>To</parameter>
+		</function>
+
+		<function name="setSoapData" module="VASP">
+			<parameter>//*[local-name()='To'][last()]</parameter>
+			<parameter>Number</parameter>
+			<variable>
+			<parameter>OFFNETMSISDN</parameter>
+			<variable>loop</variable>
+			</variable>
+		</function>
+	</loop>
+
+	<function name="setSoapData" module="VASP">
+		<parameter>//*[local-name()='SubmitReq']</parameter>
+		<parameter>DeliveryReport</parameter>
+		<parameter>False</parameter>
+	</function>
+
+	<function name="setSoapData" module="VASP">
+		<parameter>//*[local-name()='SubmitReq']</parameter>
+		<parameter>ReadReply</parameter>
+		<parameter>False</parameter>
+	</function>
+
+	<function name="setSoapData" module="VASP">
+		<parameter>//*[local-name()='SubmitReq']</parameter>
+		<parameter>Content</parameter>
+	</function>
+
+	<function name="setSoapAttribute" module="VASP">
+		<parameter>//*[local-name()='Content']</parameter>
+		<parameter>href</parameter>
+		<parameter>cid:xtt-test001</parameter>
+	</function>
+
+	<!-- Setting X-olo-recipients header for recipient -->
+	<function name="setHeader" module="VASP">
+		<parameter>x-olo-recipients</parameter>
+		<parameter>
+			<parameter>&lt;r a="</parameter>
+			<variable>OFFNETMSISDN1</variable>
+			<parameter>" d="</parameter>
+			<configuration>XMA/OLOPARTNERDOMAIN</configuration>
+			<parameter>"/&gt;</parameter>
+			<parameter>&lt;r a="</parameter>
+			<variable>OFFNETMSISDN2</variable>
+			<parameter>" d="</parameter>
+			<configuration>XMA/OLOPARTNERDOMAIN</configuration>
+			<parameter>"/&gt;</parameter>
+			<parameter>&lt;r a="</parameter>
+			<variable>OFFNETMSISDN3</variable>
+			<parameter>" d="</parameter>
+			<configuration>XMA/OLOPARTNERDOMAIN</configuration>
+			<parameter>"/&gt;</parameter>
+			<parameter>&lt;r a="</parameter>
+			<variable>OFFNETMSISDN4</variable>
+			<parameter>" d="</parameter>
+			<configuration>XMA/OLOPARTNERDOMAIN</configuration>
+			<parameter>"/&gt;</parameter>
+			<parameter>&lt;r a="</parameter>
+			<variable>OFFNETMSISDN5</variable>
+			<parameter>" d="</parameter>
+			<configuration>XMA/OLOPARTNERDOMAIN</configuration>
+			<parameter>"/&gt;</parameter>
+			<parameter>&lt;r a="</parameter>
+			<variable>OFFNETMSISDN6</variable>
+			<parameter>" d="</parameter>
+			<configuration>XMA/OLOPARTNERDOMAIN</configuration>
+			<parameter>"/&gt;</parameter>
+			<parameter>&lt;r a="</parameter>
+			<variable>OFFNETMSISDN7</variable>
+			<parameter>" d="</parameter>
+			<configuration>XMA/OLOPARTNERDOMAIN</configuration>
+			<parameter>"/&gt;</parameter>
+			<parameter>&lt;r a="</parameter>
+			<variable>OFFNETMSISDN8</variable>
+			<parameter>" d="</parameter>
+			<configuration>XMA/OLOPARTNERDOMAIN</configuration>
+			<parameter>"/&gt;</parameter>
+			<parameter>&lt;r a="</parameter>
+			<variable>OFFNETMSISDN9</variable>
+			<parameter>" d="</parameter>
+			<configuration>XMA/OLOPARTNERDOMAIN</configuration>
+			<parameter>"/&gt;</parameter>
+			<parameter>&lt;r a="</parameter>
+			<variable>OFFNETMSISDN0</variable>
+			<parameter>" d="</parameter>
+			<configuration>XMA/OLOPARTNERDOMAIN</configuration>
+			<parameter>"/&gt;</parameter>
+		</parameter>
+	</function>
+
+	<function name="addContent" module="VASP">
+		<file>sendMM7data.txt</file>
+	</function>
+
+	<function name="previewRequest" module="VASP" />
+
+	<!-- Send Post Request -->
+	<function name="sendPostRequest" module="VASP"/>
+
+	<!-- Check response -->
+	<function name="checkResponseCode" module="VASP">
+		<parameter>200</parameter>
+	</function>
+
+	<function name="queryBody" module="VASP">
+		<parameter>temp</parameter>
+		<parameter>&lt;StatusCode&gt;1000&lt;/StatusCode&gt;</parameter>
+	</function>
+
+	<!-- XMA sends message to the Target Client -->
+	<function name="waitForMails" module="SMTP">
+		<parameter>10</parameter>
+	</function>
+
+	<function name="checkServerHeader" module="SMTP">
+		<variable>OFFNETEMAIL1</variable>
+		<parameter>x-mms-message-type</parameter>
+		<parameter>MM4_forward.REQ</parameter>
+	</function>
+
+	<function name="checkServerHeader" module="SMTP">
+		<variable>OFFNETEMAIL1</variable>
+		<parameter>to</parameter>
+		<variable>OFFNETMMSADDRESS1</variable>
+	</function>
+
+	<function name="checkServerHeader" module="SMTP">
+		<variable>OFFNETEMAIL2</variable>
+		<parameter>x-mms-message-type</parameter>
+		<parameter>MM4_forward.REQ</parameter>
+	</function>
+
+	<function name="checkServerHeader" module="SMTP">
+		<variable>OFFNETEMAIL2</variable>
+		<parameter>to</parameter>
+		<variable>OFFNETMMSADDRESS2</variable>
+	</function>
+
+	<!-- Restore MNO -->
+	<subtest>../restoreMNO.xml</subtest>
+
+	<!-- Stop SMTP Server -->
+	<function name="stopSMTPServer" module="SMTP"/>
+
+</test>

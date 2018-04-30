@@ -1,0 +1,93 @@
+<test>
+	<function name="testName" module="Basic">
+		<parameter>Bugzilla24113.TC.002</parameter>
+	</function>
+
+	<description>Validate XMP scans the response which fits to the default value of ResponseCondition ("[IM_ContentType] matches '^application/' &amp;&amp; not [IM_ContentType] matches '^application/vnd.wap.'") / XMP allows</description>
+
+	<!-- Set KSPRSKY_CFG_ResponseCondition -->
+	<function name="activeProcessToVar" module="Remote">
+		<parameter><configuration>HttpProxy/ProcessName</configuration><parameter>.*\.1</parameter></parameter>
+		<parameter>Name_Of_Tcp_Router_Process</parameter>
+	</function>
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>run command cmu -CKSPRSKY_CFG_ResponseCondition </parameter>
+			<variable>Name_Of_Tcp_Router_Process</variable>
+			<parameter> [IM_ContentType] matches '^application/' &amp;amp;&amp;amp; not [IM_ContentType] matches '^application/vnd.wap.'</parameter>
+		</parameter>
+	</function>
+	<function name="queryResponse" module="Remote">
+		<parameter>KSPRSKY_CFG_ResponseCondition[\s]++:[\s]++\[IM_ContentType\] matches '\^application/' &amp;&amp; not \[IM_ContentType\] matches '\^application/vnd\.wap\.'</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	<function name="queryResponse" module="Remote">
+		<parameter>Update successful</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<function name="disableFollowRedirects" module="HTTP"/>
+
+	<!-- Start Web Server -->
+	<function name="startWebServer" module="HTTP" />
+
+	<!-- Radius Login -->
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+	 <function name="setHeader" module="HTTP">
+        <parameter>Accept</parameter>
+        <parameter>text/vnd.wap.wml, application/xml, application/pdf, image/gif, image/jpeg, application/vnd.wap.mms-message</parameter>
+    </function>
+    
+	<!-- Define The Content in the Target Web Server -->
+	<function name="setCacheFile" module="HTTP">
+			<parameter>PF.pdf</parameter>
+			<file>PF.pdf</file>
+	</function>
+	
+	<!-- Send virus Infected data in HTTP Get Proxy Request -->
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>
+			<parameter>http://</parameter>
+			<configuration>SYSTEM/IP</configuration>
+			<parameter>:</parameter>
+			<configuration>WEBSERVER/PORT</configuration>
+			<parameter>/PF.pdf</parameter>
+		</parameter>
+	</function>
+
+	<!-- Validate Response Code Send by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<!-- Radius Logoff -->
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+	<!-- Stop Web Server -->
+	<function name="stopWebServer" module="HTTP"/>
+	
+	<!-- Reset KSPRSKY_CFG_ResponseCondition -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>run command cmu -CKSPRSKY_CFG_ResponseCondition </parameter>
+			<variable>Name_Of_Tcp_Router_Process</variable>
+			<parameter> [IM_ContentType] matches '.*/.*'</parameter>
+		</parameter>
+	</function>
+	<function name="queryResponse" module="Remote">
+		<parameter>KSPRSKY_CFG_ResponseCondition[\s]++:[\s]++\[IM_ContentType\] matches '\.\*/\.\*'</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	<function name="queryResponse" module="Remote">
+		<parameter>Update successful</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+</test>

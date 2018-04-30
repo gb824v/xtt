@@ -1,0 +1,61 @@
+<test>
+    <function name="testName" module="Basic">
+        <parameter>XMP.CONTENTFILTERING.TC.049</parameter>
+     </function>
+	
+    <description>HTTP 406 Not Acceptable for small screen devices that don't support XHTML</description>
+        
+    <!-- Radius logon - User is in DB [age=24] -->
+    <function name="radiusLogon" module="Radius">
+	<parameter>0787367502</parameter>
+	<parameter>0787367502</parameter>
+	<configuration>system/Ip</configuration>
+    </function> 
+
+    <function name="startWebServer" module="HTTP"/>
+
+    <!-- GET JPEG - NO CONVERSION -->
+    <function name="setHeader" module="HTTP">
+        <parameter>Accept</parameter>
+        <parameter>*/*</parameter>
+    </function>
+    <function name="sendGetRequest" module="HTTP">
+        <parameter>
+            <parameter>http://</parameter>
+            <configuration>system/ip</configuration>
+            <parameter>/images/jpg.jpg</parameter>
+        </parameter>
+    </function>
+
+    <function name="checkResponseCode" module="HTTP">
+        <parameter>200</parameter>
+    </function>
+    
+    <!--function name="isJpg" module="content"/-->
+
+    <!-- CONVERT JPEG TO GIF -->
+    <function name="setHeader" module="HTTP">
+        <parameter>Accept</parameter>
+        <parameter>image/x-jng</parameter>
+    </function>
+    <function name="sendGetRequest" module="HTTP">
+        <parameter>
+            <parameter>http://</parameter>
+            <configuration>system/ip</configuration>
+            <parameter>/images/jpg.jpg</parameter>
+        </parameter>
+    </function>
+    <function name="checkResponseCode" module="HTTP">
+        <parameter>200</parameter>
+    </function>
+
+
+    <function name="stopWebServer" module="HTTP"/>
+    <!-- Radius logoff - User is in DB [age=24] -->
+    <function name="radiusLogoff" module="Radius">
+	<parameter>0787367502</parameter>
+	<parameter>0787367502</parameter>
+	<configuration>system/Ip</configuration>
+    </function> 
+ 
+</test>

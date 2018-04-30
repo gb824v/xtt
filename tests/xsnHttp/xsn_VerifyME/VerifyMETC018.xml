@@ -1,0 +1,31 @@
+<test>
+	<function name="testName" module="Basic">
+		<parameter>VerifyMETC018</parameter>
+	</function>
+	
+	<description>This is an Verify-ME example test</description>
+   
+    <function name="sendRemoteCommand" module="Remote">
+        <parameter>writeFile VerifyMETC018.ksh </parameter>
+        <file>VerifyMETC018.ksh</file>
+    </function>
+    
+    <function name="sendRemoteCommand" module="Remote">
+        <parameter>chmod 777 VerifyMETC018.ksh</parameter>
+    </function>
+
+	<function name="executeRemoteCommand" module="Remote">
+        <parameter>
+            <configuration>xsn/path</configuration>
+            <configuration>xsn/xms</configuration>
+            <parameter>run command ksh VerifyMETC018.ksh</parameter>
+        </parameter>
+		<parameter>20000</parameter>
+    </function>
+
+    <function name="queryResponse" module="Remote">
+        <parameter>Return code: badIdNumber</parameter>
+        <parameter>test1</parameter>
+    </function>
+
+</test>

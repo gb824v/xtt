@@ -1,0 +1,36 @@
+<test>
+    <name>MBSPPB.SuccessScenarios.MT.TC.011.022</name>
+    <configuration>../../configXSAM.xml</configuration>
+
+    <description>[TPI->MM7] Check various BILLRATE (CHARGE), CHARGE, Payment Method, Service Interrogation Level Combinations to validate the implementation of Truth Table
+        022  Test Number extension
+        ||+= Interrogation Level 0-9
+        |+-= Amount/Charge 0=CHARGE 0, 1=CHARGE 1, 2=Charge 0, 3=Charge 1
+        +--= 0=Prepayd, 1=Unknown, 2=Postpaid
+    </description>
+
+    <function name="setVariable" module="Basic">
+        <parameter>CHARGE</parameter>
+        <parameter>0</parameter>
+    </function>
+
+    <function name="setVariable" module="Basic">
+        <parameter>INTERROGATIONLEVEL</parameter>
+        <parameter>2</parameter>
+    </function>
+
+    <function name="setVariable" module="Basic">
+        <parameter>NO_CCR</parameter>
+        <parameter>false</parameter>
+    </function>
+
+    <function name="setVariable" module="Basic">
+        <parameter>MSISDN</parameter>
+        <parameter>41790000005</parameter>
+    </function>
+
+    <subtest>../sendMMS.xml</subtest>
+
+
+
+</test>

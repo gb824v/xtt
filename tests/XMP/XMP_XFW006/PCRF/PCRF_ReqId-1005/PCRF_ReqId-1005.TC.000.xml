@@ -1,0 +1,234 @@
+<test>
+
+	<name>PCRF_ReqId-1005.TC.000.xml</name>
+	<description>load Dynamic Configuration Files</description>
+
+	<!-- Load pcc_rules file -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>pcc_rules.xml</parameter>
+		<xml>
+			<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by Daniel Kaufmann (724 Solutions Inc.) -->
+			<pccrules xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="x:\source\xsd\pccrules.xsd">
+				<ruleSet name="Default_Rule">
+					<Charging-Rule-Install Charging-Rule-Name="Default_Rule"/>
+				</ruleSet>
+
+				<ruleSet name="Controlled_QoS">
+					<Charging-Rule-Remove Charging-Rule-Name="Default_Rule"/>
+					<Charging-Rule-Install Charging-Rule-Name="Controlled_QoS"/>
+				</ruleSet>
+
+				<ruleSet name="Some_Rule">
+					<Charging-Rule-Install Charging-Rule-Name="Some_Rule"/>
+				</ruleSet>
+
+				<ruleSet name="AVPLong_Rule">
+					<Charging-Rule-Install Charging-Rule-Name="AVPLong_Rule"/>
+					<AVP name="Origin-Host" value="Samuel Eto'o opened the scoring with a seventh minute penalty after strike partner Mario Balotelli, 19, was felled. Balotelli, so often criticised by Mourinho for his immature attitude, demanded to take the spot kick and captain Javier Zanetti had to pull him away from designated taker Eto'o.After a mild sulk, Balotelli intensified his bid for a goal and was rewarded when he headed in a corner after 34 minutes. His second goal followed soon after when the uncompromising forward prodded in Esteban Cambiasso's header on the line even though the ball would have gone in anyway. The Italy [ Images ] Under-21 striker then cut the ball back for Cameroon striker Eto'o to ram home the fourth at the near post just before the break. Balotelli had picked up a cold in the build-up to the game and although he wore a scarf in the first half, he asked to be substituted just seconds into the second period. Inter, who also lost Eto'o to injury, seemed to lose focus thereafter and Palermo's Fabrizio Miccoli quickly pulled a goal back after first dinking the ball over goalkeeper Julio Cesar [ Images ]. Uruguayan Abel Hernandez then finished off a superb move just past the hour for the side coached by former Inter keeper Walter Zenga and the Sicilians suddenly believed they could pull off an incredible comeback when more Miccoli magic made it 4-3. However, Inter substitute Diego Milito settled the San Siro's nerves when he converted Maicon's excellent cross seven minutes from time."/>
+				</ruleSet>
+
+				<ruleSet name="Optional_Rule">
+					<Charging-Rule-Remove Charging-Rule-Name="Optional_Rule"/>
+					<Charging-Rule-Install Charging-Rule-Name="HTTP-A">
+						<Charging-Rule-Definition
+							Flow-Status="ENABLED"
+							Service-Identifier="123"
+							Rating-Group="999"
+							Reporting-Level="SERVICE_IDENTIFIER_LEVEL"
+							Online="ENABLE_ONLINE"
+							Offline="DISABLE_OFFLINE"
+							Metering-Method="VOLUME"
+							Precedence="1000">
+						<Flow-Description direction="in" protocol="6">
+							<source ipAddress="192.168.0.1" maskBits="8">
+								<port exact="80" nodeId="port10"/>
+							</source>
+							<destination ipAddress="10.0.0.0" maskBits="8">
+								<port exact="80" nodeId="port10"/>
+							</destination>
+						</Flow-Description>
+						<QoS-Information
+							QoS-Class-Identifier="CLASS_1"
+							Max-Requested-Bandwidth-UL="128000"
+							Max-Requested-Bandwidth-DL="256000"
+							Guaranteed-Bitrate-UL="48000"
+							Guaranteed-Bitrate-DL="96000"
+							Bearer-Identifier="Bearer"
+							Allocation-Retention-Priority="1" />
+					</Charging-Rule-Definition>
+						<Charging-Rule-Definition Flow-Status="DISABLED">
+							<Flow-Description direction="in">
+							<destination ipAddress="172.20.0.0" maskBits="16">
+							<port exact="80" nodeId="port172"/>
+							</destination>
+							</Flow-Description>
+						</Charging-Rule-Definition>
+					</Charging-Rule-Install>
+					<Charging-Information
+						Primary-Event-Charging-Function-Name="aaa://internal.724.com:6666;transport=tcp;protocol=diameter"
+						Secondary-Event-Charging-Function-Name="aaa://internal.724.com:6667;transport=tcp;protocol=diameter"
+						Primary-Charging-Collection-Function-Name="aaa://internal.724.com:6668;transport=tcp;protocol=diameter"
+						Secondary-Charging-Collection-Function-Name="aaa://internal.724.com:6669;transport=tcp;protocol=diameter"/>
+					<QoS-Information
+						QoS-Class-Identifier="CLASS_2"
+						Max-Requested-Bandwidth-UL="128001"
+						Max-Requested-Bandwidth-DL="256001"
+						Guaranteed-Bitrate-UL="48001"
+						Guaranteed-Bitrate-DL="96001"
+						Bearer-Identifier="Bearer1"
+						Allocation-Retention-Priority="1" />
+					<Event-Trigger value="OUT_OF_CREDIT"/>
+					<Event-Trigger value="REALLOCATION_OF_CREDIT"/>
+					<AVP name="Termination-Cause" value="DIAMETER_SERVICE_NOT_PROVIDED"/>
+					<AVP name="Experimental-Result">
+						<AVP name="Vendor-Id" value="22334"/>
+						<AVP name="Experimental-Result-Code" value="55655"/>
+					</AVP>
+					<AVP name="Origin-State-Id" value="131313" />
+				</ruleSet>
+			</pccrules>
+		</xml>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>pcc_rules.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>Loaded pccrules</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Load pcc_modifications file -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>pcc_modifications.xml</parameter>
+		<xml>
+			<pccModifications xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+				<selector context="Internal_SubscriberAttributesClass == 'GOLD'" ruleName="Default_Rule"/>
+				<selector context="Internal_SubscriberAttributesClass == 'SILVER'" ruleName="Controlled_QoS"/>
+				<selector context="Internal_SubscriberAttributesClass == '1001ATC012'" ruleName="Optional_Rule"/>
+				<selector context="Internal_SubscriberAttributesClass == '1001ATC013'" ruleName="AVPLong_Rule"/>
+				<selector ruleName="Some_Rule"/>
+			</pccModifications>
+		</xml>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>pcc_modifications.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>Loaded pccmodifications</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+
+	<!-- Load Subscriber DB Update File -->
+	<function name="setVariable" module="Basic">
+		<parameter>xmp_pcrf_DatabaseUpdateFile</parameter>
+		<file>../xmp_pcrf_DatabaseUpdateFile.xml</file>
+	</function>
+
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>xmp_pcrf_DatabaseUpdateFile.xml</parameter>
+		<variable>xmp_pcrf_DatabaseUpdateFile</variable>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load db </parameter>
+			<parameter>xmp_pcrf_DatabaseUpdateFile.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>SUCCESS: XML upload completed</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- load SMSConnection dynamic config file -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<configuration>REMOTE/COMMAND</configuration>
+			<parameter>pwcrypt -f </parameter>
+			<configuration>productlicense</configuration>
+			<parameter> </parameter>
+			<configuration>SMSCServer/Password</configuration>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>.*</parameter>
+		<parameter>PASSWORD</parameter>
+	</function>
+
+	<conditional configuration="SMSCSERVER/PROTOCOL" targetValue="UCP">
+		<function name="setVariable" module="Basic">
+			<parameter>xmp_smsconnectionsfile.xml</parameter>
+			<file>../xmp_SmsConnectionsFile_UCP.xml</file>
+		</function>
+	</conditional>
+	<conditional configuration="SMSCSERVER/PROTOCOL" targetValue="SMPP">
+		<function name="setVariable" module="Basic">
+			<parameter>xmp_smsconnectionsfile.xml</parameter>
+			<file>../xmp_SmsConnectionsFile_SMPP.xml</file>
+		</function>
+	</conditional>
+
+	<function name="replace" module="Basic">
+		<parameter>xmp_smsconnectionsfile.xml</parameter>
+		<parameter>ipAddress=""</parameter>
+		<parameter>
+			<parameter>ipAddress="</parameter>
+			<configuration>SYSTEM/IP</configuration>
+			<parameter>"</parameter>
+		</parameter>
+	</function>
+
+	<function name="replace" module="Basic">
+		<parameter>xmp_smsconnectionsfile.xml</parameter>
+		<parameter>port=""</parameter>
+		<parameter>
+			<parameter>port="</parameter>
+			<configuration>SMSCSERVER/PORT</configuration>
+			<parameter>"</parameter>
+		</parameter>
+	</function>
+
+	<conditional configuration="SMSCSERVER/PASSWORD" targetValue="null" inverted="true">
+		<function name="replace" module="Basic">
+			<parameter>xmp_smsconnectionsfile.xml</parameter>
+			<parameter>password=""</parameter>
+			<parameter>
+				<parameter>password="</parameter>
+				<variable>PASSWORD</variable>
+				<parameter>"</parameter>
+			</parameter>
+		</function>
+	</conditional>
+	<function name="info" module="Basic">
+		<parameter>xmp_smsconnectionsfile.xml</parameter>
+		<variable>xmp_smsconnectionsfile.xml</variable>
+	</function>
+
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>xmp_smsconnectionsfile.xml</parameter>
+		<variable>xmp_smsconnectionsfile.xml</variable>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>load data xmp_smsconnectionsfile.xml</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded xmpsmsconnections</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+</test>

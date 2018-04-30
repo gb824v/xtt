@@ -1,0 +1,96 @@
+<test>
+    <configuration>xsam_config.xml</configuration>
+    <function name="testName" module="Basic">
+        <parameter>AP.TC.305</parameter>
+    </function>
+
+    <conditional configuration="XSAM/INTERNALSMSC" targetValue="">
+        <function name="startSMSCServer" module="SMS"/>
+    </conditional>
+
+    <function name="openConnection" module="UCP">
+        <parameter>connection1</parameter>
+        <configuration>XSAM/IP</configuration>
+        <configuration>XSAM/PORT</configuration>
+    </function>
+
+    <function name="sendUCPPacket" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>internal</parameter>
+        <parameter>O</parameter>
+        <parameter>01</parameter>
+        <parameter>
+            <parameter>/0123456789/</parameter>
+            <configuration>XSAM/SHORTCODE</configuration>
+            <parameter>//2/12345678/</parameter>
+        </parameter>
+    </function>
+    <function name="queryTextResponse" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>secret</parameter>
+        <parameter>\d\d/\d\d\d\d\d/R/01/A/[^/]++/\w\w</parameter>
+    </function>
+    <conditional configuration="XSAM/INTERNALSMSC" targetValue="">
+        <function name="setVariable" module="BASIC">
+            <parameter>nmsg</parameter>
+            <parameter>
+                <parameter>SMSC/</parameter>
+                <configuration>SMSCSERVER/PROTOCOL</configuration>
+                <parameter>/0123456789/NMsg</parameter>
+            </parameter>
+        </function>
+        <function name="compareString" module="basic">
+            <parameter>12345678</parameter>
+            <variablepointer>nmsg</variablepointer>
+        </function>
+    </conditional>
+
+    <thread>
+        <function name="waitSMSCUCPPacket" module="UCP">
+            <parameter>connection1</parameter>
+        </function>
+    </thread>
+
+
+    <function name="sendSMSCUCPPacket" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>0</parameter>
+        <parameter>internal</parameter>
+        <parameter>O</parameter>
+        <parameter>01</parameter>
+        <parameter>
+            <parameter>/987654321/</parameter>
+            <configuration>XSAM/SHORTCODE</configuration>
+            <parameter>//2/543543543/</parameter>
+        </parameter>
+    </function>
+    <function name="queryTextResponse" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>secret</parameter>
+        <parameter>\d\d/\d\d\d\d\d/R/01/A/[^/]++/\w\w</parameter>
+    </function>
+
+    <conditional configuration="XSAM/INTERNALSMSC" targetValue="">
+        <function name="stopSMSCServer" module="SMS"/>
+
+        <function name="setVariable" module="BASIC">
+            <parameter>nmsg</parameter>
+            <parameter>
+                <parameter>SMSC/</parameter>
+                <configuration>SMSCSERVER/PROTOCOL</configuration>
+                <parameter>/987654321/NMsg</parameter>
+            </parameter>
+        </function>
+        <function name="compareString" module="basic">
+            <parameter>543543543</parameter>
+            <variablepointer>nmsg</variablepointer>
+        </function>
+    </conditional>
+
+
+    <function name="closeConnection" module="UCP">
+        <parameter>connection1</parameter>
+    </function>
+
+
+</test>

@@ -1,0 +1,30 @@
+<test>
+
+	<function name="testName" module="Basic">
+		<parameter>EnhancementsforVFGroup.TC.023</parameter>
+	</function>
+
+	<description>Transparent Proxy Mode / Validate the adaptive selection of different levels of video optimizations based download bandwidth statistics information / Select Quality A</description>
+
+	<!-- Start Web Server -->
+	<function name="startWebServer" module="HTTP"/>
+
+
+	<function name="setServerHeader" module="HTTP">
+		<parameter>content-type</parameter>
+		<parameter>video/x-flv</parameter>
+	</function>
+
+	<function name="setServerReturnCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<!-- Sleep a while until video optimization will start -->
+	<function name="sleep" module="Basic">
+		<parameter>100000</parameter>
+	</function>
+
+	<!-- Stop Web Server -->
+	<function name="stopWebServer" module="HTTP"/>
+
+</test>

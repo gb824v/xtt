@@ -1,0 +1,28 @@
+<test>
+
+    <function name="testName" module="Basic">
+        <parameter>XMS.TC.003</parameter>
+    </function>
+
+    <function name="sendRemoteCommand" module="Remote">
+        <configuration>xmg/path</configuration>
+        <parameter>bin/xms show version</parameter>
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        <parameter>Build:\s++(.*)</parameter>
+        <parameter>xmsTC003/build</parameter>
+    </function>
+    <function name="queryResponse" module="Remote">
+        <parameter>Base version:\s++(.*)</parameter>
+        <parameter>xmsTC003/baseVersion</parameter>
+    </function>    
+    <function name="info" module="Basic">
+        <parameter>Build:</parameter>
+        <variable>xmsTC003/build</variable>
+    </function>
+    <function name="info" module="Basic">
+        <parameter>Base version:</parameter>
+        <variable>xmsTC003/baseVersion</variable>
+    </function>    
+</test>

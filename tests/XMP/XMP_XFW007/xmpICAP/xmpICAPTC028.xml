@@ -1,0 +1,160 @@
+<test>	    
+	<name>XMP.ICAP.TC.028</name>
+    <description>EXTENSION: X-Violations-Found, X-Infection-Found, X-Virus-ID</description>
+
+    <subtest name="loadReqmod" file="loadReqmod.xml"/>
+
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+	<function name="startICAPServer" module="ICAP"/>
+	<function name="startWebServer" module="HTTP"/>
+
+    <function name="setVariable" module="Basic">
+		<parameter>numViolations</parameter>
+		<parameter>100</parameter>
+    </function>
+    <function name="setVariableLines" module="Basic">
+		<parameter>1</parameter>
+        <parameter>reqViolation</parameter>
+		<variable>numViolations</variable>
+    </function>
+		
+    <loop name="number" start="0" stop="numViolations" step="1">
+        <function name="setVariableLines" module="Basic">
+    		<parameter>2</parameter>
+    		<parameter>
+    		    <parameter>reqViolation-</parameter>
+    		    <variable>number</variable>
+    		</parameter>
+    		<parameter>  file.orc/some/stupid/req/problem/</parameter><variable>number</variable>
+    		<parameter>  Done Nothing exept fill much bytes of req data 1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ Number: </parameter><variable>number</variable>
+    		<parameter>  11101</parameter><parameter></parameter>
+    		<parameter>  1</parameter><parameter></parameter>
+        </function>
+        <function name="setVariable" module="Basic">
+    		<parameter>reqViolation</parameter>
+    		<parameter>
+        		<variable>reqViolation</variable>
+        		<variable>
+        		    <parameter>reqViolation-</parameter>
+        		    <variable>number</variable>
+        		</variable>
+    		</parameter>
+        </function>
+    </loop>
+
+	<function name="queryVariable" module="Basic">
+		<parameter>reqViolation</parameter>
+		<parameter>reqViolation</parameter>
+		<parameter>(.+)\r\n$</parameter>
+	</function>	
+
+	<function name="setServerICAPHeader" module="ICAP">
+		<parameter>X-Violations-Found</parameter>
+		<variable>reqViolation</variable>
+	</function>	
+	<function name="setServerICAPHeader" module="ICAP">
+		<parameter>X-Infection-Found</parameter>
+		<parameter>Type=1; ResolutionID=1; Threat=What ever floats my boat REQ</parameter>
+	</function>	
+	<function name="setServerICAPHeader" module="ICAP">
+		<parameter>X-Virus-ID</parameter>
+		<parameter>XTT Test REQ stuff</parameter>
+	</function>	
+
+	<thread>
+    	<function name="waitForREQMOD" module="ICAP">
+    		<parameter>1</parameter>
+    	</function>	
+    	
+    	<function name="replace" module="Basic">
+    		<parameter>reqViolation</parameter>
+    		<parameter>req</parameter>
+    		<parameter>resp</parameter>
+    	</function>	
+    	<function name="setServerICAPHeader" module="ICAP">
+    		<parameter>X-Violations-Found</parameter>
+    		<variable>reqViolation</variable>
+    	</function>	
+    	<function name="setServerICAPHeader" module="ICAP">
+    		<parameter>X-Infection-Found</parameter>
+    		<parameter>Type=1; ResolutionID=1; Threat=What ever floats my boat RESP</parameter>
+    	</function>	
+    	<function name="setServerICAPHeader" module="ICAP">
+    		<parameter>X-Virus-ID</parameter>
+    		<parameter>XTT Test RESP stuff</parameter>
+    	</function>	
+	</thread>
+	<function name="sendGetRequest" module="HTTP">
+        <parameter>
+    		<parameter>http://icapextension.xtt724.com/?delay=1</parameter>
+        </parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>	
+	<function name="waitForRESPMOD" module="ICAP">
+		<parameter>1</parameter>
+	</function>	
+	<function name="checkHeader" module="HTTP">
+		<parameter>X-XTT-Extension</parameter>
+		<parameter>true</parameter>
+	</function>	
+	<function name="checkServerHeader" module="HTTP">
+		<parameter>X-XTT-Extension</parameter>
+		<parameter>true</parameter>
+	</function>	
+
+	<function name="queryHeader" module="HTTP">
+		<parameter>reqR</parameter>
+		<parameter>REQ-X-Violations-Found</parameter>
+		<parameter>
+		    <parameter>100(,\{file.orc/some/stupid/req/problem/\d{1,2}\|Done Nothing exept fill much bytes of req data 1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ Number: \d{1,2}\|11101\|1\}){</parameter><variable>numViolations</variable><parameter>}</parameter>
+        </parameter>
+	</function>	
+	<function name="compareString" module="Basic">
+		<variable>reqR/length</variable>
+		<parameter>1</parameter>
+	</function>	
+	<function name="queryHeader" module="HTTP">
+		<parameter>respR</parameter>
+		<parameter>RESP-X-Violations-Found</parameter>
+		<parameter>
+		    <parameter>100(,\{file.orc/some/stupid/resp/problem/\d{1,2}\|Done Nothing exept fill much bytes of resp data 1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ Number: \d{1,2}\|11101\|1\}){</parameter><variable>numViolations</variable><parameter>}</parameter>
+        </parameter>
+	</function>	
+	<function name="compareString" module="Basic">
+		<variable>respR/length</variable>
+		<parameter>1</parameter>
+	</function>	
+
+	<function name="checkHeader" module="HTTP">
+		<parameter>REQ-X-Infection-Found</parameter>
+		<parameter>Type=1; ResolutionID=1; Threat=What ever floats my boat REQ</parameter>
+	</function>	
+	<function name="checkHeader" module="HTTP">
+		<parameter>REQ-X-Virus-ID</parameter>
+		<parameter>XTT Test REQ stuff</parameter>
+	</function>	
+	<function name="checkHeader" module="HTTP">
+		<parameter>RESP-X-Infection-Found</parameter>
+		<parameter>Type=1; ResolutionID=1; Threat=What ever floats my boat RESP</parameter>
+	</function>	
+	<function name="checkHeader" module="HTTP">
+		<parameter>RESP-X-Virus-ID</parameter>
+		<parameter>XTT Test RESP stuff</parameter>
+	</function>	
+
+
+
+    <subtest name="unloadReqmod" file="unloadReqmod.xml"/>
+
+	<function name="stopWebServer" module="HTTP"/>
+	<function name="stopICAPServer" module="ICAP"/>
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function> 
+</test>

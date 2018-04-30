@@ -1,0 +1,59 @@
+<test>
+    <configuration>xsam_config.xml</configuration>
+    <function name="testName" module="Basic">
+        <parameter>TC_4.3</parameter>
+    </function>
+    <description>Primary and Backup SMSC Both Not Available	
+
+----------------------------------------------------------------------
+Step1: Provision incoming,outgoing channels and SMPP proxy service for the test shortcode.
+Step2: Simulate a CP using XTT client Simulator.
+Step3: Simulate primary and backup SMSC using XTT Tool.
+Step4: Keep Primary and Backup SMSC down.
+Step5: Send BIND_TRANSCEIVER from CP Simulator.
+-----------------------------------------------------------------------
+	</description>
+
+        <function name="openConnection" module="SMPP">
+          <parameter>connection</parameter>
+          <configuration>XSAM/IP</configuration>
+           <configuration>XSAM/SMPPPort</configuration>
+        </function>
+
+         <function name="sendSMPPPacket" module="SMPP">
+          <parameter>connection</parameter>
+          <parameter>BIND_TRANSCEIVER</parameter>
+          <parameter>internal</parameter>
+          <parameter>systemid</parameter>
+           <parameter>password</parameter>
+          <parameter>system_type</parameter>
+          <parameter>0x50</parameter>
+          <parameter>0</parameter>
+          <parameter>0</parameter>
+          <configuration>XSAM/SMPPSHORTCODE</configuration>
+		   <parameter>0</parameter>
+         </function>
+
+    <function name="info" module="BASIC">
+        <variable>SMSC/SMPP/connection/command_status</variable>
+    </function>
+
+    <function name="compareString" module="BASIC">
+        <variable>SMSC/SMPP/connection/command_status</variable>
+        <parameter>0x00000008</parameter><!--System Error-->
+    </function>
+
+    <function name="info" module="BASIC">
+        <variable>SMSC/SMPP/connection/command_id</variable>
+    </function>
+
+    <function name="compareString" module="BASIC">
+        <variable>SMSC/SMPP/connection/command_id</variable>
+        <parameter>0x80000000</parameter><!--Generic NACK from SFA component-->
+    </function>
+
+    <function name="closeConnection" module="SMPP">
+        <parameter>connection</parameter>
+    </function> 
+    
+</test>

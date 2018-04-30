@@ -1,0 +1,29 @@
+<test>
+
+	<function name="testName" module="Basic">
+		<parameter>XMPVideoOptCoreFunctionality.TC.026_Server</parameter>
+	</function>
+
+	<description>VSM will write a control item to the MEDIA-STORE if statistic's value is greater than the value of "accessRateThreshold" definition in the Video Optimization File in a given "rateIntervalSeconds" period specified in the Coxtext Statistics File (MSR_WaitForOptimizedContent context: false)</description>
+
+	<!-- Start Web Server -->
+	<function name="startWebServer" module="HTTP"/>
+
+	<function name="setServerHeader" module="HTTP">
+		<parameter>content-type</parameter>
+		<parameter>video/x-flv</parameter>
+	</function>
+
+	<function name="setServerReturnCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+		<!-- Sleep a while until video optimization will start -->
+	<function name="sleep" module="Basic">
+		<parameter>80000</parameter>
+	</function>
+
+	<!-- Stop Web Server -->
+	<function name="stopWebServer" module="HTTP"/>
+
+</test>

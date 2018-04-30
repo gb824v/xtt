@@ -1,0 +1,564 @@
+<test>
+    <name>SEND.TPI.SMS</name>
+    <configuration>../configXSAM.xml</configuration>
+
+    <description>Send TPI SMSSubmit Message</description>
+
+    <conditional variable="AMOUNT" targetValue="null" inverted="false">
+        <conditional variable="CHARGE" targetValue="null" inverted="false">
+            <function name="setVariable" module="Basic">
+                <parameter>AMOUNT</parameter>
+                <parameter>1.000</parameter>
+            </function>
+        </conditional>
+    </conditional>
+    <conditional variable="MSISDN" targetValue="null" inverted="false">
+        <function name="setVariable" module="Basic">
+            <parameter>MSISDN</parameter>
+            <parameter>41790000005</parameter>
+        </function>
+    </conditional>
+    <conditional variable="INTERROGATIONLEVEL" targetValue="null" inverted="false">
+        <function name="setVariable" module="Basic">
+            <parameter>INTERROGATIONLEVEL</parameter>
+            <parameter>9</parameter>
+        </function>
+    </conditional>
+    <conditional variable="DELIVERYREPORT" targetValue="null">
+        <function name="setVariable" module="Basic">
+            <parameter>DELIVERYREPORT</parameter>
+            <parameter>false</parameter>
+        </function>
+    </conditional>
+    <conditional variable="NO_CCR" targetValue="null">
+        <function name="setVariable" module="Basic">
+            <parameter>NO_CCR</parameter>
+            <parameter>false</parameter>
+        </function>
+    </conditional>
+    <conditional variable="SKIP_DIAMETER" targetValue="null">
+        <function name="setVariable" module="Basic">
+            <parameter>SKIP_DIAMETER</parameter>
+            <parameter>false</parameter>
+        </function>
+    </conditional>
+    <conditional variable="SKIP_SMSC" targetValue="null">
+        <function name="setVariable" module="Basic">
+            <parameter>SKIP_SMSC</parameter>
+            <parameter>false</parameter>
+        </function>
+    </conditional>
+
+    <conditional variable="SERVICE-SHORTID" targetValue="null">
+        <function name="setVariable" module="Basic">
+            <parameter>SERVICE-SHORTID</parameter>
+            <parameter>
+                <configuration>xsam/serviceGroupPrefix</configuration>
+                <configuration>xsam/serviceGroupNoSMS</configuration>
+            </parameter>
+        </function>
+    </conditional>
+    <conditional variable="SERVICE-NAME" targetValue="null">
+        <function name="setVariable" module="Basic">
+            <parameter>SERVICE-NAME</parameter>
+            <parameter>
+                <parameter>XTT</parameter><configuration>xsam/serviceGroupNoSMS</configuration><parameter>-</parameter><configuration>xsam/serviceNoSMS</configuration><variable>INTERROGATIONLEVEL</variable><parameter></parameter>
+            </parameter>
+        </function>
+    </conditional>
+
+    <conditional variable="SKIP_SMSC" targetValue="true" inverted="true">
+        <function name="startSMSCServer" module="SMS"/>
+    </conditional>
+
+    <conditional variable="SKIP_DIAMETER" targetValue="true" inverted="true">
+        <function name="startDiameterServer" module="Diameter"/>
+    </conditional>
+
+    <subtest>../sisSTART.xml</subtest>
+
+    <conditional variable="SKIP_DIAMETER" targetValue="true" inverted="true">
+        <function name="waitForSpecificRequests" module="Diameter">
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>CAPABILITIES_EXCHANGE_REQUEST</parameter>
+            <parameter>1</parameter>
+        </function>
+    </conditional>
+
+    <function name="waitForBind" module="SMS"/>
+
+    <function name="setHeader" module="VASP">
+        <parameter>Accept</parameter>
+        <parameter>application/soap+xml, application/dime, multipart/related, text/*</parameter>
+    </function>
+    <function name="setHeader" module="VASP">
+        <parameter>Cache-Control</parameter>
+        <parameter>no-cache</parameter>
+    </function>
+    <function name="setHeader" module="VASP">
+        <parameter>Pragma</parameter>
+        <parameter>no-cache</parameter>
+    </function>
+
+    <function name="createTPISoap" module="VASP">
+        <parameter>SMSSUBMIT.REQ</parameter>
+    </function>
+    <function name="setMessageBoundary" module="VASP">
+        <parameter>000000000000000000000001-message</parameter>
+        <parameter>&lt;soap-id&gt;</parameter>
+        <parameter>related</parameter>
+    </function>
+
+    <!--function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='Body'][last()]</parameter>
+        <parameter>test</parameter>
+        <parameter>xsd:asda232</parameter>
+        <parameter>xsi</parameter>
+    </function-->
+
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SMSSubmitRequest']</parameter>
+        <parameter>message-type</parameter>
+        <parameter>SMSSubmitRequest</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='message-type'][last()]</parameter>
+        <parameter>type</parameter>
+        <parameter>xsd:string</parameter>
+        <parameter>xsi</parameter>
+    </function>
+
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SMSSubmitRequest']</parameter>
+        <parameter>transaction-id</parameter>
+        <parameter>XTTSMS000000000001</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='transaction-id'][last()]</parameter>
+        <parameter>type</parameter>
+        <parameter>xsd:string</parameter>
+        <parameter>xsi</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SMSSubmitRequest']</parameter>
+        <parameter>from</parameter>
+        <configuration>VASP/NUMBER</configuration>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='from'][last()]</parameter>
+        <parameter>type</parameter>
+        <parameter>xsd:string</parameter>
+        <parameter>xsi</parameter>
+    </function>
+
+
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SMSSubmitRequest']</parameter>
+        <parameter>username</parameter>
+        <parameter>XTTUser</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='username'][last()]</parameter>
+        <parameter>type</parameter>
+        <parameter>xsd:string</parameter>
+        <parameter>xsi</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SMSSubmitRequest']</parameter>
+        <parameter>password</parameter>
+        <parameter>xtt12345</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='password'][last()]</parameter>
+        <parameter>type</parameter>
+        <parameter>xsd:string</parameter>
+        <parameter>xsi</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SMSSubmitRequest']</parameter>
+        <parameter>short-id</parameter>
+        <variable>SERVICE-SHORTID</variable>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='short-id'][last()]</parameter>
+        <parameter>type</parameter>
+        <parameter>xsd:int</parameter>
+        <parameter>xsi</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SMSSubmitRequest']</parameter>
+        <parameter>service-name</parameter>
+        <variable>SERVICE-NAME</variable>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='service-name'][last()]</parameter>
+        <parameter>type</parameter>
+        <parameter>xsd:string</parameter>
+        <parameter>xsi</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SMSSubmitRequest']</parameter>
+        <parameter>originator-url</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='originator-url'][last()]</parameter>
+        <parameter>type</parameter>
+        <parameter>xsd:string</parameter>
+        <parameter>xsi</parameter>
+    </function>
+
+    <function name="addSoapData" module="VASP">
+        <parameter>//*[local-name()='SMSSubmitRequest']</parameter>
+        <parameter>recipient</parameter>
+        <variable>MSISDN</variable>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='recipient'][last()]</parameter>
+        <parameter>field</parameter>
+        <parameter>to</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='recipient'][last()]</parameter>
+        <parameter>type</parameter>
+        <parameter>xsd:string</parameter>
+        <parameter>xsi</parameter>
+    </function>
+    <!--function name="addSoapData" module="VASP">
+        <parameter>//*[local-name()='SMSSubmitRequest']</parameter>
+        <parameter>recipient</parameter>
+        <parameter>+41795432112</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='recipient'][last()]</parameter>
+        <parameter>field</parameter>
+        <parameter>cc</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='recipient'][last()]</parameter>
+        <parameter>type</parameter>
+        <parameter>xsd:string</parameter>
+        <parameter>xsi</parameter>
+    </function>
+    <function name="addSoapData" module="VASP">
+        <parameter>//*[local-name()='SMSSubmitRequest']</parameter>
+        <parameter>recipient</parameter>
+        <parameter>+41795432113</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='recipient'][last()]</parameter>
+        <parameter>field</parameter>
+        <parameter>bcc</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='recipient'][last()]</parameter>
+        <parameter>type</parameter>
+        <parameter>xsd:string</parameter>
+        <parameter>xsi</parameter>
+    </function-->
+
+
+    <!--function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SMSSubmitRequest']</parameter>
+        <parameter>earliest-delivery-time</parameter>
+        <parameter>2007-03-22T09:54:25Z</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='earliest-delivery-time'][last()]</parameter>
+        <parameter>type</parameter>
+        <parameter>xsd:datetime</parameter>
+        <parameter>xsi</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SMSSubmitRequest']</parameter>
+        <parameter>time-of-expiry</parameter>
+        <parameter>2007-03-22T11:54:25Z</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='time-of-expiry'][last()]</parameter>
+        <parameter>type</parameter>
+        <parameter>xsd:datetime</parameter>
+        <parameter>xsi</parameter>
+    </function-->
+
+    <conditional variable="AMOUNT" targetValue="null" inverted="true">
+        <function name="setSoapData" module="VASP">
+            <parameter>//*[local-name()='SMSSubmitRequest']</parameter>
+            <parameter>amount</parameter>
+            <variable>AMOUNT</variable>
+        </function>
+        <function name="setSoapAttribute" module="VASP">
+            <parameter>//*[local-name()='amount'][last()]</parameter>
+            <parameter>type</parameter>
+            <parameter>xsd:double</parameter>
+            <parameter>xsi</parameter>
+        </function>
+    </conditional>
+    <conditional variable="CHARGE" targetValue="null" inverted="true">
+        <function name="setSoapData" module="VASP">
+            <parameter>//*[local-name()='SMSSubmitRequest']</parameter>
+            <parameter>charge</parameter>
+            <variable>CHARGE</variable>
+        </function>
+        <function name="setSoapAttribute" module="VASP">
+            <parameter>//*[local-name()='charge'][last()]</parameter>
+            <parameter>type</parameter>
+            <parameter>xsd:int</parameter>
+            <parameter>xsi</parameter>
+        </function>
+    </conditional>
+
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SMSSubmitRequest']</parameter>
+        <parameter>bill-text</parameter>
+        <parameter>XTT SMS Submit Charge</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='bill-text'][last()]</parameter>
+        <parameter>type</parameter>
+        <parameter>xsd:string</parameter>
+        <parameter>xsi</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SMSSubmitRequest']</parameter>
+        <parameter>report-address</parameter>
+        <configuration>XSAM/TPIREPORTURL</configuration>
+    </function> 
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SMSSubmitRequest']</parameter>
+        <parameter>delivery-report</parameter>
+        <variable>DELIVERYREPORT</variable>
+    </function>    
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='delivery-report'][last()]</parameter>
+        <parameter>type</parameter>
+        <parameter>xsd:boolean</parameter>
+        <parameter>xsi</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SMSSubmitRequest']</parameter>
+        <parameter>read-report</parameter>
+        <parameter>false</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='read-report'][last()]</parameter>
+        <parameter>type</parameter>
+        <parameter>xsd:boolean</parameter>
+        <parameter>xsi</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SMSSubmitRequest']</parameter>
+        <parameter>priority</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='priority'][last()]</parameter>
+        <parameter>type</parameter>
+        <parameter>xsd:string</parameter>
+        <parameter>xsi</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SMSSubmitRequest']</parameter>
+        <parameter>tpi-version</parameter>
+        <parameter>1.9.2</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='tpi-version'][last()]</parameter>
+        <parameter>type</parameter>
+        <parameter>xsd:string</parameter>
+        <parameter>xsi</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SMSSubmitRequest']</parameter>
+        <parameter>service-class</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='service-class'][last()]</parameter>
+        <parameter>type</parameter>
+        <parameter>xsd:string</parameter>
+        <parameter>xsi</parameter>
+    </function>
+
+    <!--function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SMSSubmitRequest']</parameter>
+        <parameter>report-address</parameter>
+        <parameter>http://10.12.107.135:3396/</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='report-address'][last()]</parameter>
+        <parameter>type</parameter>
+        <parameter>xsd:string</parameter>
+        <parameter>xsi</parameter>
+    </function-->
+
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SMSSubmitRequest']</parameter>
+        <parameter>subject</parameter>
+        <parameter>utf8 sms</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='subject'][last()]</parameter>
+        <parameter>type</parameter>
+        <parameter>xsd:string</parameter>
+        <parameter>xsi</parameter>
+    </function>
+    <!--function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SMSSubmitRequest']</parameter>
+        <parameter>distribution-indicator</parameter>
+        <parameter>true</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='distribution-indicator'][last()]</parameter>
+        <parameter>type</parameter>
+        <parameter>xsd:boolean</parameter>
+        <parameter>xsi</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SMSSubmitRequest']</parameter>
+        <parameter>allow-adaption</parameter>
+        <parameter>true</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='allow-adaption'][last()]</parameter>
+        <parameter>type</parameter>
+        <parameter>xsd:boolean</parameter>
+        <parameter>xsi</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SMSSubmitRequest']</parameter>
+        <parameter>linked-id</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='linked-id'][last()]</parameter>
+        <parameter>type</parameter>
+        <parameter>xsd:string</parameter>
+        <parameter>xsi</parameter>
+    </function!-->
+
+    <!--function name="addSoapData" module="VASP">
+        <parameter>//*[local-name()='SMSSubmitRequest']</parameter>
+        <parameter>content</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='content'][last()]</parameter>
+        <parameter>filename</parameter>
+        <parameter>mms.smil</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='content'][last()]</parameter>
+        <parameter>href</parameter>
+        <parameter>mms.smil</parameter>
+    </function>
+
+    <function name="addSoapData" module="VASP">
+        <parameter>//*[local-name()='SMSSubmitRequest']</parameter>
+        <parameter>content</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='content'][last()]</parameter>
+        <parameter>filename</parameter>
+        <parameter>text2.txt</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='content'][last()]</parameter>
+        <parameter>href</parameter>
+        <parameter>test2.txt</parameter>
+    </function-->
+
+    <function name="addSoapData" module="VASP">
+        <parameter>//*[local-name()='SMSSubmitRequest']</parameter>
+        <parameter>content</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='content'][last()]</parameter>
+        <parameter>filename</parameter>
+        <parameter>text1.txt</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='content'][last()]</parameter>
+        <parameter>href</parameter>
+        <parameter>test1.txt</parameter>
+    </function>
+
+    <!--function name="addSoapData" module="VASP">
+        <parameter>//*[local-name()='SMSSubmitRequest']</parameter>
+        <parameter>content</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='content'][last()]</parameter>
+        <parameter>filename</parameter>
+        <parameter>yellowfl.gif</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='content'][last()]</parameter>
+        <parameter>href</parameter>
+        <parameter>yellowfl.gif</parameter>
+    </function>
+
+    <function name="addSoapData" module="VASP">
+        <parameter>//*[local-name()='SMSSubmitRequest']</parameter>
+        <parameter>content</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='content'][last()]</parameter>
+        <parameter>filename</parameter>
+        <parameter>x11.gif</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='content'][last()]</parameter>
+        <parameter>href</parameter>
+        <parameter>x11.gif</parameter>
+    </function-->
+
+    <function name="addContent" module="VASP">
+        <file>sendSMSdata.txt</file>
+    </function>
+
+    <thread>
+        <function name="waitForSISCalls" module="SIS">
+            <parameter>1</parameter>
+        </function>
+        <conditional variable="SKIP_DIAMETER" targetValue="true" inverted="true">
+            <conditional variable="NO_CCR" targetValue="true" inverted="true">
+                <function name="waitForSpecificRequests" module="Diameter">
+                    <configuration>DIAMETERSERVER/PORT</configuration>
+                    <parameter>CREDIT_CONTROL_REQUEST</parameter>
+                    <parameter>1</parameter>
+                </function>
+            </conditional>
+            <conditional variable="NO_CCR" targetValue="true">
+                <function name="waitForTimeoutSpecificRequests" module="Diameter">
+                    <configuration>DIAMETERSERVER/PORT</configuration>
+                    <parameter>CREDIT_CONTROL_REQUEST</parameter>
+                    <configuration>DIAMETERSERVER/WAITTIMEOUT</configuration>
+                    <parameter>0</parameter>
+                </function>
+            </conditional>
+        </conditional>
+        <function name="waitForMessages" module="SMS">
+            <parameter>1</parameter>
+        </function>
+    </thread>
+
+    <!--function name="previewRequest" module="VASP" /-->
+    <function name="sendPostRequest" module="VASP"/>
+
+    <function name="checkResponseCode" module="VASP">
+        <parameter>200</parameter>
+    </function>
+
+    <function name="queryBody" module="VASP">
+        <parameter>tpiResponseCode</parameter>
+        <parameter>&lt;state&gt;(1000)&lt;/state&gt;\s+&lt;state-text&gt;Ok&lt;/state-text&gt;</parameter>
+    </function>
+
+    <function name="waitOnThreads" module="Basic"/>
+
+    <conditional variable="SKIP_SMSC" targetValue="true" inverted="true">
+        <function name="stopSMSCServer" module="SMS"/>
+    </conditional>
+    <conditional variable="SKIP_DIAMETER" targetValue="true" inverted="true">
+        <function name="stopDiameterServer" module="Diameter"/>
+    </conditional>
+
+    <subtest>../sisSTOP.xml</subtest>
+
+</test>

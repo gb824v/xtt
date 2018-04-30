@@ -1,0 +1,106 @@
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+KasperskyVirusScanningIntegration.TC.008  - HTTP GET / Virus Check is enabled / Requested web page doesn't contain virus / XMP blocks when all of the Kaspersky daemons are down.
+
+Test Description:
+ 1. Radius Logon
+ 2. Make both the Kaspersky daemon processes down
+ 3. Send non-virus Infected data in HTTP Get Proxy Request
+ 4. Check Response Code
+ 5. Again make the Kaspersky daemon processes up.
+ 6. Radius Logoff
+ 
+Expected Result:
+ -  XMP should unable to make any virus scan.
+
+XTT Commands:
+      startWebServer
+ 1. - Radius log-ON
+
+ 2. - Down both the Kaspersky daemon processes. 
+ 
+ 3.   - sendGetRequest 		"HTTP" "http://SYSTEM-IP/text.html"
+
+ 3.   - checkResponseCode	"HTTP" "200"
+
+ 4. - Up the Kaspersky daemon processes.
+ 
+ 5. - Radius log-OFF
+      stopWebServer
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- Test Start  -->
+<test>
+	<function name="testName" module="Basic">
+		<parameter>KasperskyVirusScanningIntegration.TC.008</parameter>
+	</function>
+	
+    <description>HTTP GET / Virus Check is enabled / Requested web page doesn't contain virus / XMP blocks when all of the Kaspersky daemons are down</description>
+	
+	
+    <function name="stopProcesses" module="Remote">
+        <parameter>KASPERSKY-DAEMON.mauritius</parameter>
+    </function>
+    <function name="checkProcessStatus" module="Remote">
+        <parameter>KASPERSKY-DAEMON.mauritius</parameter>
+        <parameter>Stopped</parameter>
+    </function>
+
+	 <function name="stopProcesses" module="Remote">
+        <parameter>KASPERSKY-DAEMON.lggwsl14</parameter>
+    </function>
+    <function name="checkProcessStatus" module="Remote">
+        <parameter>KASPERSKY-DAEMON.lggwsl14</parameter>
+        <parameter>Stopped</parameter>
+    </function>
+	
+	 <!-- Start Web Server -->
+    <function name="startWebServer" module="HTTP"/>
+
+	<!-- Radius Login -->
+	 <function name="radiusLogon" module="Radius">
+	    <parameter>xttuser</parameter>
+	    <parameter>12346</parameter>
+    </function>  
+
+    <!-- Send non-virus Infected data in HTTP Get Proxy Request -->
+    <function name="sendGetRequest" module="HTTP">
+        <parameter>
+        	<parameter>http://</parameter>
+        	<configuration>system/ip</configuration>
+        	<parameter>/text.html</parameter>
+        </parameter>
+    </function>
+    
+	<!-- Validate Response Code Send by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>    
+
+	<!-- Radius Logoff -->
+	 <function name="radiusLogoff" module="Radius">
+	    <parameter>xttuser</parameter>
+	    <parameter>12346</parameter>
+    </function>  
+
+	<function name="startProcesses" module="Remote">
+        <parameter>KASPERSKY-DAEMON.lggwsl14</parameter>
+    </function>
+    <function name="checkProcessStatus" module="Remote">
+        <parameter>KASPERSKY-DAEMON.lggwsl14</parameter>
+        <parameter>Running</parameter>
+        <parameter>*Running</parameter>
+    </function>
+
+	<function name="startProcesses" module="Remote">
+        <parameter>KASPERSKY-DAEMON.mauritius</parameter>
+    </function>
+    <function name="checkProcessStatus" module="Remote">
+        <parameter>KASPERSKY-DAEMON.mauritius</parameter>
+        <parameter>Running</parameter>
+        <parameter>*Running</parameter>
+    </function>
+
+	<!-- Stop Web Server -->
+	<function name="stopWebServer" module="HTTP"/>
+
+</test>
+

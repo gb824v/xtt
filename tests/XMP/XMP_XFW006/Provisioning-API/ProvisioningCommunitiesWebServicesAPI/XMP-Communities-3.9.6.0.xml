@@ -1,0 +1,87 @@
+<test>
+       
+      <description> SOAP-API-Communities{(addMembers( )}: Test for addMembers. </description>
+      
+	 <function name="testName" module="Basic">
+		<parameter>XMP-Communities-3.9.6.0</parameter>
+	</function>
+
+	<function name="SOAPClient" module="SOAP_API" >
+		<parameter>
+			 <configuration>XMP/PROTOCOL</configuration>
+			 <configuration>XMP/IP</configuration>
+			 <parameter>:</parameter>
+			 <configuration>XMP/PORT/</configuration>
+			 <parameter>/jaxws-provisioning-core/provisioning</parameter>
+		</parameter>
+		<file>addusers-1001.xml</file>
+		<parameter>Body/return</parameter>
+	</function>
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+
+	<function name="SOAPClient" module="SOAP_API" >
+		<parameter>
+			 <configuration>XMP/PROTOCOL</configuration>
+			 <configuration>XMP/IP</configuration>
+			 <parameter>:</parameter>
+			 <configuration>XMP/PORT/</configuration>
+			 <parameter>/jaxws-policy-communities/communities</parameter>
+		</parameter>
+		<file>XMP-Create-Community-COM3.xml</file>
+		<parameter>Body/return</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+
+	<function name="SOAPClient" module="SOAP_API" >
+		<parameter>
+			 <configuration>XMP/PROTOCOL</configuration>
+			 <configuration>XMP/IP</configuration>
+			 <parameter>:</parameter>
+			 <configuration>XMP/PORT/</configuration>
+			 <parameter>/jaxws-policy-communities/communities</parameter>
+		</parameter>
+		<file>XMP-addMembers-new-member.xml</file>
+		<parameter>Body/return</parameter>
+	</function>
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+	
+	<function name="SOAPClient" module="SOAP_API" >
+		<parameter>
+			 <configuration>XMP/PROTOCOL</configuration>
+			 <configuration>XMP/IP</configuration>
+			 <parameter>:</parameter>
+			 <configuration>XMP/PORT/</configuration>
+			 <parameter>/jaxws-provisioning-core/provisioning</parameter>
+		</parameter>
+		<file>removeusers-1001.xml</file>
+		<parameter>Body/return</parameter>
+	</function>
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+
+
+	<function name="SOAPClient" module="SOAP_API" >
+		<parameter>
+			 <configuration>XMP/PROTOCOL</configuration>
+			 <configuration>XMP/IP</configuration>
+			 <parameter>:</parameter>
+			 <configuration>XMP/PORT/</configuration>
+			 <parameter>/jaxws-policy-communities/communities</parameter>
+		</parameter>
+		<file>XMP-destory-Community-COM3.xml</file>
+		<parameter>Body/return</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+       
+ </test>

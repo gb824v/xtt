@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test>
+    <name>xttmsrpTC006.xml</name>
+    <description>[A --> B] Test that chunking is working propperly</description>
+    <configuration>configMSRP.xml</configuration>
+
+
+    <!-- client side server for responses -->
+    <function name="setVariable" module="Basic">
+        <parameter>CLIENT</parameter>
+        <configuration>MSRPSERVER/CLIENTPORT</configuration>
+    </function>
+    <!--   client side server for responses -->
+    <function name="setVariable" module="Basic">
+        <parameter>SERVER</parameter>
+        <configuration>MSRPSERVER/PORT</configuration>
+    </function>
+
+    <function name="startMSRPServer" module="MSRP">
+        <variable>SERVER</variable>
+        <configuration>MSRPSERVER/TIMEOUT</configuration>
+    </function>
+
+    <function name="startMSRPServer" module="MSRP">
+        <variable>CLIENT</variable>
+        <configuration>MSRPSERVER/TIMEOUT</configuration>
+   </function>
+
+    <!-- From client to server -->
+    <!--  create connection  -->
+    <function name="createConnection" module="MSRP">
+        <parameter>one</parameter>
+        <variable>CLIENT</variable>
+    </function>
+
+    <function name="setVariable" module="Basic">
+        <parameter>msrpBody1</parameter>
+        <parameter>1234ABCD5678</parameter>
+    </function>
+
+    <!-- first part sent first -->
+    <function name="setVariable" module="Basic">
+        <parameter>msrpHeader1</parameter>
+        <parameter>
+            <crlf><parameter>To-Path: msrp://</parameter><configuration>SYSTEM/IP</configuration><parameter>:</parameter><variable>SERVER</variable><parameter>/9di4eae923wzd;tcp</parameter></crlf>
+            <crlf><parameter>From-Path: msrp://</parameter><configuration>SYSTEM/IP</configuration><parameter>:</parameter><variable>CLIENT</variable><parameter>/iau39soe2843z;tcp</parameter></crlf>
+            <crlf>Message-ID: 1234pqrs</crlf>
+            <crlf>Content-Type: text/plain</crlf>
+            <parameter>Byte-Range: 1-*/12</parameter>
+        </parameter>
+    </function>
+    <function name="sendFreeRequest" module="MSRP">
+        <parameter>one</parameter>
+        <parameter>SEND</parameter>
+        <configuration>SYSTEM/IP</configuration>
+        <variable>SERVER</variable>
+        <variable>msrpHeader1</variable>
+        <base64encode>1234</base64encode>
+        <parameter>XXXX0001</parameter> <!-- user defined txid-->
+        <parameter>+</parameter><!-- message chunk indicator-->
+    </function>
+    <function name="waitForVariable" module="Basic">
+        <parameter>
+            <parameter>MSRP/RESPONSE/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+    <function name="removeVariables" module="Basic">
+        <parameter>
+            <parameter>MSRP/RESPONSE/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+    <!-- Intermission sent in between -->
+    <function name="setVariable" module="Basic">
+        <parameter>msrpHeader1</parameter>
+        <parameter>
+            <crlf><parameter>To-Path: msrp://</parameter><configuration>SYSTEM/IP</configuration><parameter>:</parameter><variable>SERVER</variable><parameter>/9di4eae923wzd;tcp</parameter></crlf>
+            <crlf><parameter>From-Path: msrp://</parameter><configuration>SYSTEM/IP</configuration><parameter>:</parameter><variable>CLIENT</variable><parameter>/iau39soe2843z;tcp</parameter></crlf>
+            <crlf>Message-ID: 9876lkjh</crlf>
+            <crlf>Content-Type: text/plain</crlf>
+            <parameter>Byte-Range: 1-24/24</parameter>
+        </parameter>
+    </function>
+    <function name="sendFreeRequest" module="MSRP">
+        <parameter>one</parameter>
+        <parameter>SEND</parameter>
+        <configuration>SYSTEM/IP</configuration>
+        <variable>SERVER</variable>
+        <variable>msrpHeader1</variable>
+        <base64encode>INTERMISSIONINTERMISSION</base64encode>
+        <parameter>XXXX0001</parameter> <!-- user defined txid-->
+        <parameter>$</parameter><!-- message chunk indicator-->
+    </function>
+    <function name="waitForVariable" module="Basic">
+        <parameter>
+            <parameter>MSRP/RESPONSE/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+    <function name="removeVariables" module="Basic">
+        <parameter>
+            <parameter>MSRP/RESPONSE/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+
+    <!-- third part sent second -->
+    <function name="setVariable" module="Basic">
+        <parameter>msrpHeader1</parameter>
+        <parameter>
+            <crlf><parameter>To-Path: msrp://</parameter><configuration>SYSTEM/IP</configuration><parameter>:</parameter><variable>SERVER</variable><parameter>/9di4eae923wzd;tcp</parameter></crlf>
+            <crlf><parameter>From-Path: msrp://</parameter><configuration>SYSTEM/IP</configuration><parameter>:</parameter><variable>CLIENT</variable><parameter>/iau39soe2843z;tcp</parameter></crlf>
+            <crlf>Message-ID: 1234pqrs</crlf>
+            <crlf>Content-Type: text/plain</crlf>
+            <parameter>Byte-Range: 9-*/12</parameter>
+        </parameter>
+    </function>
+    <function name="sendFreeRequest" module="MSRP">
+        <parameter>one</parameter>
+        <parameter>SEND</parameter>
+         <configuration>SYSTEM/IP</configuration>
+        <variable>SERVER</variable>
+        <variable>msrpHeader1</variable>
+        <base64encode>5678</base64encode>
+        <parameter>XXXX0001</parameter> <!-- user defined txid-->
+        <parameter>$</parameter><!-- message chunk indicator-->
+    </function>
+    <function name="waitForVariable" module="Basic">
+        <parameter>
+            <parameter>MSRP/RESPONSE/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+    <function name="removeVariables" module="Basic">
+        <parameter>
+            <parameter>MSRP/RESPONSE/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+
+
+    <!-- second part sent third -->
+    <function name="setVariable" module="Basic">
+        <parameter>msrpHeader1</parameter>
+        <parameter>
+            <crlf><parameter>To-Path: msrp://</parameter><configuration>SYSTEM/IP</configuration><parameter>:</parameter><variable>SERVER</variable><parameter>/9di4eae923wzd;tcp</parameter></crlf>
+            <crlf><parameter>From-Path: msrp://</parameter><configuration>SYSTEM/IP</configuration><parameter>:</parameter><variable>CLIENT</variable><parameter>/iau39soe2843z;tcp</parameter></crlf>
+            <crlf>Message-ID: 1234pqrs</crlf>
+            <crlf>Content-Type: text/plain</crlf>
+            <parameter>Byte-Range: 5-*/12</parameter>
+        </parameter>
+    </function>
+    <function name="sendFreeRequest" module="MSRP">
+        <parameter>one</parameter>
+        <parameter>SEND</parameter>
+         <configuration>SYSTEM/IP</configuration>
+        <variable>SERVER</variable>
+        <variable>msrpHeader1</variable>
+        <base64encode>ABCD</base64encode>
+        <parameter>XXXX0001</parameter> <!-- user defined txid-->
+        <parameter>+</parameter><!-- message chunk indicator-->
+    </function>
+    <function name="waitForVariable" module="Basic">
+        <parameter>
+            <parameter>MSRP/RESPONSE/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+    <function name="removeVariables" module="Basic">
+        <parameter>
+            <parameter>MSRP/RESPONSE/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+   <function name="compareString" module="Basic">
+        <variable>MSRP/SEND/1234pqrs/BODY/PLAIN</variable>
+        <variable>msrpBody1</variable>
+   </function>
+   
+    <function name="compareString" module="Basic">
+        <variable>MSRP/SEND/9876lkjh/BODY/PLAIN</variable>
+        <parameter>INTERMISSIONINTERMISSION</parameter>
+   </function>
+
+    <function name="sleep" module="Basic">
+        <parameter>100</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+        <parameter>body0-1023</parameter>
+        <parameter>
+            <crlf>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+$</crlf>
+            <crlf>abcdefghijklmnofdghjdghjyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcderghijklmnopqrstzjdfyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+$</crlf>
+            <crlf>abcdefghijklmnopqrstuvwxdghBCDEFGHIJKLMNOPQRSTUVWXYZ0123456789aegaefgadfkgmnopqrdtuvwxzjdBCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+$</crlf>
+            <crlf>abcdefghijklmnopqrstuvwxyzAjdDEFagaJdfgaOPQRSTUVWXYZ01234567agabcdefghijkladgptrstuvwxyzAghjEFGHIJukfNOPQRSTUVWXYZ0123456789+$</crlf>
+            <crlf>abcdefghijklmnopqrstuvwxyzABCghjGHIJKLMNdfgaSTUVWXYZ01234aeg89abcdefghijklmnopqrstuvwxyzABCfghjHIzKLMNOPQRSTUVWXYZ0123456789+$</crlf>
+            <crlf>abcdefghijklmnopqrstuvwxyzABCDEFdghjKLMNOPQRdfaVWXYergaerg6789abcdefghijklmnopqrstuvwxyzABCDEFfguJKLMNOPQRSTUVWXYZ0123456789+$</crlf>
+            <crlf>abcdefghijklmnopqrstuvwxyzABCDEFGHIJdLMNOPQRSTUdfgaZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+$</crlf>
+            <crlf>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKdhjdghjdghjdgjZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+$</crlf>
+        </parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+        <parameter>body1024-2047</parameter>
+        <parameter>
+            <crlf>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLgiOlgilgilWXYZ0123456789+$</crlf>
+            <crlf>abcdefghijklmnopqrstuvwxyzABCbyFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKgMNOPQRSTUVgilZ0123456789+$</crlf>
+            <crlf>abcdefghijklmnopqrstuvwxyzbyfDEfvbIeKLMNOPQRSTUVWXYZ012gf56789abcdegghijklmnopqrstuvwxyzABCDEFGHuilLMNOPQRSTUVWXYg0123456789+$</crlf>
+            <crlf>abcdefghijklmnopqrstuvwydfABCDEFGHIJzLjNOPQRSTUVWXYdf1uk45hj89agcuifkhijklmnopqrstuvwxyzABCDEilgIJKLMNOPQRSTUVWXYZil23456789+$</crlf>
+            <crlf>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLfzOukRtzjdWtzZ01234567g9ibcdefgghjklmnopqrstuvwxyzABCguFGHIJKLMNOPQRSTUVWXYZ01guil6789+$</crlf>
+            <crlf>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQsSTUVWXYZ0123456789abcdefghijglmnopqrstuvwxyzAilDEFGHIJKLMNOPQRSTUVWXYZ012345gi89+$</crlf>
+            <crlf>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijkhjlopqrstuvwxilgBCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+$</crlf>
+            <crlf>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnghqlgtuilgyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+$</crlf>
+        </parameter>
+    </function>
+    
+    <function name="openConnection" module="TCP">
+        <configuration>SYSTEM/IP</configuration>
+        <variable>SERVER</variable>
+    </function>
+
+    <function name="sendTextPacketPart" module="TCP">
+        <parameter>
+            <crlf>MSRP YYXXXX0002 SEND</crlf>
+            <crlf><parameter>To-Path: msrp://</parameter><configuration>SYSTEM/IP</configuration><parameter>:</parameter><variable>CLIENT</variable><parameter>/iau39soe2843z;tcp</parameter></crlf>
+            <crlf><parameter>From-Path: msrp://</parameter><configuration>SYSTEM/IP</configuration><parameter>:</parameter><variable>SERVER</variable><parameter>/9di4eae923wzd;tcp</parameter></crlf>
+            <crlf>Byte-Range: 1-*/10</crlf>
+            <crlf>Message-ID: cdefghij</crlf>
+            <crlf>Content-Type: text/plain</crlf>
+            <crlf></crlf>
+            <parameter>01234</parameter>
+        </parameter>
+    </function>
+    <function name="multiplyVariable" module="Basic">
+        <parameter>delay</parameter>
+        <parameter>5</parameter>
+        <configuration>SYSTEM/NETWORKLAGDELAY</configuration>
+    </function>
+    <function name="sleep" module="Basic">
+        <variable>delay</variable>
+    </function>
+    
+    <function name="sendTextPacketPart" module="TCP">
+        <parameter>
+            <crlf>56789</crlf>
+            <crlf>-------YYXXXX0002$</crlf>
+            <parameter>
+                <crlf>MSRP YYXXXX0003 SEND</crlf>
+                <crlf><parameter>To-Path: msrp://</parameter><configuration>SYSTEM/IP</configuration><parameter>:</parameter><variable>CLIENT</variable><parameter>/iau39soe2843z;tcp</parameter></crlf>
+                <crlf><parameter>From-Path: msrp://</parameter><configuration>SYSTEM/IP</configuration><parameter>:</parameter><variable>SERVER</variable><parameter>/9di4eae923wzd;tcp</parameter></crlf>
+                <crlf>Byte-Range: 1-*/2048</crlf>
+                <crlf>Message-ID: klmnopqert</crlf>
+                <crlf>Content-Type: text/plain</crlf>
+                <crlf></crlf>
+                <variable>body0-1023</variable>
+            </parameter>
+        </parameter>
+    </function>
+    <function name="sleep" module="Basic">
+        <variable>delay</variable>
+    </function>
+    <function name="sendTextPacket" module="TCP">
+        <parameter>
+            <variable>body1024-2047</variable>
+            <crlf></crlf>
+            <crlf>-------YYXXXX0003$</crlf>
+        </parameter>
+    </function>
+    <function name="queryTextResponse" module="TCP">
+        <parameter>dev/null</parameter>
+        <parameter>MSRP YYXXXX0002 200 OK</parameter>
+    </function>
+    <function name="queryTextResponse" module="TCP">
+        <parameter>dev/null</parameter>
+        <parameter>MSRP YYXXXX0003 200 OK</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>MSRP/SEND/cdefghij/BODY/PLAIN</variable>
+        <parameter>0123456789</parameter>
+   </function>
+    <function name="compareString" module="Basic">
+        <variable>MSRP/SEND/klmnopqert/BODY/PLAIN</variable>
+        <parameter>
+            <variable>body0-1023</variable>
+            <variable>body1024-2047</variable>
+        </parameter>
+   </function>
+    <function name="closeConnection" module="TCP">
+    </function>
+
+ <function name="stopMSRPServer" module="MSRP"/>
+</test>

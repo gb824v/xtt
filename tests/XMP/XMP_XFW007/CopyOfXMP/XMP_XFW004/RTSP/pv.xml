@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmpProductView>
+	<configuration configurationName="XMPTest" description="PV for RTSP transparent proxy" licenseFile="/home/xmp/xmp_cfg/license.xml" systemName="XMPTest" />
+	<systemEnvironment jdkDirectory="/usr/local/jdk1.5.0_10" operatingSystem="Linux" userId="xmp" windowsFileSystemRoot="C:/" workspaceDirectory="/home/xmp/4.1/process" />
+	<!--capacity>
+		<capacityLimits entity="DEFAULT" blockSizeKBytes="32" concurrentConnections="20" concurrentRequests="100" />
+	</capacity-->
+	<auxiliarySystems>
+		<dns>
+			<dnsServer ipAddress="172.20.1.2" />
+			<!--dnsServer ipAddress="172.20.2.93" /-->
+			<!--dnsServer ipAddress="172.20.2.118" /-->
+		</dns>
+		<icap>
+			<icapServer name="xttrespmod" url="icap://172.20.2.118:1344/respmod" />
+			<icapServer name="xttreqmod" url="icap://172.20.2.118:1344/reqmod" />
+		</icap>
+		<radius>
+			<radiusProfile name="default" useInterimUpdateForSessionStart="true" useInterimUpdateForDynamicUpdates="true" obey3gppStopRules="false" dummySubscriberIdPrefix="999_">
+				<radiusAttributes>
+					<ipAddressAttribute radiusAttributeNumber="8" vendorAttribute="0" vendorId="0" conversionType="Ip4AddrToString" />
+					<subscriberIdAttribute radiusAttributeNumber="1" vendorAttribute="0" vendorId="0" conversionType="OctSeqToString" />
+					<additionalAttribute name="NASIPAddress" radiusAttributeNumber="4" />
+					<additionalAttribute name="NASIdentifier" radiusAttributeNumber="32" />
+					<additionalAttribute name="IMSI" radiusAttributeNumber="224" />
+					<additionalAttribute name="SGSN_IpAddress" radiusAttributeNumber="228" />
+					<additionalAttribute name="GGSN_IpAddress" radiusAttributeNumber="227" />
+					<additionalAttribute name="GPRS_ChargingID" radiusAttributeNumber="225" />
+					<additionalAttribute name="Prepaid_Ind" radiusAttributeNumber="226" />
+					<additionalAttribute name="Vendor_Attr" radiusAttributeNumber="26" vendorId="0" vendorAttribute="0" conversionType="Ip4AddrToString" />
+				</radiusAttributes>
+			</radiusProfile>
+			<radiusServer radiusProfile="default" sharedSecret="tttester" ipAddress="172.20.2.118" />
+			<radiusServer radiusProfile="default" sharedSecret="tttester" ipAddress="172.20.2.93" />
+			<radiusServer radiusProfile="default" sharedSecret="tttester" ipAddress="172.20.2.119" />
+		</radius>
+		<sti url="http://172.20.2.118:8989/OMASTI.xml" />
+	</auxiliarySystems>
+	<cookieStore typeOfStore="database" maxStoreMins="129600" >
+		<storePersistentCookies deleteAtSessionStart="false" />
+	</cookieStore>
+	<database>
+		<embedded />
+	</database>
+	<httpCache maxProcessCacheSizeMbytes="1" maxStoreTimeMins="1" maxStoreItemSizeKbytes="1" >
+		<intelligentCachingRefresh percentageItemAge="20" maxFreshnessTimeMins="4320" minFreshnessTimeMins="0" />
+	</httpCache>
+	<interception/>
+	<logging logDirectory="/home/xmp/4.1/log" logPeriod="Midnight" maxLogFileSizeMBytes="100" >
+	</logging>
+	<monitoring enableMetering="true" logInSyslog="true" >
+		<healthChecks>
+			<dbHelper maxLatencySecs="30" okLatencySecs="10" pollIntervalSecs="60" />
+			<dnsHelper pollIntervalSecs="60" resolveAddress="yahoo.com" />
+			<!--internetHelper pollIntervalSecs="60" >
+				<urlToPoll>http://www.google.com</urlToPoll>
+				<urlToPoll>http://www.yahoo.com</urlToPoll>
+			</internetHelper-->
+		</healthChecks>
+		<snmp>
+			<accept>
+				<inet>
+					<sourceNms community="public" manager="172.20.14.86" accessRight="READ_WRITE" />
+				</inet>
+			</accept>
+			<send udpPort="162">
+		        <targetNms community="public" manager="172.20.14.86"/>
+	        </send>
+		</snmp>
+	</monitoring>
+	<persistentHttpConnections maxInConnections="1" maxOutConnections="1" /> <!-- ERROR: NOT ALLOWED maxOutHosts="1" -->
+	<presence/>
+	<urlMatching>
+		<matchEquivalentHostsInUrls lookupIntervalSecs="10" >
+			<wildcardReplacement>www</wildcardReplacement>
+		</matchEquivalentHostsInUrls>
+	</urlMatching>
+	<!--virusScanning>
+	<kaspersky installDirectory="/home/xmp/kaspersky"/>
+	</virusScanning-->
+	<machines>
+		<machine hostEmbeddedDatabase="true" hostName="pipi" operatingSystem="Linux" description="My tried pipi">
+			<titaniumAddresses>
+				<titaniumAddress ipAddress="172.20.2.93"/>
+			</titaniumAddresses>
+			<managementServer>
+				<snmpListenAddress ipAddress="172.20.2.93" port="1610"/>
+				<dashboardListenAddress ipAddress="172.20.2.93" port="1453"/>
+				<dashboardListenAddressSecure ipAddress="172.20.2.93" port="1454"/>
+				<radiusListenAddress ipAddress="172.20.2.93" port="1813" />
+			</managementServer>
+			<processes>
+				<!--kasperskyDaemon>
+					<listenAddress ipAddress="172.20.2.93" port="9001"/>
+				</kasperskyDaemon-->
+				<appServices processNameSuffix="1" />
+				<tcpRouter processNameSuffix="1" requestPreviewTimeoutMicros="300000" responsePreviewTimeoutMicros="300000" >
+					<listenAddress ipAddress="172.20.2.93" port="4000" />
+				</tcpRouter>
+				<wap1Proxy processNameSuffix="1" maxPduSizeKbytes="64" segmentSizeBytes="1405" >
+					<wap1ListenAddress ipAddress="172.20.2.93" connectionOrientedPort="9201" connectionOrientedPortSecure="9203" connectionlessPort="9200" connectionlessPortSecure="9202" />
+				</wap1Proxy>
+				<webApplication enableWebServices="true" processNameSuffix="1" shutdownPort="8005">
+					  <listenAddress ipAddress="172.20.2.93" port="9998"/>
+					  <listenAddressSecure ipAddress="172.20.2.93" port="9999"/>
+						  <webapps>
+							<webapp>XMPCustomerCare.war</webapp>
+						  </webapps>
+				</webApplication>
+			</processes>
+		</machine>
+	</machines>
+</xmpProductView>

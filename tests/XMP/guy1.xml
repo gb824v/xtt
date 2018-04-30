@@ -1,0 +1,21 @@
+<test>
+<name>XTT.DIAMETER.TC.001</name>
+<qcid>6666</qcid>
+<description>
+Test XTT Diameter
+</description>
+<steps>
+Basic/compareString
+</steps>
+<designer></designer>
+<creationdate></creationdate>
+<testlevel>Regression</testlevel>
+<xfwVersion>XMP_XFW006</xfwVersion>
+<mandatory>false</mandatory>
+<stepname>Basic/compareString</stepname>
+<stepid>1</stepid>
+<function name="compareString" module="Basic">
+<parameter>a55</parameter>
+<parameter>555</parameter>
+</function>
+</test>

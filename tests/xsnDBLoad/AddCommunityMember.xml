@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<dbupdates> 
+
+<!-- XSN.DBLoad.CommMemAdd.TC005.1 Add Subscriber Id to a community -->
+
+<subscribers>
+	<remove subscriber="1234564" />
+	<add subscriber="1234564" > </add> 
+</subscribers>
+<communities>
+	<remove name="NewComSalesCor" />
+	<add name="NewComSalesCor" />
+</communities>
+<communityMembers>
+	<add community="NewComSalesCor"
+	subscriber="1234564" />
+</communityMembers>
+
+
+
+<!-- XSN.DBLoad.CommMemAdd.TC005.2 Add Subscriber with Name to a community	-->
+
+<subscribers>
+	<remove subscriber="1234565" />
+	<add subscriber="1234565" > </add> 
+</subscribers>
+<communityMembers>
+	<add community="NewComSalesCor"
+	name="Sales Executive1"
+	subscriber="1234565" />
+</communityMembers>
+
+
+<!-- XSN.DBLoad.CommMemAdd.TC005.3 Add same Sub Id again.Sub ID should be Unique in one community -->
+
+<subscribers>
+	<remove subscriber="1234566" />
+	<add subscriber="1234566" > </add> 
+</subscribers>
+<communityMembers>
+	<add community="NewComSalesCor"
+	subscriber="1234566" />
+	<add community="NewComSalesCor"
+	subscriber="1234566" />
+</communityMembers>
+
+
+<!-- XSN.DBLoad.CommMemAdd.TC005.4 Add existing Sub Id in Parent community in sub community successfully -->
+
+
+<!-- Already added <communities><add name="NewComSalesCor/Sales" /> </communities> -->
+<subscribers>
+	<remove subscriber="1234566" />
+	<add subscriber="1234566" > </add>
+</subscribers>
+
+<communityMembers>
+	<remove community="NewComSalesCor/Sales" subscriber="1234566" />
+	<remove community="NewComSalesCor" subscriber="1234566" />
+	<add community="NewComSalesCor/Sales" subscriber="1234566" />
+	<add community="NewComSalesCor" subscriber="1234566" />
+</communityMembers>
+
+
+<!-- XSN.DBLoad.CommMemAdd.TC005.6 Give different name to same Sub MSISDN in child and Parent Community	-->
+
+
+<subscribers>
+	<remove subscriber="1234566" />
+	<add subscriber="1234566" > </add>
+</subscribers>
+
+<communities>
+	<remove name="SoapSales" />
+	<remove name="SoapSales/Asia" />
+	<add name="SoapSales" />
+	<add name="SoapSales/Asia" /> 
+</communities>
+<communityMembers>
+	<remove community="SoapSales/Asia" subscriber="1234566" />
+	<remove community="SoapSales/Asia" subscriber="1234566" />
+	<add community="SoapSales"
+	name = "Name_1"  subscriber="1234566" />
+	<add community="SoapSales/Asia"
+	name = "Name_2"  subscriber="1234566" />
+</communityMembers>
+
+
+<!-- XSN.DBLoad.CommMemAdd.TC005.8	Add Subscriber Id to a non existing community	-->
+<subscribers>
+	<add subscriber="1234567" > 
+	</add> 
+</subscribers>
+<communities>
+	<remove name="Not_There" />
+</communities>
+<communityMembers>
+	<add community="Not_There"
+	subscriber="1234567" />
+</communityMembers>
+
+<!-- XSN.DBLoad.CommMemRem.TC005.9	Remove Subscriber Id from non existing community -->
+
+<communityMembers>
+	<remove community="Not_There"
+	subscriber="1234567" />
+</communityMembers>
+
+
+
+<!-- XSN.DBLoad.CommMemRem.TC005.10 Add non existing Subscriber Id to a community -->
+<subscribers>
+	<remove subscriber="NotPresent" />
+</subscribers>
+
+<communityMembers>
+	<remove community="NewComSalesCor1" subscriber="NotPresent" />
+	<add community="NewComSalesCor1"
+	subscriber="NotPresent" />
+</communityMembers>
+
+
+<!-- XSN.DBLoad.CommMemRem.TC005.11 Remove non existing Subscriber Id from a community -->
+<subscribers>
+	<remove subscriber="NotPresent" />
+</subscribers>
+
+<communityMembers>
+	<remove community="Not_There"
+	subscriber="NotPresent" />
+</communityMembers>
+
+
+</dbupdates>
+

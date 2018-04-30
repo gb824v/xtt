@@ -1,0 +1,108 @@
+<test>
+    <name>XTT.TC.008</name>
+    <description>Check the pseudo xpath functionality of XTT</description>
+    
+    <!-- Configs are loaded in FILO order.
+         The config loaded most recently is the one to read first -->
+    <configuration>xttTC008-config-2.xml</configuration>
+    <!-- Any nodes in config overwrites any values conflicting from config-2 -->
+    <configuration>xttTC008-config.xml</configuration>
+
+    <function name="info" module="Basic">
+        <parameter>
+            <parameter>This should be 1:</parameter>
+            <configuration>/FIRSTLEVELNODE</configuration>
+        </parameter>
+    </function>    
+    <function name="queryText" module="Basic">
+    	<configuration>FIRSTLEVELNODE</configuration>
+    	<parameter>dev/null</parameter>
+    	<parameter>1</parameter>
+    </function>
+
+    <function name="info" module="Basic">
+        <parameter>
+            <parameter>This should be 2:</parameter>
+            <configuration>//FIRSTLEVELNODE</configuration>
+        </parameter>
+    </function>
+    <function name="queryText" module="Basic">
+    	<configuration>//FIRSTLEVELNODE</configuration>
+    	<parameter>dev/null</parameter>
+    	<parameter>2</parameter>
+    </function> 
+    
+    <function name="info" module="Basic">
+        <parameter>
+            <parameter>This should be 3:</parameter>
+            <configuration>//AnotherFirstLevelNode</configuration>
+        </parameter>
+    </function>
+    <function name="queryText" module="Basic">
+    	<configuration>//AnotherFirstLevelNode</configuration>
+    	<parameter>dev/null</parameter>
+    	<parameter>3</parameter>
+    </function>    
+    
+    <function name="info" module="Basic">
+        <parameter>
+            <parameter>This should be 5:</parameter>
+            <configuration>/XTTTC008//AMiddleMatchingNode/value</configuration>
+        </parameter>
+    </function>
+    <function name="queryText" module="Basic">
+    	<configuration>/XTTTC008//AMiddleMatchingNode/value</configuration>
+    	<parameter>dev/null</parameter>
+    	<parameter>5</parameter>
+    </function> 
+
+    <function name="info" module="Basic">
+        <parameter>
+            <parameter>This should be 6:</parameter>
+            <configuration>/XTTTC008//AMiddleMatchingNode/sub2/value</configuration>
+        </parameter>
+    </function>
+    <function name="queryText" module="Basic">
+    	<configuration>/XTTTC008//AMiddleMatchingNode/sub2/value</configuration>
+    	<parameter>dev/null</parameter>
+    	<parameter>6</parameter>
+    </function> 
+   
+    <function name="info" module="Basic">
+        <parameter>
+            <parameter>This should be 0:</parameter>
+            <configuration>/XTTTC008-2/somethingInLowerConfig</configuration>
+        </parameter>
+    </function>
+    <function name="queryText" module="Basic">
+    	<configuration>/XTTTC008-2/somethingInLowerConfig</configuration>
+    	<parameter>dev/null</parameter>
+    	<parameter>0</parameter>
+    </function>
+        
+    <function name="info" module="Basic">
+        <parameter>
+            <parameter>This should be TRUE:</parameter>
+            <configuration>/XTTTC008-2/somethingToOverwrite</configuration>
+        </parameter>
+    </function>
+    <function name="queryText" module="Basic">
+    	<configuration>/XTTTC008-2/somethingToOverwrite</configuration>
+    	<parameter>dev/null</parameter>
+    	<parameter>TRUE</parameter>
+    </function>   
+    
+    <!--function name="removeTemporaryConfigurations" module="XTT"/>
+    
+    <function name="queryVariable" module="Basic">
+    	<parameter>FIRSTLEVELNODE</parameter>
+    	<parameter>dev/null</parameter>
+    	<parameter>null</parameter>
+    </function>     
+        
+    <function name="queryVariable" module="Basic">
+    	<parameter>/XTTTC008-2/somethingInLowerConfig</parameter>
+    	<parameter>dev/null</parameter>
+    	<parameter>null</parameter>
+    </function-->            
+</test>

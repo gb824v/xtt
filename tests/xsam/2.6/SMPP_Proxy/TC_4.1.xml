@@ -1,0 +1,76 @@
+<test>
+<configuration>xsam_config.xml</configuration>
+    <function name="testName" module="Basic">
+        <parameter>TC_4.1</parameter>
+    </function>
+
+  <description>Network Failure in between valid session between CP and SMSC established 
+	-----------------------------------------------------------------------
+Step1: Provision incoming,outgoing channels and SMS proxy service for the test shortcode.
+Step2: Simulate a CP using XTT client Simulator.
+Step3: Simulate the SMSC using XTT Tool.
+Step4: CP sends a TCP Connect request to XSAM Listen port(Incoming channel).
+Step5: Once the TCP connection gets established between the CP and XSAM send "bind_transceiver" message from CP. 
+Step6: Once the "bind_transceiver" session gets established disconnect the network by pulling the network cable out of the CP machine.
+	-----------------------------------------------------------------------
+	</description>
+	
+         <function name="startSMSCServer" module="SMS">
+            <configuration>SMSCSERVER/SMPPPORT</configuration>
+            <parameter>SMPP</parameter>
+         </function>  	   
+		
+        <function name="openConnection" module="SMPP">
+            <parameter>connection</parameter>
+            <configuration>XSAM/IP</configuration>
+            <configuration>XSAM/SMPPPORT</configuration>
+        </function>
+
+        <function name="sendSMPPPacket" module="SMPP">
+            <parameter>connection</parameter>
+            <parameter>BIND_TRANSCEIVER</parameter>
+            <parameter>internal</parameter>
+            <parameter>systemid</parameter> <!--system_id, parameter[4]-->
+            <parameter>password</parameter> <!--password, parameter[5]-->
+            <parameter>system_type</parameter> <!--system_type, parameter[6]-->
+            <parameter>0x50</parameter><!--version, parameter[7]-->
+            <parameter>0</parameter><!--addr_ton, parameter[8]-->
+            <parameter>0</parameter><!--addr_npi,parameter[9]-->
+            <configuration>XSAM/SMPPSHORTCODE</configuration>
+            <parameter>0</parameter><!---->
+        </function>
+		
+         <function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/system_id</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/system_id</variable>
+            <parameter>XTT-724-SMSC</parameter>
+        </function>
+        
+		 <function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_status</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_status</variable>
+            <parameter>0x00000000</parameter>
+        </function>
+
+          <function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_id</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_id</variable>
+            <parameter>0x80000009</parameter>
+        </function>
+	
+        <function name="closeConnection" module="SMPP">
+            <parameter>connection</parameter>
+        </function>
+         
+    <function name="stopSMSCServer" module="SMS"/>
+
+</test>

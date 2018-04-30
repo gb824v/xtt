@@ -1,0 +1,160 @@
+<test>  
+ 
+    <name>XTT.DIAMETER.TC.002</name>
+    <description>Test XTT Diameter Client</description>
+    
+    <function name="setVariable" module="Basic">
+        <parameter>SERVERPORT</parameter>
+        <configuration>DIAMETERSERVER/PORT</configuration>
+    </function>
+    
+       <function name="setVariable" module="Basic">
+        <parameter>SERVERIP</parameter>
+        <configuration>SYSTEM/IP</configuration>
+    </function>
+    
+    <function name="startDiameterServer" module="Diameter">
+        <variable>SERVERPORT</variable>
+        <xml>
+            <Diameter>
+                <response>
+                    <ACCOUNTING_REQUEST proxiable="true" error="false" tretr="false" matchAVP="USER_NAME" matchREGEX="user2">
+                        <SESSION_ID         request="SESSION_ID"        mandatory="true"  protected="false" vendorspecific="false" vendorID=""/>
+                        <USER_NAME          request="USER_NAME"         mandatory="true"  protected="false" vendorspecific="false" vendorID=""/>
+                        <RESULT_CODE        value="DIAMETER_SUCCESS"    mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                        <CC_MONEY                                       mandatory="true"  protected="false" vendorspecific="false" vendorID="">
+                            <CC_REQUEST_TYPE    value="EVENT_REQUEST"   mandatory="true"  protected="false" vendorspecific="false" vendorID=""/>
+                            <CC_TIME            request="CC_TIME"       mandatory="false" protected="false" vendorspecific="true"  vendorID="1000"/>
+                        </CC_MONEY>
+                    </ACCOUNTING_REQUEST>
+                    <ACCOUNTING_REQUEST proxiable="true" error="true" tretr="false">
+                        <SESSION_ID         request="SESSION_ID"        mandatory="true"  protected="false" vendorspecific="false" vendorID=""/>
+                        <USER_NAME          request="USER_NAME"         mandatory="true"  protected="false" vendorspecific="false" vendorID=""/>
+                        <TERMINATION_CAUSE  value="DIAMETER_USER_MOVED" mandatory="true"  protected="false" vendorspecific="false" vendorID=""/>
+                        <RESULT_CODE        value="DIAMETER_AUTHORIZATION_REJECTED"    mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                        <ERROR_MESSAGE      value="He's not here, Doh!" mandatory="true"  protected="false" vendorspecific="false" vendorID=""/>
+                        <CC_MONEY                                       mandatory="true"  protected="false" vendorspecific="false" vendorID="">
+                            <CC_REQUEST_TYPE    value="EVENT_REQUEST"   mandatory="true"  protected="false" vendorspecific="false" vendorID=""/>
+                            <CC_TIME            value="200"             mandatory="false" protected="false" vendorspecific="true"  vendorID="1000"/>
+                        </CC_MONEY>
+                    </ACCOUNTING_REQUEST>
+                    <DEVICE_WATCHDOG_REQUEST proxiable="true" error="false" tretr="false">
+                        <RESULT_CODE        value="DIAMETER_SUCCESS"    mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                        <ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                        <ORIGIN_REALM           value="ORIGIN_REALM"        mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                    </DEVICE_WATCHDOG_REQUEST>
+
+                    <CAPABILITIES_EXCHANGE_REQUEST proxiable="true" error="false" tretr="false">
+                        <RESULT_CODE            value="DIAMETER_SUCCESS"    mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                        <ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                        <ORIGIN_REALM           value="ORIGIN_REALM"        mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                        <VENDOR_ID              request="VENDOR_ID" />
+                        <PRODUCT_NAME           request="PRODUCT_NAME" />
+                        <SUPPORTED_VENDOR_ID    request="SUPPORTED_VENDOR_ID" />
+                        <AUTH_APPLICATION_ID    request="AUTH_APPLICATION_ID" />
+                    </CAPABILITIES_EXCHANGE_REQUEST>
+
+                    <CREDIT_CONTROL_REQUEST proxiable="true" error="false" tretr="false">
+                        <SESSION_ID             request="SESSION_ID"/>
+                        <RESULT_CODE            value="DIAMETER_SUCCESS"    mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                        <ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                        <ORIGIN_REALM           request="DESTINATION_REALM" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                        <AUTH_APPLICATION_ID    value="4"                   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                        <CC_REQUEST_TYPE        request="CC_REQUEST_TYPE"   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                        <CC_REQUEST_NUMBER      request="CC_REQUEST_NUMBER" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                        <GRANTED_SERVICE_UNIT                               mandatory="true" protected="false" vendorspecific="false"  vendorID="">
+                            <CC_MONEY                                       mandatory="true" protected="false" vendorspecific="false"  vendorID="">
+                                <UNIT_VALUE                                 mandatory="true" protected="false" vendorspecific="false"  vendorID="">
+                                    <VALUE_DIGITS    value="1000"           mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                                    <EXPONENT        value="-3"             mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                                    <CURRENCY_CODE   value="756"            mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                                </UNIT_VALUE>
+                            </CC_MONEY>
+                            <CC_SERVICE_SPECIFIC_UNITS value="1"            mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                        </GRANTED_SERVICE_UNIT>
+                    </CREDIT_CONTROL_REQUEST>
+                </response>
+            </Diameter>
+        </xml>
+        <!--
+        <configuration>DIAMETERSERVER/Timeout</configuration>
+        -->
+        <parameter>120000</parameter>
+    </function>
+    
+    
+    <!-- create connection at client -->
+    <function name="createConnection" module="Diameter">
+        <parameter>one</parameter>
+        <variable>SERVERIP</variable>
+        <variable>SERVERPORT</variable>
+    </function>
+    
+    <function name="setVariable" module="Basic">
+        <parameter>USER_NAME</parameter>
+        <parameter>user2</parameter>
+    </function>
+
+    <function name="sendDiameterRequest" module="Diameter">
+     	<parameter>one</parameter>
+     	<xml>
+			<ACCOUNTING_REQUEST version="1"	overrideCommandCode="271" applicationID="4" hopbyhopID="456" endtoendID="789" proxiable="true" error="false" tretr="false">
+				<SESSION_ID overrideAVPCode="" value="1234567" mandatory="true" protected="false" vendorspecific="false" vendorID="" />
+				<USER_NAME variable="USER_NAME" mandatory="true" protected="false" vendorspecific="false" vendorID="" />
+				<CC_MONEY mandatory="true" protected="false" vendorspecific="false" vendorID="">
+					<CC_REQUEST_TYPE value="EVENT_REQUEST" mandatory="true"	protected="false" vendorspecific="false" vendorID="" />
+					<CC_TIME  configuration="DIAMETERSERVER/TIMEOUT" mandatory="false" protected="false" vendorspecific="true" vendorID="2000" />
+				</CC_MONEY>
+			</ACCOUNTING_REQUEST>
+		</xml>
+	<parameter>STORERESULT</parameter>
+    </function>
+ 
+<!--
+    DIAMETER/one/HEADER/[headername]
+    DIAMETER/one/AVP/[avpname]
+    DIAMETER/one/AVP/[avpname]/vendorID
+    DIAMETER/one/AVP/[avpname]/avpcode
+    DIAMETER/one/AVP/[avpname]/avpSflags
+    DIAMETER/one/AVP/[avpname]/length   (in case of grouped avps the number of avps in this avp)
+-->
+    <!-- Headers -->
+    <function name="compareString" module="Basic">
+        <variable>DIAMETER/one/HEADER/hopbyhopID</variable >
+     	<parameter>456</parameter>
+    </function>
+     <function name="compareString" module="Basic">
+        <variable>DIAMETER/one/HEADER/applicationID</variable>
+     	<parameter>4</parameter>
+    </function>
+
+ 	<!-- AVPs  -->
+    <function name="compareString" module="Basic">
+        <variable>DIAMETER/one/AVP/CC_MONEY/length</variable>
+     	<parameter>2</parameter>
+   </function>
+    <function name="compareString" module="Basic">
+        <variable>DIAMETER/one/AVP/CC_MONEY/CC_TIME</variable>
+     	<configuration>DIAMETERSERVER/TIMEOUT</configuration>
+   </function>
+    <function name="compareString" module="Basic">
+        <variable>DIAMETER/one/AVP/CC_MONEY/CC_TIME/vendorid</variable>
+     	<parameter>1000</parameter>
+   </function>
+    <function name="compareString" module="Basic">
+        <variable>DIAMETER/one/AVP/USER_NAME</variable>
+     	<variable>USER_NAME</variable>
+   </function>
+   
+    <function name="compareString" module="Basic">
+        <variable>STORERESULT/HEADER/hopbyhopID</variable>
+     	<parameter>456</parameter>
+   </function>
+    
+    <function name="closeConnection" module="Diameter">
+    	<parameter>one</parameter>
+	</function>
+	
+   <function name="stopDiameterServer" module="Diameter"/>
+
+</test>

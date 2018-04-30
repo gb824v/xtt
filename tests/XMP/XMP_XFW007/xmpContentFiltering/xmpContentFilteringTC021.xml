@@ -1,0 +1,41 @@
+<test>
+    <function name="testName" module="Basic">
+        <parameter>XMP.CONTENTFILTERING.TC.022</parameter>
+     </function>
+	
+    <description>Standard Filter: realEstate / standardFilter="block" / minAge=16 / subscriberFilterable=true, User is in DB [No Birth Date attribute], URL is NOT accessible / Redirection Page#1</description>
+        
+    <!-- Radius logon - User is in DB [No Birth Date attribute] -->
+    <function name="radiusLogon" module="Radius">
+	<parameter>0787367503</parameter>
+	<parameter>0787367503</parameter>
+	<configuration>system/Ip</configuration>
+    </function> 
+      
+    <!-- Redirected to /XMPBlocked/ageIsUnknown.html -->   
+    <!-- XMP forwards blocked request to its WebServer -->
+    <function name="disableFollowRedirects" module="HTTP" />
+
+    <!-- http://www.remax.com/ : urlCategories : realEstate (440)  -->
+    <function name="sendGetRequest" module="HTTP">
+	 <parameter>http://www.remax.com/</parameter>
+    </function>
+	
+    <function name="checkResponseCode" module="HTTP">
+	<parameter>302</parameter>
+    </function>
+	
+    <function name="queryHeader" module="HTTP">
+	 <parameter>dev/null</parameter>
+	 <parameter>location</parameter>
+         <parameter>XMPBlocked/ageIsUnknown.html$</parameter>		
+    </function>		
+    
+    
+    <!-- Radius logoff - User is in DB [No Birth Date attribute] -->
+    <function name="radiusLogoff" module="Radius">
+	<parameter>0787367503</parameter>
+	<parameter>0787367503</parameter>
+	<configuration>system/Ip</configuration>
+    </function> 
+</test>

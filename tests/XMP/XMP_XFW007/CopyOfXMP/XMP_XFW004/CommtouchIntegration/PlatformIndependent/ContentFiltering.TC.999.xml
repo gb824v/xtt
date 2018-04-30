@@ -1,0 +1,76 @@
+<test>
+    <function name="testName" module="Basic">
+        <parameter>CONTENTFILTERING.TC.999</parameter>
+     </function>
+     <description>Undo ContentFiltering.TC.000, set empty categories file</description>
+	
+	<!-- Load empty Categories File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>CategoriesFileForCtengine_ContentFiltering.TC.xml</parameter>
+		<xml>
+			<xmpCategories>				
+			</xmpCategories>
+		</xml>
+	</function>
+	
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>CategoriesFileForCtengine_ContentFiltering.TC.xml</parameter>
+		</parameter>
+	</function>	
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded xmpcategories.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>	
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+            <parameter>delete file /url/WhiteList.txt</parameter>
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        <parameter>^Deleted file '/url/WhiteList.txt'</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+            <parameter>delete file /url/BlackList.txt</parameter>
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        <parameter>^Deleted file '/url/BlackList.txt'</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+            <parameter>delete file /url/Dating.txt</parameter>
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        <parameter>^Deleted file '/url/Dating.txt'</parameter>
+        <parameter>dev/null</parameter>
+    </function>	 
+
+    <!-- load the dbUpdatesFile -->
+    <function name="writeRemoteFile" module="Remote">
+        <parameter>DatabaseUpdatesFile-ContentFiltering_remove.xml</parameter>
+        <file>DatabaseUpdatesFile-ContentFiltering_remove.xml</file>
+    </function>
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+            <parameter>load db DatabaseUpdatesFile-ContentFiltering_remove.xml</parameter>
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        <parameter>SUCCESS: XML upload completed</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+
+
+    <!-- just check if all the processes are running -->
+    <function name="checkAllProcessesStatus" module="Remote">
+        <parameter>Running</parameter>
+    </function>
+
+</test>

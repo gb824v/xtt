@@ -1,0 +1,211 @@
+<test>  
+ 
+    <name>PCRF_ReqId-1001-B.TC.001.xml</name>
+    <description>Set QoS/Control Bandwidth per Protocol Class Type Using External DPI Server and Subscriber Profile (ReqId-1001-B)(PCRF receive AAR over Rx containing media type info, Gx session exissts,  sends AAA back including necessary information, select the rule; RAR/RAA with PCEF)</description>
+    
+    <!-- create connection at client Gx -->
+    <function name="createConnection" module="Diameter">
+        <parameter>one</parameter>
+        <configuration>DIAMETERCLIENT/IP</configuration>
+        <configuration>DIAMETERCLIENT/PORT</configuration>
+    </function>
+    
+       <function name="setVariable" module="Basic">
+        <parameter>connection</parameter>
+        <parameter>one</parameter>
+    </function>    
+    
+<!-- Exchange of CER/CEA Gx-->    
+    <function name="sendDiameterRequest" module="Diameter">
+     	<parameter>one</parameter>
+     	<xml>
+			<CAPABILITIES_EXCHANGE_REQUEST version="1"	overrideCommandCode="257" applicationID="4" hopbyhopID="456" endtoendID="789" proxiable="true" error="false" tretr="false">
+				<SESSION_ID overrideAVPCode="" value="1234567" mandatory="true" protected="false" vendorspecific="false" vendorID="" />
+				<VENDOR_ID  value="10415" mandatory="true" protected="false" vendorspecific="false" vendorID="" />
+				<ORIGIN_REALM           value="ORIGIN_REALM"        mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<PRODUCT_NAME           value="PRODUCT_NAME" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<SUPPORTED_VENDOR_ID    value="10415" mandatory="true" protected="false" vendorspecific="false"  vendorID="" />
+				<AUTH_APPLICATION_ID    value="16777238" mandatory="true" protected="false" vendorspecific="false"  vendorID="" />				
+			</CAPABILITIES_EXCHANGE_REQUEST>
+			
+			
+		</xml>
+	<parameter>STORERESULT</parameter>
+    </function>
+ 
+
+    
+    <!-- Headers validation of CEA commandcode 257, commandflags 64 -->
+    <function name="compareString" module="Basic">
+        <variable>DIAMETER/one/HEADER/commandcode</variable >
+     	<parameter>257</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>DIAMETER/one/HEADER/commandflags</variable >
+     	<parameter>64</parameter>
+    </function>
+
+
+    <function name="sleep" module="Basic">
+     	<parameter>1000</parameter>
+    </function>
+    
+    
+    
+    
+    <!-- create connection at client Rx -->
+    <function name="createConnection" module="Diameter">
+        <parameter>two</parameter>
+        <configuration>DIAMETERCLIENT/IP</configuration>
+        <configuration>DIAMETERCLIENT/PORT</configuration>
+    </function>   
+
+       <function name="setVariable" module="Basic">
+        <parameter>connection</parameter>
+        <parameter>two</parameter>
+    </function>
+
+    
+<!-- Exchange of CER/CEA Rx-->    
+    <function name="sendDiameterRequest" module="Diameter">
+     	<parameter>two</parameter>
+     	<xml>
+			<CAPABILITIES_EXCHANGE_REQUEST version="1"	overrideCommandCode="257" applicationID="4" hopbyhopID="456" endtoendID="789" proxiable="true" error="false" tretr="false">
+				<SESSION_ID overrideAVPCode="" value="1234567" mandatory="true" protected="false" vendorspecific="false" vendorID="" />
+				<VENDOR_ID  value="10415" mandatory="true" protected="false" vendorspecific="false" vendorID="" />
+				<ORIGIN_REALM           value="ORIGIN_REALM"        mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<PRODUCT_NAME           value="PRODUCT_NAME" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<SUPPORTED_VENDOR_ID    value="10415" mandatory="true" protected="false" vendorspecific="false"  vendorID="" />
+				<AUTH_APPLICATION_ID    value="16777238" mandatory="true" protected="false" vendorspecific="false"  vendorID="" />				
+			</CAPABILITIES_EXCHANGE_REQUEST>
+			
+			
+		</xml>
+	<parameter>STORERESULT</parameter>
+    </function>
+ 
+
+    
+    <!-- Headers validation of CEA commandcode 257, commandflags 64 -->
+    <function name="compareString" module="Basic">
+        <variable>DIAMETER/two/HEADER/commandcode</variable >
+     	<parameter>257</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>DIAMETER/two/HEADER/commandflags</variable >
+     	<parameter>64</parameter>
+    </function>
+
+
+    <function name="sleep" module="Basic">
+     	<parameter>1000</parameter>
+    </function>    
+    
+   
+    
+
+
+<!-- Exchange of CCR/CCA Gx -->
+
+    <function name="sendDiameterRequest" module="Diameter">
+     	<parameter>one</parameter>
+     	<xml>
+		
+                    <CREDIT_CONTROL_REQUEST version="1"	overrideCommandCode="272" applicationID="4" hopbyhopID="456" endtoendID="789" proxiable="true" error="false" tretr="false">
+                        <SESSION_ID             value="SESSION_ID"/>
+                        <ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                        <ORIGIN_REALM           value="ORIGIN_REALM" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                        <DESTINATION_REALM      value="DESTINATION_REALM" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>                        
+                        <AUTH_APPLICATION_ID    value="16777238" mandatory="true" protected="false" vendorspecific="false"  vendorID="" />	                    
+                        <CC_REQUEST_TYPE        value="INITIAL_REQUEST"   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                        <CC_REQUEST_NUMBER      value="0" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                        <IP_CAN_TYPE            value="00" overrideavpcode="1027" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                        <RAT_TYPE               value="00" overrideavpcode="1032" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                        <FRAMED_IP_ADDRESS      value="3139322e3136382e302e31" overrideavpcode="8" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>                   
+                        <Subscription_Id        value="7874747573657231" overrideavpcode="443" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>                 
+                    </CREDIT_CONTROL_REQUEST>
+                    
+		</xml>
+	<parameter>STORERESULT</parameter>
+    </function>
+ 
+ 
+     
+    <!-- Headers validation of CCA commandcode 272, commandflags 64 -->
+    <function name="compareString" module="Basic">
+        <variable>DIAMETER/one/HEADER/commandcode</variable >
+     	<parameter>272</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>DIAMETER/one/HEADER/commandflags</variable >
+     	<parameter>64</parameter>
+    </function>
+    
+    
+    
+<!-- Exchange of CCR/CCA Rx -->
+
+    <function name="sendDiameterRequest" module="Diameter">
+     	<parameter>two</parameter>
+     	<xml>
+		
+                    <CREDIT_CONTROL_REQUEST version="1"	overrideCommandCode="265" applicationID="4" hopbyhopID="456" endtoendID="789" proxiable="true" error="false" tretr="false">
+                        <SESSION_ID             value="SESSION_ID"/>
+                        <ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                        <ORIGIN_REALM           value="ORIGIN_REALM" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                        <DESTINATION_REALM      value="DESTINATION_REALM" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>                        
+                        <AUTH_APPLICATION_ID    value="16777238" mandatory="true" protected="false" vendorspecific="false"  vendorID="" />	                    
+                        <SUBSCRIPTION_ID        value="7874747573657231" overrideavpcode="443" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>                 
+                        
+                        
+                        <Media-Component-Description         overrideavpcode="517"  mandatory="true" protected="false" vendorspecific="false"  vendorID="33475050">
+                        	<Media-Component-Number      value="0" overrideavpcode="518" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                        	<Media-Sub-Component             overrideavpcode="519" mandatory="true" protected="false" vendorspecific="false"  vendorID="">
+                        		<Flow-Number               value="1" overrideavpcode="509" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                        		<Flow-Description               value="permit in ip from 192.168.0.1 to any" overrideavpcode="507" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                        		<Max-Requested-Bandwidth-UL               value="30" overrideavpcode="516" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                        		<Max-Requested-Bandwidth-DL               value="30" overrideavpcode="515" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                        	</Media-Sub-Component>
+                        	<Media-Type               value="VIDEO" overrideavpcode="520" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                        	<Max-Requested-Bandwidth-UL               value="330" overrideavpcode="516" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                        	<Max-Requested-Bandwidth-DL               value="30" overrideavpcode="515" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                        </Media-Component-Description>
+                    </CREDIT_CONTROL_REQUEST>
+                  
+
+
+		</xml>
+	<parameter>STORERESULT</parameter>
+    </function>    
+    
+    
+     <!-- Headers validation of AAR commandcode 256, commandflags 64 -->
+    <function name="compareString" module="Basic">
+        <variable>DIAMETER/two/HEADER/commandcode</variable >
+     	<parameter>265</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>DIAMETER/two/HEADER/commandflags</variable >
+     	<parameter>64</parameter>
+    </function>
+       
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <function name="closeConnection" module="Diameter">
+    	<parameter>one</parameter>
+	</function>
+    <function name="closeConnection" module="Diameter">
+    	<parameter>two</parameter>
+	</function>	
+	
+
+</test>

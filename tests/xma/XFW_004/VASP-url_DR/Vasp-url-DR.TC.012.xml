@@ -1,0 +1,204 @@
+<test>
+
+	<name>Vasp-url-DR.TC.012</name>
+
+	<description>Multiple recipients- MM7 - MM1 : Send messages to 10 TI recipients, XMA should select MM1 delivery.</description>
+
+	<configuration>../xmaConfig.xml</configuration>
+
+	<!-- Load MSISDN -->
+	<subtest name="loadVariables" file="loadVariables.xml">
+		<parameter>MSISDN</parameter>
+	</subtest>
+
+	<!-- Delete Message Store -->
+	<subtest>../deleteMessagestoreAll.xml</subtest>
+
+	<!-- Start SMSC Server and wait until it binds to XMA -->
+	<function name="startSMSCServer" module="SMS"/>
+
+	<!-- Start web server on VASP port -->
+	<function name="startWebServer" module="HTTP">
+		<configuration>VASP/PORT</configuration>
+		<configuration>WEBSERVER/ROOT</configuration>
+		<configuration>WEBSERVER/TIMEOUT</configuration>
+	</function>
+
+	<function name="setServerReturnCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<function name="setServerReturnMessage" module="HTTP">
+		<parameter> OK</parameter>
+	</function>
+
+	<function name="waitForBind" module="SMS"/>
+	<!-- Originator VASP server sends MM7_submit.REQ to XMA. In MM7_submit.REQ please set the following attributes: DeliveryReport=Yes, ReadReply=false -->
+	<function name="createMM7Soap" module="VASP">
+		<parameter>SubmitReq</parameter>
+		<configuration>VASP/VASPID</configuration>
+		<configuration>VASP/VASID</configuration>
+	</function>
+
+	<function name="setMessageBoundary" module="VASP">
+		<parameter>000001message</parameter>
+	</function>
+
+	<function name="setSoapData" module="VASP">
+		<parameter>//*[local-name()='SubmitReq']</parameter>
+		<parameter>Recipients</parameter>
+	</function>
+
+	<loop name="loop" start="0" stop="10" step="1">
+		<function name="addSoapData" module="VASP">
+			<parameter>//*[local-name()='Recipients']</parameter>
+			<parameter>To</parameter>
+		</function>
+		<function name="setSoapData" module="VASP">
+			<parameter>//*[local-name()='To'][last()]</parameter>
+			<parameter>Number</parameter>
+			<variable>
+				<parameter>MSISDN/</parameter>
+				<variable>loop</variable>
+			</variable>
+		</function>
+	</loop>
+
+	<function name="setSoapData" module="VASP">
+		<parameter>//*[local-name()='SubmitReq']</parameter>
+		<parameter>DeliveryReport</parameter>
+		<parameter>true</parameter>
+	</function>
+
+	<function name="setSoapData" module="VASP">
+		<parameter>//*[local-name()='SubmitReq']</parameter>
+		<parameter>ReadReply</parameter>
+		<parameter>false</parameter>
+	</function>
+
+	<function name="setSoapData" module="VASP">
+		<parameter>//*[local-name()='SubmitReq']</parameter>
+		<parameter>Content</parameter>
+	</function>
+
+	<function name="setSoapAttribute" module="VASP">
+		<parameter>//*[local-name()='Content']</parameter>
+		<parameter>href</parameter>
+		<parameter>cid:xtt-test001</parameter>
+	</function>
+
+	<!-- Set x-vasp-url for DR -->
+	<function name="setHeader" module="VASP">
+		<parameter>x-vasp-url</parameter>
+		<parameter>
+		<parameter>http://</parameter>
+		<configuration>system/ip</configuration>
+		<parameter>:</parameter>
+		<configuration>vasp/port</configuration>
+		<parameter>/</parameter>
+		<configuration>vasp/Directory</configuration>
+		</parameter>
+	</function>
+
+	<function name="addContent" module="VASP">
+		<file>sendMM7data.txt</file>
+	</function>
+
+	<!-- Send Post request -->
+	<function name="sendPostRequest" module="VASP"/>
+
+	<function name="checkResponseCode" module="VASP">
+		<parameter>200</parameter>
+	</function>
+	<function name="queryBody" module="VASP">
+		<parameter>temp</parameter>
+		<parameter>&lt;StatusCode&gt;1000&lt;/StatusCode&gt;</parameter>
+	</function>
+
+	<!-- XMA sends M-Notification.ind to the Target MMS Client -->   
+	<function name="waitForWSPMessages" module="SMS">
+		<parameter>10</parameter>
+	</function>
+
+	<!-- For each of the 10 total recipients following steps should be examined / Sucess Retrieval-->
+	<loop name="loop" start="0" stop="10" step="1">
+	<function name="setVariable" module="BASIC">
+		<parameter>x_mms_content_location</parameter>
+		<parameter>
+			<parameter>SMSC/</parameter>
+			<configuration>SMSCSERVER/PROTOCOL</configuration>
+			<parameter>/</parameter>
+			<variable>
+			<parameter>MSISDN/</parameter>
+			<variable>loop</variable>
+			</variable>
+			<parameter>/MMS/x_mms_content_location</parameter>
+		</parameter>
+	</function>
+
+	<function name="setVariable" module="BASIC">
+		<parameter>x_mms_transaction_id</parameter>
+		<parameter>
+			<parameter>SMSC/</parameter>
+			<configuration>SMSCSERVER/PROTOCOL</configuration>
+			<parameter>/</parameter>
+			<variable>
+			<parameter>MSISDN/</parameter>
+			<variable>loop</variable>
+			</variable>
+			<parameter>/MMS/x_mms_transaction_id</parameter>
+		</parameter>
+	</function>
+	
+	<!-- Target MMS Client sends M-NotifyResp.ind to XMA -->
+	<function name="sendMM1NotifyResponse" module="SMS">
+		<parameter>retrieved</parameter>
+		<variablepointer>x_mms_transaction_id</variablepointer>
+		<variable>
+			<parameter>MSISDN/</parameter>
+			<variable>loop</variable>
+			</variable>
+	</function>
+	<function name="checkResponseCode" module="SMS">
+		<parameter>200</parameter>
+		<parameter>204</parameter>
+	</function>
+	
+	<!-- Target MMS Client sends WSP/HTTP GET to XMA -->
+	<function name="sendGetRequest" module="SMS">
+		<variable>
+			<parameter>MSISDN/</parameter>
+			<variable>loop</variable>
+			</variable>
+		<variablepointer>x_mms_content_location</variablepointer>
+	</function>
+
+	<function name="checkResponseCode" module="SMS">
+		<parameter>200</parameter>
+	</function>
+
+	<function name="setVariable" module="BASIC">
+		<parameter>log/messageid</parameter>
+		<variable>
+			<parameter>SMS/</parameter>
+			<variable>
+			<parameter>MSISDN/</parameter>
+			<variable>loop</variable>
+			</variable>
+			<parameter>/MMS/message_id</parameter>
+		</variable>
+	</function>
+
+	<!-- Wait for Delivery Report -->
+	<function name="waitForPOSTs" module="HTTP">
+		<parameter>1</parameter>
+	</function>
+	</loop>
+
+	<!-- Stop Web Server -->
+	<function name="stopWebServer" module="HTTP"/>
+
+	<!-- Stop SMSC Server -->
+	<function name="stopSMSCServer" module="SMS"/>
+
+</test>

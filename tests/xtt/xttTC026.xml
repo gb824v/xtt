@@ -1,0 +1,221 @@
+<test>  
+    <name>XTT.TC.IMAP.026</name>
+    <description>Sending various commnad to IMAP Server</description>
+ <function name="startIMAPServer" module="IMAP">
+	<parameter>3333</parameter>
+	<parameter>2222</parameter>
+	<configuration>SYSTEM/IP</configuration>
+	<parameter>30000</parameter>
+</function> 
+
+
+<function name="connectMailServer" module="IMAP">
+	<configuration>SYSTEM/IP</configuration>
+    <parameter>2222</parameter>
+    <parameter>3333</parameter>
+	<parameter>30000</parameter>
+</function>
+
+<!-- <function name="sendCAPABILITY" module="IMAP"/>
+
+<function name="sendAUTHENTICATE" module="IMAP">
+<parameter>PLAIN</parameter>
+</function> -->
+
+<!-- function name="sendSTARTTLS" module="IMAP"/ -->
+<!-- Its not a IMAP Command just to create the user at server -->
+<function name="sendCREATEUSER" module="IMAP">
+	<parameter>anil.wadhai@xoriant.com</parameter>
+	<parameter>anil.wadhai@xoriant.com</parameter>
+</function>
+
+<function name="sendLOGIN" module="IMAP">
+	<parameter>anil.wadhai@xoriant.com</parameter>
+	<parameter>anil.wadhai@xoriant.com</parameter>
+</function>
+
+<function name="sendTextEmail" module="IMAP">
+	<parameter>anil.wadhai@xoriant.com</parameter>
+    <parameter>anil.wadhai@xoriant.com</parameter>
+	<parameter>s-u-b-j-e-c-t</parameter>
+	<parameter>This is the text Body sending by Anil</parameter>
+</function>
+
+<function name="sendSETQUOTA" module="IMAP">
+	<parameter>INBOX</parameter>
+	<parameter>999999</parameter>
+</function>
+
+
+<function name="sendLIST" module="IMAP">
+<parameter></parameter>
+<parameter>INBOX</parameter>
+</function>
+<function name="sendLIST" module="IMAP">
+<parameter></parameter>
+<parameter>INBOX.%</parameter>
+</function>
+
+<function name="sendLIST" module="IMAP">
+<parameter></parameter>
+<parameter></parameter>
+</function>
+
+<function name="sendLSUB" module="IMAP">
+<parameter></parameter>
+<parameter>INBOX</parameter>
+</function>
+
+<function name="sendLSUB" module="IMAP">
+<parameter></parameter>
+<parameter>INBOX.%</parameter>
+</function>
+
+<function name="sendLSUB" module="IMAP">
+<parameter></parameter>
+<parameter></parameter>
+</function>
+
+
+<function name="sendEXAMINE" module="IMAP">
+<parameter>INBOX</parameter>
+</function>
+
+<function name="sendCREATE" module="IMAP">
+<parameter>ANILINBOX</parameter>
+</function>
+
+<function name="sendLIST" module="IMAP">
+<parameter></parameter>
+<parameter>*</parameter>
+</function>
+
+<function name="sendRENAME" module="IMAP">
+<parameter>ANILINBOX</parameter>
+<parameter>NEWANILINBOX</parameter>
+</function>
+
+<function name="sendSETQUOTA" module="IMAP">
+<parameter>NEWANILINBOX</parameter>
+<parameter>999999</parameter>
+</function>
+
+<function name="sendLIST" module="IMAP">
+<parameter></parameter>
+<parameter>*</parameter>
+</function>
+
+<function name="sendSEARCH" module="IMAP">
+<parameter>TEXT Anil</parameter>
+</function>
+
+
+<function name="sendDELETE" module="IMAP">
+<parameter>NEWANILINBOX</parameter>
+</function>
+
+<function name="sendLIST" module="IMAP">
+<parameter></parameter>
+<parameter>*</parameter>
+</function>
+
+
+<function name="sendSUBSCRIBE" module="IMAP">
+<parameter>INBOX</parameter>
+</function>
+
+<function name="sendSUBSCRIBE" module="IMAP">
+<parameter>INBOX</parameter>
+</function>
+
+<function name="sendFETCH" module="IMAP">
+<parameter>1</parameter>
+<parameter>(FLAGS BODY[HEADER.FIELDS (DATE FROM)])</parameter>
+</function>
+
+<function name="sendSTORE" module="IMAP">
+<parameter>2:4</parameter>
+<parameter>FLAGS</parameter>
+<parameter>(\deleted \seen)</parameter>
+</function>
+
+<function name="sendFETCH" module="IMAP">
+<parameter>1:5</parameter>
+<parameter>(BODY[TEXT]&lt;0.25&gt;)</parameter>
+</function>
+
+<function name="sendCREATE" module="IMAP">
+<parameter>MEETING</parameter>
+</function>
+
+<function name="sendSETQUOTA" module="IMAP">
+<parameter>MEETING</parameter>
+<parameter>999999</parameter>
+</function>
+
+<function name="sendCOPY" module="IMAP">
+<parameter>1:2</parameter>
+<parameter>MEETING</parameter>
+</function>
+
+<function name="sendSETQUOTA" module="IMAP">
+<parameter>MEETING</parameter>
+<parameter>9999999</parameter>
+</function>
+
+<function name="sendEXAMINE" module="IMAP">
+<parameter>MEETING</parameter>
+</function>
+
+<function name="sendCOPY" module="IMAP">
+<parameter>1:5</parameter>
+<parameter>MEETING</parameter>
+</function>
+
+<function name="sendEXAMINE" module="IMAP">
+<parameter>INBOX</parameter>
+</function>
+
+<function name="sendUID" module="IMAP">
+<parameter>STORE</parameter>
+<parameter>3:4 FLAGS (\deleted \seen)</parameter>
+</function>
+
+<function name="sendUID" module="IMAP">
+<parameter>COPY</parameter>
+<parameter>4:5 MEETING</parameter>
+</function>
+
+
+<function name="sendGETQUOTA" module="IMAP">
+<parameter>MEETING</parameter>
+</function>
+
+<function name="sendSELECT" module="IMAP">
+<parameter>MEETING</parameter>
+</function>
+
+
+
+<function name="sendGETQUOTAROOT" module="IMAP">
+<parameter>MEETING</parameter>
+</function>
+
+
+<function name="sendNOOP" module="IMAP"/>
+
+<function name="sendSTATUS" module="IMAP">
+<parameter>INBOX</parameter>
+<parameter>(UNSEEN MESSAGES RECENT)</parameter>
+</function>
+
+<function name="sendCHECK" module="IMAP"/>
+
+<function name="sendCLOSE" module="IMAP"/>
+
+<function name="sendEXPUNGE" module="IMAP"/>
+
+<function name="sendLOGOUT" module="IMAP"/>
+
+<function name="stopIMAPServer" module="IMAP"/>
+</test> 

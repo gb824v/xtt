@@ -1,0 +1,81 @@
+<test>
+    <function name="testName" module="Basic">
+        <parameter>XMP.CONTENTFILTERING.TC.051</parameter>
+     </function>
+	
+    <description>Hierarchies of Community Filters - Block Category Porn : internetFilters block : www.nzz.ch; exception : www.playboy.com / standardFilter="allow" / minAge=20 / subscriberFilterable=true, User is in DB [age=12], URL is NOT accessible / Redirection Page#4</description>
+        
+    <!-- Radius logon - User is in DB, community blockPorn  [age=12] -->
+    <function name="radiusLogon" module="Radius">
+	<parameter>0787367701</parameter>
+	<parameter>0787367701</parameter>
+	<configuration>system/Ip</configuration>
+    </function> 
+      
+    <!-- XMP forwards blocked request to its WebServer -->
+    <function name="disableFollowRedirects" module="HTTP" />
+    
+    <!-- http://www.nzz.ch/ : community- internetFilters- block urlPattern=www.nzz.ch -->
+    <function name="sendGetRequest" module="HTTP">
+	 <parameter>http://www.nzz.ch/</parameter>
+    </function>
+	
+    <function name="checkResponseCode" module="HTTP">
+	<parameter>302</parameter>
+    </function>
+    
+    <function name="queryHeader" module="HTTP">
+    	 <parameter>dev/null</parameter>
+    	 <parameter>location</parameter>
+         <parameter>XMPBlocked/byCommunityFilters.html$</parameter>		
+    </function>		
+
+
+
+    <!-- XMP forwards blocked request to its WebServer -->
+    <function name="disableFollowRedirects" module="HTTP" />
+
+    <!-- http://www.playboy.com/ : community - internetFilters - exception urlPattern="www.playboy.com -->
+    <function name="sendGetRequest" module="HTTP">
+	 <parameter>http://www.playboy.com/</parameter>
+    </function>
+	
+    <function name="checkResponseCode" module="HTTP">
+	<parameter>302</parameter>
+    </function>
+    
+    <function name="queryHeader" module="HTTP">
+    	 <parameter>dev/null</parameter>
+    	 <parameter>location</parameter>
+         <parameter>XMPBlocked/bySystemFilters.html$</parameter>		
+    </function>		
+
+
+
+    <!-- XMP forwards blocked request to its WebServer -->
+    <function name="disableFollowRedirects" module="HTTP" />
+
+    <!-- http://www.penthouse.com/ : urlCategories : Porn (450) -->
+    <function name="sendGetRequest" module="HTTP">
+	 <parameter>http://www.penthouse.com/</parameter>
+    </function>
+	
+    <function name="checkResponseCode" module="HTTP">
+	<parameter>302</parameter>
+    </function>
+    
+    <function name="queryHeader" module="HTTP">
+    	 <parameter>dev/null</parameter>
+    	 <parameter>location</parameter>
+         <parameter>XMPBlocked/always.html$</parameter>		
+    </function>		
+
+
+	    
+    <!-- Radius logoff - User is in DB, community blockPorn  [age=12] -->
+    <function name="radiusLogoff" module="Radius">
+	<parameter>0787367701</parameter>
+	<parameter>0787367701</parameter>
+	<configuration>system/Ip</configuration>
+    </function> 
+</test>

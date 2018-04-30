@@ -1,0 +1,777 @@
+<test>
+    <name>MBSPPB.SuccessScenarios.MT.TC.009</name>
+    <configuration>../configXSAM.xml</configuration>
+
+    <description>[TPI->MM7] Successful DIRECT-DEBIT invocation towards ISCP / CCRe &amp; CCAe DIAMETER packages should be consistent with MBS PPB via DIAMETER Protocol Document</description>
+
+    <function name="setVariable" module="Basic">
+        <parameter>AMOUNT</parameter>
+        <parameter>2.345</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+        <parameter>MSISDN</parameter>
+        <parameter>41790000005</parameter>
+    </function> 
+    <!-- 
+    From SIS for MSISDN=41790000005
+        TAC=490518
+        SNR=333333
+        SVN=4.3
+        IMEISV=4905180033333343
+    -->    
+    <function name="setVariable" module="Basic">
+        <parameter>IMEISV</parameter>
+        <parameter>4905180033333343</parameter>
+    </function> 
+    <function name="setVariable" module="Basic">
+        <parameter>INTERROGATIONLEVEL</parameter>
+        <parameter>9</parameter>
+    </function>
+
+    <subtest>sendMMS.xml</subtest>
+
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/LENGTH</parameter>
+        </variable>
+        <parameter>15</parameter>
+    </function>
+
+    <function name="queryText" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/SESSION_ID</parameter>
+        </variable>
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>.*_</parameter>
+            <variable>MSISDN</variable>
+        </parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/SESSION_ID/VENDORID</parameter>
+        </variable>
+        <parameter>0</parameter>
+    </function>
+
+    <function name="queryText" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/ORIGIN_HOST</parameter>
+        </variable>
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>.*</parameter>
+        </parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/ORIGIN_HOST/VENDORID</parameter>
+        </variable>
+        <parameter>0</parameter>
+    </function>
+
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/ORIGIN_REALM</parameter>
+        </variable>
+        <parameter>
+            <parameter>MBS-VASOL</parameter>
+        </parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/ORIGIN_REALM/VENDORID</parameter>
+        </variable>
+        <parameter>
+            <parameter>0</parameter>
+        </parameter>
+    </function>
+
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/DESTINATION_REALM</parameter>
+        </variable>
+        <parameter>
+            <parameter>ISCP-VASOL</parameter>
+        </parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/DESTINATION_REALM/VENDORID</parameter>
+        </variable>
+        <parameter>
+            <parameter>0</parameter>
+        </parameter>
+    </function>
+
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/AUTH_APPLICATION_ID</parameter>
+        </variable>
+        <parameter>
+            <parameter>4</parameter>
+        </parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/AUTH_APPLICATION_ID/VENDORID</parameter>
+        </variable>
+        <parameter>
+            <parameter>0</parameter>
+        </parameter>
+    </function>
+
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/SERVICE_CONTEXT_ID</parameter>
+        </variable>
+        <parameter>
+            <parameter>version1.12645.000.000.6.32270@3gpp.org</parameter>
+        </parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/SERVICE_CONTEXT_ID/VENDORID</parameter>
+        </variable>
+        <parameter>
+            <parameter>0</parameter>
+        </parameter>
+    </function>
+
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/CC_REQUEST_TYPE</parameter>
+        </variable>
+        <parameter>
+            <parameter>EVENT_REQUEST</parameter>
+        </parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/CC_REQUEST_TYPE/VENDORID</parameter>
+        </variable>
+        <parameter>
+            <parameter>0</parameter>
+        </parameter>
+    </function>
+
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/CC_REQUEST_NUMBER</parameter>
+        </variable>
+        <parameter>
+            <parameter>0</parameter>
+        </parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/CC_REQUEST_NUMBER/VENDORID</parameter>
+        </variable>
+        <parameter>
+            <parameter>0</parameter>
+        </parameter>
+    </function>
+
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/USER_NAME</parameter>
+        </variable>
+        <parameter>
+            <parameter>XTT MMS Submit charge</parameter>
+        </parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/USER_NAME/VENDORID</parameter>
+        </variable>
+        <parameter>
+            <parameter>0</parameter>
+        </parameter>
+    </function>
+
+    <function name="queryText" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/EVENT_TIMESTAMP</parameter>
+        </variable>
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>^34\d\d\d\d\d\d\d\d$</parameter>
+        </parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/EVENT_TIMESTAMP/VENDORID</parameter>
+        </variable>
+        <parameter>0</parameter>
+    </function>
+
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/SUBSCRIPTION_ID/LENGTH</parameter>
+        </variable>
+        <parameter>
+            <parameter>2</parameter>
+        </parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/SUBSCRIPTION_ID/VENDORID</parameter>
+        </variable>
+        <parameter>
+            <parameter>0</parameter>
+        </parameter>
+    </function>
+
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/SUBSCRIPTION_ID/SUBSCRIPTION_ID_TYPE</parameter>
+        </variable>
+        <parameter>
+            <parameter>END_USER_E164</parameter>
+        </parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/SUBSCRIPTION_ID/SUBSCRIPTION_ID_TYPE/VENDORID</parameter>
+        </variable>
+        <parameter>
+            <parameter>0</parameter>
+        </parameter>
+    </function>
+
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/SUBSCRIPTION_ID/SUBSCRIPTION_ID_DATA</parameter>
+        </variable>
+        <parameter>
+            <variable>MSISDN</variable>
+        </parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/SUBSCRIPTION_ID/SUBSCRIPTION_ID_DATA/VENDORID</parameter>
+        </variable>
+        <parameter>0</parameter>
+    </function>
+    
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/REQUESTED_SERVICE_UNIT/LENGTH</parameter>
+        </variable>
+        <parameter>
+            <parameter>2</parameter>
+        </parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/REQUESTED_SERVICE_UNIT/VENDORID</parameter>
+        </variable>
+        <parameter>
+            <parameter>0</parameter>
+        </parameter>
+    </function>
+
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/REQUESTED_SERVICE_UNIT/CC_MONEY/LENGTH</parameter>
+        </variable>
+        <parameter>
+            <parameter>2</parameter>
+        </parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/REQUESTED_SERVICE_UNIT/CC_MONEY/VENDORID</parameter>
+        </variable>
+        <parameter>
+            <parameter>0</parameter>
+        </parameter>
+    </function>
+
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/REQUESTED_SERVICE_UNIT/CC_MONEY/UNIT_VALUE/LENGTH</parameter>
+        </variable>
+        <parameter>
+            <parameter>2</parameter>
+        </parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/REQUESTED_SERVICE_UNIT/CC_MONEY/UNIT_VALUE/VENDORID</parameter>
+        </variable>
+        <parameter>
+            <parameter>0</parameter>
+        </parameter>
+    </function>
+
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/REQUESTED_SERVICE_UNIT/CC_MONEY/UNIT_VALUE/VALUE_DIGITS</parameter>
+        </variable>
+        <parameter>2345</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/REQUESTED_SERVICE_UNIT/CC_MONEY/UNIT_VALUE/VALUE_DIGITS/VENDORID</parameter>
+        </variable>
+        <parameter>0</parameter>
+    </function>
+
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/REQUESTED_SERVICE_UNIT/CC_MONEY/UNIT_VALUE/EXPONENT</parameter>
+        </variable>
+        <parameter>-3</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/REQUESTED_SERVICE_UNIT/CC_MONEY/UNIT_VALUE/EXPONENT/VENDORID</parameter>
+        </variable>
+        <parameter>0</parameter>
+    </function>
+
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/REQUESTED_SERVICE_UNIT/CC_MONEY/CURRENCY_CODE</parameter>
+        </variable>
+        <parameter>756</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/REQUESTED_SERVICE_UNIT/CC_MONEY/CURRENCY_CODE/VENDORID</parameter>
+        </variable>
+        <parameter>0</parameter>
+    </function>
+
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/REQUESTED_SERVICE_UNIT/CC_SERVICE_SPECIFIC_UNITS</parameter>
+        </variable>
+        <parameter>1</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/REQUESTED_SERVICE_UNIT/CC_SERVICE_SPECIFIC_UNITS/VENDORID</parameter>
+        </variable>
+        <parameter>0</parameter>
+    </function>
+
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/REQUESTED_ACTION</parameter>
+        </variable>
+        <parameter>DIRECT_DEBITING</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/REQUESTED_ACTION/VENDORID</parameter>
+        </variable>
+        <parameter>0</parameter>
+    </function>
+
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/USER_EQUIPMENT_INFO/LENGTH</parameter>
+        </variable>
+        <parameter>
+            <parameter>2</parameter>
+        </parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/USER_EQUIPMENT_INFO/VENDORID</parameter>
+        </variable>
+        <parameter>
+            <parameter>0</parameter>
+        </parameter>
+    </function>
+    
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/USER_EQUIPMENT_INFO/USER_EQUIPMENT_INFO_TYPE</parameter>
+        </variable>
+        <parameter>
+            <parameter>IMEISV</parameter>
+        </parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/USER_EQUIPMENT_INFO/USER_EQUIPMENT_INFO_TYPE/VENDORID</parameter>
+        </variable>
+        <parameter>
+            <parameter>0</parameter>
+        </parameter>
+    </function>
+
+    <function name="compareString" module="Basic">
+        <bytestringdecode>
+            <variable>
+                <parameter>DIAMETER/</parameter>
+                <configuration>DIAMETERSERVER/PORT</configuration>
+                <parameter>/AVP/USER_EQUIPMENT_INFO/USER_EQUIPMENT_INFO_VALUE</parameter>
+            </variable>
+        </bytestringdecode>
+        <parameter>
+            <variable>IMEISV</variable>
+        </parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/USER_EQUIPMENT_INFO/USER_EQUIPMENT_INFO_VALUE/VENDORID</parameter>
+        </variable>
+        <parameter>0</parameter>
+    </function>
+    
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/SERVICE_INFORMATION/LENGTH</parameter>
+        </variable>
+        <parameter>
+            <parameter>1</parameter>
+        </parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/SERVICE_INFORMATION/VENDORID</parameter>
+        </variable>
+        <parameter>
+            <parameter>10415</parameter>
+        </parameter>
+    </function>
+
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/SERVICE_INFORMATION/MMS_INFORMATION/LENGTH</parameter>
+        </variable>
+        <parameter>
+            <parameter>3</parameter>
+        </parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/SERVICE_INFORMATION/MMS_INFORMATION/VENDORID</parameter>
+        </variable>
+        <parameter>
+            <parameter>10415</parameter>
+        </parameter>
+    </function>
+
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/SERVICE_INFORMATION/MMS_INFORMATION/ORIGINATOR_ADDRESS/LENGTH</parameter>
+        </variable>
+        <parameter>
+            <parameter>3</parameter>
+        </parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/SERVICE_INFORMATION/MMS_INFORMATION/ORIGINATOR_ADDRESS/VENDORID</parameter>
+        </variable>
+        <parameter>
+            <parameter>10415</parameter>
+        </parameter>
+    </function>
+
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/SERVICE_INFORMATION/MMS_INFORMATION/ORIGINATOR_ADDRESS/ADDRESS_TYPE</parameter>
+        </variable>
+        <parameter>
+            <parameter>Alphanumeric Shortcode</parameter>
+        </parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/SERVICE_INFORMATION/MMS_INFORMATION/ORIGINATOR_ADDRESS/ADDRESS_TYPE/VENDORID</parameter>
+        </variable>
+        <parameter>
+            <parameter>10415</parameter>
+        </parameter>
+    </function>
+
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/SERVICE_INFORMATION/MMS_INFORMATION/ORIGINATOR_ADDRESS/ADDRESS_DATA</parameter>
+        </variable>
+        <parameter>
+            <parameter>MMS-Sub-</parameter>
+            <configuration>xsam/serviceGroupPrefix</configuration>
+            <configuration>xsam/serviceGroupNoMMS</configuration>
+        </parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/SERVICE_INFORMATION/MMS_INFORMATION/ORIGINATOR_ADDRESS/ADDRESS_DATA/VENDORID</parameter>
+        </variable>
+        <parameter>
+            <parameter>10415</parameter>
+        </parameter>
+    </function>
+
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/SERVICE_INFORMATION/MMS_INFORMATION/ORIGINATOR_ADDRESS/ADDRESS_DOMAIN/LENGTH</parameter>
+        </variable>
+        <parameter>
+            <parameter>2</parameter>
+        </parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/SERVICE_INFORMATION/MMS_INFORMATION/ORIGINATOR_ADDRESS/ADDRESS_DOMAIN/VENDORID</parameter>
+        </variable>
+        <parameter>
+            <parameter>10415</parameter>
+        </parameter>
+    </function>
+
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/SERVICE_INFORMATION/MMS_INFORMATION/ORIGINATOR_ADDRESS/ADDRESS_DOMAIN/DOMAIN_NAME</parameter>
+        </variable>
+        <parameter>
+            <parameter>TPB</parameter>
+        </parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/SERVICE_INFORMATION/MMS_INFORMATION/ORIGINATOR_ADDRESS/ADDRESS_DOMAIN/DOMAIN_NAME/VENDORID</parameter>
+        </variable>
+        <parameter>
+            <parameter>10415</parameter>
+        </parameter>
+    </function>
+
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/SERVICE_INFORMATION/MMS_INFORMATION/ORIGINATOR_ADDRESS/ADDRESS_DOMAIN/3GPP_IMSI_MCC_MNC</parameter>
+        </variable>
+        <parameter>
+            <configuration>xsam/serviceGroupPrefix</configuration>
+            <configuration>xsam/serviceGroupNoMMS</configuration>
+        </parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/SERVICE_INFORMATION/MMS_INFORMATION/ORIGINATOR_ADDRESS/ADDRESS_DOMAIN/3GPP_IMSI_MCC_MNC/VENDORID</parameter>
+        </variable>
+        <parameter>10415</parameter>
+    </function>
+
+    <function name="queryText" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/SERVICE_INFORMATION/MMS_INFORMATION/MESSAGE_ID/LENGTH</parameter>
+        </variable>
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>.*</parameter>
+        </parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/SERVICE_INFORMATION/MMS_INFORMATION/MESSAGE_ID/VENDORID</parameter>
+        </variable>
+        <parameter>10415</parameter>
+    </function>
+
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/SERVICE_INFORMATION/MMS_INFORMATION/MESSAGE_CLASS/LENGTH</parameter>
+        </variable>
+        <parameter>
+            <parameter>2</parameter>
+        </parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/SERVICE_INFORMATION/MMS_INFORMATION/MESSAGE_CLASS/VENDORID</parameter>
+        </variable>
+        <parameter>
+            <parameter>10415</parameter>
+        </parameter>
+    </function>
+
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/SERVICE_INFORMATION/MMS_INFORMATION/MESSAGE_CLASS/CLASS_IDENTIFIER</parameter>
+        </variable>
+        <parameter>
+            <parameter>Advertisement</parameter>
+        </parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/SERVICE_INFORMATION/MMS_INFORMATION/MESSAGE_CLASS/CLASS_IDENTIFIER/VENDORID</parameter>
+        </variable>
+        <parameter>
+            <parameter>10415</parameter>
+        </parameter>
+    </function>
+
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/SERVICE_INFORMATION/MMS_INFORMATION/MESSAGE_CLASS/TOKEN_TEXT</parameter>
+        </variable>
+        <parameter>
+            <parameter>XTT</parameter>
+            <configuration>xsam/serviceGroupNoMMS</configuration>
+            <parameter>-</parameter>
+            <configuration>xsam/serviceNoMMS</configuration>
+            <variable>INTERROGATIONLEVEL</variable>
+        </parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>
+            <parameter>DIAMETER/</parameter>
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>/AVP/SERVICE_INFORMATION/MMS_INFORMATION/MESSAGE_CLASS/TOKEN_TEXT/VENDORID</parameter>
+        </variable>
+        <parameter>
+            <parameter>10415</parameter>
+        </parameter>
+    </function>
+</test>

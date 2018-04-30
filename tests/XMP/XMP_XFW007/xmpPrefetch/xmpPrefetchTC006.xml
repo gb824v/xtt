@@ -1,0 +1,219 @@
+<test>	    
+	<name>XMP.PREFETCH.TC.006</name>
+    <description>Prefetch application/xhtml+xml</description>
+
+	<subtest>deleteCacheAll.xml</subtest>
+    <subtest>loadReqmod.xml</subtest>
+
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+	<function name="startWebServer" module="HTTP"/>
+	<function name="setServerHeader" module="HTTP">
+		<parameter>Last-Modified</parameter>
+		<parameter>Wed, 15 Nov 1995 04:58:08 GMT</parameter>
+	</function>	
+
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>prefetchTC006_img1.jpg</parameter>
+		<base64File>jpg.jpg</base64File>
+    </function>
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>prefetchTC006_img2.gif</parameter>
+		<base64File>gif.gif</base64File>
+    </function>
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>prefetchTC006_img3.bmp</parameter>
+		<base64File>bmp.bmp</base64File>
+    </function>
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>prefetchTC006_img4.png</parameter>
+		<base64File>png.png</base64File>
+    </function>
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>prefetchTC006_img5.wbmp</parameter>
+		<base64File>wbmp.wbmp</base64File>
+    </function>
+    <function name="setCacheFile" module="HTTP">
+		<parameter>prefetchTC006.css</parameter>
+<parameter>body 
+{ 
+	margin: 0px; 
+	padding: 0px; 
+	background: #FFF; 
+	font-family: Verdana, Arial, helvetica, Tahoma, Trebuchet MS, sans-serif; 
+	font-size: 10px; 
+	color: #000; 
+}</parameter>
+    </function>
+    
+    <function name="setCacheFile" module="HTTP">
+		<parameter>prefetchTC006.js</parameter>
+<parameter>var pgml = 0;
+
+function init_sitemenu() {
+}
+
+function showHide(layerName,n){ // shows and hides a given layer
+	if (document.getElementById) {
+		//alert('ns7');
+		var fred = document.getElementById(layerName);
+		if (n == 1) {
+			fred.style.display = "";
+		} else if (n == 0) {
+			fred.style.display = "none";
+		} else if (n == 2) {
+			fred.style.display = fred.style.display ? '' : 'none';	
+		}
+		return;
+	}
+}</parameter>
+    </function>
+    <function name="setCacheFile" module="HTTP">
+		<parameter>prefetchTC006.xhtml</parameter>
+        <parameter>
+<parameter>&lt;html&gt;
+&lt;head&gt;
+&lt;link rel="stylesheet" type="text/css" href="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/prefetchTC006.css"&gt;
+&lt;script src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/prefetchTC006.js" type="text/javascript"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;pre&gt;This is the initial file FILLTO64CHARACTERSXXXXXXXXXXXXXXXXXXXXX&lt;/pre&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/prefetchTC006_img1.jpg"/&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/prefetchTC006_img2.gif"/&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/prefetchTC006_img3.bmp"/&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/prefetchTC006_img4.png"/&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/prefetchTC006_img5.wbmp"/&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</parameter>
+        </parameter>
+    </function>
+
+	<function name="sendGetRequest" module="HTTP">
+        <parameter>
+    		<parameter>http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/prefetchTC006.xhtml</parameter>
+        </parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>	
+	<function name="waitForRequests" module="HTTP">
+		<parameter>8</parameter>
+	</function>	
+
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>This is the initial file FILLTO64CHARACTERSXXXXXXXXXXXXXXXXXXXXX</parameter>
+    </function>
+
+    <function name="setCacheFile" module="HTTP">
+		<parameter>prefetchTC006.xhtml</parameter>
+<xml><xhtml>
+<body>
+This is the file that should not be retrieved AGAINDOTHEFILLXXXX
+</body>
+</xhtml>
+</xml>
+    </function>
+
+    <thread>
+    	<function name="waitForTimeoutRequests" module="HTTP">
+    		<parameter>10000</parameter>
+    		<parameter>8</parameter>
+    	</function>	
+	</thread>
+	<function name="sendGetRequest" module="HTTP">
+        <parameter>
+    		<parameter>http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/prefetchTC006.xhtml</parameter>
+        </parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>	
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>This is the initial file FILLTO64CHARACTERSXXXXXXXXXXXXXXXXXXXXX</parameter>
+    </function>
+    <function name="queryBodyNegative" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>This is the file that should not be retrieved AGAINDOTHEFILLXXXX</parameter>
+    </function>
+	<function name="sendGetRequest" module="HTTP">
+        <parameter>
+    		<parameter>http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/prefetchTC006_img1.jpg</parameter>
+        </parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>	
+	<function name="sendGetRequest" module="HTTP">
+        <parameter>
+    		<parameter>http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/prefetchTC006_img2.gif</parameter>
+        </parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>	
+	<function name="sendGetRequest" module="HTTP">
+        <parameter>
+    		<parameter>http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/prefetchTC006_img3.bmp</parameter>
+        </parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>	
+	<function name="sendGetRequest" module="HTTP">
+        <parameter>
+    		<parameter>http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/prefetchTC006_img4.png</parameter>
+        </parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>	
+	<function name="sendGetRequest" module="HTTP">
+        <parameter>
+    		<parameter>http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/prefetchTC006_img5.wbmp</parameter>
+        </parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>	
+
+    <subtest>unloadReqmod.xml</subtest>
+
+	<function name="stopWebServer" module="HTTP"/>
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function> 
+</test>

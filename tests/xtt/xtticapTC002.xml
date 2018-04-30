@@ -1,0 +1,37 @@
+<test>	
+    <name>XTT.ICAP-TC.001</name>
+    <description>ICAP server, REQMOD POST</description>
+
+	<function name="startICAPServer" module="ICAP"/>
+
+	<function name="openConnection" module="TCP">
+		<parameter>127.0.0.1</parameter>
+		<configuration>ICAPSERVER/PORT</configuration>	
+    </function>  
+
+	<function name="sendTextPacket" module="TCP">
+		<file>icap_reqmod_2.txt</file>
+	</function>  
+	
+    <function name="queryTextResponse" module="TCP">
+    	<parameter>dev/null</parameter>
+    	<parameter>ICAP</parameter>
+    </function> 	
+    <function name="responseToVariable" module="TCP">
+    	<parameter>ICAP</parameter>
+    </function> 	
+
+    <function name="info" module="Basic">
+    	<parameter>
+</parameter>
+    	<variable>ICAP</variable>
+    </function> 	
+    <function name="queryTextResponse" module="TCP">
+    	<parameter>dev/null</parameter>
+    	<parameter>\r\n0\r\n\r\n</parameter>
+    </function> 	
+
+	<function name="closeConnection" module="TCP">
+	</function>  
+	<function name="stopICAPServer" module="ICAP"/>
+</test>

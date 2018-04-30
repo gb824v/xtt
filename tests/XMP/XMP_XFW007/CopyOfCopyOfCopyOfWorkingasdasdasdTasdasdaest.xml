@@ -1,0 +1,248 @@
+<test>
+<name>WorkingTest</name>
+<qcid>3333</qcid>
+<description>
+asas
+</description>
+<steps>
+CopyOfCopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf Thread1 Basic/lessThan (1,2)
+CopyOf CopyOfCopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf Thread1 Basic/lessThan (1,2)
+CopyOfCopyOfCopyOfCopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf Thread1 Basic/lessThan (1,2)
+CopyOfCopyOfCopyOfCopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf Thread1 Basic/lessThan (1,2)
+CopyOfCopyOfCopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf Thread1 Basic/lessThan (1,2)
+CopyOfCopyOfCopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf Thread1 Basic/lessThan (1,2)
+CopyOfCopyOfCopyOfCopyOfCopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf Thread1 Basic/lessThan (1,2)
+CopyOfCopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf Thread1 Basic/lessThan (1,2)
+HTTP/startWebServer
+HTTP/stopWebServer
+CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf HTTP/sendGetRequest
+CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf HTTP/sendGetRequest
+CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf HTTP/sendGetRequest
+CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf HTTP/sendGetRequest
+CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf HTTP/sendGetRequest
+CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf HTTP/sendGetRequest
+CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf HTTP/sendGetRequest
+CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf HTTP/sendGetRequest
+CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf HTTP/sendGetRequest
+CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf HTTP/sendGetRequest
+CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf HTTP/sendGetRequest
+CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf HTTP/sendGetRequest
+CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf HTTP/sendGetRequest
+CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf HTTP/sendGetRequest
+CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf HTTP/sendGetRequest
+CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf HTTP/sendGetRequest
+CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf HTTP/sendGetRequest
+CopyOf CopyOf CopyOf CopyOf CopyOf HTTP/sendGetRequest
+CopyOf CopyOf CopyOf CopyOf HTTP/sendGetRequest
+CopyOf CopyOf CopyOf HTTP/sendGetRequest
+CopyOf CopyOf HTTP/sendGetRequest
+CopyOf HTTP/sendGetRequest
+HTTP/sendGetRequest
+</steps>
+<designer>guyb </designer>
+<creationdate>2012-02-16 16:12:57 </creationdate>
+<testlevel>Integration</testlevel>
+<xfwVersion>XMP_XFW006</xfwVersion>
+<mandatory>false</mandatory>
+<stepname>CopyOfCopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf Thread1 Basic/lessThan (1,2)</stepname>
+<stepid>1</stepid>
+<function name="lessThan" module="Basic">
+<parameter>1</parameter>
+<parameter>2</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>CopyOf CopyOfCopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf Thread1 Basic/lessThan (1,2)</stepname>
+<stepid>2</stepid>
+<function name="lessThan" module="Basic">
+<parameter>1</parameter>
+<parameter>2</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>CopyOfCopyOfCopyOfCopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf Thread1 Basic/lessThan (1,2)</stepname>
+<stepid>3</stepid>
+<function name="lessThan" module="Basic">
+<parameter>1</parameter>
+<parameter>2</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>CopyOfCopyOfCopyOfCopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf Thread1 Basic/lessThan (1,2)</stepname>
+<stepid>4</stepid>
+<function name="lessThan" module="Basic">
+<parameter>1</parameter>
+<parameter>2</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>CopyOfCopyOfCopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf Thread1 Basic/lessThan (1,2)</stepname>
+<stepid>5</stepid>
+<function name="lessThan" module="Basic">
+<parameter>1</parameter>
+<parameter>2</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>CopyOfCopyOfCopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf Thread1 Basic/lessThan (1,2)</stepname>
+<stepid>6</stepid>
+<function name="lessThan" module="Basic">
+<parameter>1</parameter>
+<parameter>2</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>CopyOfCopyOfCopyOfCopyOfCopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf Thread1 Basic/lessThan (1,2)</stepname>
+<stepid>7</stepid>
+<function name="lessThan" module="Basic">
+<parameter>1</parameter>
+<parameter>2</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>CopyOfCopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf Thread1 Basic/lessThan (1,2)</stepname>
+<stepid>8</stepid>
+<function name="lessThan" module="Basic">
+<parameter>1</parameter>
+<parameter>2</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/startWebServer</stepname>
+<stepid>9</stepid>
+<function name="startWebServer" module="HTTP"/>
+<mandatory>false</mandatory>
+<stepname>HTTP/stopWebServer</stepname>
+<stepid>10</stepid>
+<function name="stopWebServer" module="HTTP"/>
+<mandatory>false</mandatory>
+<stepname>CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf HTTP/sendGetRequest</stepname>
+<stepid>11</stepid>
+<function name="sendGetRequest" module="HTTP">
+<parameter>http://127.0.0.1/videos/Tarabonner.flv</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf HTTP/sendGetRequest</stepname>
+<stepid>12</stepid>
+<function name="sendGetRequest" module="HTTP">
+<parameter>http://127.0.0.1/videos/Tarabonner.flv</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf HTTP/sendGetRequest</stepname>
+<stepid>13</stepid>
+<function name="sendGetRequest" module="HTTP">
+<parameter>http://127.0.0.1/videos/Tarabonner.flv</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf HTTP/sendGetRequest</stepname>
+<stepid>14</stepid>
+<function name="sendGetRequest" module="HTTP">
+<parameter>http://127.0.0.1/videos/Tarabonner.flv</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf HTTP/sendGetRequest</stepname>
+<stepid>15</stepid>
+<function name="sendGetRequest" module="HTTP">
+<parameter>http://127.0.0.1/videos/Tarabonner.flv</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf HTTP/sendGetRequest</stepname>
+<stepid>16</stepid>
+<function name="sendGetRequest" module="HTTP">
+<parameter>http://127.0.0.1/videos/Tarabonner.flv</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf HTTP/sendGetRequest</stepname>
+<stepid>17</stepid>
+<function name="sendGetRequest" module="HTTP">
+<parameter>http://127.0.0.1/videos/Tarabonner.flv</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf HTTP/sendGetRequest</stepname>
+<stepid>18</stepid>
+<function name="sendGetRequest" module="HTTP">
+<parameter>http://127.0.0.1/videos/Tarabonner.flv</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf HTTP/sendGetRequest</stepname>
+<stepid>19</stepid>
+<function name="sendGetRequest" module="HTTP">
+<parameter>http://127.0.0.1/videos/Tarabonner.flv</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf HTTP/sendGetRequest</stepname>
+<stepid>20</stepid>
+<function name="sendGetRequest" module="HTTP">
+<parameter>http://127.0.0.1/videos/Tarabonner.flv</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf HTTP/sendGetRequest</stepname>
+<stepid>21</stepid>
+<function name="sendGetRequest" module="HTTP">
+<parameter>http://127.0.0.1/videos/Tarabonner.flv</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf HTTP/sendGetRequest</stepname>
+<stepid>22</stepid>
+<function name="sendGetRequest" module="HTTP">
+<parameter>http://127.0.0.1/videos/Tarabonner.flv</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf HTTP/sendGetRequest</stepname>
+<stepid>23</stepid>
+<function name="sendGetRequest" module="HTTP">
+<parameter>http://127.0.0.1/videos/Tarabonner.flv</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf HTTP/sendGetRequest</stepname>
+<stepid>24</stepid>
+<function name="sendGetRequest" module="HTTP">
+<parameter>http://127.0.0.1/videos/Tarabonner.flv</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf HTTP/sendGetRequest</stepname>
+<stepid>25</stepid>
+<function name="sendGetRequest" module="HTTP">
+<parameter>http://127.0.0.1/videos/Tarabonner.flv</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf HTTP/sendGetRequest</stepname>
+<stepid>26</stepid>
+<function name="sendGetRequest" module="HTTP">
+<parameter>http://127.0.0.1/videos/Tarabonner.flv</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf HTTP/sendGetRequest</stepname>
+<stepid>27</stepid>
+<function name="sendGetRequest" module="HTTP">
+<parameter>http://127.0.0.1/videos/Tarabonner.flv</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>CopyOf CopyOf CopyOf CopyOf CopyOf HTTP/sendGetRequest</stepname>
+<stepid>28</stepid>
+<function name="sendGetRequest" module="HTTP">
+<parameter>http://127.0.0.1/videos/Tarabonner.flv</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>CopyOf CopyOf CopyOf CopyOf HTTP/sendGetRequest</stepname>
+<stepid>29</stepid>
+<function name="sendGetRequest" module="HTTP">
+<parameter>http://127.0.0.1/videos/Tarabonner.flv</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>CopyOf CopyOf CopyOf HTTP/sendGetRequest</stepname>
+<stepid>30</stepid>
+<function name="sendGetRequest" module="HTTP">
+<parameter>http://127.0.0.1/videos/Tarabonner.flv</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>CopyOf CopyOf HTTP/sendGetRequest</stepname>
+<stepid>31</stepid>
+<function name="sendGetRequest" module="HTTP">
+<parameter>http://127.0.0.1/videos/Tarabonner.flv</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>CopyOf HTTP/sendGetRequest</stepname>
+<stepid>32</stepid>
+<function name="sendGetRequest" module="HTTP">
+<parameter>http://127.0.0.1/videos/Tarabonner.flv</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/sendGetRequest</stepname>
+<stepid>33</stepid>
+<function name="sendGetRequest" module="HTTP">
+<parameter>http://127.0.0.1/videos/Tarabonner.flv</parameter>
+</function>
+</test>

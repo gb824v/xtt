@@ -1,0 +1,34 @@
+<test>
+	<function name="testName" module="Basic">
+	
+	<parameter>XSN.DBLoad.AddCommunities.TC.1.14.xml</parameter>
+	</function>
+	
+	<description>Add Communities </description>
+   
+    <function name="sendRemoteCommand" module="Remote">
+    
+    	<parameter>writeFile AddCommunities.xml </parameter> 
+         
+        <file>AddCommunities.xml</file>
+    
+    </function>
+    
+    <function name="sendRemoteCommand" module="Remote">
+    
+        <configuration>xsn/path</configuration>
+        <configuration>xsn/xms</configuration>
+    
+        
+        <parameter>load db AddCommunities.xml</parameter>
+    
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        
+    <parameter>SUCCESS: XML upload completed</parameter>
+    <!-- <parameter>ERROR: XML upload encountered problems and ended prematurely</parameter> -->
+    <parameter>dev/null</parameter>
+    </function>    
+    
+  </test>

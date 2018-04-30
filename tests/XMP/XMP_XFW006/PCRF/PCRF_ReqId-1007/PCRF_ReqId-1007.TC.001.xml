@@ -1,0 +1,309 @@
+<test>  
+ 
+    <name>PCRF_ReqId-1007.TC.001.xml</name>
+    <description>Manage Subscriber Quota per Session with time based re-validation</description>
+
+
+<!--
+1. XTT DIAMETER Client opens connection "one" to PCRF listetning port.
+2. XTT DIAMETER Client sends CER and receives CEA.
+3. XTT DIAMETER Client sends CCR INITIAL_REQUEST and receives CCA with Event-Trigger OUT_OF_CREDIT and REVALIDATION_TIMEOUT.
+    - validate the rigth rule received = Default_Rule
+    - Make sure the session information has been added to PRESENCE-STORE.
+4. XTT DIAMETER Client sends UPDATE_REQUEST CCR with Event-Trigger REVALIDATION_TIMEOUT and receives CCA.  
+    - validate the rigth rule received = Controlled_Qos
+5. Exchange of CCR/CCA to TERMINATE the session;
+    - Make sure the session information has been removed to PRESENCE-STORE.
+-->
+
+
+    <!-- XTT DIAMETER Client opens connection "one" to PCRF listetning port. -->
+    <function name="createConnection" module="Diameter">
+        <parameter>one</parameter>
+        <configuration>DIAMETERCLIENT/IP</configuration>
+        <configuration>DIAMETERCLIENT/PORT</configuration>
+    </function>
+
+    <!--  XTT DIAMETER Client sends CER and receives CEA -->
+    <function name="sendDiameterRequest" module="Diameter">
+        <parameter>one</parameter>
+        <xml>
+            <CAPABILITIES_EXCHANGE_REQUEST version="1"  overrideCommandCode="257" applicationID="16777238" hopbyhopID="456" endtoendID="789" proxiable="true" error="false" tretr="false">
+                <SESSION_ID overrideAVPCode="" value="SESSION_ID;xtt@724.com;A1_B" mandatory="true" protected="false" vendorspecific="false" vendorID="" />
+                <VENDOR_ID  value="10415" mandatory="true" protected="false" vendorspecific="false" vendorID="" />
+                <ORIGIN_REALM           value="xtt724.com"        mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                <ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                <HOST_IP_ADDRESS        value="0001AC140983" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                <PRODUCT_NAME           value="XTT" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                <SUPPORTED_VENDOR_ID    value="10415" mandatory="true" protected="false" vendorspecific="false"  vendorID="" />
+                <AUTH_APPLICATION_ID    value="16777238" mandatory="true" protected="false" vendorspecific="false"  vendorID="" />              
+            </CAPABILITIES_EXCHANGE_REQUEST>
+        </xml>
+        <parameter>STORERESULT</parameter>
+    </function>
+ 
+    <!-- Headers validation of CEA commandcode 257, commandflags 64 -->
+    <function name="compareString" module="Basic">
+        <variable>DIAMETER/one/HEADER/commandcode</variable >
+        <parameter>257</parameter>
+    </function>
+    <!--function name="compareString" module="Basic">
+        <variable>DIAMETER/one/HEADER/commandflags</variable >
+        <parameter>64</parameter>
+    </function-->
+    <!-- AVP validation of CEA -->
+    <function name="compareString" module="Basic">
+        <variable>DIAMETER/one/AVP/PRODUCT_NAME</variable>
+        <parameter>XMP</parameter>
+    </function>      
+    <!-- AVP validation of CEA -->
+    <function name="compareString" module="Basic">
+        <variable>DIAMETER/one/AVP/RESULT_CODE</variable>
+        <parameter>2001</parameter>
+    </function>    
+
+
+    <!--XTT DIAMETER Client sends CCR INITIAL_REQUEST and receives CCA with Event-Trigger OUT_OF_CREDIT and REVALIDATION_TIMEOUT. -->
+    <function name="sendDiameterRequest" module="Diameter">
+        <parameter>one</parameter>
+        <xml>
+            <CREDIT_CONTROL_REQUEST version="1" overrideCommandCode="272" applicationID="16777238" hopbyhopID="456" endtoendID="789" proxiable="true" error="false" tretr="false">
+                <SESSION_ID             value="SESSION_ID;xtt@724.com;A1_B"/>
+                <ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                <ORIGIN_REALM           value="xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                <DESTINATION_REALM      value="internal.724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>                        
+                <AUTH_APPLICATION_ID    value="16777238" mandatory="true" protected="false" vendorspecific="false"  vendorID="" />                      
+                <CC_REQUEST_TYPE        value="INITIAL_REQUEST"   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                <CC_REQUEST_NUMBER      value="0" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                <IP_CAN_TYPE            value="00000000" overrideavpcode="1027" mandatory="false" protected="false" vendorspecific="true"  vendorID="10415"/>
+                <RAT_TYPE               value="000003EB" overrideavpcode="1032" mandatory="false" protected="false" vendorspecific="true"  vendorID="10415"/>
+                <FRAMED_IP_ADDRESS      value="0a043c34" overrideavpcode="8" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>                   
+                <SUBSCRIPTION_ID         mandatory="true" protected="false" vendorspecific="false"  vendorID="">
+                    <SUBSCRIPTION_ID_TYPE  value="00000000"       mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>  //END_USER_E164=0   END_USER_IMSI=1   END_USER_SIP_URI=2   END_USER_NAI=3   END_USER_PRIVATE=4
+                    <SUBSCRIPTION_ID_DATA  value="0787367400"       mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+               </SUBSCRIPTION_ID>              
+            </CREDIT_CONTROL_REQUEST>
+        </xml>
+        <parameter>STORERESULT</parameter>
+    </function>
+ 
+    <!-- Headers validation of CCA commandcode 272, commandflags 64 -->
+    <function name="compareString" module="Basic">
+        <variable>DIAMETER/one/HEADER/commandcode</variable >
+        <parameter>272</parameter>
+    </function>
+    <!--function name="compareString" module="Basic">
+        <variable>DIAMETER/one/HEADER/commandflags</variable >
+        <parameter>64</parameter>
+    </function-->
+    <!-- AVP validation of CCA -->
+    <function name="compareString" module="Basic">
+        <variable>DIAMETER/one/AVP/RESULT_CODE</variable>
+        <parameter>2001</parameter>
+    </function>
+     <function name="queryText" module="Basic">
+         <variable>DIAMETER/one/AVP/CC_REQUEST_NUMBER</variable>
+         <parameter>var1</parameter>
+         <parameter>0</parameter>
+     </function>
+    <!-- AVP validation of CCA -->
+    <function name="queryText" module="Basic">
+        <variable>DIAMETER/one/AVP/Unknown(1001)</variable> //Charging-Rule-Install
+        <parameter>var1</parameter>
+        <parameter>000003EDC0000018000028AF44656661756C745F52756C65</parameter> //matches the Charging-Rule-Name AVP with value: 44656661756C745F52756C65 = Default_Rule 
+    </function>
+    <!-- AVP validation of CCA -->
+    <function name="queryText" module="Basic">
+        <variable>DIAMETER/one/AVP/Unknown(1006)</variable> //matches Event-Trigger AVP
+        <parameter>var1</parameter>
+        <parameter>00000011</parameter> //matches tvalue: 00000011 = REVALIDATION_TIMEOUT
+    </function>
+
+    <!-- AVP validation of CCA Revalidation-Time AVP, diff between localTime and returend Revalidation-Time AVP shoudl be 10s. (used 20 for better tolerance)-->
+    <function name="getLocalSystemTime" module="Basic">
+        <parameter>local_time</parameter>
+    </function>
+    <function name="calculate" module="Basic">
+        <parameter>ntp_time</parameter>
+        <parameter>
+            <parameter><variable>local_time</variable></parameter>
+            <parameter> + </parameter>
+            <parameter>2208988800</parameter> //diff between January 1st, 1900 and January 1st, 1970 (2208988800). 
+        </parameter>
+    </function>
+    <function name="subtractVariable" module="Basic">
+        <parameter>time_diff</parameter>
+        <variable>ntp_time</variable> //diff between January 1st, 1900 and January 1st, 1970 (2208988800). 
+        <parameter><parameter>0x</parameter><variable>DIAMETER/one/AVP/Unknown(1042)</variable></parameter> //matches Revalidation-Time AVP
+    </function>
+    <function name="lessThan" module="Basic">
+        <variable>time_diff</variable>
+        <parameter>20</parameter>
+    </function>
+    
+    
+    <function name="queryText" module="Basic">
+        <variable>DIAMETER/one/AVP/Unknown(1005)</variable> //matches Usage-Volume AVP
+        <parameter>var1</parameter>
+        <parameter>00000000004C4B40</parameter> //matches value: 00000000004C4B40 = 5000000 
+    </function> 
+
+
+    <!-- Make sure the session information has been added to PRESENCE-STORE. -->
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>
+            <configuration>remote/command</configuration>
+            <parameter>pse3cli -a 0787367400 -t SubscriberId rba TI:F.CEE.PRESENCE-STORE:PSE3</parameter>
+        </parameter>
+    </function>
+    <function name="queryResponse" module="Remote">
+        <parameter>&lt;addressType&gt;GxSessionId&lt;/addressType&gt;</parameter>
+        <parameter>response</parameter>
+    </function>
+
+
+
+
+
+
+
+
+     <!-- XTT DIAMETER Client sends UPDATE_REQUEST CCR with Event-Trigger REVALIDATION_TIMEOUT and receives CCA. -->
+     <function name="sendDiameterRequest" module="Diameter">
+         <parameter>one</parameter>
+         <xml>
+             <CREDIT_CONTROL_REQUEST version="1" overrideCommandCode="272" applicationID="16777238" hopbyhopID="456" endtoendID="789" proxiable="true" error="false" tretr="false">
+                 <SESSION_ID             value="SESSION_ID;xtt@724.com;A1_B"/>
+                 <ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                 <ORIGIN_REALM           value="xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                 <DESTINATION_REALM      value="internal.724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>                           
+                 <AUTH_APPLICATION_ID    value="16777238" mandatory="true" protected="false" vendorspecific="false"  vendorID="" />                      
+                 <CC_REQUEST_TYPE        value="UPDATE_REQUEST"   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                 <CC_REQUEST_NUMBER      value="1" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                 <IP_CAN_TYPE            value="00000000" overrideavpcode="1027" mandatory="false" protected="false" vendorspecific="true"  vendorID="10415"/>
+                 <RAT_TYPE               value="000003EB" overrideavpcode="1032" mandatory="false" protected="false" vendorspecific="true"  vendorID="10415"/>
+                 <FRAMED_IP_ADDRESS      value="0a043c34" overrideavpcode="8" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>                   
+                <SUBSCRIPTION_ID         mandatory="true" protected="false" vendorspecific="false"  vendorID="">
+                     <SUBSCRIPTION_ID_TYPE  value="00000000"       mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>  //END_USER_E164=0   END_USER_IMSI=1   END_USER_SIP_URI=2   END_USER_NAI=3   END_USER_PRIVATE=4
+                     <SUBSCRIPTION_ID_DATA  value="0787367400"       mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                </SUBSCRIPTION_ID>
+                <EVENT_TRIGGER          value="00000011" overrideavpcode="1006" mandatory="true" protected="false" vendorspecific="true"  vendorID="10415" /><!-- 00000011 = REVALIDATION_TIMEOUT -->                
+
+                <!--use defined SUBSCRIPTION_ID AVP type of GROUPED and overrideavpcode to QOS_INFORMATION code 1016-->
+                <SUBSCRIPTION_ID         overrideavpcode="1016" mandatory="true" protected="false" vendorspecific="true"  vendorID="10415">
+                    <QOS_CLASS_IDENTIFIER        value="00000001" overrideavpcode="1028" mandatory="true" protected="false" vendorspecific="true"  vendorID="10415"/>
+                    <GUARANTEED_BITRATE_DL       value="000F4240" overrideavpcode="1025" mandatory="true" protected="false" vendorspecific="true"  vendorID="10415"/> //bits per second
+                    <GUARANTEED_BITRATE_UL       value="000F4240" overrideavpcode="1026" mandatory="true" protected="false" vendorspecific="true"  vendorID="10415"/> //bits per second
+                    <BEARER_IDENTIFIER           value="47505253" overrideavpcode="1020" mandatory="true" protected="false" vendorspecific="true"  vendorID="10415"/>
+                    <!--ALLOCATION_RETENTION_PRIORITY        value="00000001" overrideavpcode="1034" mandatory="true" protected="false" vendorspecific="true"  vendorID="10415"/-->
+                 </SUBSCRIPTION_ID>
+
+                <BEARER_IDENTIFIER      value="47505253" overrideavpcode="1020" mandatory="true" protected="false" vendorspecific="true"  vendorID="10415"/>
+                <BEARER_OPERATION       value="00000001" overrideavpcode="1021" mandatory="true" protected="false" vendorspecific="true"  vendorID="10415"/> //TERMINATION (0)  ESTABLISHMENT (1)  MODIFICATION (2)
+                <USAGE_VOLUME           value="00000000001E8480" overrideavpcode="1005" mandatory="true" protected="false" vendorspecific="true"  vendorID="12645"/> //00000000001E8480=2000000
+             </CREDIT_CONTROL_REQUEST>     
+         </xml>
+         <parameter>STORERESULT</parameter>
+     </function>
+  
+     <!-- Headers validation of CCA commandcode 272, commandflags 64 -->
+     <function name="compareString" module="Basic">
+         <variable>DIAMETER/one/HEADER/commandcode</variable >
+         <parameter>272</parameter>
+     </function>
+     <!--function name="compareString" module="Basic">
+         <variable>DIAMETER/one/HEADER/commandflags</variable >
+         <parameter>64</parameter>
+     </function-->
+     <!-- AVP validation of CCA -->
+     <function name="compareString" module="Basic">
+         <variable>DIAMETER/one/AVP/RESULT_CODE</variable>
+         <parameter>2001</parameter>
+     </function>
+      <!-- AVP validation of CCA -->
+      <function name="queryText" module="Basic">
+          <variable>DIAMETER/one/AVP/Unknown(1002)</variable> //Charging-Rule-Remove
+        <parameter>var1</parameter>
+        <parameter>000003EDC0000018000028AF44656661756C745F52756C65</parameter> //matches the Charging-Rule-Name AVP with value: 44656661756C745F52756C65 = Default_Rule 
+     </function>    
+     <!-- AVP validation of CCA -->
+     <function name="queryText" module="Basic">
+         <variable>DIAMETER/one/AVP/Unknown(1001)</variable> //Charging-Rule-Install
+        <parameter>var1</parameter>
+        <parameter>000003EDC000001A000028AF436F6E74726F6C6C65645F516F530000</parameter> //matches the Charging-Rule-Name AVP with value: 436F6E74726F6C6C65645F516F530000 = Controlled_Qos
+     </function>
+    <!-- AVP validation of CCA -->
+    <!--function name="queryTextNegative" module="Basic">
+        <variable>DIAMETER/one/AVP/Unknown(1006)</variable> //matches Event-Trigger AVP
+        <parameter>0000000F</parameter> //matches tvalue: 0000000F = OUT_OF_CREDIT 
+    </function-->    
+    <!-- AVP validation of CCA -->
+    <function name="queryText" module="Basic">
+        <variable>DIAMETER/one/AVP/Unknown(1005)</variable> //matches Usage-Volume AVP
+        <parameter>var1</parameter>
+        <parameter>00000000002DC6C0</parameter> //matches tvalue: 00000000002DC6C0 = 3000000
+    </function> 
+
+
+
+
+     <!-- Exchange of CCR/CCA to TERMINATE the session; -->
+     <function name="sendDiameterRequest" module="Diameter">
+         <parameter>one</parameter>
+         <xml>
+             <CREDIT_CONTROL_REQUEST version="1" overrideCommandCode="272" applicationID="16777238" hopbyhopID="456" endtoendID="789" proxiable="true" error="false" tretr="false">
+                 <SESSION_ID             value="SESSION_ID;xtt@724.com;A1_B"/>
+                 <ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                 <ORIGIN_REALM           value="xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                 <DESTINATION_REALM      value="internal.724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>    
+                 <AUTH_APPLICATION_ID    value="16777238" mandatory="true" protected="false" vendorspecific="false"  vendorID="" />
+                 <CC_REQUEST_TYPE        value="TERMINATION_REQUEST"   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                 <CC_REQUEST_NUMBER      value="2" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                 <FRAMED_IP_ADDRESS      value="0a043c34" overrideavpcode="8" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>                   
+                 <SUBSCRIPTION_ID         mandatory="true" protected="false" vendorspecific="false"  vendorID="">
+                     <SUBSCRIPTION_ID_TYPE  value="00000000"       mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                     <SUBSCRIPTION_ID_DATA  value="0787367400"       mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+                 </SUBSCRIPTION_ID>  
+             </CREDIT_CONTROL_REQUEST>
+         </xml>
+         <parameter>STORERESULT</parameter>
+     </function>
+     <!-- Headers validation of CCA commandcode 272 -->
+     <function name="compareString" module="Basic">
+         <variable>DIAMETER/one/HEADER/commandcode</variable >
+         <parameter>272</parameter>
+     </function>
+      <!-- AVP validation of CCA -->
+     <function name="queryText" module="Basic">
+         <variable>DIAMETER/one/AVP/RESULT_CODE</variable>
+         <parameter>var1</parameter>
+         <parameter>2001</parameter>
+     </function>
+     <function name="queryText" module="Basic">
+         <variable>DIAMETER/one/AVP/CC_REQUEST_NUMBER</variable>
+         <parameter>var1</parameter>
+         <parameter>2</parameter>
+     </function>
+     <function name="queryText" module="Basic">
+         <variable>DIAMETER/one/AVP/CC_REQUEST_TYPE</variable>
+         <parameter>var1</parameter>
+         <parameter>TERMINATION_REQUEST</parameter>
+     </function>
+ 
+     <function name="closeConnection" module="Diameter">
+         <parameter>one</parameter>
+     </function>
+ 
+ 
+     <!-- Make sure the session information has been removed from PRESENCE-STORE. -->
+     <function name="executeRemoteXMSCommand" module="Remote">
+         <parameter>
+             <configuration>remote/command</configuration>
+             <parameter>pse3cli -a 0787367400 -t SubscriberId rba TI:F.CEE.PRESENCE-STORE:PSE3</parameter>
+         </parameter>
+     </function>
+     <function name="queryResponseNegative" module="Remote">
+         <parameter>&lt;addressType&gt;GxSessionId&lt;/addressType&gt;</parameter>
+    </function>
+
+</test>

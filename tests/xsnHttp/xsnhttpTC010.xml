@@ -1,0 +1,62 @@
+<test>
+
+    <configuration>xsnhttp.xml</configuration>
+
+	<function name="testName" module="Basic">
+		<parameter>XSN.HTTP.TC.010</parameter>
+	</function>
+	
+	<description>Check SMS notifications.</description>
+	
+	<function name="startSMSCServer" module="SMS"/>
+	
+	<subtest>loadSMSConnections.xml</subtest>
+
+    <function name="waitForBind" module="SMS"/>
+    
+    <function name="disableFollowRedirects" module="HTTP" />
+    <thread>    
+        <function name="setHeader" module="HTTP">
+            <parameter>SubscriberIdHdr</parameter>
+            <configuration>xsn/subscribers/blockNotificationUser</configuration>
+        </function>
+        
+    	<function name="sendGetRequest" module="HTTP">
+    		<parameter>http://www.gnu.org/</parameter>
+    	</function>
+    	
+    	<function name="sendGetRequest" module="HTTP">
+    		<parameter>http://www.playboy.com/</parameter>
+    	</function>
+    	
+    	<function name="queryHeader" module="HTTP">
+    		<parameter>dev/null</parameter>
+    		<parameter>location</parameter>
+            <parameter>
+                <parameter>^</parameter>
+                <configuration>xsn/redirect/url</configuration>
+                <parameter>/</parameter>
+                <configuration>xsn/redirect/blockedByCommunityFiltersScreen</configuration>
+            </parameter>		
+    	</function>
+    </thread>
+    	
+    <function name="waitForMessages" module="SMS">
+        <parameter>1</parameter>
+    </function>	
+    
+    <function name="waitOnThreads" module="Basic"/>
+    
+    <function name="decodeByteString" module="Basic">
+        <parameter>test</parameter>
+        <variable>smsc/ucp/0041628881013/AMsg</variable>
+    </function>
+	
+	<function name="info" module="Basic">
+	    <variable>test</variable>
+    </function>
+	
+    <function name="stopSMSCServer" module="SMS"/>	
+
+	<subtest>unloadSMSConnections.xml</subtest>
+</test>

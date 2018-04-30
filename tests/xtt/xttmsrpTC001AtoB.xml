@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test>
+    <name>xttmsrpTC001AtoB.xml</name>
+    <description>[A --> B] sendFreeRequest</description>
+    <configuration>configMSRP.xml</configuration>
+
+    <!--
+     Testscenario
+     ____________
+
+     Alice(CLIENT)                       Bob(SERVER)
+        |                                 |
+        |     SEND FREE REQUEST           |
+        | - - - - - - - - - - - - - - >   |
+        |     MSRP 200 OK                 |
+        | < - - - - - - - - - - - - - -   |
+        |                                 |
+        |     waitForRequests             |
+        | - - - - - - - - - - - - - - -   |
+        |            			          |
+     -->
+
+    <!-- set client port -->
+    <function name="setVariable" module="Basic">
+        <parameter>CLIENT</parameter>
+        <configuration>MSRPSERVER/CLIENTPORT</configuration>
+    </function>
+    <!--   set server port -->
+    <function name="setVariable" module="Basic">
+        <parameter>SERVER</parameter>
+        <configuration>MSRPSERVER/PORT</configuration>
+    </function>
+
+    <!-- start client server -->
+    <function name="startMSRPServer" module="MSRP">
+        <variable>CLIENT</variable>
+        <configuration>MSRPSERVER/TIMEOUT</configuration>
+    </function>
+
+    <!-- create connection at client -->
+    <function name="createConnection" module="MSRP">
+        <parameter>one</parameter>
+        <variable>CLIENT</variable>
+    </function>
+
+    <!-- setting body -->
+    <function name="setVariable" module="Basic">
+        <parameter>msrpbody1</parameter>
+        <parameter>Hi, I'm Alice!</parameter>
+    </function>
+
+    <!-- setting headers -->
+    <function name="setVariableLines" module="Basic">
+        <parameter>2</parameter>
+        <parameter>headers1</parameter>
+        <parameter>To-Path:</parameter>
+        <parameter>
+            <parameter>msrp://</parameter>
+            <configuration>MSRPSERVER/REMOTEIPADDRESS</configuration>
+            <parameter>:</parameter>
+            <variable>SERVER</variable>
+            <parameter>/9di4eae923wzd;tcp</parameter>
+        </parameter>
+        <parameter>From-Path:</parameter>
+        <parameter>
+            <parameter>msrp://</parameter>
+            <configuration>SYSTEM/IP</configuration>
+            <parameter>:</parameter>
+            <variable>CLIENT</variable>
+            <parameter>/iau39soe2843z;tcp</parameter>
+        </parameter>
+        <parameter>Message-ID:</parameter>
+        <parameter>123MsgIdAtoB</parameter>
+        <parameter>Content-Type:</parameter>
+        <parameter>text/plain</parameter>
+    </function>
+
+    <!-- send free request A to B -->
+    <function name="sendFreeRequest" module="MSRP">
+        <parameter>one</parameter>
+        <parameter>SEND</parameter>
+        <configuration>MSRPSERVER/REMOTEIPADDRESS</configuration>
+        <variable>SERVER</variable>
+        <variable>headers1</variable>
+        <base64encode>
+            <variable>msrpbody1</variable>
+        </base64encode>
+        <parameter>abcd1234</parameter> <!-- user defined txid-->
+        <parameter>$</parameter><!-- message chunk indicator-->
+    </function>
+
+    <function name="waitForVariable" module="Basic">
+        <parameter>
+            <parameter>MSRP/RESPONSE/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+    <function name="removeVariables" module="Basic">
+        <parameter>
+            <parameter>MSRP/RESPONSE/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+    <function name="waitForResponses" module="MSRP">
+    	<parameter>1</parameter>
+    </function>
+
+    <function name="waitForRequests" module="MSRP">
+        <parameter>1</parameter>
+    </function>
+    
+    <function name="compareString" module="Basic">
+        <variable>MSRP/RESPONSE/CODE</variable>
+        <parameter>200</parameter>
+   </function>
+   
+    <function name="compareString" module="Basic">
+        <variable>MSRP/SEND/456MsgIdBtoA/BODY/PLAIN</variable>
+        <parameter>Hi, Alice! I'm Bob!</parameter>
+   </function>
+    
+    <function name="stopMSRPServer" module="MSRP"/>
+
+</test>

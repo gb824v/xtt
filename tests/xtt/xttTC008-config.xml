@@ -1,0 +1,18 @@
+<Configuration>
+    <XTTTC008>
+        <FirstLevelNode>2</FirstLevelNode>
+        <Skipped>
+            <AMiddleMatchingNode>
+                <value>5</value>
+            </AMiddleMatchingNode>    
+        </Skipped>
+    </XTTTC008>
+    <XTTTC008-2>
+        <somethingToOverwrite>TRUE</somethingToOverwrite>
+    </XTTTC008-2>    
+    <FirstLevelNode>1</FirstLevelNode>
+    <AnotherFirstLevelNode>3</AnotherFirstLevelNode>
+    <AMiddleMatchingNode>
+        <value>4</value>
+    </AMiddleMatchingNode>
+</Configuration>

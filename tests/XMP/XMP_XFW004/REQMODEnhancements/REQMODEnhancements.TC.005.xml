@@ -1,0 +1,172 @@
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+REQMODEnhancements.TC.005  - REQMOD creates additional table entries by using DNS to look up equivalent host names (BZ15501) / Make sure it's working without a periodic refresh (Refresh Period is 0).
+
+Test Description:
+ Have following entry in your pv file:
+<urlMatching>
+	<matchEquivalentHostsInUrls lookupIntervalSecs="0" >
+		<wildcardReplacement>www</wildcardReplacement>
+	</matchEquivalentHostsInUrls>
+</urlMatching>
+ 1. Radius Logon
+ 2. Prepare and load the Request Modification File and BlackList.url file.
+ 3.	Send HTTP Get Proxy Request.
+ 4. Check Response Code
+ 5. Purge the Request Modification File.
+ 6. Radius Logoff
+ 
+Expected Result:
+ -  XMP performs reverse DNS lookups when the request modification file is loaded and does NOT perform any periodic look-ups as lookupIntervalSecs is set to 0 .
+
+XTT Commands:
+      startWebServer
+ 1. - Radius log-ON
+
+ 2. - Prepare and load the Request Modification File and BlackList.url file. 
+
+ 3.   - sendGetRequest 		"HTTP" "http://www.bad.com/test.html"
+
+ 4.   - checkResponseCode	"HTTP" "403"
+
+ 5. - sendGetRequest 		"HTTP" "http://SYSTEM-IP/test.html"
+
+ 6.  - checkResponseCode	"HTTP" "403"
+
+ 7.  - checkResponseCode	"HTTP" "403"
+
+ 8. - Purge the Request Modification File
+
+ 9. - Radius log-OFF
+      stopWebServer
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- Test Start  -->
+<test>
+	<function name="testName" module="Basic">
+		<parameter>REQMODEnhancements.TC.005</parameter>
+	</function>
+
+    <description>REQMOD creates additional table entries by using DNS to look up equivalent host names (BZ15501) / Make sure it's working without a periodic refresh (Refresh Period is 0)</description>
+
+	<!-- Prepare Black List -->
+	<subtest>URLListsForREQMODEnhancements.TC.004.xml</subtest>
+
+	<!-- Execute Web Server & Set its Parameters -->
+	<function name="startWebServer" module="HTTP"> 
+		<parameter>80</parameter>
+		<testpath/>
+ 		<parameter>30000</parameter>
+ 	</function>
+	
+	<!-- Radius Login -->
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+	    <parameter>12346</parameter>
+    </function>
+	
+	<function name="setHeader" module="HTTP">
+		<parameter>Accept-Encoding</parameter>
+		<parameter>0</parameter>
+	</function>
+	
+	<function name="setHeader" module="HTTP">
+		<parameter>Accept</parameter>
+		<parameter>*/*</parameter>
+	</function>
+	
+	<function name="setHeader" module="HTTP">
+		<parameter>User-Agent</parameter>
+		<parameter>XTT/0.1</parameter>
+	</function>
+
+	<!-- Prepare the Request Modification File -->
+<function name="writeRemoteFile" module="Remote">
+	<parameter>REQMOD_REQMODEnhancements.TC.004.xml</parameter>
+		<xml>
+		<requestModifications xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="requestmodifications.xsd">
+		<table name="SetMobileAccelerationDefaults">
+			<selector urlList="BlackList4.txt">
+			<denyAccess reason="'Site blocked because the URL is in the Black List'"/>
+			</selector>
+		</table>
+		</requestModifications>
+		</xml>
+</function>
+	
+<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>REQMOD_REQMODEnhancements.TC.004.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded requestmodifications.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	
+	<!-- Wait for the XMP's DNS Lookups -->
+	<function name="sleep" module="basic">
+		<parameter>30000</parameter>
+	</function>
+	
+	<!-- HTTP GET Requests -->
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://www.bad.com/test.html</parameter>
+	</function>
+	
+	<!-- Validate Response Code Send by XMP -->
+    <function name="checkResponseCode" module="HTTP">
+		<parameter>403</parameter>
+	</function>
+	
+	<function name="checkHeader" module="HTTP">
+		<parameter>null</parameter>
+		<parameter>HTTP/1.1 403 Site blocked because the URL is in the Black List</parameter>
+	</function>
+
+	<!-- HTTP GET Requests -->
+	<function name="sendGetRequest" module="HTTP">
+            <parameter>
+               <parameter>http://</parameter>
+               <configuration>SYSTEM/IP</configuration>
+               <parameter>/test.html</parameter>
+            </parameter>
+        </function>
+
+	<!-- Validate Response Code Send by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>403</parameter>
+	</function>
+	
+	<function name="checkHeader" module="HTTP">
+		<parameter>null</parameter>
+		<parameter>HTTP/1.1 403 Site blocked because the URL is in the Black List</parameter>
+	</function>
+			    
+	<!-- Purge the Request Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>REQMOD_EmptyRules.xml</parameter>
+		<parameter>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;requestModifications&gt;&lt;/requestModifications&gt;</parameter>
+    </function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>REQMOD_EmptyRules.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded requestmodifications.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	
+	<!-- Radius Logoff -->
+	<function name="radiusLogoff" module="Radius">
+	    <parameter>xttuser</parameter>
+	    <parameter>12346</parameter>
+    </function>
+   
+   <!-- Stop Web Server -->
+    <function name="stopWebServer" module="HTTP"/>            
+</test>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test>
+    <name>xttmsrpTC004AtoB.xml</name>
+    <description>[A --> B(secure)] send MSRP SEND request with Success-Report:yes/ Check 200 Response code</description>
+    <configuration>configMSRP.xml</configuration>
+
+    <!--
+     Testscenario
+     ____________
+
+     Alice(CLIENT)                       Bob(SECUREPORT)
+        |                                 |
+        |     SEND FREE REQUEST           |
+        |     Status-Report=yes           |
+        | - - - - - - - - - - - - - - >   |
+        |     MSRP 200 OK                 |
+        | < - - - - - - - - - - - - - -   |
+        |                                 |
+        |     waitForRequests()           |
+        | - - - - - - - - - - - - - - -   |
+        |            			          |
+     -->
+
+    <function name="setVariable" module="Basic">
+        <parameter>CLIENT</parameter>
+        <configuration>MSRPSERVER/CLIENTPORT</configuration>
+    </function>
+
+    <function name="setVariable" module="Basic">
+        <parameter>SERVER</parameter>
+        <configuration>MSRPSERVER/PORT</configuration>
+    </function>
+
+    <function name="setVariable" module="Basic">
+        <parameter>SECUREPORT</parameter>
+        <configuration>MSRPSERVER/SECUREPORT</configuration>
+    </function>
+
+    <!-- start client side server  -->
+    <function name="startMSRPServer" module="MSRP">
+        <variable>CLIENT</variable>
+        <configuration>MSRPSERVER/TIMEOUT</configuration>
+    </function>
+
+
+    <function name="createConnection" module="MSRP">
+        <parameter>one</parameter>
+        <variable>CLIENT</variable>
+    </function>
+
+    <function name="enableCertCheck" module="MSRP">
+        <parameter>one</parameter>
+    </function>
+
+    <function name="setVariable" module="Basic">
+        <parameter>msrpbody1</parameter>
+        <parameter>Hi, I'm Alice!</parameter>
+    </function>
+
+    <function name="setVariableLines" module="Basic">
+        <parameter>2</parameter>
+        <parameter>headers1</parameter>
+        <parameter>To-Path:</parameter>
+        <parameter>
+            <parameter>msrps://</parameter>
+            <configuration>MSRPSERVER/REMOTEIPADDRESS</configuration>
+            <parameter>:</parameter>
+            <variable>SECUREPORT</variable>
+            <parameter>/9di4eae923wzd;tcp</parameter>
+        </parameter>
+        <parameter>From-Path:</parameter>
+        <parameter>
+            <parameter>msrps://</parameter>
+            <configuration>SYSTEM/IP</configuration>
+            <parameter>:</parameter>
+            <variable>CLIENT</variable>
+            <parameter>/iau39soe2843z;tcp</parameter>
+        </parameter>
+        <parameter>Message-ID:</parameter>
+        <parameter>12339sdqwer</parameter>
+        <parameter>Success-Report:</parameter>
+        <parameter>yes</parameter>
+    </function>
+
+    <function name="sendFreeRequest" module="MSRP">
+        <parameter>one</parameter>
+        <parameter>SEND</parameter>
+        <configuration>MSRPSERVER/REMOTEIPADDRESS</configuration>
+        <variable>SECUREPORT</variable>
+        <variable>headers1</variable>
+        <base64encode>
+            <variable>msrpbody1</variable>
+        </base64encode>
+        <parameter>send1234</parameter><!-- user defined txid-->
+        <parameter>$</parameter><!-- message chunk indicator-->
+    </function>
+    
+    <function name="waitForVariable" module="Basic">
+        <parameter>
+            <parameter>MSRP/RESPONSE/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+    <function name="removeVariables" module="Basic">
+        <parameter>
+            <parameter>MSRP/RESPONSE/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+    <function name="waitForResponses" module="MSRP">
+        <parameter>1</parameter>
+    </function>
+    
+     <function name="compareString" module="Basic">
+   		<variable>MSRP/RESPONSE/CODE</variable>
+        <parameter>200</parameter>
+    </function>
+   
+      <function name="waitForRequests" module="MSRP">
+        <parameter>1</parameter>
+    </function>
+    
+     <function name="sleep" module="Basic">
+		<parameter>100</parameter>
+	</function>
+
+    <function name="stopMSRPServer" module="MSRP"/>
+</test>

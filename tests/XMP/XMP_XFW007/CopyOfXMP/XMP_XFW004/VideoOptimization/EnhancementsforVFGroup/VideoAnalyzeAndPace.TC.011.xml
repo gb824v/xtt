@@ -1,0 +1,248 @@
+<test>
+
+	<function name="testName" module="Basic">
+		<parameter>VideoAnalyzeAndPace.TC.011</parameter>
+	</function>
+
+	<description>Validate PACE_Buffertime bytes are transferred as fast as possible (no pacing applied)</description>
+
+	<!-- Start Web Server -->
+	<function name="startWebServer" module="HTTP"/>
+
+	<function name="setClientTimeout" module="HTTP">
+		<parameter>120000</parameter>
+	</function>
+
+	<function name="disableKeepAlive" module="HTTP"/>
+
+	<function name="setServerHeader" module="HTTP">
+		<parameter>content-type</parameter>
+		<parameter>video/x-flv</parameter>
+	</function>
+
+	<function name="setServerReturnCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<!-- Delete Message Store -->
+	<subtest>deleteMediaStoreAll.xml</subtest>
+
+	<!-- Query the name of the active MEDIA-STORE process -->
+	<function name="activeProcessToVar" module="Remote">
+		<parameter>MEDIA-STORE</parameter>
+		<parameter>Media_Store_Process_Name</parameter>
+	</function>
+
+	<function name="activeProcessToVar" module="Remote">
+		<parameter>HTTP-PROXY</parameter>
+		<parameter>HTTP-PROXY</parameter>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>restart process </parameter>
+			<variable>HTTP-PROXY/0</variable>
+		</parameter>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>enable trac -v PACE HTTP-PROXY.*.*</parameter>
+	</function>
+	
+	<!-- Prepare the Request Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>vo_reqmod_online_opt.xml</parameter>
+		<xml>
+		<requestModifications xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="requestmodifications.xsd">
+		<table name="DisableThings" phase="httpRequest">
+			<selector>
+				<modifyContext name="Skip_CACHE" value="'true'"/>
+				<modifyContext name="Skip_VIRUSSCANNER" value="'true'"/>
+				<modifyContext name="FTR_HtmlTidyDisable" value="'true'"/>
+				<modifyContext name="Skip_COOKIE" value="'true'"/>
+				<modifyContext name="Skip_ICC" value="'true'"/>
+				<modifyContext name="FTR_MultipartCompose_Disable" value="'true'"/>
+				<modifyContext name="FTR_Prefetch_Disable" value="'true'"/>
+				<modifyContext name="FTR_Deflate_Disable" value="'true'"/>
+				<modifyContext name="FTR_Gzip_Disable" value="'true'"/>
+			</selector>
+		</table>
+		<table name="XTT_videoOptimization" phase="httpRequest">
+			<selector urlPattern="http://*/videos/{.*\.flv}">
+				<modifyContext name="FTR_PaceVideo" value="'true'"/>
+			</selector>
+		</table>
+		<table name="Add Category to the HTTP Header" phase="httpResponse" >
+			<selector>
+			<modifyContext name="HTA_RespHdr_PACE_Buffertime" value="PACE_Buffertime" />
+			</selector>
+		</table>
+
+		</requestModifications>
+		</xml>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>vo_reqmod_online_opt.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded requestmodifications.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+
+	<!-- extract current WorkflowConstants configuration file -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>extract data workflowconstants default-workflowconstants.xml</parameter>
+	</function>
+
+	<!-- Prepare the Request Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>xmp_WorkflowConstants.xml</parameter>
+		<xml>
+		<workflowConstants>
+		     <workflowConstant name="defaultAuthenticationType">radius</workflowConstant>
+             <workflowConstant name="videoPacingBufferTime">5000</workflowConstant>
+        </workflowConstants>
+       </xml>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>load data xmp_WorkflowConstants.xml</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded workflowconstants.*</parameter>
+		<parameter>test</parameter>
+	</function>
+
+
+	<!-- Radius Login -->
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+	<!-- Send the video retrieval request -->
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>
+			<parameter>http://</parameter>
+			<configuration>system/ip</configuration>
+			<parameter>/videos/Ddspringle1-OpenOceanTorrus105.flv</parameter>
+		</parameter>
+	</function>
+
+	<!-- Validate Response Code Send by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<!-- Media Store should not contain items, since the video is directly sent-->
+	<function name="executeRemoteXMSCommand" module="Remote">
+	<parameter>
+		<parameter>run command amocli -k count TI:F.CEE.</parameter>
+		<variable>Media_Store_Process_Name</variable>
+		<parameter>:AMO</parameter>
+	</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>amocli: 0 items counted</parameter>
+		<parameter>response</parameter>
+	</function>
+
+	<!-- Checking PACE_Buffersize value -->
+	<function name="queryText" module="BASIC">
+		<variable>HTTP/HEADER/PACE_Buffertime</variable>
+	<parameter>PACE_Buffertime</parameter>
+		<parameter>(\d++)</parameter>
+	</function>
+	
+	<function name="executeRemoteCommand" module="Remote">
+		<parameter>
+			<parameter>/bin/grep bytePosition=0 </parameter>
+			<configuration>remote/procpath</configuration>
+			<parameter>/</parameter>
+			<variable>HTTP-PROXY/0</variable>
+			<parameter>/</parameter>
+			<variable>HTTP-PROXY/0</variable>
+			<parameter>.out</parameter>
+		</parameter>
+	</function>
+
+	<!-- Check for no delay of first chunk pacing according to videoPacingBufferTime -->
+	<function name="queryResponse" module="Remote">
+		<parameter>timepos=\d++us now=\d++us timediff=-(\d++)us late delivery, no delay</parameter>
+		<parameter>timediff</parameter>
+	</function>
+
+	<function name="info" module="Basic">
+		<parameter>timediff_0=</parameter>
+		<variable>timediff/0</variable>
+	</function>
+
+	<function name="info" module="Basic">
+		<parameter>timediff_1=</parameter>
+		<variable>timediff/1</variable>
+	</function>
+
+	<function name="subtractVariable" module="Basic">
+		<parameter>subtractVariable_1</parameter>
+		<variable>timediff/0</variable>
+		<parameter>5000000</parameter>
+	</function>
+	
+    <!-- the first 5s should be sent with full speed -->
+	<function name="lessThan" module="basic">
+		<variable>subtractVariable_1</variable>
+		<parameter>15000</parameter> 
+	</function>
+	
+
+	<!-- Radius Logoff -->
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+	<!-- Purge the Request Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>REQMOD_EmptyRules.xml</parameter>
+		<parameter>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;requestModifications&gt;&lt;/requestModifications&gt;</parameter>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>REQMOD_EmptyRules.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded requestmodifications.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+
+	<!-- load the default-workflowconstants file -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>load data default-workflowconstants.xml</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded workflowconstants.*</parameter>
+		<parameter>test</parameter>
+	</function>
+
+	<!-- Stop Web Server -->
+	<function name="stopWebServer" module="HTTP"/>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>disable trac -v </parameter>
+	</function>
+
+</test>

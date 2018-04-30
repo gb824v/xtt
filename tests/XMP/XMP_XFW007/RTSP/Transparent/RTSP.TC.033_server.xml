@@ -1,0 +1,69 @@
+<test>
+	<name>RTSP.TC.033_server</name>
+	<description>Validate RTSP implementation handles excessively lengthy request body (request is initiated by client)Server file</description>
+
+
+	 <!-- client side server for responses -->
+    <function name="setVariable" module="Basic">
+        <parameter>SERVER</parameter>
+        <configuration>RTSPSERVER/PORT</configuration>
+    </function>
+       
+    <!-- server side server for requests -->
+    <function name="startRTSPServer" module="RTSP">
+        <variable>SERVER</variable>
+        <configuration>RTSPSERVER/TIMEOUT</configuration>
+        <testpath>rtsp</testpath>
+    </function>
+    
+	<!-- testing -->
+	<function name="waitForVariable" module="Basic">
+		<parameter>
+			<parameter>RTSP/</parameter>
+			<variable>SERVER</variable>
+			<parameter>/SETUP/FINISHED/REQUEST</parameter>
+		</parameter>
+	</function>
+
+	<function name="removeVariables" module="Basic">
+		<parameter>
+			<parameter>RTSP/</parameter>
+			<variable>SERVER</variable>
+			<parameter>/SETUP/FINISHED/REQUEST</parameter>
+		</parameter>
+	</function>
+
+	<!-- 
+		 As per XMP's behaviour, XMP doesnot forward the request and closes the connection.
+	     Hence, this test case would fail.
+	-->
+
+	<function name="sleep" module="Basic">
+		<parameter>120000</parameter>
+	</function>
+
+   <function name="waitForVariable" module="Basic">
+		<parameter>
+			<parameter>RTSP/</parameter>
+			<variable>SERVER</variable>
+			<parameter>/SET_PARAMETER/FINISHED/REQUEST</parameter>
+		</parameter>
+	</function>
+
+	<function name="removeVariables" module="Basic">
+		<parameter>
+			<parameter>RTSP/</parameter>
+			<variable>SERVER</variable>
+			<parameter>/SET_PARAMETER/FINISHED/REQUEST</parameter>
+		</parameter>
+	</function>
+
+<!--
+	<function name="sleep" module="Basic">
+		<parameter>20000</parameter>
+	</function>
+-->
+    <function name="stopRTSPServer" module="RTSP"/>
+	
+
+</test>

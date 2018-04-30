@@ -1,0 +1,42 @@
+<test>
+    <configuration>xsam_config.xml</configuration>
+    <function name="testName" module="Basic">
+        <parameter>TC_1.1.5</parameter>
+    </function>
+    <description>Add new content provider (When content provider SMPP short code length is more than 24.)</description> 
+
+    <function name="SOAPClient" module="SOAP_API" >
+		<configuration>XSAM/PROVISIONINGURL</configuration>
+		<xml><soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsdl="http://www.724solutions.com/wsdl">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <wsdl:addContentProvider soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+         <String_1 xsi:type="xsd:string">123456789012345678901234567</String_1>
+		 <String_2 xsi:type="xsd:string">Manoj</String_2>
+      </wsdl:addContentProvider>
+   </soapenv:Body>
+</soapenv:Envelope></xml>
+		<parameter>Body/return</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>500</parameter>
+	</function>
+
+	<function name="info" module="BASIC">
+		 <variable>SOAP_API/BODY/PLAIN</variable>
+	</function>
+	
+	<function name="queryText" module="BASIC">
+		<variable>SOAP_API/BODY/PLAIN</variable>
+		<parameter>dev/null</parameter>
+		<parameter>&lt;errorCode.*&gt;103&lt;/errorCode&gt;</parameter>
+	</function>
+	
+ <function name="queryText" module="BASIC">
+		<variable>SOAP_API/BODY/PLAIN</variable>
+		<parameter>dev/null</parameter>
+		<parameter>&lt;message.*&gt;Content provider SMS short code can be max 24 character long&lt;/message&gt;</parameter>
+	</function> 
+
+</test>

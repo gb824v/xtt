@@ -1,0 +1,48 @@
+<test>	    
+	<name>XMP.CONNECT.VIRUS.001</name>
+	<description>XMP.CONNECT.VIRUS.001</description>
+
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+	<function name="startWebServer" module="HTTP"/>
+
+	<function name="setCacheFile" module="HTTP">
+		<parameter>TC001.html</parameter>
+		<parameter>X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*</parameter>
+	</function>
+
+	<function name="setCacheFile" module="HTTP">
+		<parameter>TC002.html</parameter>
+		<xml><html>
+<body>
+This is the initial file FILLTO64CHARACTERSXXXXXXXXXXXXXXXXXXXXX
+</body>
+</html>
+</xml>
+	</function>
+
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>
+			<parameter>http://</parameter>
+			<configuration>system/ip</configuration>
+			<parameter>/TC001.html</parameter>
+		</parameter>
+	</function>
+	
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>	
+	
+	<function name="queryBody" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>This is the initial file FILLTO64CHARACTERSXXXXXXXXXXXXXXXXXXXXX</parameter>
+	</function>
+
+	<function name="stopWebServer" module="HTTP"/>
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function> 
+</test>

@@ -1,0 +1,57 @@
+<test>
+<configuration>xsam_config.xml</configuration>
+
+  <function name="testName" module="Basic">
+     <parameter>TC_2.2</parameter>
+ </function>
+
+
+ <description>CP sends ""bind_transceiver"" to SMSC and gets disconnected before receiving the ACK	
+-----------------------------------------------------------------------------------------------------
+Step1: Simulate the CP and SMSC using XTT Tool.
+Step2: From the CP XTT tool sent a "bind_transceiver" request.TCP Connection between CP and XSAM gets established.
+Step3: Before receiving the ACK from SMSC, disconnect the connection between the CP and XSAM.
+
+Comment:This Test case will fail
+------------------------------------------------------------------------------------------------------
+</description>
+
+
+	<function name="startSMSCServer" module="SMS">
+		<configuration>SMSCServer/SMPPPort</configuration>
+		<parameter>SMPP</parameter>
+	</function>
+
+       <thread>
+	   <function name="openConnection" module="SMPP">
+            <parameter>connection</parameter>
+            <configuration>XSAM/IP</configuration>
+            <configuration>XSAM/SMPPPort</configuration>
+        </function>
+
+      <function name="sendSMPPPacket" module="SMPP">
+        <parameter>connection</parameter>
+        <parameter>BIND_TRANSCEIVER</parameter>
+        <parameter>internal</parameter>
+        <parameter>systemid</parameter> <!--system_id, parameter[4]-->
+        <parameter>password</parameter> <!--password, parameter[5]-->
+        <parameter>system_type</parameter> <!--system_type, parameter[6]-->
+        <parameter>0x50</parameter><!--version, parameter[7]-->
+        <parameter>0</parameter><!--addr_ton, parameter[8]-->
+        <parameter>0</parameter><!--addr_npi,parameter[9]-->
+        <configuration>XSAM/SMPPSHORTCODE</configuration>
+        <parameter>0</parameter>
+       </function>
+       </thread>
+
+	  <function name="sleep" module="BASIC">
+            <parameter>10</parameter>
+      </function>
+
+	  <function name="closeConnection" module="SMPP">
+            <parameter>connection</parameter>
+      </function>
+      
+     <function name="stopSMSCServer" module="SMS"/> 
+
+</test>

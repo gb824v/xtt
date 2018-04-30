@@ -1,0 +1,78 @@
+<test>
+    <configuration>xsnUserConfig.xml</configuration>
+    <function name="testName" module="Basic">
+        <parameter>XSN.ERR.MM7.TC.001</parameter>
+    </function>
+    <description>Missing Mandatory header field &lt;Message-Type&gt;</description>
+
+    <function name="createMM7Soap" module="VASP">
+        <parameter>xxxSubmitReq</parameter>
+        <parameter>VASPID001</parameter>
+        <parameter>VASID002</parameter>
+    </function>
+    <function name="setMessageBoundary" module="VASP">
+        <parameter>000001message</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='xxxSubmitReq']</parameter>
+        <parameter>Recipients</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='Recipients']</parameter>
+        <parameter>To</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='To'][last()]</parameter>
+        <parameter>Number</parameter>
+        <configuration>noCommunity/UnknownUser</configuration>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='xxxSubmitReq']</parameter>
+        <parameter>Content</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='Content']</parameter>
+        <parameter>href</parameter>
+        <parameter>cid:xtt-test002</parameter>
+    </function>
+    <function name="addContent" module="VASP">
+        <file>sendMM7data2.txt</file>
+    </function>
+    <!--function name="previewRequest" module="VASP" /-->
+    <function name="sendPostRequest" module="VASP"/>
+    <function name="checkResponseCode" module="VASP">
+        <parameter>500</parameter>
+    </function>
+	<function name="validateXML" module="XML">
+	    <variable>HTTP/BODY/PLAIN</variable>
+ 	    <parameter></parameter>
+        <configuration>MMSCSERVER/XMLNSENV</configuration>
+        <configuration>MMSCSERVER/SOAPXSD</configuration>
+        <configuration>MMSCSERVER/XMLNSMM7</configuration>
+        <configuration>MMSCSERVER/MM7XSD</configuration>
+    </function>    
+    <function name="queryBody" module="VASP">
+        <parameter>temp</parameter>
+        <parameter>&lt;StatusCode&gt;4004&lt;/StatusCode&gt;</parameter>
+    </function>
+    <function name="queryBody" module="VASP">
+        <parameter>temp</parameter>
+        <parameter>&lt;StatusText&gt;Validation error&lt;/StatusText&gt;</parameter>
+    </function>
+    <function name="queryBody" module="VASP">
+        <parameter>temp</parameter>
+        <parameter>&lt;env:Fault&gt;([\s\n]*)&lt;faultcode&gt;env:Client&lt;/faultcode&gt;</parameter>
+    </function>
+    <function name="queryBody" module="VASP">
+        <parameter>temp</parameter>
+        <parameter>&lt;faultstring&gt;Client error&lt;/faultstring&gt;</parameter>
+    </function>
+    <function name="queryBody" module="VASP">
+        <parameter>temp</parameter>
+        <parameter>&lt;detail&gt;</parameter>
+    </function>
+    <function name="queryBody" module="VASP">
+        <parameter>temp</parameter>
+        <parameter>&lt;RSErrorRsp</parameter>
+    </function>
+</test>

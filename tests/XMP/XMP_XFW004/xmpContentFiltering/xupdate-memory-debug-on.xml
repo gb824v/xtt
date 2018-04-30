@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!-- trun on Memory Debug -->
+<modifications xmlns="http://www.xmldb.org/xupdate" version="1.0">
+    <append select="/component-view/processgroup">
+        <element name="env-variable">
+            <attribute name="extensible">false</attribute>
+            <attribute name="name">CEECFG_MemoryDebug</attribute>
+            <element name="value">true</element>
+        </element>
+    </append>
+    <append select="/component-view/processgroup">
+        <element name="env-variable">
+            <attribute name="extensible">false</attribute>
+            <attribute name="name">CEECFG_MemoryOptimizerSecs</attribute>
+            <element name="value">0</element>
+        </element>
+    </append>
+</modifications>

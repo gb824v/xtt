@@ -1,0 +1,65 @@
+<test>
+
+    <function name="testName" module="Basic">
+        <parameter>XMS.TC.001</parameter>
+    </function>
+
+    <function name="sendRemoteCommand" module="Remote">
+        <configuration>xmg/path</configuration>
+        <parameter>bin/xms show file</parameter>
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        <parameter>(0.*displayed)</parameter>
+        <parameter>xmsTC001/temp</parameter>
+    </function>
+
+    <function name="sendRemoteCommand" module="Remote">
+        <parameter>writeFile test.txt </parameter>
+        <file>test.txt</file>
+    </function>    
+    
+    <function name="sendRemoteCommand" module="Remote">
+        <configuration>xmg/path</configuration>
+        <parameter>bin/xms load file test.txt</parameter>
+    </function>
+
+    <function name="sendRemoteCommand" module="Remote">
+        <configuration>xmg/path</configuration>
+        <parameter>bin/xms show file</parameter>
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        <parameter>(1.*displayed)</parameter>
+        <parameter>xmsTC001/temp</parameter>
+    </function>
+
+    <function name="sendRemoteCommand" module="Remote">
+        <configuration>xmg/path</configuration>
+        <parameter>bin/xms extract file test.txt test2.txt</parameter>
+    </function>
+
+    <function name="sendRemoteCommand" module="Remote">
+        <parameter>diff -s test.txt test2.txt</parameter>
+    </function>    
+    
+    <function name="queryResponse" module="Remote">
+        <parameter>(.*are identical)</parameter>
+        <parameter>xmsTC001/temp</parameter>
+    </function>
+
+    <function name="sendRemoteCommand" module="Remote">
+        <configuration>xmg/path</configuration>
+        <parameter>bin/xms delete file test.txt</parameter>
+    </function>
+
+    <function name="sendRemoteCommand" module="Remote">
+        <configuration>xmg/path</configuration>
+        <parameter>bin/xms show file</parameter>
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        <parameter>(0.*displayed)</parameter>
+        <parameter>xmsTC001/temp</parameter>
+    </function>    
+</test>

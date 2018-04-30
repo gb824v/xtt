@@ -1,0 +1,136 @@
+<test>
+    <name>MBSPPB.MultipleRecipients.MT.TC.007</name>
+    <configuration>../configXSAM.xml</configuration>
+
+    <description>[TPI->MM7] 1000 Recipients / 1000 DIRECT-DEBIT failed / DirectDebitingFailureHandling service parameter is 0 (TERMINATE_OR_BUFFER) - NO Message Delivery / No Valid Recipient Response is sent to TP</description>
+
+    <function name="setVariable" module="Basic">
+        <parameter>AMOUNT</parameter>
+        <parameter>3.456</parameter>
+    </function>
+
+    <function name="setOverrideNumber" module="SIS">
+         <parameter>41790000005</parameter>
+    </function>
+    
+    <function name="setVariable" module="Basic">
+         <parameter>SKIP_DIAMETER</parameter>
+         <parameter>true</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+         <parameter>SKIP_MMSC</parameter>
+         <parameter>true</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+        <parameter>SKIP_VASPQUERY</parameter>
+        <parameter>true</parameter>
+    </function>
+     <function name="startMMSCServer" module="MMSC"/>
+
+    <function name="startDiameterServer" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT</configuration>
+        <parameter>
+            <parameter>
+&lt;Diameter&gt;
+    &lt;response&gt;
+        &lt;DISCONNECT_PEER_REQUEST proxiable="true" error="false" tretr="false"&gt;
+            &lt;RESULT_CODE            value="DIAMETER_SUCCESS"    mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_REALM           value="ORIGIN_REALM"        mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+        &lt;/DISCONNECT_PEER_REQUEST&gt; 
+        &lt;DEVICE_WATCHDOG_REQUEST proxiable="true" error="false" tretr="false"&gt;
+            &lt;RESULT_CODE            value="DIAMETER_SUCCESS"    mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_REALM           value="ORIGIN_REALM"        mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+        &lt;/DEVICE_WATCHDOG_REQUEST&gt;
+        &lt;CAPABILITIES_EXCHANGE_REQUEST proxiable="true" error="false" tretr="false"&gt;
+            &lt;RESULT_CODE            value="DIAMETER_SUCCESS"    mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_REALM           value="ORIGIN_REALM"        mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;VENDOR_ID              request="VENDOR_ID" /&gt;
+            &lt;PRODUCT_NAME           request="PRODUCT_NAME" /&gt;
+            &lt;SUPPORTED_VENDOR_ID    request="SUPPORTED_VENDOR_ID" /&gt;
+            &lt;AUTH_APPLICATION_ID    request="AUTH_APPLICATION_ID" /&gt;
+        &lt;/CAPABILITIES_EXCHANGE_REQUEST&gt;
+        &lt;CREDIT_CONTROL_REQUEST proxiable="true" error="false" tretr="false"&gt;
+            &lt;SESSION_ID             request="SESSION_ID"/&gt;
+            &lt;RESULT_CODE            value="DIAMETER_CREDIT_LIMIT_REACHED"    mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_REALM           request="DESTINATION_REALM" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;AUTH_APPLICATION_ID    value="4"                   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;CC_REQUEST_TYPE        request="CC_REQUEST_TYPE"   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;CC_REQUEST_NUMBER      request="CC_REQUEST_NUMBER" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+        &lt;/CREDIT_CONTROL_REQUEST&gt; 
+    &lt;/response&gt;
+&lt;/Diameter&gt;
+            </parameter>
+        </parameter>
+        <configuration>DIAMETERSERVER/TIMEOUT</configuration>
+    </function>
+
+    <conditional variable="SERVICE-SHORTID" targetValue="null">
+        <function name="setVariable" module="Basic">
+            <parameter>SERVICE-SHORTID</parameter>
+            <parameter>
+                <configuration>xsam/serviceGroupPrefix</configuration>
+                <configuration>xsam/serviceGroupNoMMSDDFH</configuration>
+            </parameter>
+        </function>
+    </conditional>
+    <conditional variable="SERVICE-NAME" targetValue="null">
+        <function name="setVariable" module="Basic">
+            <parameter>SERVICE-NAME</parameter>
+            <parameter>
+                <parameter>XTT</parameter><configuration>xsam/serviceGroupNoMMSDDFH</configuration><parameter>-</parameter><configuration>xsam/serviceNoMMSDDFH</configuration><parameter>0</parameter>
+            </parameter>
+        </function>
+    </conditional>   
+    
+    <!--function name="setVariable" module="Basic">
+        <parameter>MSISDNSTART</parameter>
+        <parameter>60000000999</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+        <parameter>MSISDNSTOP</parameter>
+        <parameter>60000001000</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+        <parameter>MSISDNSIS</parameter>
+        <parameter>1</parameter>
+    </function-->
+
+    <function name="waitForSpecificRequests" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT</configuration>
+        <parameter>CAPABILITIES_EXCHANGE_REQUEST</parameter>
+        <parameter>1</parameter>
+    </function>
+
+    <thread>
+        <function name="sleep" module="Basic">
+            <configuration>DIAMETERSERVER/TIMEOUT</configuration>
+        </function> 
+        <function name="waitForSpecificRequests" module="Diameter">
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>CREDIT_CONTROL_REQUEST</parameter>
+            <parameter>1000</parameter>
+        </function>
+    </thread> 
+    
+    <subtest>sendMultiMMS.xml</subtest>
+
+    <function name="checkResponseCode" module="VASP">
+        <parameter>200</parameter>
+    </function>
+    
+    <function name="queryBody" module="VASP">
+        <parameter>tpiResponseCode</parameter>
+        <parameter>&lt;state&gt;(1000)&lt;/state&gt;\s+&lt;state-text&gt;Ok - No valid recipient found for sending the request to MMSC&lt;/state-text&gt;</parameter>
+    </function> 
+    <function name="waitForTimeoutRequests" module="MMSC">
+        <configuration>MMSCServer/TIMEOUT</configuration>
+            <parameter>0</parameter>
+    </function> 
+    <function name="stopDiameterServer" module="Diameter"/>
+    <function name="stopMMSCServer" module="MMSC"/>
+
+</test>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+
+<dbupdates> 
+<subscribers>
+
+	<remove subscriber="123456797" />
+	
+	<add subscriber=""> </add> <!-- invalid subscriber id 1.22 -->
+	
+	
+</subscribers>
+</dbupdates>

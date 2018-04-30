@@ -1,0 +1,298 @@
+<test>
+    <name>XTT.TC.009</name>
+    <description>Test HTTPConnection, FunctionModule_HTTP and WebServer</description>
+    
+    <function name="startWebServer" module="HTTP"/>
+    <function name="startSecureWebServer" module="HTTP"/>
+
+    <div nocomment="Test redirect and secure connections">
+    <function name="createConnection" module="HTTP">
+        <parameter>REDIRECT</parameter>
+    </function>
+    
+    <function name="sendGetRequest" module="HTTP">
+        <parameter>REDIRECT</parameter>
+        <parameter>http://127.0.0.1/images</parameter>
+    </function>
+    <function name="checkResponseCode" module="HTTP">
+        <parameter>REDIRECT</parameter>
+        <parameter>200</parameter>
+    </function>
+    <function name="disableFollowRedirects" module="HTTP">
+        <parameter>REDIRECT</parameter>
+    </function>
+    <function name="sendGetRequest" module="HTTP">
+        <parameter>REDIRECT</parameter>
+        <parameter>http://127.0.0.1/images</parameter>
+    </function>
+    <function name="checkResponseCode" module="HTTP">
+        <parameter>REDIRECT</parameter>
+        <parameter>301</parameter>
+    </function>
+    <function name="sendGetRequest" module="HTTP">
+        <parameter>http://127.0.0.1/images</parameter>
+    </function>
+    <function name="checkResponseCode" module="HTTP">
+        <parameter>200</parameter>
+    </function>
+
+    <function name="createConnection" module="HTTP">
+        <parameter>SECURE</parameter>
+    </function>
+    <function name="sendGetRequest" module="HTTP">
+        <parameter>SECURE</parameter>
+        <parameter>https://127.0.0.1/images</parameter>
+    </function>
+    <function name="checkResponseCode" module="HTTP">
+        <parameter>SECURE</parameter>
+        <parameter>200</parameter>
+    </function>
+    <function name="sendGetRequest" module="HTTP">
+        <parameter>SECURE</parameter>
+        <parameter>https://127.0.0.1/images/</parameter>
+    </function>
+    <function name="checkResponseCode" module="HTTP">
+        <parameter>SECURE</parameter>
+        <parameter>200</parameter>
+    </function>
+    <function name="sendGetRequest" module="HTTP">
+        <parameter>SECURE</parameter>
+        <parameter>https://www.paypal.com/</parameter>
+    </function>
+    <function name="checkResponseCode" module="HTTP">
+        <parameter>SECURE</parameter>
+        <parameter>200</parameter>
+    </function>
+    <function name="sendGetRequest" module="HTTP">
+        <parameter>SECURE</parameter>
+        <parameter>https://www.paypal.com/</parameter>
+    </function>
+    <function name="checkResponseCode" module="HTTP">
+        <parameter>SECURE</parameter>
+        <parameter>200</parameter>
+    </function>
+    </div>
+    
+    <div nomomment="check if you can override the default index.html file">
+    <function name="setCacheFile" module="HTTP">
+        <parameter>/index.html</parameter>
+        <xml><html><body>hello world!</body></html></xml>
+    </function>
+    <function name="sendGetRequest" module="HTTP">
+        <parameter>http://127.0.0.1/</parameter>
+    </function>
+    <function name="checkResponseCode" module="HTTP">
+        <parameter>200</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>HTTP/DEFAULT/BODY/PLAIN</variable>
+        <xml><html><body>hello world!</body></html></xml>
+    </function>
+    <function name="clearCache" module="HTTP"/>
+    <function name="sendGetRequest" module="HTTP">
+        <parameter>http://127.0.0.1/</parameter>
+    </function>
+    <function name="checkResponseCode" module="HTTP">
+        <parameter>200</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>HTTP/DEFAULT/BODY/PLAIN</variable>
+        <file>
+            <parameter>../../</parameter>
+            <configuration>WEBSERVER/ROOT</configuration>
+            <parameter>/index.html</parameter>
+        </file>
+    </function>
+    <function name="sendGetRequest" module="HTTP">
+        <parameter>http://127.0.0.1/images/</parameter>
+    </function>
+    <function name="checkResponseCode" module="HTTP">
+        <parameter>200</parameter>
+    </function>
+    <function name="queryText" module="Basic">
+        <variable>HTTP/DEFAULT/BODY/PLAIN</variable>
+        <parameter>dev/null</parameter>
+        <parameter>Directory listing</parameter>
+    </function>
+    <function name="setCacheFile" module="HTTP">
+        <parameter>/images/index.html</parameter>
+        <xml><html><body>hello world!</body></html></xml>
+    </function>
+    <function name="sendGetRequest" module="HTTP">
+        <parameter>http://127.0.0.1/images/</parameter>
+    </function>
+    <function name="checkResponseCode" module="HTTP">
+        <parameter>200</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>HTTP/DEFAULT/BODY/PLAIN</variable>
+        <xml><html><body>hello world!</body></html></xml>
+    </function>
+    <function name="clearCache" module="HTTP"/>
+    </div>
+
+    <div nocomment="serverstatus">
+    <function name="sendGetRequest" module="HTTP">
+        <parameter>http://127.0.0.1/server-status</parameter>
+    </function>
+    <function name="checkResponseCode" module="HTTP">
+        <parameter>200</parameter>
+    </function>
+    </div>
+    
+    <div nocomment="Test the url contraction">
+    <function name="createConnection" module="HTTP">
+        <parameter>URLCONTRACT</parameter>
+    </function>
+    
+    <function name="sendGetRequest" module="HTTP">
+        <parameter>URLCONTRACT</parameter>
+        <parameter>http://127.0.0.1/images/index.html</parameter>
+    </function>
+    <function name="checkResponseCode" module="HTTP">
+        <parameter>URLCONTRACT</parameter>
+        <parameter>200</parameter>
+    </function>
+    <function name="checkServerURL" module="HTTP">
+        <parameter>http://127.0.0.1/images/index.html</parameter>
+    </function>
+    <function name="enableURLContraction" module="HTTP">
+        <parameter>URLCONTRACT</parameter>
+    </function>
+    <function name="sendGetRequest" module="HTTP">
+        <parameter>URLCONTRACT</parameter>
+        <parameter>http://127.0.0.1/images</parameter>
+    </function>
+    <function name="checkResponseCode" module="HTTP">
+        <parameter>URLCONTRACT</parameter>
+        <parameter>200</parameter>
+    </function>
+    <function name="checkServerURL" module="HTTP">
+        <parameter>/images/</parameter>
+    </function>
+
+    <function name="sendGetRequest" module="HTTP">
+        <parameter>URLCONTRACT</parameter>
+        <parameter>http://127.0.0.1/</parameter>
+    </function>
+    <function name="checkResponseCode" module="HTTP">
+        <parameter>URLCONTRACT</parameter>
+        <parameter>200</parameter>
+    </function>
+    <function name="checkServerURL" module="HTTP">
+        <parameter>/</parameter>
+    </function>
+
+    <function name="sendGetRequest" module="HTTP">
+        <parameter>URLCONTRACT</parameter>
+        <parameter>http://127.0.0.1/images/index.html?test=piff;puff=paff</parameter>
+    </function>
+    <function name="checkResponseCode" module="HTTP">
+        <parameter>URLCONTRACT</parameter>
+        <parameter>200</parameter>
+    </function>
+    <function name="checkServerURL" module="HTTP">
+        <parameter>/images/index.html?test=piff;puff=paff</parameter>
+    </function>
+    </div>
+
+    <div nocomment="Test the chunked encoding of the server">
+    <function name="createConnection" module="HTTP">
+        <parameter>CHUNKED</parameter>
+    </function>
+    
+    <function name="sendGetRequest" module="HTTP">
+        <parameter>CHUNKED</parameter>
+        <parameter>http://127.0.0.1/images/index.html?chunks=3</parameter>
+    </function>
+    <function name="checkResponseCode" module="HTTP">
+        <parameter>CHUNKED</parameter>
+        <parameter>200</parameter>
+    </function>
+
+    <function name="setServerHeader" module="HTTP">
+        <parameter>transfer-encoding</parameter>
+        <parameter>chunked</parameter>
+    </function>
+    <function name="setServerHeader" module="HTTP">
+        <parameter>content-length</parameter>
+        <parameter>NULL</parameter>
+    </function>
+    <function name="sendGetRequest" module="HTTP">
+        <parameter>CHUNKED</parameter>
+        <parameter>http://127.0.0.1/images/index.html</parameter>
+    </function>
+    <function name="checkResponseCode" module="HTTP">
+        <parameter>CHUNKED</parameter>
+        <parameter>200</parameter>
+    </function>
+    <function name="clearServerHeader" module="HTTP"/>
+    </div>
+
+    <div nocomment="Test the part delay without chunks">
+    <function name="createConnection" module="HTTP">
+        <parameter>PARTS</parameter>
+    </function>
+    
+    <function name="setCacheFile" module="HTTP">
+        <parameter>test.txt</parameter>
+        <parameter>0123456789ABCDEF</parameter>
+    </function>
+
+    <function name="sendGetRequest" module="HTTP">
+        <parameter>PARTS</parameter>
+        <parameter>http://127.0.0.1/test.txt?partdelay=1000;pieces=2</parameter>
+    </function>
+    <function name="checkResponseCode" module="HTTP">
+        <parameter>PARTS</parameter>
+        <parameter>200</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>HTTP/BODY/PLAIN</variable>
+        <parameter>0123456789ABCDEF</parameter>
+    </function>
+
+    <function name="sendGetRequest" module="HTTP">
+        <parameter>PARTS</parameter>
+        <parameter>http://127.0.0.1/test.txt?partdelay=1000;pieces=3</parameter>
+    </function>
+    <function name="checkResponseCode" module="HTTP">
+        <parameter>PARTS</parameter>
+        <parameter>200</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>HTTP/BODY/PLAIN</variable>
+        <parameter>0123456789ABCDEF</parameter>
+    </function>
+
+    <function name="sendGetRequest" module="HTTP">
+        <parameter>PARTS</parameter>
+        <parameter>http://127.0.0.1/test.txt?partdelay=1000;pieces=4</parameter>
+    </function>
+    <function name="checkResponseCode" module="HTTP">
+        <parameter>PARTS</parameter>
+        <parameter>200</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>HTTP/BODY/PLAIN</variable>
+        <parameter>0123456789ABCDEF</parameter>
+    </function>
+
+    <function name="sendGetRequest" module="HTTP">
+        <parameter>PARTS</parameter>
+        <parameter>http://127.0.0.1/test.txt?partdelay=1000;pieces=5</parameter>
+    </function>
+    <function name="checkResponseCode" module="HTTP">
+        <parameter>PARTS</parameter>
+        <parameter>200</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>HTTP/BODY/PLAIN</variable>
+        <parameter>0123456789ABCDEF</parameter>
+    </function>
+    <function name="clearServerHeader" module="HTTP"/>
+    </div>
+
+    <function name="stopWebServer" module="HTTP"/>
+    <function name="stopSecureWebServer" module="HTTP"/>
+</test>

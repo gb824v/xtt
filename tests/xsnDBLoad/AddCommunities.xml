@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<dbupdates> 
+
+<!-- XSN.DBLoad.CommAdd.TC004.1	Add 2 New Communities	-->
+
+<communities> 			
+<remove name="ABCSalesCor" />
+<remove name="SonyCorp" />
+
+<add name="ABCSalesCor" />
+<add name="SonyCorp" />
+</communities> 
+
+<!-- XSN.DBLoad.CommAdd.TC004.2	Add Sub Community -->
+
+<communities>  			
+<remove name="NewComSalesCor/Sales" />
+<remove name="NewComSalesCor/Sales/Asia" />
+
+<add name="NewComSalesCor/Sales" />
+<add name="NewComSalesCor/Sales/Asia" />
+</communities>
+
+
+
+<!-- XSN.DBLoad.CommAdd.TC004.4	Another Sub Community with existing name under another Grand Community.	-->
+
+<communities>
+<remove name="ABCSalesCor/Sales/Asia" />
+<add name="ABCSalesCor/Sales/Asia" />  
+</communities> 
+
+
+
+<!-- XSN.DBLoad.CommAdd.TC004.9	Should not allow to Add Community with Same name again	-->
+
+<communities>
+<remove name= "Asia" />
+<add name= "Asia" />
+<add name= "Asia" />
+</communities> 
+
+
+
+</dbupdates>
+

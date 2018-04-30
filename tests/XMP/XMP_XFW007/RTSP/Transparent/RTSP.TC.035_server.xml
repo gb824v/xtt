@@ -1,0 +1,203 @@
+ <test>
+	<name>RTSP.TC.035_server</name>
+	<description>Validate Media On Demand (Server file)</description>
+
+	<function name="startWebServer" module="HTTP"/>
+
+	 <function name="setCacheFile" module="HTTP">
+        <parameter>twister.sdp</parameter>
+        <parameter>
+				<crlf>v=0</crlf>
+				<crlf>o=- 2890844526 2890842807 IN IP4 192.16.24.202</crlf>
+				<crlf>s=RTSP Session</crlf>
+				<crlf>m=audio 0 RTP/AVP 0</crlf>
+				<crlf>a=rtsp://172.20.2.119/twister/audio.en</crlf>
+				<crlf>m=video 0 RTP/AVP 31</crlf>
+				<crlf>a=rtsp://172.20.2.119/twister/video</crlf>
+		</parameter>
+    </function>
+
+	<function name="setServerHeader" module="HTTP">
+		<parameter>content-type</parameter>
+		<parameter>application/sdp</parameter>
+	</function>
+
+	<function name="setServerReturnCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	 <function name="waitForRequests" module="HTTP">
+        <parameter>1</parameter>
+    </function>
+
+   <function name="stopWebServer" module="HTTP"/>
+
+	 <!-- client side server for responses -->
+    <function name="setVariable" module="Basic">
+        <parameter>CLIENT</parameter>
+        <configuration>RTSPSERVER/CLIENTPORT</configuration>
+    </function>
+    <!-- client side server for responses -->
+    <function name="setVariable" module="Basic">
+        <parameter>AUDIOSERVER</parameter>
+        <configuration>RTSPSERVER/PORT</configuration>
+    </function>
+
+	<function name="setVariable" module="Basic">
+        <parameter>VIDEOSERVER</parameter>
+        <parameter>556</parameter>
+    </function>
+
+    <!-- client side server for responses -->
+    <function name="startRTSPServer" module="RTSP">
+        <variable>AUDIOSERVER</variable>
+        <configuration>RTSPSERVER/TIMEOUT</configuration>
+        <testpath>rtsp</testpath>
+    </function>
+
+	<function name="startRTSPServer" module="RTSP">
+        <variable>VIDEOSERVER</variable>
+        <configuration>RTSPSERVER/TIMEOUT</configuration>
+        <testpath>rtsp</testpath>
+    </function>
+
+	<function name="setServerHeader" module="RTSP">
+        <parameter>Transport</parameter>
+        <parameter>RTP/AVP/UDP;unicast;client_port=3056-3057;
+                      server_port=5000-5001</parameter>
+    </function>
+	
+	
+    <function name="waitForVariable" module="Basic">
+	<parameter>
+		<parameter>RTSP/</parameter>
+		<variable>AUDIOSERVER</variable>
+		<parameter>/SETUP/FINISHED/REQUEST</parameter>
+	</parameter>
+	</function>
+
+	<function name="removeVariables" module="Basic">
+		<parameter>
+			<parameter>RTSP/</parameter>
+			<variable>AUDIOSERVER</variable>
+			<parameter>/SETUP/FINISHED/REQUEST</parameter>
+		</parameter>
+	</function>
+
+	<function name="clearServerHeader" module="RTSP" />
+
+
+	<function name="setServerHeader" module="RTSP">
+        <parameter>Transport</parameter>
+        <parameter>RTP/AVP/UDP;unicast;client_port=3058-3059;server_port=5002-5003</parameter>
+    </function>
+	
+	
+    <function name="waitForVariable" module="Basic">
+	<parameter>
+		<parameter>RTSP/</parameter>
+		<variable>VIDEOSERVER</variable>
+		<parameter>/SETUP/FINISHED/REQUEST</parameter>
+	</parameter>
+	</function>
+
+	<function name="removeVariables" module="Basic">
+		<parameter>
+			<parameter>RTSP/</parameter>
+			<variable>VIDEOSERVER</variable>
+			<parameter>/SETUP/FINISHED/REQUEST</parameter>
+		</parameter>
+	</function>
+
+	<function name="clearServerHeader" module="RTSP" />
+	
+	 <function name="setServerHeader" module="RTSP">
+		<parameter>Range</parameter>
+		<parameter>smpte=0:10:00-0:20:00</parameter>
+    </function>
+
+	<function name="setServerHeader" module="RTSP">
+		<parameter>RTP-Info</parameter>
+		<parameter>url=rtsp://172.20.2.119/twister/video;seq=12312232;rtptime=78712811</parameter>
+    </function>
+
+	<function name="waitForVariable" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>VIDEOSERVER</variable>
+            <parameter>/PLAY/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+    <function name="removeVariables" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>VIDEOSERVER</variable>
+            <parameter>/PLAY/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+	<function name="clearServerHeader" module="RTSP" />
+
+	<function name="setServerHeader" module="RTSP">
+		<parameter>Range</parameter>
+		<parameter>smpte=0:10:00-0:20:00</parameter>
+    </function>
+
+	<function name="setServerHeader" module="RTSP">
+		<parameter>RTP-Info</parameter>
+		<parameter>url=rtsp://172.20.2.119/twister/audio.en ;seq=876655;rtptime=1032181</parameter>
+    </function>
+
+	<function name="waitForVariable" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>AUDIOSERVER</variable>
+            <parameter>/PLAY/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+    <function name="removeVariables" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>AUDIOSERVER</variable>
+            <parameter>/PLAY/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+	
+	<function name="waitForVariable" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>AUDIOSERVER</variable>
+            <parameter>/TEARDOWN/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+    <function name="removeVariables" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>AUDIOSERVER</variable>
+            <parameter>/TEARDOWN/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+	 <function name="waitForVariable" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>VIDEOSERVER</variable>
+            <parameter>/TEARDOWN/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+    <function name="removeVariables" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>VIDEOSERVER</variable>
+            <parameter>/TEARDOWN/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function> 
+
+	<!--function name="sleep" module="Basic">
+		<parameter>100000</parameter>
+	</function-->
+
+    <function name="stopRTSPServer" module="RTSP"/>
+	
+
+</test>

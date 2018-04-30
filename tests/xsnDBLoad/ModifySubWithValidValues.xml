@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<dbupdates> 
+<subscribers>
+
+<!-- XSN.DBLoad.SubrMod.TC002.2	Modify to add FirstName	-->
+	<remove subscriber="223456103"/>
+	<add subscriber="223456103"></add>
+	<modify subscriber="223456103"> <firstName value="NewName" /> </modify> 
+
+<!-- XSN.DBLoad.SubrMod.TC002.3 Modify existing LastName -->
+	<remove subscriber="223456104"/>
+	<add subscriber="223456104"> <lastName value="Last_Name"/> </add>
+	<modify subscriber="223456104"> <lastName value="NewLastName" /></modify> 
+
+<!-- XSN.DBLoad.SubrMod.TC002.4	Modify Born -->
+	<remove subscriber="233456105"/>
+	<add subscriber="233456105"> <born value="1993-12-01"/></add>
+	<modify subscriber="233456105"> <born value="1990-12-01" /> </modify> 
+
+<!-- XSN.DBLoad.SubrMod.TC002.5 Modify Password	-->
+	<remove subscriber="243456106"/>
+	<add subscriber="243456106"> <password value="hello!123"/></add>
+	<modify subscriber="243456106"> <password value="Goodbye!123" /> </modify> 
+
+
+</subscribers>
+</dbupdates>

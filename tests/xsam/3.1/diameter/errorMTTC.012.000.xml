@@ -1,0 +1,174 @@
+<test>
+    <name>MBSPPB.ErrorScenarios.MT.TC.012.000</name>
+    <configuration>../configXSAM.xml</configuration>
+
+    <description>[TPI->SMS] CreditControlRequest to ISCP timeout, ISCP_DIRECT_DEBIT_FAILURE_HANDLING=CONTINUE</description>
+
+<!-- 
+
+Settings / Services
+____________________
+
+ServiceName      ServiceGroup    Template   IscpDirectDebitFailureHandling  IscpInterrogate
+___________________________________________________________________________________________________
+         
+XTT3-600          4003            MMSSubmit    0 = TERMINATE_OR_BUFFER      9 = always interrogate
+
+
+Testscenario
+____________
+
+ISCP (XTT)                          MBS                           TP
+
+   |                                 |                             |
+   | CAPABILITIES_EXCHANGE_REQUEST   |                             |
+   | - - - - - - - - - - - - - - >   |                             |
+   | < - - - - - - - - - - - - - -   |                             |
+   |                                 |           sendMMS           |
+   |                                 |  < - - - - - - - - - - -    |
+   |                                 |                             |
+   |     CREDIT_CONTROL_REQUEST      |                             |
+   | < - - - - - - - - - - - - - -   |                             |
+   |                                 |                             |
+   | no response                 (TIMEOUT)                         |
+   |                                 |                             |
+   |                                 |                             |
+                                  logscan 
+                        "billingInfo - ISCP_Charged_Amount" = NIL
+                        "billingInfo - Send_Message = TRUE
+-->
+
+    <function name="setVariable" module="Basic">
+        <parameter>AMOUNT</parameter>
+        <parameter>2.345</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+        <parameter>MSISDN</parameter>
+        <parameter>41790000005</parameter>
+    </function>
+    <!--
+    From SIS for MSISDN=41790000005
+        TAC=490518
+        SNR=333333
+        SVN=4.3
+        IMEISV=4905180033333343
+    -->
+    <function name="setVariable" module="Basic">
+        <parameter>IMEISV</parameter>
+        <parameter>4905180033333343</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+        <parameter>INTERROGATIONLEVEL</parameter>
+        <parameter>9</parameter>
+    </function>
+    
+    <function name="setVariable" module="Basic">
+        <parameter>ISCP_DIRECT_DEBIT_FAILURE_HANDLING</parameter>
+        <parameter>0</parameter>
+    </function>
+
+    <function name="setVariable" module="Basic">
+        <parameter>SERVICE-NAME</parameter>
+        <parameter>
+            <parameter>XTT</parameter><configuration>xsam/serviceGroupNoSMSDDFH</configuration><parameter>-</parameter><configuration>xsam/serviceNoSMSDDFH</configuration><variable>ISCP_DIRECT_DEBIT_FAILURE_HANDLING</variable><parameter></parameter>
+        </parameter>
+    </function>
+
+    <function name="setVariable" module="Basic">
+         <parameter>SKIP_DIAMETER</parameter>
+         <parameter>true</parameter>
+    </function>
+
+    <function name="setVariable" module="Basic">
+         <parameter>SKIP_SMSC</parameter>
+         <parameter>true</parameter>
+    </function>
+
+    <function name="calculate" module="Basic">
+         <parameter>RESPONSEDELAY</parameter>
+         <parameter>
+            <configuration>DIAMETERSERVER/TIMEOUT</configuration>
+            <parameter>/</parameter>
+            <parameter>10</parameter>
+            <parameter>+</parameter>
+            <configuration>DIAMETERSERVER/TIMEOUT</configuration>
+         </parameter>
+    </function>
+    <function name="info" module="Basic">
+         <parameter>RESPONSEDELAY: </parameter>
+         <variable>RESPONSEDELAY</variable>
+    </function>
+
+
+    <function name="startSMSCServer" module="SMS">
+        <configuration>SMSCSERVER/PORT</configuration>
+        <parameter>UCP</parameter>
+    </function>
+
+                                  
+    <function name="startDiameterServer" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT</configuration>
+        <parameter>
+            <parameter>
+&lt;Diameter&gt;
+    &lt;response&gt;
+        &lt;DEVICE_WATCHDOG_REQUEST proxiable="true" error="false" tretr="false"&gt;
+            &lt;RESULT_CODE            value="DIAMETER_SUCCESS"    mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_REALM           value="ORIGIN_REALM"        mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+        &lt;/DEVICE_WATCHDOG_REQUEST&gt;
+        &lt;CAPABILITIES_EXCHANGE_REQUEST proxiable="true" error="false" tretr="false"&gt;
+            &lt;RESULT_CODE            value="DIAMETER_SUCCESS"    mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_REALM           value="ORIGIN_REALM"        mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;VENDOR_ID              request="VENDOR_ID" /&gt;
+            &lt;PRODUCT_NAME           request="PRODUCT_NAME" /&gt;
+            &lt;SUPPORTED_VENDOR_ID    request="SUPPORTED_VENDOR_ID" /&gt;
+            &lt;AUTH_APPLICATION_ID    request="AUTH_APPLICATION_ID" /&gt;
+        &lt;/CAPABILITIES_EXCHANGE_REQUEST&gt;
+        &lt;CREDIT_CONTROL_REQUEST proxiable="true" error="false" tretr="false" responsedelay="</parameter><variable>RESPONSEDELAY</variable><parameter>"&gt;
+            &lt;SESSION_ID             request="SESSION_ID"/&gt;
+            &lt;RESULT_CODE            value="DIAMETER_SUCCESS"    mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_REALM           request="DESTINATION_REALM" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;AUTH_APPLICATION_ID    value="4"                   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;CC_REQUEST_TYPE        request="CC_REQUEST_TYPE"   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;CC_REQUEST_NUMBER      request="CC_REQUEST_NUMBER" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;GRANTED_SERVICE_UNIT                               mandatory="true" protected="false" vendorspecific="false"  vendorID=""&gt;
+                &lt;CC_MONEY                                       mandatory="true" protected="false" vendorspecific="false"  vendorID=""&gt;
+                    &lt;UNIT_VALUE                                 mandatory="true" protected="false" vendorspecific="false"  vendorID=""&gt;
+                        &lt;VALUE_DIGITS  request="VALUE_DIGITS"   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+                        &lt;EXPONENT      request="EXPONENT"       mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+                        &lt;CURRENCY_CODE request="CURRENCY_CODE"  mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+                    &lt;/UNIT_VALUE&gt;
+                &lt;/CC_MONEY&gt;
+                &lt;CC_SERVICE_SPECIFIC_UNITS value="1"            mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;/GRANTED_SERVICE_UNIT&gt;
+        &lt;/CREDIT_CONTROL_REQUEST&gt;
+    &lt;/response&gt;
+&lt;/Diameter&gt;
+            </parameter>
+        </parameter>
+        <configuration>DIAMETERSERVER/TIMEOUT</configuration>
+    </function>
+    
+    <function name="waitForSpecificRequests" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT</configuration>
+        <parameter>CAPABILITIES_EXCHANGE_REQUEST</parameter>
+        <parameter>1</parameter>
+    </function>
+
+    <subtest>sendSMS-errorMTTC.xml</subtest>
+
+    <function name="waitForTimeoutSpecificRequests" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT</configuration>
+        <parameter>CREDIT_CONTROL_REQUEST</parameter>
+        <configuration>DIAMETERSERVER/WAITTIMEOUT</configuration>
+        <parameter>2000</parameter>
+    </function>
+
+    <function name="stopDiameterServer" module="Diameter"/>
+    <function name="stopSMSCServer" module="SMS"/>
+
+    
+</test>

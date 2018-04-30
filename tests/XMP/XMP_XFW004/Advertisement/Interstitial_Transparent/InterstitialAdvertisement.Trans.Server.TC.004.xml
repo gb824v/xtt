@@ -1,0 +1,36 @@
+<!-- 
+InterstitialAdvertisement.Trans.Server.TC.004  - Start Web-Server to Validate the example workflow inserts up to 5 interstitial adverts per site during Transparent proxy condition [16 requests to XMP].
+
+Test Description:
+ 1. Start Web Server.
+ 2. Wait for get request.
+ 3. Stop Web Server.
+
+Expected Result:
+ -  XMP should insert up to 5 interstitial adverts per site [16 requests to XMP].
+
+XTT Commands:
+
+ 1.  - startWebServer
+ 2.  - waitForRequests
+ 3.  - stopWebServer
+-->
+
+<test>
+
+	<function name="testName" module="Basic">
+		<parameter>InterstitialAdvertisement.Trans.Server.TC.004</parameter>
+	</function>
+
+	<description>Start Web Server to Validate the example workflow inserts up to 5 interstitial adverts per site during Transparent proxy condition [16 requests to XMP].</description>
+
+	<function name="startWebServer" module="HTTP"/>	
+
+	<function name="waitForTimeoutRequests" module="HTTP">
+	    <parameter>250000</parameter>
+	    <parameter>11</parameter>
+	</function>
+
+	<function name="stopWebServer" module="HTTP"/>
+
+</test>

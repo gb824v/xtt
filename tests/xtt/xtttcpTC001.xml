@@ -1,0 +1,97 @@
+<test>
+    <name>xtttcpTC001</name>
+    <description>Test case which shows how requests can be sent slowly from TCP module</description>
+
+	<function name="startWebServer" module="HTTP"/>
+
+	<function name="openConnection" module="TCP">
+		<configuration>SYSTEM/IP</configuration>
+		<configuration>WEBSERVER/PORT</configuration>
+    </function>
+
+	<function name="sendTextPacketPart" module="TCP">
+		<parameter>POST http://www.xtt7</parameter>
+	</function>
+
+		<function name="sleep" module="Basic">
+		<parameter>10000</parameter>
+	</function>
+
+	<function name="sendTextPacketPart" module="TCP">
+		<parameter>24.com/ HTTP/1.1</parameter>
+	</function>
+			<function name="sleep" module="Basic">
+		<parameter>10000</parameter>
+	</function>
+
+	<function name="sendTextPacketPart" module="TCP">
+		<parameter>
+            <CRLF>User-Agent: Java/1.5.0_08</CRLF>
+            <CRLF>Host: www.xtt724.com</CRLF>
+            <CRLF>Accept: text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2</CRLF>
+            <CRLF>Proxy-Connection: keep-alive</CRLF>
+            <CRLF>Content-type: text/plain</CRLF>
+            <CRLF>Transfer-Encoding: chunked</CRLF>
+        </parameter>
+	</function>
+
+		<function name="sleep" module="Basic">
+		<parameter>10000</parameter>
+	</function>
+
+	<function name="sendTextPacket" module="TCP">
+		<file>xtthttpTC001.txt</file>
+	</function>
+
+
+    <function name="queryTextResponse" module="TCP">
+    	<parameter>dev/null</parameter>
+    	<parameter>HTTP</parameter>
+    </function>
+    <function name="responseToVariable" module="TCP">
+    	<parameter>HTTP</parameter>
+    </function>
+
+    <function name="info" module="Basic">
+    	<parameter></parameter>
+    	<variable>HTTP</variable>
+    </function>
+
+	<function name="sendTextPacketPart" module="TCP">
+		<parameter>GET http://www.xtt724.com/ HTTP/1.1</parameter>
+	</function>
+
+	<function name="sleep" module="Basic">
+		<parameter>200</parameter>
+	</function>
+
+	<function name="sendTextPacketPart" module="TCP">
+		<parameter>
+            <CRLF>User-Agent: Java/1.5.0_08</CRLF>
+            <CRLF>Host: www.xtt724.com</CRLF>
+            <CRLF>Accept: text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2</CRLF>
+            <CRLF>Connection: keep-alive</CRLF>
+
+</parameter>
+	</function>
+
+    <function name="queryTextResponse" module="TCP">
+    	<parameter>dev/null</parameter>
+    	<parameter>HTTP</parameter>
+    </function>
+    <function name="responseToVariable" module="TCP">
+    	<parameter>HTTP</parameter>
+    </function>
+
+    <function name="info" module="Basic">
+    	<parameter></parameter>
+    	<variable>HTTP</variable>
+    </function>
+
+
+	<function name="closeConnection" module="TCP">
+	</function>
+
+
+	<function name="stopWebServer" module="HTTP"/>
+</test>

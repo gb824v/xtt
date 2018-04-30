@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<requestModifications>
+	<table name="authentication" phase="authentication" >
+        <selector urlPattern="*://*/*" >
+                <modifyContext name="FTR_AuthenticationType" value="'radius'" />
+                <modifyContext name="FTR_SubscriberId" value="TCP_RemoteIpAddress" />
+        </selector>
+	</table>
+
+	<table name="InsertInterstitialAdverts" phase="httpRequest">
+		<selector urlPattern="http://*/*">
+		<modifyContext name="FTR_Advert" value="'interstitial'"/>
+		</selector>
+	</table>
+
+</requestModifications>

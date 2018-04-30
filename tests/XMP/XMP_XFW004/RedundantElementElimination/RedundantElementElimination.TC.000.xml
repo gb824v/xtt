@@ -1,0 +1,30 @@
+<test>	    
+	<name>RedundantElementElimination.TC.000</name>
+	<description>Setup RedundantElementElimanation Test Environment</description>
+
+	<!-- Load HTML Tidy Request Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>Reqmod_HtmlTidy.xml</parameter>
+		<xml>
+<requestModifications>
+	<table name="Enable HTML Tidy" phase="httpRequest">
+		<selector>
+			<modifyContext name="FTR_HtmlTidyDisable" value="'false'"/>
+		</selector>
+	</table>
+</requestModifications>
+		</xml>
+	</function>
+    
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>Reqmod_HtmlTidy.xml</parameter>
+		</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>Loaded requestmodifications</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+</test>

@@ -1,0 +1,45 @@
+<test>
+<name>WorkingTest</name>
+<qcid>44</qcid>
+<description>
+ddd
+</description>
+<steps>
+Thread1 Basic/lessThan (1,2)
+Thread1 Basic/lessThan (2,3)
+Basic/lessThan (3,4)
+Basic/lessThan (5,6)
+</steps>
+<designer>guyb </designer>
+<creationdate>2012-02-21 18:13:03 </creationdate>
+<testlevel>Integration</testlevel>
+<xfwVersion>XMP_XFW006</xfwVersion>
+<mandatory>false</mandatory>
+<stepname>Thread1 Basic/lessThan (1,2)</stepname>
+<stepid>1</stepid>
+<function name="lessThan" module="Basic">
+<parameter>2</parameter>
+<parameter>2</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Thread1 Basic/lessThan (2,3)</stepname>
+<stepid>2</stepid>
+<function name="lessThan" module="Basic">
+<parameter>2</parameter>
+<parameter>3</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Basic/lessThan (3,4)</stepname>
+<stepid>3</stepid>
+<function name="lessThan" module="Basic">
+<parameter>3</parameter>
+<parameter>4</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Basic/lessThan (5,6)</stepname>
+<stepid>4</stepid>
+<function name="lessThan" module="Basic">
+<parameter>5</parameter>
+<parameter>6</parameter>
+</function>
+</test>

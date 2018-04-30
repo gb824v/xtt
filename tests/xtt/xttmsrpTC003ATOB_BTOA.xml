@@ -1,0 +1,569 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test>
+    <name>xttmsrpTC003ATOB_BTOA.xml</name>
+    <description>[A --> B] &amp; [B --> A] on the same machine with multiple scenarios</description>
+    <configuration>configMSRP.xml</configuration>
+    <!--
+     Testscenario
+     ____________
+
+     Alice(CLIENT)                       Bob(SERVER)
+        |                                 |
+        |     SEND MSRP REQUEST           |
+        | - - - - - - - - - - - - - - >   |
+        |     			                  |
+        |     MSRP 200 OK                 |
+        | < - - - - - - - - - - - - - -   |
+        |                                 |
+        |     SEND MSRP REQUEST           |
+        | < - - - - - - - - - - - - - -   |
+        | 	  							  |
+        |     MSRP 200 OK 			      |
+        | - - - - - - - - - - - - - - ->  |
+        |                                 |
+        |    checkResponseCode(200)	      |
+        | - - - - - - - - - - - - - - - - |
+        |                                 |
+        |    compareString(PLAIN)	      |
+        | - - - - - - - - - - - - - - - - |
+        |                                 |
+        |    compareString(BASE64)	      |
+        | - - - - - - - - - - - - - - - - |
+        |                                 |
+        |    checkResponseCode(200)	      |
+        | - - - - - - - - - - - - - - - - |
+        |                                 |
+        |     REPORT MSRP REQUEST         |
+        | < - - - - - - - - - - - - - -   |
+        | 	  							  |
+        |     MSRP 200 OK 			      |
+        | - - - - - - - - - - - - - - ->  |
+       
+     -->
+
+    <!-- client side server for responses -->
+    <function name="setVariable" module="Basic">
+        <parameter>CLIENT</parameter>
+        <configuration>MSRPSERVER/CLIENTPORT</configuration>
+    </function>
+    <!--   client side server for responses -->
+    <function name="setVariable" module="Basic">
+        <parameter>SERVER</parameter>
+        <configuration>MSRPSERVER/PORT</configuration>
+    </function>
+
+    <function name="startMSRPServer" module="MSRP">
+        <variable>SERVER</variable>
+        <configuration>MSRPSERVER/TIMEOUT</configuration>
+        <testpath>msrp</testpath>
+    </function>
+
+    <function name="startMSRPServer" module="MSRP">
+        <variable>CLIENT</variable>
+        <configuration>MSRPSERVER/TIMEOUT</configuration>
+    </function>
+
+    <!-- From client to server -->
+    <!--  create connection  -->
+    <function name="createConnection" module="MSRP">
+        <parameter>one</parameter>
+        <variable>CLIENT</variable>
+    </function>
+
+    <function name="setVariable" module="Basic">
+        <parameter>msrpbody1</parameter>
+        <parameter>Hi, I'm Alice!</parameter>
+    </function>
+
+    <function name="setHeader" module="MSRP">
+        <parameter>one</parameter>
+        <parameter>To-Path</parameter>
+        <parameter>
+            <parameter>msrp://</parameter>
+            <configuration>SYSTEM/IP</configuration>
+            <parameter>:</parameter>
+            <variable>SERVER</variable>
+            <parameter>/9di4eae923wzd;tcp</parameter>
+        </parameter>
+    </function>
+
+    <function name="setHeader" module="MSRP">
+        <parameter>one</parameter>
+        <parameter>From-Path</parameter>
+        <parameter>
+            <parameter>msrp://</parameter>
+            <configuration>SYSTEM/IP</configuration>
+            <parameter>:</parameter>
+            <variable>CLIENT</variable>
+            <parameter>/iau39soe2843z;tcp</parameter>
+        </parameter>
+    </function>
+
+    <function name="setHeader" module="MSRP">
+        <parameter>one</parameter>
+        <parameter>Message-ID</parameter>
+        <parameter>1234pqrs</parameter>
+    </function>
+
+    <function name="setHeader" module="MSRP">
+        <parameter>one</parameter>
+        <parameter>Content-Type</parameter>
+        <parameter>message/cpim</parameter>
+    </function>
+
+    <function name="setHeader" module="MSRP">
+        <parameter>one</parameter>
+        <parameter>MyHeaderKey</parameter>
+        <parameter>MyHeaderValue</parameter>
+    </function>
+
+    <function name="sendMSRPRequest" module="MSRP">
+        <parameter>one</parameter>
+        <parameter>SEND</parameter>
+        <base64file>xttTC018.jpg</base64file>
+        <parameter>TxIdAtoB</parameter>
+    </function>
+   
+   <function name="sleep" module="Basic">
+        <parameter>500</parameter>
+    </function>
+    
+   <function name="compareString" module="Basic">
+        <variable>MSRP/SEND/1234pqrs/HEADER/Content-Type</variable>
+        <parameter>message/cpim</parameter>
+   </function>
+
+  
+    <function name="waitForVariable" module="Basic">
+        <parameter>
+            <parameter>MSRP/RESPONSE/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+    <function name="removeVariables" module="Basic">
+        <parameter>
+            <parameter>MSRP/RESPONSE/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+    
+    <function name="sleep" module="Basic">
+        <parameter>500</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>MSRP/RESPONSE/1234pqrs/HEADER/From-Path</variable>
+         <parameter>
+            <parameter>msrp://</parameter>
+            <configuration>SYSTEM/IP</configuration>
+            <parameter>:</parameter>
+            <variable>SERVER</variable>
+            <parameter>/9di4eae923wzd;tcp</parameter>
+        </parameter>
+   </function>
+
+    <!-- reomve header : MyHeaderKey  -->>
+    <function name="setHeader" module="MSRP">
+        <parameter>one</parameter>
+        <parameter>MyHeaderKey</parameter>
+    </function>
+
+   <function name="clearHeader" module="MSRP">
+	 	<parameter>one</parameter>
+   </function>
+
+
+    <function name="getConnection" module="MSRP">
+        <parameter>one</parameter>
+        <variable>SERVER</variable>
+    </function>
+
+    <function name="setHeader" module="MSRP">
+        <parameter>one</parameter>
+        <parameter>To-Path</parameter>
+        <parameter>
+            <parameter>msrp://</parameter>
+            <configuration>SYSTEM/IP</configuration>
+            <parameter>:</parameter>
+            <variable>CLIENT</variable>
+            <parameter>/9di4eae923wzd;tcp</parameter>
+        </parameter>
+    </function>
+
+    <function name="setHeader" module="MSRP">
+        <parameter>one</parameter>
+        <parameter>From-Path</parameter>
+        <parameter>
+            <parameter>msrp://</parameter>
+            <configuration>SYSTEM/IP</configuration>
+            <parameter>:</parameter>
+            <variable>SERVER</variable>
+            <parameter>/iau39soe2843z;tcp</parameter>
+        </parameter>
+    </function>
+
+    <function name="setHeader" module="MSRP">
+        <parameter>one</parameter>
+        <parameter>Message-ID</parameter>
+        <parameter>12339sdqwer</parameter>
+    </function>
+
+    <function name="setHeader" module="MSRP">
+        <parameter>one</parameter>
+        <parameter>Byte-Range</parameter>
+        <parameter>1-5/19</parameter>
+    </function>
+
+    <function name="setHeader" module="MSRP">
+        <parameter>one</parameter>
+        <parameter>Content-Type</parameter>
+        <parameter>text/plain</parameter>
+    </function>
+
+    <function name="setVariable" module="Basic">
+        <parameter>msrpbody2</parameter>
+        <parameter>Hi, Alice! I'm Bob!</parameter>
+    </function>
+
+    <function name="sendMSRPRequest" module="MSRP">
+        <parameter>one</parameter>
+        <parameter>SEND</parameter>
+        <base64encode>
+            <variable>msrpbody2</variable>
+        </base64encode>
+        <parameter>TxIdAtoB</parameter>
+    </function>
+
+     <function name="sleep" module="Basic">
+		<parameter>500</parameter>
+	</function>
+	
+	<function name="waitForVariable" module="Basic">
+        <parameter>
+            <parameter>MSRP/RESPONSE/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+    <function name="removeVariables" module="Basic">
+        <parameter>
+            <parameter>MSRP/RESPONSE/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+    
+     <function name="sleep" module="Basic">
+		<parameter>500</parameter>
+	</function>
+
+   <function name="compareString" module="Basic">
+   		<variable>MSRP/RESPONSE/CODE</variable>
+        <parameter>200</parameter>
+   </function>
+   
+    <function name="compareString" module="Basic">
+   		<variable>MSRP/RESPONSE/MESSAGE</variable>
+        <parameter>OK</parameter>
+    </function>
+    
+     <function name="compareString" module="Basic">
+        <base64tobytestring><variable>MSRP/SEND/1234pqrs/BODY/BASE64</variable></base64tobytestring>
+        <bytestringfile>xttTC018.jpg</bytestringfile >
+    </function>
+
+    <!-- compare String with BASE64/BYTESTRING data -->
+    <function name="compareString" module="Basic">
+        <base64tobytestring><variable>MSRP/SEND/1234pqrs/BODY/BASE64</variable></base64tobytestring>
+        <bytestringfile>xttTC018.jpg</bytestringfile >
+    </function>
+
+	 <function name="clearHeader" module="MSRP">
+	 	<parameter>one</parameter>
+	 </function>
+
+    <function name="setHeader" module="MSRP">
+        <parameter>one</parameter>
+        <parameter>To-Path</parameter>
+        <parameter>
+            <parameter>msrp://</parameter>
+            <configuration>MSRPSERVER/REMOTEIPADDRESS</configuration>
+            <parameter>:</parameter>
+            <variable>CLIENT</variable>
+            <parameter>/9di4eae923wzd;tcp</parameter>
+        </parameter>
+    </function>
+
+    <function name="setHeader" module="MSRP">
+        <parameter>one</parameter>
+        <parameter>From-Path</parameter>
+        <parameter>
+            <parameter>msrp://</parameter>
+            <configuration>SYSTEM/IP</configuration>
+            <parameter>:</parameter>
+            <variable>SERVER</variable>
+            <parameter>/iau39soe2843z;tcp</parameter>
+        </parameter>
+    </function>
+
+    <function name="setHeader" module="MSRP">
+        <parameter>one</parameter>
+        <parameter>Message-ID</parameter>
+        <parameter>123RptMsgId</parameter>
+    </function>
+
+    <function name="setHeader" module="MSRP">
+        <parameter>one</parameter>
+        <parameter>Byte-Range</parameter>
+        <parameter>1-10/20</parameter>
+    </function>
+
+    <function name="setHeader" module="MSRP">
+        <parameter>one</parameter>
+        <parameter>Status</parameter>
+        <parameter>000 200 OK</parameter>
+    </function>
+
+   <!--  since we are using the same sendMSRPRequest for sending MSRP REPORT requests, users should provide empty body -->
+    <function name="setVariable" module="Basic">
+        <parameter>msrpbody3</parameter>
+        <parameter></parameter>
+    </function>
+
+    <function name="sendMSRPRequest" module="MSRP">
+        <parameter>one</parameter>
+        <parameter>REPORT</parameter>
+        <base64encode>
+            <variable>msrpbody3</variable>
+        </base64encode>
+         <parameter>report12</parameter>
+    </function>
+
+    <function name="waitForVariable" module="Basic">
+        <parameter>
+            <parameter>MSRP/RESPONSE/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+    <function name="removeVariables" module="Basic">
+        <parameter>
+            <parameter>MSRP/RESPONSE/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+    
+  <function name="compareString" module="Basic">
+        <variable>MSRP/RESPONSE/CODE</variable>
+        <parameter>200</parameter>
+    </function>
+
+    <function name="sleep" module="Basic">
+		<parameter>500</parameter>
+	</function>
+    
+    	 <!--
+     Testscenario
+     ____________
+
+     Alice(CLIENT)                       Bob(SERVER)
+        |                                 |
+        |     SEND FREE REQUEST (MSGID1)  |
+        | - - - - - - - - - - - - - - >   |
+        |     MSRP 200 OK                 |
+        | < - - - - - - - - - - - - - -   |
+        |                                 |
+        |     SEND FREE REQUEST (MSGID2)  |
+        | - - - - - - - - - - - - - - >   |
+        |     MSRP 200 OK                 |
+        | < - - - - - - - - - - - - - -   |
+        |            			          |
+        |    compareString(PLAIN)	      |
+        | - - - - - - - - - - - - - - - - |
+        |                                 |
+        |    compareString(PLAIN)	      |
+        | - - - - - - - - - - - - - - - - |
+     -->
+
+    <function name="setVariable" module="Basic">
+        <parameter>msrpbody4</parameter>
+        <parameter>Hi, I'm Anil!</parameter>
+    </function>
+
+    <!-- setting body 3 -->
+    <function name="setVariable" module="Basic">
+        <parameter>msrpbody5</parameter>
+        <parameter>Hi, I'm Rajesh!</parameter>
+    </function>
+
+     <function name="setVariableLines" module="Basic">
+        <parameter>2</parameter>
+        <parameter>headers1</parameter>
+        <parameter>To-Path:</parameter>
+        <parameter>
+            <parameter>msrp://</parameter>
+            <configuration>SYSTEM/IP</configuration>
+            <parameter>:</parameter>
+            <variable>SERVER</variable>
+            <parameter>/9di4eae923wzd;tcp</parameter>
+        </parameter>
+        <parameter>From-Path:</parameter>
+        <parameter>
+            <parameter>msrp://</parameter>
+            <configuration>SYSTEM/IP</configuration>
+            <parameter>:</parameter>
+            <variable>CLIENT</variable>
+            <parameter>/iau39soe2843z;tcp</parameter>
+        </parameter>
+        <parameter>Message-ID:</parameter>
+        <parameter>MSGID123</parameter>
+        <parameter>Content-Type:</parameter>
+        <parameter>text/plain</parameter>
+    </function>
+       <!-- send free request A to B, MSGID123 -->
+    <function name="sendFreeRequest" module="MSRP">
+        <parameter>one</parameter>
+        <parameter>SEND</parameter>
+        <configuration>SYSTEM/IP</configuration>
+        <variable>SERVER</variable>
+        <variable>headers1</variable>
+        <base64encode>
+            <variable>msrpbody4</variable>
+        </base64encode>
+        <parameter>abcd1234</parameter> <!-- user defined txid-->
+        <parameter>$</parameter> <!-- message chunk indicator-->
+    </function>
+
+    <function name="waitForVariable" module="Basic">
+        <parameter>
+            <parameter>MSRP/RESPONSE/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+    <function name="removeVariables" module="Basic">
+        <parameter>
+            <parameter>MSRP/RESPONSE/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+      <!-- setting headers for chunk 3 -->
+    <function name="setVariableLines" module="Basic">
+        <parameter>2</parameter>
+        <parameter>headers3</parameter>
+        <parameter>To-Path:</parameter>
+        <parameter>
+            <parameter>msrp://</parameter>
+            <configuration>SYSTEM/IP</configuration>
+            <parameter>:</parameter>
+            <variable>SERVER</variable>
+            <parameter>/9di4eae923wzd;tcp</parameter>
+        </parameter>
+        <parameter>From-Path:</parameter>
+        <parameter>
+            <parameter>msrp://</parameter>
+            <configuration>SYSTEM/IP</configuration>
+            <parameter>:</parameter>
+            <variable>CLIENT</variable>
+            <parameter>/iau39soe2843z;tcp</parameter>
+        </parameter>
+        <parameter>Message-ID:</parameter>
+        <parameter>MSGID456</parameter>
+        <parameter>Content-Type:</parameter>
+        <parameter>text/plain</parameter>
+    </function>
+
+    <!-- send free request A to B, MSGID456 -->
+    <function name="sendFreeRequest" module="MSRP">
+        <parameter>one</parameter>
+        <parameter>SEND</parameter>
+        <configuration>SYSTEM/IP</configuration>
+        <variable>SERVER</variable>
+        <variable>headers3</variable>
+        <base64encode>
+            <variable>msrpbody5</variable>
+        </base64encode>
+        <parameter>abcd1234</parameter> <!-- user defined txid-->
+        <parameter>$</parameter> <!-- message chunk indicator-->
+    </function>
+
+    <function name="waitForVariable" module="Basic">
+        <parameter>
+            <parameter>MSRP/RESPONSE/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+    <function name="removeVariables" module="Basic">
+        <parameter>
+            <parameter>MSRP/RESPONSE/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+    <!-- compare with msrpbody1 -->
+    <function name="compareString" module="Basic">
+        <variable>MSRP/SEND/MSGID123/BODY/PLAIN</variable>
+        <variable>msrpbody4</variable>
+    </function>
+
+    <!-- compare with msrpbody3 -->
+    <function name="compareString" module="Basic">
+        <variable>MSRP/SEND/MSGID456/BODY/PLAIN</variable>
+        <variable>msrpbody5</variable>
+    </function>
+
+      <!--Testscenario
+     ____________
+
+     Alice(CLIENT)                       Bob(SERVER)
+        |                                 |
+        |     SEND FREE REQUEST (MSGID1)  |
+        | - - - - - - - - - - - - - - >   |
+        |     MSRP 403 Forbidden          |
+        | < - - - - - - - - - - - - - -   |
+        |                                 |
+     -->
+
+     <function name="setVariable" module="Basic">
+        <parameter>msrpbody4</parameter>
+        <parameter>Body for Forbidden response!</parameter>
+    </function>
+
+     <function name="setVariableLines" module="Basic">
+        <parameter>2</parameter>
+        <parameter>headers4</parameter>
+        <parameter>To-Path:</parameter>
+        <parameter>
+            <parameter>msrp://</parameter>
+            <configuration>SYSTEM/IP</configuration>
+            <parameter>:</parameter>
+            <variable>SERVER</variable>
+            <parameter>/9di4eae923wzd;tcp</parameter>
+        </parameter>
+        <parameter>From-Path:</parameter>
+        <parameter>
+            <parameter>msrp://</parameter>
+            <configuration>SYSTEM/IP</configuration>
+            <parameter>:</parameter>
+            <variable>CLIENT</variable>
+            <parameter>/iau39soe2843z;tcp</parameter>
+        </parameter>
+        <parameter>Message-ID:</parameter>
+        <parameter>MSGID123</parameter>
+        <parameter>Content-Type:</parameter>
+        <parameter>text/plain</parameter>
+    </function>
+       <!-- send free request A to B, MSGID123 -->
+    <function name="sendFreeRequest" module="MSRP">
+        <parameter>one</parameter>
+        <parameter>SEND</parameter>
+        <configuration>SYSTEM/IP</configuration>
+        <variable>SERVER</variable>
+        <variable>headers4</variable>
+        <base64encode>
+            <variable>msrpbody4</variable>
+        </base64encode>
+        <parameter>abcd1234</parameter> <!-- user defined txid-->
+        <parameter>#</parameter> <!-- user defined boundary-->
+    </function>
+
+    <function name="sleep" module="Basic">
+        <parameter>1000</parameter>
+    </function>
+
+    <function name="compareString" module="Basic">
+    	<variable>MSRP/RESPONSE/CODE</variable>
+        <parameter>403</parameter>
+    </function>
+
+ <function name="stopMSRPServer" module="MSRP"/>
+</test>

@@ -1,0 +1,280 @@
+<test>
+
+	<function name="testName" module="Basic">
+		<parameter>VideoAnalyzeAndPace.TC.016</parameter>
+	</function>
+
+	<description>Validate PACE and VAN context inforamtion from transaction logs</description>
+
+	<!-- Start Web Server -->
+	<function name="startWebServer" module="HTTP"/>
+
+	<function name="setClientTimeout" module="HTTP">
+		<parameter>120000</parameter>
+	</function>
+
+	<function name="disableKeepAlive" module="HTTP"/>
+
+	<function name="setServerHeader" module="HTTP">
+		<parameter>content-type</parameter>
+		<parameter>video/x-flv</parameter>
+	</function>
+
+	<function name="setServerReturnCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<!-- Delete Message Store -->
+	<subtest>deleteMediaStoreAll.xml</subtest>
+
+	<!-- Query the name of the active MEDIA-STORE process -->
+	<function name="activeProcessToVar" module="Remote">
+		<parameter>MEDIA-STORE</parameter>
+		<parameter>Media_Store_Process_Name</parameter>
+	</function>
+
+	<!-- restart process to get clean log / proc files -->
+	<function name="restartProcess" module="Remote">
+		<parameter>LOGGER</parameter>
+	</function>
+
+		<function name="activeProcessToVar" module="Remote">
+		<parameter>HTTP-PROXY</parameter>
+		<parameter>HTTP-PROXY</parameter>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>restart process </parameter>
+			<variable>HTTP-PROXY/0</variable>
+		</parameter>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>enable trac -v PACE HTTP-PROXY.*.*</parameter>
+	</function>
+
+	<!-- Prepare the Request Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>vo_reqmod_online_opt.xml</parameter>
+		<xml>
+		<requestModifications xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="requestmodifications.xsd">
+		<table name="DisableThings" phase="httpRequest">
+			<selector>
+				<modifyContext name="Skip_CACHE" value="'true'"/>
+				<modifyContext name="Skip_VIRUSSCANNER" value="'true'"/>
+				<modifyContext name="FTR_HtmlTidyDisable" value="'true'"/>
+				<modifyContext name="Skip_COOKIE" value="'true'"/>
+				<modifyContext name="Skip_ICC" value="'true'"/>
+				<modifyContext name="FTR_MultipartCompose_Disable" value="'true'"/>
+				<modifyContext name="FTR_Prefetch_Disable" value="'true'"/>
+				<modifyContext name="FTR_Deflate_Disable" value="'true'"/>
+				<modifyContext name="FTR_Gzip_Disable" value="'true'"/>
+			</selector>
+		</table>
+		<table name="Add Category to the HTTP Header" phase="httpResponse" >
+			<selector>
+				<modifyContext name="HTA_RespHdr_PACE_Buffertime" value="PACE_Buffertime" />
+			</selector>
+		</table>
+		<table name="XTT_videoOptimization" phase="httpRequest">
+			<selector urlPattern="http://*/videos/{.*\.flv}">
+				<modifyContext name="FTR_PaceVideo" value="'true'"/>
+			</selector>
+		</table>
+		</requestModifications>
+		</xml>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>vo_reqmod_online_opt.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded requestmodifications.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Radius Login -->
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+	<!-- Send the video retrieval request -->
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>
+			<parameter>http://</parameter>
+			<configuration>system/ip</configuration>
+			<parameter>/videos/Tarabonner-FlightControl637.flv</parameter>
+		</parameter>
+	</function>
+
+	<!-- Validate Response Code Send by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<!-- Media Store should not contain items, since the video is directly sent-->
+	<function name="executeRemoteXMSCommand" module="Remote">
+	<parameter>
+		<parameter>run command amocli -k count TI:F.CEE.</parameter>
+		<variable>Media_Store_Process_Name</variable>
+		<parameter>:AMO</parameter>
+	</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>amocli: 0 items counted</parameter>
+		<parameter>response</parameter>
+	</function>
+
+    <!-- wait for LOGGER to write transaction log -->
+	<function name="sleep" module="Basic">
+		<parameter>5000</parameter>
+	</function>
+
+	<!-- Check Context elements from Activity log -->
+	<function name="getNewestRemoteFileName" module="Remote">
+		<parameter>newestlogfile</parameter>
+		<configuration>remote/logpath</configuration>
+		<parameter>XMP</parameter>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<configuration>remote/command</configuration>
+			<parameter>logscan -in </parameter>
+			<variable>newestlogfile</variable>
+			<parameter> -select </parameter>
+			<parameter>'LSA_Component=="PACE"'</parameter>
+		</parameter>
+	</function>
+
+	<!-- Checking PACE_Buffertime value -->
+	<function name="queryResponse" module="Remote">
+		<parameter>PACE_Buffertime: (\d++)</parameter>
+		<parameter>PACE_Buffertime</parameter>
+	</function>
+
+	<function name="info" module="Basic">
+		<parameter>PACE_Buffertime = </parameter>
+		<variable>PACE_Buffertime</variable>
+	</function>
+
+	<!-- Checking LSA_Component: PACE writes a transaction log -->
+	<function name="queryResponse" module="Remote">
+		<parameter>LSA_Component: PACE</parameter>
+		<parameter>LSA_Component</parameter>
+	</function>
+	
+	<!-- Checking PACE_Meta/audiocodecid: 2 exists -->
+	<function name="queryResponse" module="Remote">
+		<parameter>PACE_Meta/audiocodecid: 2</parameter>
+		<parameter>PACE_Meta/audiocodecid</parameter>
+	</function>
+
+	<!-- Checking PACE_Meta/audiodatarate: 80 exists -->
+	<function name="queryResponse" module="Remote">
+		<parameter>PACE_Meta/audiodatarate: 80</parameter>
+		<parameter>PACE_Meta/audiodatarate</parameter>
+	</function>
+
+	<!-- Checking PACE_Meta/filesize: 4655190 exists -->
+	<function name="queryResponse" module="Remote">
+		<parameter>PACE_Meta/filesize: 4655190</parameter>
+		<parameter>PACE_Meta/filesize</parameter>
+	</function>	
+
+	<!-- Checking PACE_Meta/height: 360 exists -->
+	<function name="queryResponse" module="Remote">
+		<parameter>PACE_Meta/height: 360</parameter>
+		<parameter>PACE_Meta/height</parameter>
+	</function>	
+
+	<!-- Checking PACE_Meta/width: 640 exists -->
+	<function name="queryResponse" module="Remote">
+		<parameter>PACE_Meta/width: 640</parameter>
+		<parameter>PACE_Meta/width</parameter>
+	</function>	
+
+
+	<!-- Checking PACE_STATS_ASSUMEDBITRATE: 480000 exists -->
+	<function name="queryResponse" module="Remote">
+		<parameter>PACE_STATS_ASSUMEDBITRATE: 480000</parameter>
+		<parameter>PACE_STATS_ASSUMEDBITRATE</parameter>
+	</function>	
+
+	<!-- Checking PACE_STATS_ASSUMEDDURATION: 71677 exists -->
+	<function name="queryResponse" module="Remote">
+		<parameter>PACE_STATS_ASSUMEDDURATION: 71677</parameter>
+		<parameter>PACE_STATS_ASSUMEDDURATION</parameter>
+	</function>	
+	
+	<!-- Checking PACE_STATS_BYTESTRANSFERRED: 4655192 exists -->
+	<function name="queryResponse" module="Remote">
+		<parameter>PACE_STATS_BYTESTRANSFERRED: 4655192</parameter>
+		<parameter>PACE_STATS_BYTESTRANSFERRED</parameter>
+	</function>	
+
+	<!-- Checking PACE_STATS_BYTESTRANSFERRED: 4655192 exists -->
+	<function name="queryResponse" module="Remote">
+		<parameter>PACE_STATS_BYTESTRANSFERRED: 4655192</parameter>
+		<parameter>PACE_STATS_BYTESTRANSFERRED</parameter>
+	</function>
+	
+ 		
+	
+	<function name="executeRemoteCommand" module="Remote">
+		<parameter>
+			<parameter>/bin/grep :PACE:.*:PACE_processResponseData </parameter>
+			<configuration>remote/procpath</configuration>
+			<parameter>/</parameter>
+			<variable>HTTP-PROXY/0</variable>
+			<parameter>/</parameter>
+			<variable>HTTP-PROXY/0</variable>
+			<parameter>.out</parameter>
+		</parameter>
+	</function> 
+
+	<!-- Check for no delay of pacing chunks -->
+	<function name="queryResponse" module="Remote">
+		<parameter>timepos=\d++us now=\d++us timediff=-\d++us late delivery, no delay</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Radius Logoff -->
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+	<!-- Purge the Request Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>REQMOD_EmptyRules.xml</parameter>
+		<parameter>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;requestModifications&gt;&lt;/requestModifications&gt;</parameter>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>REQMOD_EmptyRules.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded requestmodifications.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Stop Web Server -->
+	<function name="stopWebServer" module="HTTP"/>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>disable trac -v </parameter>
+	</function>
+
+</test>

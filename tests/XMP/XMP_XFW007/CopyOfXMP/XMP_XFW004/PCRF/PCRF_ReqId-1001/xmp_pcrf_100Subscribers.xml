@@ -1,0 +1,1317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Example database updates file for XMP. This file is in the 
+     XMP "training" directory. It loads dummy
+     data that is used in the instructions in the Installation
+     Guide to test that XMP is working correctly.  -->
+<dbupdates>
+    <subscribers>
+		<add subscriber="787367700">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367701">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367702">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367703">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367704">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367705">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367706">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367707">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367708">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367709">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367710">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367711">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367712">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367713">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367714">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367715">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367716">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367717">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367718">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367719">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367720">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367721">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367722">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367723">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367724">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367725">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+
+		<add subscriber="787367726">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367727">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367728">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367729">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367730">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367731">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367732">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367733">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367734">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367735">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367736">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367737">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367738">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367739">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367740">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+
+		<add subscriber="787367741">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367742">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367743">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367744">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367745">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367746">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367747">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367748">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367749">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+        </add>
+
+		<add subscriber="787367750">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367751">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367752">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367753">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367754">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367755">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367756">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367757">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367758">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367759">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367760">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367761">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367762">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367763">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367764">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367765">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367766">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367767">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367768">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367769">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367770">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367771">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367772">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367773">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367774">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367775">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+
+		<add subscriber="787367776">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367777">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367778">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367779">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367780">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add><add subscriber="787367781">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367782">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367783">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367784">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367785">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367786">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367787">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367788">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367789">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367790">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367791">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367792">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367793">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367794">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367795">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367796">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367797">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367798">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+		<add subscriber="787367799">              
+			<attribute name="FirstName" value="xttuser400"/>
+			<attribute name="LastName" value="xttuser400"/>
+			<attribute name="Class" value="GOLD"/>            
+			<attribute name="DateOfBirth" value="1960-03-15"/>             
+			<attribute name="HairColor" value="brown"/>
+			<attribute name="ShoeSize" value="43"/>
+			<attribute name="AllowedServicesId" value="1;3"/>
+			<attribute name="AllowedQoS" value="2;4"/>              
+			<attribute name="GBR" value="300"/>
+			<attribute name="MBR" value="600"/>
+			<attribute name="Charging" value="offline"/>
+		</add>
+     </subscribers>
+</dbupdates>
+
+
+
+
+

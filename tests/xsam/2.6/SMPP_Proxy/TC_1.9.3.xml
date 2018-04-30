@@ -1,0 +1,129 @@
+<test>
+    <configuration>xsam_config.xml</configuration>
+    <function name="testName" module="Basic">
+        <parameter>TC_1.9.3</parameter>
+    </function>
+    <description>New Account Activated and Deleted</description> 
+
+     <!-- Add Content Provider -->
+
+    <function name="SOAPClient" module="SOAP_API" >
+		<configuration>XSAM/PROVISIONINGURL</configuration>
+		<xml><soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsdl="http://www.724solutions.com/wsdl">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <wsdl:addContentProvider soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+         <String_1 xsi:type="xsd:string">4646</String_1>
+         <String_2 xsi:type="xsd:string">4646</String_2>
+      </wsdl:addContentProvider>
+   </soapenv:Body>
+</soapenv:Envelope></xml>
+
+		<parameter>Body/return</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+
+<!-- Add Whirelist to Content Provider -->
+    <function name="SOAPClient" module="SOAP_API" >
+		<configuration>XSAM/PROVISIONINGURL</configuration>
+		<xml><soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsdl="http://www.724solutions.com/wsdl">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <wsdl:addWhitelistForContentProvider soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+         <String_1 xsi:type="xsd:string">4646</String_1>
+         <String_2 xsi:type="xsd:string">10.10.10.10</String_2>
+      </wsdl:addWhitelistForContentProvider>
+   </soapenv:Body>
+</soapenv:Envelope></xml>
+
+		<parameter>Body/return</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+
+<!-- Add SMPP service -->
+    <function name="SOAPClient" module="SOAP_API" >
+		<configuration>XSAM/PROVISIONINGURL</configuration>
+		<xml><soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsdl="http://www.724solutions.com/wsdl">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <wsdl:addSMPPProxyService soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+         <String_1 xsi:type="xsd:string">4646</String_1>
+         <String_2 xsi:type="xsd:string">SMPP_PROXY</String_2>
+         <String_3 xsi:type="xsd:string">y</String_3>
+      </wsdl:addSMPPProxyService>
+   </soapenv:Body>
+</soapenv:Envelope></xml>
+
+		<parameter>Body/return</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+
+    <!-- Delete whitelist for content provider -->
+    <function name="SOAPClient" module="SOAP_API" >
+		<configuration>XSAM/PROVISIONINGURL</configuration>
+		<xml><soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsdl="http://www.724solutions.com/wsdl">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <wsdl:deleteWhitelistForContentProvider soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+         <String_1 xsi:type="xsd:string">4646</String_1>
+         <String_2 xsi:type="xsd:string">10.10.10.10</String_2>
+      </wsdl:deleteWhitelistForContentProvider>
+   </soapenv:Body>
+</soapenv:Envelope></xml>
+
+		<parameter>Body/return</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+
+<!-- Delete SMPP service -->
+ <function name="SOAPClient" module="SOAP_API" >
+		<configuration>XSAM/PROVISIONINGURL</configuration>
+		<xml><soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsdl="http://www.724solutions.com/wsdl">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <wsdl:deleteSMPPProxyService soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+         <String_1 xsi:type="xsd:string">4646</String_1>
+      </wsdl:deleteSMPPProxyService>
+   </soapenv:Body>
+</soapenv:Envelope></xml>
+
+		<parameter>Body/return</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+
+<!-- Delete Content Provider -->
+     <function name="SOAPClient" module="SOAP_API" >
+		<configuration>XSAM/PROVISIONINGURL</configuration>
+		<xml><soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsdl="http://www.724solutions.com/wsdl">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <wsdl:deleteContentProvider soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+         <String_1 xsi:type="xsd:string">4646</String_1>
+      </wsdl:deleteContentProvider>
+   </soapenv:Body>
+</soapenv:Envelope></xml>
+
+		<parameter>Body/return</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+     
+
+	</test>

@@ -1,0 +1,44 @@
+<configuration>
+	<xsn>
+        <subscribers>
+            <over18blockedSexual>0041628881001</over18blockedSexual>
+            <under18noFilters>0041628881002</under18noFilters>
+            <over18noFilters>0041628881003</over18noFilters>
+            <over18communityFilter>0041628881004</over18communityFilter>
+            <over18communityFilterWithException>0041628881005</over18communityFilterWithException>
+            <over18twoCommunityFiltersWithException>0041628881006</over18twoCommunityFiltersWithException>
+            <over18multipleCommunities>0041628881007</over18multipleCommunities>
+            <over18parentCommunity>0041628881008</over18parentCommunity>
+            <over18childCommunity>0041628881009</over18childCommunity>
+            <over18alwaysBlockTest>0041628881010</over18alwaysBlockTest>
+            <over18alwaysAllowTest>0041628881011</over18alwaysAllowTest>
+            <blockNotificationUser>0041628881012</blockNotificationUser>
+            <notRegisteredUser>0041628881014</notRegisteredUser>
+            <communityInternetRulesUser>0041628881015</communityInternetRulesUser>
+            <noAgeCommunityBlock>0041628881016</noAgeCommunityBlock>
+            <over18blockedSexualSmall>0041628881017</over18blockedSexualSmall>
+            <secureAndUnsecureBlock>0041628881018</secureAndUnsecureBlock>
+        </subscribers>
+        <negativeSubscribers>
+            <checkSlashesBlock>0041628882001</checkSlashesBlock>
+            <checkSlashesAllow>0041628882002</checkSlashesAllow>
+            <checkSlashesBlock2>0041628882003</checkSlashesBlock2>
+            <checkSlashesAllow2>0041628882004</checkSlashesAllow2>         
+            <checkIpStarBlock>0041628882005</checkIpStarBlock>
+            <checkIpStarAllow>0041628882006</checkIpStarAllow>                  
+        </negativeSubscribers>
+        <redirect>
+            <url>http://172.20.2.8:8087/SentinelBlocked</url>
+            <alwaysBlockScreen>always.html</alwaysBlockScreen>
+            <subscriberIsUnregisteredScreen>subscriberIsUnregistered.html</subscriberIsUnregisteredScreen>
+            <blockedByPersonalFiltersScreen>byPersonalFilters.html</blockedByPersonalFiltersScreen>
+            <blockedBySystemFiltersScreen>bySystemFilters.html</blockedBySystemFiltersScreen>
+            <ageIsUnknownScreen>ageIsUnknown.html</ageIsUnknownScreen>
+            <blockedByCommunityFiltersScreen>byCommunityFilters.html</blockedByCommunityFiltersScreen>
+        </redirect>
+        <devices>
+            <smalldevice>SonyEricssonT68/R201A</smalldevice>
+            <!--smalldevice>Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.0.2) Gecko/20030208 Netscape/7.02</smalldevice-->
+        </devices>    
+    </xsn>
+</configuration>

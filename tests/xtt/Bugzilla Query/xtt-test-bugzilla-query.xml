@@ -1,0 +1,22 @@
+<test>
+    <name>TestQueryBugzilla</name>
+
+    <function name="openConnection" module="SQL">
+        <parameter>Bugzilla</parameter>
+        <parameter>com.mysql.jdbc.Driver</parameter>
+        <parameter>jdbc:mysql://127.0.0.1/bugs?useUnicode=false</parameter>
+        <parameter>root</parameter>
+        <parameter></parameter>
+    </function>
+
+    <function name="query" module="SQL">
+        <parameter>Bugzilla</parameter>
+        <parameter>openbugs</parameter>
+        <parameter>SELECT bugs.bug_id, bugs.bug_status, bugs.creation_ts, profiles.realname, bugs.bug_severity, bugs.short_desc, products.description  FROM bugs,profiles,products WHERE products.id = bugs.product_id AND profiles.userid=bugs.assigned_to AND (bugs.bug_status="NEW" OR bugs.bug_status="ASSIGNED" OR bugs.bug_status="REOPENED") AND bugs.product_id != 1 AND bugs.product_id != 4 AND bugs.product_id != 5 AND bugs.product_id != 7 AND bugs.product_id != 12 ORDER BY bugs.bug_id;</parameter>
+    </function>
+
+    <function name="closeConnection" module="SQL">
+        <parameter>Bugzilla</parameter>
+    </function>
+  
+</test>

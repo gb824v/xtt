@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<dbupdates> 
+<!-- Filters -->
+<!-- XSN.DBLoad.Filter.TC009.0 Prerequisite data xml	Set custom Filter to a Community -->
+<!-- Prerequisite for xsn filters tag -->
+<subscribers> 
+	<add subscriber="1234577" > </add>  
+	<add subscriber="1234578" > </add> 
+	<add subscriber="1234579" > </add> 
+	<add subscriber="1234580" > </add> 
+</subscribers>
+
+<communities> 
+	<add name="FamilyOne/Parents/Children" /> 
+	<add name="FamilyOne/Parents" /> 
+	<add name="FamilyOne" /> 
+</communities>
+
+<communityAdmins>
+	<add community="FamilyOne" subscriber="1234577" /> 
+</communityAdmins>
+
+<communityMembers> 
+	<add community="FamilyOne/Parents" subscriber="1234578" /> 
+	<add community="FamilyOne/Parents" subscriber="1234579" /> 
+	<add community="FamilyOne/Parents/Children" subscriber="1234580" /> 
+</communityMembers>
+
+
+<!--	Filters Tag : Custom Filter Tag for Subscriber	-->
+
+<!-- XSN.DBLoad.SubFilterPreReq.TC0012 -->
+<!-- (Prerequisite data xml)	Set custom Filter to a Subscriber	-->  
+<!-- Prerequisite for xsn filters tag -->
+<subscribers> 
+	<add subscriber="1234581" > </add>  
+	<add subscriber="1234582" > </add> 
+	<add subscriber="1234583" > </add> 
+	<add subscriber="1234584" > </add> 
+</subscribers>
+ 
+<!-- 	Scheme:Categories Tag	-->
+<!-- XSN.DBLoad.FilterSubrCustFiltCat.TC0012.1	Set customFilter to Subscribers to block exisiting categories in CustomFilters	-->
+ 
+<xsnFilters>
+	<set subscriber="1234581" scheme="customFilters" >
+	<categories>
+		<block category="Violence" />
+	</categories>
+	</set>
+	<set subscriber="1234582" scheme="customFilters" >
+	<categories>
+		<block category="Gambling" />
+	</categories>
+	</set>
+	<set subscriber="1234583" scheme="customFilters" >
+	<categories>
+		<block category="Games" />
+	</categories>
+	</set>
+</xsnFilters>
+ 
+<!-- XSN.DBLoad.FilterSubrCustFiltCat.TC0012.2	Set customFilter to a Subscriber to block non exisiting categories	-->
+ 
+<xsnFilters>
+	<set subscriber="1234581" scheme="customFilters" >
+	<categories>
+		<block category="XYZ" />
+	</categories>
+	</set>
+</xsnFilters>
+
+ 
+<!-- XSN.DBLoad.FilterSubrCustFiltCat.TC0012.3	Unblock category to a Subscriber	-->
+ 
+<xsnFilters>
+	<set subscriber="1234581"
+	scheme="customFilters" >
+	</set>
+</xsnFilters>
+
+ 
+<!--	Scheme:Internet Filter Tag	-->
+<!-- XSN.DBLoad.FilterSubrCustFiltCat.TC0012.4	Set customFilter - internetFilters to a Subscriber to block url patterns.	-->
+ 
+<xsnFilters>
+	<set subscriber="1234582" scheme="customFilters" >
+		<internetFilters> <block urlPattern="yahoo.com" />
+		</internetFilters>
+	</set>
+<set subscriber="1234583" scheme="customFilters" >
+	<internetFilters> <block urlPattern="google.*" />
+	</internetFilters>
+</set>
+</xsnFilters>
+ 
+<!-- XSN.DBLoad.FilterSubrCustFiltCat.TC0012.5	Set customFilter - internetFilters to a Subscriber for exceptions to block url patterns.	-->
+ 
+<xsnFilters>
+	<set subscriber="1234582" scheme="customFilters" >
+		<internetFilters>
+		<exception urlPattern="mail.yahoo.com/" />
+		</internetFilters>
+	</set>
+	<set subscriber="1234583" scheme="customFilters" >
+		<internetFilters>
+		<exception urlPattern="google.ch/" />
+		</internetFilters>
+	</set>
+</xsnFilters>
+ 
+<!--	mms filter	-->
+<!-- XSN.DBLoad.FilterSubrCustFiltMms.TC0012.6	"Set customFilter - mmsFilters to a Subscriber to block mms patterns.With use of wild card."	-->
+ 
+<xsnFilters>
+	<set subscriber="1234582" scheme="customFilters" >
+	<mmsFilters>
+		<block shortcodePattern="666*" />
+	</mmsFilters>
+	</set>
+	<set subscriber="1234583" scheme="customFilters" >
+	<mmsFilters>
+		<block shortcodePattern="777*" />
+	</mmsFilters>
+	</set>
+</xsnFilters>
+ 
+<!-- XSN.DBLoad.FilterSubrCustFiltMms.TC0012.7	Use wild card	Tested above -->
+<!-- XSN.DBLoad.FilterSubrCustFiltMms.TC0012.8	Uniqueness check is not present	-->
+ 
+<xsnFilters>
+	<set subscriber="1234582" scheme="customFilters" >
+	<mmsFilters>
+		<block shortcodePattern="655*" />
+		<block shortcodePattern="655*" />
+	</mmsFilters>
+	</set>
+</xsnFilters>
+ 
+<!-- XSN.DBLoad.FilterSubrCustFiltMms.TC0012.9	Set customFilter - mmsFilters to a Subscriber for exceptions to block keyword or shortcode patterns 	-->
+ 
+<xsnFilters>
+	<set subscriber="1234582" scheme="customFilters" >
+	<mmsFilters>
+		<exception shortcodePattern="*" keywords="help" />
+	</mmsFilters>
+	</set>
+	<set subscriber="1234583" scheme="customFilters" >
+	<mmsFilters>
+		<exception shortcodePattern="*" keywords="help" />
+	</mmsFilters>
+	</set>
+</xsnFilters>
+ 
+<!--	sms  filter	-->
+<!-- XSN.DBLoad.FilterSubrCustFiltSms.TC0012.10	"Set customFilter - smsFilters to a Subscriber to block keyword and /or shortcode  patterns. Blocking of Keyword alone not allowed"	--> 
+ 
+<xsnFilters>
+	<set subscriber="1234582" scheme="customFilters" >
+	<smsFilters>
+		<block shortcodePattern="335*" keywords="lottery" />
+		<block shortcodePattern="4545" />
+	</smsFilters>
+	</set>
+	<set subscriber="1234583" scheme="customFilters" >
+	<smsFilters>
+		<block shortcodePattern="555*" keywords="m* mouse" />
+		<block shortcodePattern="4444" />
+		<block keywords="*pokeman*" />
+	</smsFilters>
+	</set>
+</xsnFilters>
+ 
+<!-- XSN.DBLoad.FilterSubrCustFiltSms.TC0012.11	Set customFilter - smsFilters to a Subscriber for exceptions to block keyword and/or shortcode  patterns. Exception for Keyword alone not allowed"	--> 
+ 
+<xsnFilters>
+	<set subscriber="1234582" scheme="customFilters" >
+	<smsFilters>
+		<exception shortcodePattern="4646" keywords="lottery *" />
+	</smsFilters>
+	</set>
+	<set subscriber="1234583" scheme="customFilters" >
+	<smsFilters>
+		<exception shortcodePattern="4444" keywords="play *" />
+		<exception shortcodePattern="4546" />
+		<exception keywords="*webblade*" />
+	</smsFilters>
+	</set>
+</xsnFilters>
+ 
+<!-- XSN.DBLoad.FilterSubrCustFiltAll.TC0012.12	Set filters for CustomFilter Scheme for Categories, sms,mms and internetFilters.	-->
+ 
+<xsnFilters>
+	<set subscriber="1234581" scheme="customFilters" >
+		<categories>
+			<block category="XYZ" />
+			<block category="violence" />
+		</categories>
+	</set>
+
+	<set subscriber="1234582"  scheme="customFilters" >
+	<internetFilters> 
+		<block urlPattern="yahoo.com" />
+		<exception urlPattern="mail.yahoo.com/" />
+	</internetFilters>
+	<mmsFilters>
+		<block shortcodePattern="666*" />
+		<exception shortcodePattern="*" keywords="help" />
+	</mmsFilters>
+	<smsFilters>
+		<block shortcodePattern="335*" keywords="lottery" />
+		<block shortcodePattern="4545" />
+		<exception shortcodePattern="4646" keywords="lottery *" />
+	</smsFilters>
+	</set>
+
+	<set subscriber="1234583" scheme="customFilters" >
+	<internetFilters> 
+		<block urlPattern="google.*" />
+		<exception urlPattern="google.ch/" />
+	</internetFilters>
+	<mmsFilters>
+		<block shortcodePattern="777*" />
+		<exception shortcodePattern="*" keywords="help" />
+	</mmsFilters>
+	<smsFilters>
+		<block shortcodePattern="555*" keywords="mickey mou*e" />
+		<block shortcodePattern="4444" />
+		<exception shortcodePattern="4444" keywords="play *" />
+	</smsFilters>
+	</set>
+
+</xsnFilters>
+ 
+</dbupdates>

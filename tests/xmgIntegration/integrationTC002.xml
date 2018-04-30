@@ -1,0 +1,62 @@
+<!-- just check if all the processes are running -->
+<test>
+    <function name="testName" module="Basic">
+        <parameter>INTEGRATION.TC.002</parameter>
+    </function>
+    <description>Check if all processes are running</description>
+
+    <function name="checkAllProcessesStatus" module="Remote">
+        <parameter>Running</parameter>
+    </function>
+</test>
+<!--
+    <function name="checkProcessStatus" module="Remote">
+        <parameter>CONFIGSERVER</parameter>
+        <parameter>Running</parameter>
+    </function>
+    <function name="checkProcessStatus" module="Remote">
+        <parameter>GWYAPI</parameter>
+        <parameter>Running</parameter>
+    </function>
+    <function name="checkProcessStatus" module="Remote">
+        <parameter>ISS</parameter>
+        <parameter>Running</parameter>
+    </function>
+    <function name="checkProcessStatus" module="Remote">
+        <parameter>LOGGER</parameter>
+        <parameter>Running</parameter>
+    </function>
+    <function name="checkProcessStatus" module="Remote">
+        <parameter>OAM</parameter>
+        <parameter>Running</parameter>
+    </function>
+    <function name="checkProcessStatus" module="Remote">
+        <parameter>PM</parameter>
+        <parameter>Running</parameter>
+    </function>
+    <function name="checkProcessStatus" module="Remote">
+        <parameter>PSE</parameter>
+        <parameter>Running</parameter>
+    </function>
+    <function name="checkProcessStatus" module="Remote">
+        <parameter>PUSH</parameter>
+        <parameter>Running</parameter>
+    </function>
+    <function name="checkProcessStatus" module="Remote">
+        <parameter>RADIUS</parameter>
+        <parameter>Running</parameter>
+    </function>
+    <function name="checkProcessStatus" module="Remote">
+        <parameter>RESOURCEMONITOR</parameter>
+        <parameter>Running</parameter>
+    </function>
+    <function name="checkProcessStatus" module="Remote">
+        <parameter>SERVICE</parameter>
+        <parameter>Running</parameter>
+    </function>
+    <function name="checkProcessStatus" module="Remote">
+        <parameter>SMS</parameter>
+        <parameter>Running</parameter>
+    </function>
+</test>
+-->

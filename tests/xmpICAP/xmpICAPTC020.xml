@@ -1,0 +1,64 @@
+<test>	    
+	<name>XMP.ICAP.TC.020</name>
+    <description>GET with RESPMOD, invalid response</description>
+
+    <subtest name="loadReqmod" file="loadReqmod.xml"/>
+
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+	<function name="startICAPServer" module="ICAP"/>
+	<function name="startWebServer" module="HTTP"/>
+
+	<function name="disableFullStreaming" module="ICAP">
+		<parameter>true</parameter>
+	</function>	
+
+    <function name="setVariableLines" module="Basic">
+        <parameter>1</parameter>
+        <parameter>headers</parameter>
+        <parameter>HTTP/1.1 403 Not allowed</parameter>
+        <parameter>server: XTT JAVA WebServer $Revision: 1.2 $</parameter>
+        <parameter></parameter>
+        <parameter>date: Thu, 12 Apr 2007 07:36:29 GMT</parameter>
+        <parameter>content-length: 45</parameter>
+        <parameter>content-type: text/plain</parameter>
+        <parameter>XTTReplacedContent: true</parameter>
+	</function>	
+
+	<thread>
+    	<function name="waitForREQMOD" module="ICAP">
+    		<parameter>1</parameter>
+    	</function>	
+        <function name="setServerOverrideResponse" module="ICAP">
+        	<variable>headers</variable>
+        	<base64encode>You are not allowed to access this content!!!</base64encode>
+        	<parameter>1</parameter>
+        	<parameter>res</parameter>
+        </function>  
+	</thread>
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://icap1.xtt724.com/</parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>500</parameter>
+	</function>	
+	<function name="queryBodyNegative" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>You are not allowed to access this content!!!</parameter>
+	</function>	
+
+	<function name="waitForRESPMOD" module="ICAP">
+		<parameter>1</parameter>
+	</function>	
+
+    <subtest name="unloadReqmod" file="unloadReqmod.xml"/>
+
+	<function name="stopWebServer" module="HTTP"/>
+	<function name="stopICAPServer" module="ICAP"/>
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function> 
+</test>

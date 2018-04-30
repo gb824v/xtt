@@ -1,0 +1,1278 @@
+<test>
+	<name>XTT.TC.018</name>
+	<description>Test the Multipart module functions</description>
+
+    <function name="createMultipart" module="Multipart">
+        <parameter>multiPart1</parameter>
+        <parameter>TESTBOUNDARY00001</parameter>
+        <parameter>mixed</parameter>
+    </function>
+
+    <!-- First part -->
+    <function name="addPart" module="Multipart">
+        <parameter>multiPart1</parameter>
+    </function>
+    <function name="addPartHeader" module="Multipart">
+        <parameter>multiPart1</parameter>
+        <parameter>0</parameter>
+        <parameter>Content-Type</parameter>
+        <parameter>text/plain; name=test2.txt; charset=us-ascii</parameter>
+    </function>
+    <function name="addPartHeader" module="Multipart">
+        <parameter>multiPart1</parameter>
+        <parameter>0</parameter>
+        <parameter>Content-Transfer-Encoding</parameter>
+        <parameter>7bit</parameter>
+    </function>
+    <function name="addPartHeader" module="Multipart">
+        <parameter>multiPart1</parameter>
+        <parameter>0</parameter>
+        <parameter>Content-Disposition</parameter>
+        <parameter>attachment; filename=test2.txt</parameter>
+    </function>
+    <function name="addPartHeader" module="Multipart">
+        <parameter>multiPart1</parameter>
+        <parameter>0</parameter>
+        <parameter>Content-ID</parameter>
+        <parameter>&lt;test2.txt&gt;</parameter>
+    </function>
+    <function name="addPartBody" module="Multipart">
+        <parameter>multiPart1</parameter>
+        <parameter>0</parameter>
+        <base64file>xttTC018.bin</base64file>
+    </function>
+
+    <!-- Second part -->
+    <function name="addPart" module="Multipart">
+        <parameter>multiPart1</parameter>
+    </function>
+    <function name="addPartHeader" module="Multipart">
+        <parameter>multiPart1</parameter>
+        <parameter>1</parameter>
+        <parameter>Content-Type</parameter>
+        <parameter>text/plain; name=test3.txt; charset=us-ascii</parameter>
+    </function>
+    <function name="addPartHeader" module="Multipart">
+        <parameter>multiPart1</parameter>
+        <parameter>1</parameter>
+        <parameter>Content-Transfer-Encoding</parameter>
+        <parameter>base64</parameter>
+    </function>
+    <function name="addPartHeader" module="Multipart">
+        <parameter>multiPart1</parameter>
+        <parameter>1</parameter>
+        <parameter>Duplicate-Header</parameter>
+        <parameter>value1</parameter>
+    </function>
+    <function name="addPartHeader" module="Multipart">
+        <parameter>multiPart1</parameter>
+        <parameter>1</parameter>
+        <parameter>Duplicate-Header</parameter>
+        <parameter>value3</parameter>
+    </function>
+    <function name="removePartHeader" module="Multipart">
+        <parameter>multiPart1</parameter>
+        <parameter>1</parameter>
+        <parameter>Duplicate-Header</parameter>
+    </function>
+    <function name="addPartHeader" module="Multipart">
+        <parameter>multiPart1</parameter>
+        <parameter>1</parameter>
+        <parameter>Duplicate-Header</parameter>
+        <parameter>value1</parameter>
+    </function>
+    <function name="addPartHeader" module="Multipart">
+        <parameter>multiPart1</parameter>
+        <parameter>1</parameter>
+        <parameter>Duplicate-Header</parameter>
+        <parameter>value2</parameter>
+    </function>
+    <function name="addPartHeader" module="Multipart">
+        <parameter>multiPart1</parameter>
+        <parameter>1</parameter>
+        <parameter>Content-Disposition</parameter>
+        <parameter>attachment; filename=test3.txt</parameter>
+    </function>
+    <function name="addPartHeader" module="Multipart">
+        <parameter>multiPart1</parameter>
+        <parameter>1</parameter>
+        <parameter>Content-ID</parameter>
+        <parameter>&lt;test3.txt&gt;</parameter>
+    </function>
+    <function name="addPartBody" module="Multipart">
+        <parameter>multiPart1</parameter>
+        <parameter>1</parameter>
+        <base64encode><base64file>xttTC018.bin</base64file></base64encode>
+    </function>
+
+
+    <!-- Third part -->
+    <function name="addPart" module="Multipart">
+        <parameter>multiPart1</parameter>
+    </function>
+    <function name="addPartHeader" module="Multipart">
+        <parameter>multiPart1</parameter>
+        <parameter>2</parameter>
+        <parameter>Content-Type</parameter>
+        <parameter>text/plain; name=test4.txt; charset=us-ascii</parameter>
+    </function>
+    <function name="addPartHeader" module="Multipart">
+        <parameter>multiPart1</parameter>
+        <parameter>2</parameter>
+        <parameter>Content-Transfer-Encoding</parameter>
+        <parameter>8bit</parameter>
+    </function>
+    <function name="addPartHeader" module="Multipart">
+        <parameter>multiPart1</parameter>
+        <parameter>2</parameter>
+        <parameter>Content-Disposition</parameter>
+        <parameter>attachment; filename=test4.txt</parameter>
+    </function>
+    <function name="addPartHeader" module="Multipart">
+        <parameter>multiPart1</parameter>
+        <parameter>2</parameter>
+        <parameter>Content-ID</parameter>
+        <parameter>&lt;test4.txt&gt;</parameter>
+    </function>
+    <function name="addPartBody" module="Multipart">
+        <parameter>multiPart1</parameter>
+        <parameter>2</parameter>
+        <base64file>xttTC018.bin</base64file>
+    </function>
+
+
+    <!-- Fourth part -->
+    <function name="addPart" module="Multipart">
+        <parameter>multiPart1</parameter>
+    </function>
+    <function name="addPartHeader" module="Multipart">
+        <parameter>multiPart1</parameter>
+        <parameter>3</parameter>
+        <parameter>Content-Type</parameter>
+        <parameter>image/jpg; name=picture1.jpg</parameter>
+    </function>
+    <function name="addPartHeader" module="Multipart">
+        <parameter>multiPart1</parameter>
+        <parameter>3</parameter>
+        <parameter>Content-Transfer-Encoding</parameter>
+        <parameter>binary</parameter>
+    </function>
+    <function name="addPartHeader" module="Multipart">
+        <parameter>multiPart1</parameter>
+        <parameter>3</parameter>
+        <parameter>Content-Disposition</parameter>
+        <parameter>attachment; filename=picture1.jpg</parameter>
+    </function>
+    <function name="addPartHeader" module="Multipart">
+        <parameter>multiPart1</parameter>
+        <parameter>3</parameter>
+        <parameter>Content-ID</parameter>
+        <parameter>&lt;picture1.jpg&gt;</parameter>
+    </function>
+    <function name="addPartBody" module="Multipart">
+        <parameter>multiPart1</parameter>
+        <parameter>3</parameter>
+        <base64file>xttTC018.bin</base64file>
+    </function>
+    <function name="removePartBody" module="Multipart">
+        <parameter>multiPart1</parameter>
+        <parameter>3</parameter>
+    </function>
+    <function name="addPartBody" module="Multipart">
+        <parameter>multiPart1</parameter>
+        <parameter>3</parameter>
+        <base64file>xttTC018.jpg</base64file>
+    </function>
+
+    <!-- remove third part -->
+    <function name="removePart" module="Multipart">
+        <parameter>multiPart1</parameter>
+        <parameter>2</parameter>
+    </function>
+
+    <!-- new Fourth part -->
+    <function name="addPart" module="Multipart">
+        <parameter>multiPart1</parameter>
+    </function>
+    <function name="addPartHeader" module="Multipart">
+        <parameter>multiPart1</parameter>
+        <parameter>3</parameter>
+        <parameter>Content-Type</parameter>
+        <parameter>image/jpg; name=picture2.jpg</parameter>
+    </function>
+    <function name="addPartHeader" module="Multipart">
+        <parameter>multiPart1</parameter>
+        <parameter>3</parameter>
+        <parameter>Content-Transfer-Encoding</parameter>
+        <parameter>binary</parameter>
+    </function>
+    <function name="removePartHeader" module="Multipart">
+        <parameter>multiPart1</parameter>
+        <parameter>3</parameter>
+        <parameter>Content-Transfer-Encoding</parameter>
+    </function>
+    <function name="addPartHeader" module="Multipart">
+        <parameter>multiPart1</parameter>
+        <parameter>3</parameter>
+        <parameter>Content-Transfer-Encoding</parameter>
+        <parameter>base64</parameter>
+    </function>
+    <function name="addPartHeader" module="Multipart">
+        <parameter>multiPart1</parameter>
+        <parameter>3</parameter>
+        <parameter>Content-Disposition</parameter>
+        <parameter>attachment; filename=picture2.jpg</parameter>
+    </function>
+    <function name="addPartHeader" module="Multipart">
+        <parameter>multiPart1</parameter>
+        <parameter>3</parameter>
+        <parameter>Content-ID</parameter>
+        <parameter>&lt;picture2.jpg&gt;</parameter>
+    </function>
+    <function name="addPartBody" module="Multipart">
+        <parameter>multiPart1</parameter>
+        <parameter>3</parameter>
+        <base64encode><base64file>xttTC018.jpg</base64file></base64encode>
+    </function>
+
+    <!-- store multipart in variable and compare with the file on disc -->
+    <function name="storeMultipart" module="Multipart">
+        <parameter>multiPart1base64</parameter>
+        <parameter>multiPart1</parameter>
+    </function>
+
+    <function name="compareString" module="Basic">
+        <base64ToByteString><variable>multiPart1base64</variable></base64ToByteString>
+        <byteStringFile>xttTC018.multipart.bin</byteStringFile>
+    </function>
+
+    <!-- deocode the multipart and check the individual parts for correctness -->
+    <function name="decodeMultipart" module="Multipart">
+        <parameter>decoded-MP-1</parameter>
+        <variable>multiPart1base64</variable>
+        <parameter>multipart/mixed; boundary=TESTBOUNDARY00001</parameter>
+    </function>
+
+    <!-- how headers should be stored by the decodeMultipart
+      [storeName]/length
+        The number of parts found in the multipart
+      [storeName]/pre
+        Anything found before the first boundary, normaly an empty string
+      [storeName]/end
+        Anything found after the last boundary, normaly an empty string
+      [storeName]/[partNumber]/headers/length
+        The number of headers found in the multipart
+      [storeName]/[partNumber]/headers/[headerNumber]
+        The name of the found header in the order they are found
+      [storeName]/[partNumber]/headers/[headerNumber]/value
+        The value of the found header in the order they are found
+      [storeName]/[partNumber]/header/[headerName]
+        The value of the specified header, if there are duplicate headers this is a coma seperated list of the values in the order received.
+      [storeName]/[partNumber]/header/[headerName]/length
+        The number of headers of this name received.
+      [storeName]/[partNumber]/header/[headerName]/[duplicateHeaderNumber]
+        The value of the specified header with duplicateHeaderNumber being the current number of the header with this name received.
+      [storeName]/[partNumber]/body/plain
+        The body of the part as plain text
+      [storeName]/[partNumber]/body/base64
+        The body of the part as base64 encoded binary
+    -->
+    <!-- total number of parts -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/length</variable>
+        <parameter>4</parameter>
+    </function>
+
+    <!-- part 0 total mumber of headers -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/0/headers/length</variable>
+        <parameter>4</parameter>
+    </function>
+    
+    <!-- part 0 header 0 -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/0/headers/0</variable>
+        <parameter>Content-Type</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/0/headers/0/value</variable>
+        <parameter>text/plain; name=test2.txt; charset=us-ascii</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/0/header/Content-Type</variable>
+        <parameter>text/plain; name=test2.txt; charset=us-ascii</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/0/header/Content-Type/length</variable>
+        <parameter>1</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/0/header/Content-Type/0</variable>
+        <parameter>text/plain; name=test2.txt; charset=us-ascii</parameter>
+    </function>
+    
+    <!-- part 0 header 1 -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/0/headers/1</variable>
+        <parameter>Content-Transfer-Encoding</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/0/headers/1/value</variable>
+        <parameter>7bit</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/0/header/Content-Transfer-Encoding</variable>
+        <parameter>7bit</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/0/header/Content-Transfer-Encoding/length</variable>
+        <parameter>1</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/0/header/Content-Transfer-Encoding/0</variable>
+        <parameter>7bit</parameter>
+    </function>
+    
+    <!-- part 0 header 2 -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/0/headers/2</variable>
+        <parameter>Content-Disposition</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/0/headers/2/value</variable>
+        <parameter>attachment; filename=test2.txt</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/0/header/Content-Disposition</variable>
+        <parameter>attachment; filename=test2.txt</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/0/header/Content-Disposition/length</variable>
+        <parameter>1</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/0/header/Content-Disposition/0</variable>
+        <parameter>attachment; filename=test2.txt</parameter>
+    </function>
+
+    <!-- part 0 header 3 -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/0/headers/3</variable>
+        <parameter>Content-ID</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/0/headers/3/value</variable>
+        <parameter>&lt;test2.txt&gt;</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/0/header/Content-ID</variable>
+        <parameter>&lt;test2.txt&gt;</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/0/header/Content-ID/length</variable>
+        <parameter>1</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/0/header/Content-ID/0</variable>
+        <parameter>&lt;test2.txt&gt;</parameter>
+    </function>
+    <!-- part 0 body -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/0/body/plain</variable>
+        <file>xttTC018.bin</file>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/0/body/base64</variable>
+        <base64file>xttTC018.bin</base64file>
+    </function>
+
+
+
+    <!-- part 1 header 0 -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/1/headers/0</variable>
+        <parameter>Content-Type</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/1/headers/0/value</variable>
+        <parameter>text/plain; name=test3.txt; charset=us-ascii</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/1/header/Content-Type</variable>
+        <parameter>text/plain; name=test3.txt; charset=us-ascii</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/1/header/Content-Type/length</variable>
+        <parameter>1</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/1/header/Content-Type/0</variable>
+        <parameter>text/plain; name=test3.txt; charset=us-ascii</parameter>
+    </function>
+    
+    <!-- part 1 header 1 -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/1/headers/1</variable>
+        <parameter>Content-Transfer-Encoding</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/1/headers/1/value</variable>
+        <parameter>base64</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/1/header/Content-Transfer-Encoding</variable>
+        <parameter>base64</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/1/header/Content-Transfer-Encoding/length</variable>
+        <parameter>1</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/1/header/Content-Transfer-Encoding/0</variable>
+        <parameter>base64</parameter>
+    </function>
+    
+    <!-- part 1 header 2&3 -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/1/headers/2</variable>
+        <parameter>Duplicate-Header</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/1/headers/3</variable>
+        <parameter>Duplicate-Header</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/1/headers/2/value</variable>
+        <parameter>value1</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/1/headers/3/value</variable>
+        <parameter>value2</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/1/header/Duplicate-Header</variable>
+        <parameter>value1, value2</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/1/header/Duplicate-Header/length</variable>
+        <parameter>2</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/1/header/Duplicate-Header/0</variable>
+        <parameter>value1</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/1/header/Duplicate-Header/1</variable>
+        <parameter>value2</parameter>
+    </function>
+
+    <!-- part 1 header 4 -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/1/headers/4</variable>
+        <parameter>Content-Disposition</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/1/headers/4/value</variable>
+        <parameter>attachment; filename=test3.txt</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/1/header/Content-Disposition</variable>
+        <parameter>attachment; filename=test3.txt</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/1/header/Content-Disposition/length</variable>
+        <parameter>1</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/1/header/Content-Disposition/0</variable>
+        <parameter>attachment; filename=test3.txt</parameter>
+    </function>
+
+    <!-- part 1 header 5 -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/1/headers/5</variable>
+        <parameter>Content-ID</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/1/headers/5/value</variable>
+        <parameter>&lt;test3.txt&gt;</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/1/header/Content-ID</variable>
+        <parameter>&lt;test3.txt&gt;</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/1/header/Content-ID/length</variable>
+        <parameter>1</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/1/header/Content-ID/0</variable>
+        <parameter>&lt;test3.txt&gt;</parameter>
+    </function>
+    <!-- part 1 body -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/1/body/plain</variable>
+        <base64file>xttTC018.bin</base64file>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/1/body/base64</variable>
+        <base64encode><base64file>xttTC018.bin</base64file></base64encode>
+    </function>
+
+
+
+   <!-- part 2 header 0 -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/2/headers/0</variable>
+        <parameter>Content-Type</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/2/headers/0/value</variable>
+        <parameter>image/jpg; name=picture1.jpg</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/2/header/Content-Type</variable>
+        <parameter>image/jpg; name=picture1.jpg</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/2/header/Content-Type/length</variable>
+        <parameter>1</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/2/header/Content-Type/0</variable>
+        <parameter>image/jpg; name=picture1.jpg</parameter>
+    </function>
+    
+    <!-- part 2 header 1 -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/2/headers/1</variable>
+        <parameter>Content-Transfer-Encoding</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/2/headers/1/value</variable>
+        <parameter>binary</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/2/header/Content-Transfer-Encoding</variable>
+        <parameter>binary</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/2/header/Content-Transfer-Encoding/length</variable>
+        <parameter>1</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/2/header/Content-Transfer-Encoding/0</variable>
+        <parameter>binary</parameter>
+    </function>
+    
+    <!-- part 2 header 2 -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/2/headers/2</variable>
+        <parameter>Content-Disposition</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/2/headers/2/value</variable>
+        <parameter>attachment; filename=picture1.jpg</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/2/header/Content-Disposition</variable>
+        <parameter>attachment; filename=picture1.jpg</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/2/header/Content-Disposition/length</variable>
+        <parameter>1</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/2/header/Content-Disposition/0</variable>
+        <parameter>attachment; filename=picture1.jpg</parameter>
+    </function>
+
+    <!-- part 2 header 3 -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/2/headers/3</variable>
+        <parameter>Content-ID</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/2/headers/3/value</variable>
+        <parameter>&lt;picture1.jpg&gt;</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/2/header/Content-ID</variable>
+        <parameter>&lt;picture1.jpg&gt;</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/2/header/Content-ID/length</variable>
+        <parameter>1</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/2/header/Content-ID/0</variable>
+        <parameter>&lt;picture1.jpg&gt;</parameter>
+    </function>
+    <!-- part 2 body -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/2/body/base64</variable>
+        <base64file>xttTC018.jpg</base64file>
+    </function>
+
+
+   <!-- part 3 header 0 -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/3/headers/0</variable>
+        <parameter>Content-Type</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/3/headers/0/value</variable>
+        <parameter>image/jpg; name=picture2.jpg</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/3/header/Content-Type</variable>
+        <parameter>image/jpg; name=picture2.jpg</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/3/header/Content-Type/length</variable>
+        <parameter>1</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/3/header/Content-Type/0</variable>
+        <parameter>image/jpg; name=picture2.jpg</parameter>
+    </function>
+    
+    <!-- part 3 header 1 -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/3/headers/1</variable>
+        <parameter>Content-Transfer-Encoding</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/3/headers/1/value</variable>
+        <parameter>base64</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/3/header/Content-Transfer-Encoding</variable>
+        <parameter>base64</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/3/header/Content-Transfer-Encoding/length</variable>
+        <parameter>1</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/3/header/Content-Transfer-Encoding/0</variable>
+        <parameter>base64</parameter>
+    </function>
+    
+    <!-- part 3 header 2 -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/3/headers/2</variable>
+        <parameter>Content-Disposition</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/3/headers/2/value</variable>
+        <parameter>attachment; filename=picture2.jpg</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/3/header/Content-Disposition</variable>
+        <parameter>attachment; filename=picture2.jpg</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/3/header/Content-Disposition/length</variable>
+        <parameter>1</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/3/header/Content-Disposition/0</variable>
+        <parameter>attachment; filename=picture2.jpg</parameter>
+    </function>
+
+    <!-- part 3 header 3 -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/3/headers/3</variable>
+        <parameter>Content-ID</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/3/headers/3/value</variable>
+        <parameter>&lt;picture2.jpg&gt;</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/3/header/Content-ID</variable>
+        <parameter>&lt;picture2.jpg&gt;</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/3/header/Content-ID/length</variable>
+        <parameter>1</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/3/header/Content-ID/0</variable>
+        <parameter>&lt;picture2.jpg&gt;</parameter>
+    </function>
+    <!-- part 3 body -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/3/body/plain</variable>
+        <base64file>xttTC018.jpg</base64file>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-1/3/body/base64</variable>
+        <base64encode><base64file>xttTC018.jpg</base64file></base64encode>
+    </function>
+
+
+
+
+
+    <!-- deocode the multipart and check the individual parts for correctness -->
+    <function name="decodeMultipart" module="Multipart">
+        <parameter>decoded-MP-2</parameter>
+        <base64file>xttTC018.multipart2.bin</base64file>
+        <parameter>multipart/mixed; boundary="TESTBOUNDARY00002"; whatever="bah"</parameter>
+    </function>
+
+    <!-- total number of parts -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/length</variable>
+        <parameter>4</parameter>
+    </function>
+
+    <!-- part 0 total mumber of headers -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/0/headers/length</variable>
+        <parameter>4</parameter>
+    </function>
+    
+    <!-- part 0 header 0 -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/0/headers/0</variable>
+        <parameter>Content-Type</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/0/headers/0/value</variable>
+        <parameter>text/plain; name=test2.txt; charset=us-ascii</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/0/header/Content-Type</variable>
+        <parameter>text/plain; name=test2.txt; charset=us-ascii</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/0/header/Content-Type/length</variable>
+        <parameter>1</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/0/header/Content-Type/0</variable>
+        <parameter>text/plain; name=test2.txt; charset=us-ascii</parameter>
+    </function>
+    
+    <!-- part 0 header 1 -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/0/headers/1</variable>
+        <parameter>Content-Transfer-Encoding</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/0/headers/1/value</variable>
+        <parameter>7bit</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/0/header/Content-Transfer-Encoding</variable>
+        <parameter>7bit</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/0/header/Content-Transfer-Encoding/length</variable>
+        <parameter>1</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/0/header/Content-Transfer-Encoding/0</variable>
+        <parameter>7bit</parameter>
+    </function>
+    
+    <!-- part 0 header 2 -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/0/headers/2</variable>
+        <parameter>Content-Disposition</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/0/headers/2/value</variable>
+        <parameter>attachment; filename=test2.txt</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/0/header/Content-Disposition</variable>
+        <parameter>attachment; filename=test2.txt</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/0/header/Content-Disposition/length</variable>
+        <parameter>1</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/0/header/Content-Disposition/0</variable>
+        <parameter>attachment; filename=test2.txt</parameter>
+    </function>
+
+    <!-- part 0 header 3 -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/0/headers/3</variable>
+        <parameter>Content-ID</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/0/headers/3/value</variable>
+        <parameter>&lt;test2.txt&gt;</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/0/header/Content-ID</variable>
+        <parameter>&lt;test2.txt&gt;</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/0/header/Content-ID/length</variable>
+        <parameter>1</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/0/header/Content-ID/0</variable>
+        <parameter>&lt;test2.txt&gt;</parameter>
+    </function>
+    <!-- part 0 body -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/0/body/plain</variable>
+        <file>xttTC018.bin</file>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/0/body/base64</variable>
+        <base64file>xttTC018.bin</base64file>
+    </function>
+
+
+
+    <!-- part 1 total mumber of headers -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/1/headers/length</variable>
+        <parameter>7</parameter>
+    </function>
+    <!-- part 1 header 0 -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/1/headers/0</variable>
+        <parameter>Content-Type</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/1/headers/0/value</variable>
+        <parameter>text/plain; name=test3.txt; charset=us-ascii</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/1/header/Content-Type</variable>
+        <parameter>text/plain; name=test3.txt; charset=us-ascii</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/1/header/Content-Type/length</variable>
+        <parameter>1</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/1/header/Content-Type/0</variable>
+        <parameter>text/plain; name=test3.txt; charset=us-ascii</parameter>
+    </function>
+    
+    <!-- part 1 header 1 -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/1/headers/1</variable>
+        <parameter>Content-Transfer-Encoding</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/1/headers/1/value</variable>
+        <parameter>base64</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/1/header/Content-Transfer-Encoding</variable>
+        <parameter>base64</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/1/header/Content-Transfer-Encoding/length</variable>
+        <parameter>1</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/1/header/Content-Transfer-Encoding/0</variable>
+        <parameter>base64</parameter>
+    </function>
+    
+    <!-- part 1 header 2&3&6 -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/1/headers/2</variable>
+        <parameter>Duplicate-Header</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/1/headers/3</variable>
+        <parameter>duplicate-header</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/1/headers/6</variable>
+        <parameter>Duplicate-header</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/1/headers/2/value</variable>
+        <parameter>value1</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/1/headers/3/value</variable>
+        <parameter>value2</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/1/headers/6/value</variable>
+        <parameter>value3</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/1/header/Duplicate-Header</variable>
+        <parameter>value1, value2, value3</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/1/header/Duplicate-Header/length</variable>
+        <parameter>3</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/1/header/Duplicate-Header/0</variable>
+        <parameter>value1</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/1/header/Duplicate-Header/1</variable>
+        <parameter>value2</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/1/header/Duplicate-Header/2</variable>
+        <parameter>value3</parameter>
+    </function>
+
+    <!-- part 1 header 4 -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/1/headers/4</variable>
+        <parameter>Content-Disposition</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/1/headers/4/value</variable>
+        <parameter>attachment; filename=test3.txt</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/1/header/Content-Disposition</variable>
+        <parameter>attachment; filename=test3.txt</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/1/header/Content-Disposition/length</variable>
+        <parameter>1</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/1/header/Content-Disposition/0</variable>
+        <parameter>attachment; filename=test3.txt</parameter>
+    </function>
+
+    <!-- part 1 header 5 -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/1/headers/5</variable>
+        <parameter>Content-ID</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/1/headers/5/value</variable>
+        <parameter>&lt;test3.txt&gt;</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/1/header/Content-ID</variable>
+        <parameter>&lt;test3.txt&gt;</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/1/header/Content-ID/length</variable>
+        <parameter>1</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/1/header/Content-ID/0</variable>
+        <parameter>&lt;test3.txt&gt;</parameter>
+    </function>
+    <!-- part 1 body -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/1/body/plain</variable>
+        <base64file>xttTC018.bin</base64file>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/1/body/base64</variable>
+        <base64encode><base64file>xttTC018.bin</base64file></base64encode>
+    </function>
+
+
+
+    <!-- part 2 total mumber of headers -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/2/headers/length</variable>
+        <parameter>4</parameter>
+    </function>
+   <!-- part 2 header 0 -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/2/headers/0</variable>
+        <parameter>Content-Type</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/2/headers/0/value</variable>
+        <parameter>image/jpg; name=picture2.jpg</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/2/header/Content-Type</variable>
+        <parameter>image/jpg; name=picture2.jpg</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/2/header/Content-Type/length</variable>
+        <parameter>1</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/2/header/Content-Type/0</variable>
+        <parameter>image/jpg; name=picture2.jpg</parameter>
+    </function>
+    
+    <!-- part 2 header 1 -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/2/headers/1</variable>
+        <parameter>Content-Transfer-Encoding</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/2/headers/1/value</variable>
+        <parameter>base64</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/2/header/Content-Transfer-Encoding</variable>
+        <parameter>base64</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/2/header/Content-Transfer-Encoding/length</variable>
+        <parameter>1</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/2/header/Content-Transfer-Encoding/0</variable>
+        <parameter>base64</parameter>
+    </function>
+    
+    <!-- part 2 header 2 -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/2/headers/2</variable>
+        <parameter>Content-Disposition</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/2/headers/2/value</variable>
+        <parameter>attachment; filename=picture2.jpg</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/2/header/Content-Disposition</variable>
+        <parameter>attachment; filename=picture2.jpg</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/2/header/Content-Disposition/length</variable>
+        <parameter>1</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/2/header/Content-Disposition/0</variable>
+        <parameter>attachment; filename=picture2.jpg</parameter>
+    </function>
+
+    <!-- part 2 header 3 -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/2/headers/3</variable>
+        <parameter>Content-ID</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/2/headers/3/value</variable>
+        <parameter>&lt;picture2.jpg&gt;</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/2/header/Content-ID</variable>
+        <parameter>&lt;picture2.jpg&gt;</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/2/header/Content-ID/length</variable>
+        <parameter>1</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/2/header/Content-ID/0</variable>
+        <parameter>&lt;picture2.jpg&gt;</parameter>
+    </function>
+    <!-- part 2 body -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/2/body/plain</variable>
+        <base64file>xttTC018.jpg</base64file>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/2/body/base64</variable>
+        <base64encode><base64file>xttTC018.jpg</base64file></base64encode>
+    </function>
+
+    <!-- part 3 total mumber of headers -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/3/headers/length</variable>
+        <parameter>4</parameter>
+    </function>
+   <!-- part 3 header 0 -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/3/headers/0</variable>
+        <parameter>Content-Type</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/3/headers/0/value</variable>
+        <parameter>image/jpg; name=picture1.jpg</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/3/header/Content-Type</variable>
+        <parameter>image/jpg; name=picture1.jpg</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/3/header/Content-Type/length</variable>
+        <parameter>1</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/3/header/Content-Type/0</variable>
+        <parameter>image/jpg; name=picture1.jpg</parameter>
+    </function>
+    
+    <!-- part 3 header 1 -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/3/headers/1</variable>
+        <parameter>Content-Transfer-Encoding</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/3/headers/1/value</variable>
+        <parameter>binary</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/3/header/Content-Transfer-Encoding</variable>
+        <parameter>binary</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/3/header/Content-Transfer-Encoding/length</variable>
+        <parameter>1</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/3/header/Content-Transfer-Encoding/0</variable>
+        <parameter>binary</parameter>
+    </function>
+    
+    <!-- part 3 header 2 -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/3/headers/2</variable>
+        <parameter>Content-Disposition</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/3/headers/2/value</variable>
+        <parameter>attachment; filename=picture1.jpg</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/3/header/Content-Disposition</variable>
+        <parameter>attachment; filename=picture1.jpg</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/3/header/Content-Disposition/length</variable>
+        <parameter>1</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/3/header/Content-Disposition/0</variable>
+        <parameter>attachment; filename=picture1.jpg</parameter>
+    </function>
+
+    <!-- part 3 header 3 -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/3/headers/3</variable>
+        <parameter>Content-ID</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/3/headers/3/value</variable>
+        <parameter>&lt;picture1.jpg&gt;</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/3/header/Content-ID</variable>
+        <parameter>&lt;picture1.jpg&gt;</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/3/header/Content-ID/length</variable>
+        <parameter>1</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/3/header/Content-ID/0</variable>
+        <parameter>&lt;picture1.jpg&gt;</parameter>
+    </function>
+    
+    
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/pre</variable>
+        <parameter>This is BEFORE the Multipart</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/end</variable>
+        <parameter>
+            <crlf/>
+            <crlf>This is AFTER the Multipart</crlf>
+        </parameter>
+    </function>
+
+    
+    <!-- part 3 body -->
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-2/3/body/base64</variable>
+        <base64file>xttTC018.jpg</base64file>
+    </function>
+    
+    <!-- create new multipart -->
+	 <function name="createMultipart" module="Multipart">
+        <parameter>multiPart3</parameter>
+        <parameter>TESTBOUNDARY00001</parameter>
+        <parameter>mixed</parameter>
+    </function>
+
+	 <function name="addMultipartPreamble" module="Multipart">
+        <parameter>multiPart3</parameter>
+        <parameter>This is BEFORE the Multipart</parameter>
+    </function>
+
+   <!-- First part -->
+    <function name="addPart" module="Multipart">
+        <parameter>multiPart3</parameter>
+    </function>
+	
+	<function name="addPartHeader" module="Multipart">
+        <parameter>multiPart3</parameter>
+        <parameter>0</parameter>
+        <parameter>Content-Type</parameter>
+        <parameter>text/plain; name=test4.txt; charset=us-ascii</parameter>
+    </function>
+     <function name="addPartHeader" module="Multipart">
+        <parameter>multiPart3</parameter>
+        <parameter>0</parameter>
+        <parameter>Content-Transfer-Encoding</parameter>
+        <parameter>8bit</parameter>
+    </function>
+    <function name="addPartHeader" module="Multipart">
+        <parameter>multiPart3</parameter>
+        <parameter>0</parameter>
+        <parameter>Content-Disposition</parameter>
+        <parameter>attachment; filename=test4.txt</parameter>
+    </function>
+    <function name="addPartHeader" module="Multipart">
+        <parameter>multiPart3</parameter>
+        <parameter>0</parameter>
+        <parameter>Content-ID</parameter>
+        <parameter>&lt;test4.txt&gt;</parameter>
+    </function>
+   
+    <function name="addPartBody" module="Multipart">
+        <parameter>multiPart3</parameter>
+        <parameter>0</parameter>
+        <base64file>xttTC018.bin</base64file>
+    </function>
+	
+	 <function name="addMultipartEpilogue" module="Multipart">
+        <parameter>multiPart3</parameter>
+        <parameter>This is AFTER the Multipart</parameter>
+    </function>
+
+	<function name="storeMultipart" module="Multipart">
+        <parameter>multiPart31base64</parameter>
+        <parameter>multiPart3</parameter>
+    </function>
+
+	<!-- deocode the multipart and check the individual parts for correctness -->
+    <function name="decodeMultipart" module="Multipart">
+        <parameter>decoded-MP-3</parameter>
+        <variable>multiPart31base64</variable>
+        <parameter>multipart/mixed; boundary=TESTBOUNDARY00001</parameter>
+    </function>
+	
+	<function name="compareString" module="Basic">
+        <variable>decoded-MP-3/pre</variable>
+        <parameter>This is BEFORE the Multipart</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>decoded-MP-3/end</variable>
+        <parameter>
+            <crlf/>
+            <parameter>This is AFTER the Multipart</parameter>
+        </parameter>
+    </function>
+</test>

@@ -1,0 +1,24 @@
+<Configuration>
+    <XSAM>
+        <Ip>172.20.9.69</Ip>
+        <Port>4100</Port><!-- -->
+        <!--<Ip>172.20.14.1</Ip>
+        <Port>2775</Port> -->
+        <Shortcode>1401</Shortcode>
+        <ShortcodeNW>1411</ShortcodeNW>
+        <UnknownShortcode>1491</UnknownShortcode>
+        <ShortcodePrefix>140</ShortcodePrefix>
+        <ShortcodePrefixNW>141</ShortcodePrefixNW>
+        <ShortcodePrefixU>149</ShortcodePrefixU>
+        <InternalSMSC/>
+    </XSAM>
+    <SMSCServer>
+        <Port>1500</Port>
+        <BackupPort>1501</BackupPort>
+        <!--UCPMaxSessions>5</UCPMaxSessions>
+        <UCPMaxConnections>128</UCPMaxConnections-->
+        <UCPWindowSize>5</UCPWindowSize>
+        <UCPSessionTimeout>300000</UCPSessionTimeout>
+        <UCPRESPONSEDELAY>500</UCPRESPONSEDELAY>
+    </SMSCServer>
+</Configuration>

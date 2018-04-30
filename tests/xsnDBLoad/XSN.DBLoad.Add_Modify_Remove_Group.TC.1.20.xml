@@ -1,0 +1,32 @@
+	<test>
+	<function name="testName" module="Basic">
+	
+	<parameter>XSN.DBLoad.Add_Modify_Group.TC.1.20.xml </parameter>
+	</function>
+	
+	<description>Add Modify and Remove Group </description>
+   
+    <function name="sendRemoteCommand" module="Remote">
+    
+    	<parameter>writeFile Add_Modify_Remove_Group.xml </parameter> 
+         
+        <file>Add_Modify_Remove_Group.xml </file>
+    
+    </function>
+    
+    <function name="sendRemoteCommand" module="Remote">
+    
+        <configuration>xsn/path</configuration>
+        <configuration>xsn/xms</configuration>
+      
+        <parameter>load db Add_Modify_Remove_Group.xml</parameter>
+    
+    </function>
+    
+		<function name="queryResponse" module="Remote">
+			<parameter>SUCCESS: XML upload completed</parameter>
+			<!-- <parameter>ERROR: XML upload encountered problems and ended prematurely</parameter> -->
+			<parameter>dev/null</parameter>
+    </function>    
+   
+  </test>

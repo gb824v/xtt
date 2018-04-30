@@ -1,0 +1,91 @@
+<test>
+    <configuration>xsn_config.xml</configuration>
+    <function name="testName" module="Basic">
+        <parameter>SMS-Router.UCP.004.2</parameter>
+    </function>
+
+	<description>This is an example test for sending a long MT message of type 51</description>
+
+        <function name="startSMSCServer" module="SMS"/>
+
+    <function name="openConnection" module="UCP">
+        <parameter>connection1</parameter>
+        <configuration>XSN/IP</configuration>
+        <configuration>XSN/PORT</configuration>
+    </function>
+
+    <function name="sendUCPPacket" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>internal</parameter>
+        <parameter>O</parameter>
+        <parameter>60</parameter>
+        <parameter>
+            <parameter>/</parameter>
+            <configuration>XSN/SHORTCODE</configuration>
+            <parameter>/6/1/1/70617373776F7264//0100//////</parameter>
+        </parameter>
+    </function>
+
+    <function name="queryTextResponse" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>secret</parameter>
+        <parameter>\d\d/\d\d\d\d\d/R/60/A/</parameter>
+    </function>
+	<function name="waitForBind" module="SMS"/>
+
+        <function name="setVariable" module="BASIC">
+            <parameter>pass</parameter>
+            <parameter>SMSC/</parameter>
+            <configuration>SMSCSERVER/PROTOCOL</configuration>
+            <parameter>/</parameter>
+            <configuration>XSN/SHORTCODE</configuration>
+            <parameter>/PWD</parameter>
+        </function>
+
+        <function name="compareString" module="basic">
+            <parameter>password</parameter>
+            <variablepointer>pass</variablepointer>
+        </function>
+
+    <function name="sendUCPPacket" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>internal</parameter>
+        <parameter>O</parameter>
+        <parameter>51</parameter>
+        <parameter>
+            <parameter>/0123456789/</parameter>
+            <configuration>XSN/SHORTCODE</configuration>
+            <parameter>/////////////////3//4F70746963616C2063616D6F75666C6167652069732061206B696E64206F66206163746976652063616D6F75666C6167652E54686973206964656120697320766572792073696D706C652E496620796F752070726F6A656374206261636B67726F756E6420696D616765206F6E746F20746865206D61736B6564206F626A6563742C20796F752063616E206F62736572766520746865206D61736B6564206F626A656374206A7573742061732069662069742077657265207669727475616C6C79207472616E73706172656E742E546869732073686F777320746865207072696E6369706C65206F6620746865206F70746963616C2063616D6F75666C616765207573696E6720582774616C20566973696F6E2E596F752063616E2073656C6563742063616D6F75666C61676564206F626A65637420746F20636F766572207769/////////////</parameter>
+        </parameter>
+    </function>
+
+    <function name="queryTextResponse" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>secret</parameter>
+        <parameter>\d\d/\d\d\d\d\d/R/51/A/</parameter>
+    </function>
+
+        <function name="setVariable" module="BASIC">
+            <parameter>amsg</parameter>
+            <parameter>SMSC/</parameter>
+            <configuration>SMSCSERVER/PROTOCOL</configuration>
+            <parameter>/0123456789/AMsg</parameter>
+        </function>
+        <function name="compareString" module="basic">
+            <parameter>4F70746963616C2063616D6F75666C6167652069732061206B696E64206F66206163746976652063616D6F75666C6167652E54686973206964656120697320766572792073696D706C652E496620796F752070726F6A656374206261636B67726F756E6420696D616765206F6E746F20746865206D61736B6564206F626A6563742C20796F752063616E206F62736572766520746865206D61736B6564206F626A656374206A7573742061732069662069742077657265207669727475616C6C79207472616E73706172656E742E546869732073686F777320746865207072696E6369706C65206F6620746865206F70746963616C2063616D6F75666C616765207573696E6720582774616C20566973696F6E2E596F752063616E2073656C6563742063616D6F75666C61676564206F626A65637420746F20636F766572207769</parameter>
+            <variablepointer>amsg</variablepointer>
+        </function>
+
+    <!--<thread>
+        <function name="waitSMSCUCPPacket" module="UCP">
+        <parameter>connection1</parameter>
+        </function>
+    </thread>-->
+
+    <function name="closeConnection" module="UCP">
+        <parameter>connection1</parameter>
+    </function>
+
+    <function name="stopSMSCServer" module="SMS"/>
+
+</test>

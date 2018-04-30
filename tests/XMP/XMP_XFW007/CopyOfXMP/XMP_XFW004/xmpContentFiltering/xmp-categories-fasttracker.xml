@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmpCategories>
+    <categories>
+		<!-- This tag defines the names of the categories that XMP uses. -->
+		<category name="Adult" minAge="18" standardFilter="block"/>
+		<category name="Advertisements"/>
+		<category name="Alcohol and tobacco" standardFilter="allow" minAge="16"/>
+		<category name="Arts and entertainment"/>
+		<category name="Automatic updating"/>
+		<category name="Business and industry"/>
+		<category name="Cars and motorcycles"/>
+		<category name="Cheating and plagiarism" minAge="18" standardFilter="block"/>
+		<category name="Computers and internet"/>
+		<category name="Crime" minAge="16" standardFilter="block"/>
+		<category name="Criminal related" minAge="18" standardFilter="block"/>
+		<category name="Cults" minAge="16" standardFilter="block"/>
+                <category name="Dating" minAge="18"/>
+                <category name="Dining and drinking" minAge="16" standardFilter="block"/>
+		<category name="Education"/>
+		<category name="Failed URL request"/>
+		<category name="Filter avoidance" minAge="18" standardFilter="block"/>
+		<category name="Finance"/>
+		<category name="FYI"/>
+                <category name="Gambling" />
+		<category name="Games" minAge="16" standardFilter="block"/>
+		<category name="Gay and lesbian" minAge="16" standardFilter="block"/>
+		<category name="Government and law"/>
+		<category name="Hacking" minAge="18" standardFilter="block"/>
+		<category name="Hate speech" minAge="18" standardFilter="block"/>
+		<category name="Health and nutrition"/>
+		<category name="Illegal drugs" minAge="18" standardFilter="block"/>
+		<category name="Instant messaging"/>
+		<category name="Job search"/>
+		<category name="Lingerie and swimsuits" minAge="16" standardFilter="block"/>
+		<category name="Lottery and sweepstakes" minAge="18" standardFilter="block"/>
+		<category name="Nature"/>
+		<category name="News"/>
+		<category name="Non-mainstream" minAge="16" standardFilter="block"/>
+		<category name="Non-sexual nudity" minAge="18" standardFilter="block"/>
+		<category name="Online communities"/>
+		<category name="Online trading" minAge="18" standardFilter="block"/>
+		<category name="Peer file transfer" standardFilter="block"/>
+		<category name="Porn"  standardFilter="allow" subscriberFilterable="true" minAge="20"/>
+		<category name="Real estate" standardFilter="block" subscriberFilterable="true"  minAge="16"/>
+		<category name="Science and technology"/>
+		<category name="Search engines and portals"/>
+		<category name="Sex ed and abortion"/>
+		<category name="Shopping" minAge="16"/>
+		<category name="Social science"/>
+		<category name="Society and culture"/>
+		<category name="Spiritiual healing" minAge="16" standardFilter="block"/>
+		<category name="Sports and recreation"/>
+		<category name="Streaming media"/>
+		<category name="Tasteless or obscene" minAge="18" standardFilter="block"/>
+		<category name="Tattoos" minAge="16" standardFilter="block"/>
+		<category name="Travel" minAge="16"/>
+		<category name="Vice" minAge="18" standardFilter="block"/>
+		<category name="Violence" minAge="18" standardFilter="block"/>
+		<category name="Weapons" minAge="18" standardFilter="block"/>
+		<category name="Web hosting"/>
+		<category name="Web messaging"/>
+		<category name="Web-based chat"/>
+		<category name="Web-based email"/>
+		<category name="Young child"/>
+		<!-- Here we define two special "pseudo" categories that allow us to 
+                    implement global blacklists and whitelists. We dont want these 
+                    categories to appear on custom filters screens in the XMP Customer 
+                    Care GUI, so we set the subscriberFilterable attribute to false. -->
+		<category name="alwaysBlock" subscriberFilterable="false"/>
+		<category name="alwaysAllow" subscriberFilterable="false"/>
+    </categories>
+    <categoryMappings>
+		<!-- This tag maps the topic numbers assigned by FastTraker to the
+          XMP categories defined in the previous section. -->
+		<map externalName="9" category="Education"/>
+		<map externalName="10" category="Arts and entertainment"/>
+		<map externalName="18" category="Computers and internet"/>
+		<map externalName="27" category="Job search"/>
+		<map externalName="29" category="Shopping"/>
+		<map externalName="37" category="Adult"/>
+		<map externalName="41" category="Games"/>
+		<map externalName="48" category="Sports and recreation"/>
+		<map externalName="49" category="Health and nutrition"/>
+		<map externalName="57" category="Society and culture"/>
+		<map externalName="65" category="Government and law"/>
+		<map externalName="141" category="Science and technology"/>
+		<map externalName="150" category="Nature"/>
+		<map externalName="154" category="Social science"/>
+		<map externalName="184" category="Finance"/>
+		<map externalName="208" category="Hate speech"/>
+		<map externalName="282" category="FYI"/>
+		<map externalName="382" category="Business and industry"/>
+		<map externalName="393" category="Search engines and portals"/>
+		<map externalName="397" category="Web messaging"/>
+		<map externalName="404" category="Criminal related"/>
+		<map externalName="406" category="Failed URL request"/>
+		<map externalName="407" category="Online communities"/>
+		<map externalName="409" category="Filter avoidance"/>
+		<map externalName="410" category="Streaming media"/>
+		<map externalName="412" category="Advertisements"/>
+		<map externalName="415" category="Online trading"/>
+		<map externalName="419" category="Non-mainstream"/>
+		<map externalName="420" category="Vice"/>
+		<map externalName="423" category="Lingerie and swimsuits"/>
+		<map externalName="424" category="Violence"/>
+		<map externalName="426" category="Tasteless or obscene"/>
+		<map externalName="427" category="Lottery and sweepstakes"/>
+		<map externalName="428" category="Crime"/>
+		<map externalName="429" category="Weapons"/>
+		<map externalName="430" category="Web hosting"/>
+		<map externalName="431" category="Web-based email"/>
+		<map externalName="433" category="Instant messaging"/>
+		<map externalName="434" category="Web-based chat"/>
+		<map externalName="435" category="Cults"/>
+		<map externalName="437" category="Spiritiual healing"/>
+		<map externalName="438" category="Tattoos"/>
+		<map externalName="439" category="Cars and motorcycles"/>
+		<map externalName="440" category="Real estate"/>
+		<map externalName="441" category="Travel"/>
+		<map externalName="442" category="Illegal drugs"/>
+		<map externalName="443" category="Alcohol and tobacco"/>
+		<map externalName="444" category="Gambling"/>
+		<map externalName="445" category="Hacking"/>
+		<map externalName="447" category="Cheating and plagiarism"/>
+		<map externalName="448" category="Sex ed and abortion"/>
+		<map externalName="449" category="Automatic updating"/>
+		<map externalName="450" category="Porn"/>
+		<map externalName="451" category="Dating"/>
+		<map externalName="452" category="Peer file transfer"/>
+		<map externalName="455" category="Young child"/>
+		<map externalName="456" category="News"/>
+		<map externalName="457" category="Gay and lesbian"/>
+		<map externalName="458" category="Non-sexual nudity"/>
+		<map externalName="459" category="Dining and drinking"/>
+    </categoryMappings>
+    <urlCategories>
+            <urlCategory name="alwaysAllow" urlPattern="*://{(.+\.|)}google.com/*"/>
+            <urlCategory name="alwaysAllow" urlList="WhiteList.txt"/>
+            <urlCategory name="alwaysBlock" urlPattern="*://{(.+\.|)}porn.com/*"/>
+            <urlCategory name="alwaysBlock" urlList="BlackList.txt"/>
+	    <urlCategory name="Dating" urlList="Dating.txt"/>
+    </urlCategories>
+</xmpCategories>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<dbupdates> 
+
+<!-- XSN.DBLoad.CommAdd.TC004.5	Add community without using Mandatory Fields -->
+
+<communities>
+<add "NewCommunity" />
+</communities> 
+
+
+</dbupdates>
+

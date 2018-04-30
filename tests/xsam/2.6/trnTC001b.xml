@@ -1,0 +1,112 @@
+<test>
+    <configuration>xsam_config.xml</configuration>
+    <function name="testName" module="Basic">
+        <parameter>TRN.TC.001B</parameter>
+    </function>
+
+    <function name="setVariable" module="BASIC">
+        <parameter>password</parameter>
+        <!--<parameter>74616E7461753330303830</parameter>-->
+        <parameter>70617373776F7264</parameter>
+    </function>
+    <function name="setVariable" module="BASIC">
+        <parameter>tonumber</parameter>
+        <parameter>0796022207</parameter>
+    </function>
+
+    <function name="openConnection" module="UCP">
+        <parameter>connection1</parameter>
+        <configuration>XSAM/IP</configuration>
+        <configuration>XSAM/PORT</configuration>
+    </function>
+
+    <function name="sendUCPPacket" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>1</parameter>
+        <parameter>O</parameter>
+        <parameter>60</parameter>
+        <parameter>
+            <parameter>/</parameter>
+            <configuration>XSAM/SHORTCODE</configuration>
+            <parameter>/6/5/1/</parameter>
+            <variable>password</variable>
+            <parameter>//0100//////</parameter>
+        </parameter>
+    </function>
+
+    <function name="queryTextResponse" module="UCP">
+        <parameter>connection1</parameter>
+        <parameter>secret</parameter>
+        <parameter>\d\d/\d\d\d\d\d/R/60/A/[^/]*+/\w\w</parameter>
+    </function>
+
+    <loop name="loop" start="2" stop="6" step="1">
+        <function name="sendWindowedUCPPacket" module="UCP">
+            <parameter>connection1</parameter>
+            <variable>loop</variable>
+            <parameter>O</parameter>
+            <parameter>51</parameter>
+            <parameter>
+                <parameter>/</parameter>
+                <variable>tonumber</variable>
+                <parameter>/</parameter>
+                <configuration>XSAM/SHORTCODE</configuration>
+                <parameter>/////////////////2//22220000</parameter>
+                <variable>loop</variable>
+                <parameter>/////////////</parameter>
+            </parameter>
+        </function>
+    </loop>
+
+    <loop name="loop" start="6" stop="12" step="1">
+        <function name="readWindowedUCPPacket" module="UCP">
+            <parameter>connection1</parameter>
+        </function>
+
+        <function name="queryTextResponse" module="UCP">
+            <parameter>connection1</parameter>
+            <parameter>secret</parameter>
+            <parameter>\d\d/\d\d\d\d\d/R/51/A//[^/]*+/\w\w</parameter>
+        </function>
+
+        <function name="sendWindowedUCPPacket" module="UCP">
+            <parameter>connection1</parameter>
+            <variable>loop</variable>
+            <parameter>O</parameter>
+            <parameter>51</parameter>
+            <parameter>
+                <parameter>/</parameter>
+                <variable>tonumber</variable>
+                <parameter>/</parameter>
+                <configuration>XSAM/SHORTCODE</configuration>
+                <parameter>/////////////////2//22220000</parameter>
+                <variable>loop</variable>
+                <parameter>/////////////</parameter>
+            </parameter>
+        </function>
+    </loop>
+
+
+
+
+    <loop name="loop" start="2" stop="6" step="1">
+        <function name="readWindowedUCPPacket" module="UCP">
+            <parameter>connection1</parameter>
+        </function>
+
+        <function name="queryTextResponse" module="UCP">
+            <parameter>connection1</parameter>
+            <parameter>secret</parameter>
+            <parameter>\d\d/\d\d\d\d\d/R/51/A//[^/]*+/\w\w</parameter>
+        </function>
+    </loop>
+
+
+    <function name="closeConnection" module="UCP">
+        <parameter>connection1</parameter>
+    </function>
+
+
+
+
+</test>

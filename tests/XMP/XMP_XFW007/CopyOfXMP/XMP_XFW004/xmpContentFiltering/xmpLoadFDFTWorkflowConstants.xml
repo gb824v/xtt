@@ -1,0 +1,49 @@
+<test>
+    <function name="testName" module="Basic">
+        <parameter>XMP.LOAD.FDFT_WORKFLOW_CONSTANTS</parameter>
+     </function>
+	
+    <description>Load the FDFT workflow constants files</description>
+
+    <configuration>../config.xml</configuration>
+
+    <function name="writeRemoteFile" module="Remote">
+        <parameter>fdft_WorkflowConstants.xml</parameter>
+        <parameter>
+        <parameter>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;workflowConstants&gt;
+&lt;workflowConstant name="advertDisplaySeconds"&gt;2&lt;/workflowConstant&gt; 
+&lt;workflowConstant name="ageIsUnknownUrl"&gt;http://</parameter><configuration>XMP41/WEBAPPLICATION/IPPORT</configuration><parameter>/XMPBlocked/ageIsUnknown.html&lt;/workflowConstant&gt;
+&lt;workflowConstant name="alwaysBlockUrl"&gt;http://</parameter><configuration>XMP41/WEBAPPLICATION/IPPORT</configuration><parameter>/XMPBlocked/always.html&lt;/workflowConstant&gt;
+&lt;workflowConstant name="bannerPath"&gt;advert/banner&lt;/workflowConstant&gt; 
+&lt;workflowConstant name="blockedByCommunityFiltersUrl"&gt;http://</parameter><configuration>XMP41/WEBAPPLICATION/IPPORT</configuration><parameter>/XMPBlocked/byCommunityFilters.html&lt;/workflowConstant&gt;
+&lt;workflowConstant name="blockedByPersonalFiltersUrl"&gt;http://</parameter><configuration>XMP41/WEBAPPLICATION/IPPORT</configuration><parameter>/XMPBlocked/byPersonalFilters.html&lt;/workflowConstant&gt;
+&lt;workflowConstant name="blockedBySystemFiltersUrl"&gt;http://</parameter><configuration>XMP41/WEBAPPLICATION/IPPORT</configuration><parameter>/XMPBlocked/bySystemFilters.html&lt;/workflowConstant&gt;
+&lt;workflowConstant name="blockedByVirusScannerUrl"&gt;http://www.telco.com/Blocked/Virus.html&lt;/workflowConstant&gt;
+&lt;workflowConstant name="fdftMinimumThreshold"&gt;1&lt;/workflowConstant&gt;
+&lt;workflowConstant name="interstitialPath"&gt;advert/interstitial&lt;/workflowConstant&gt; 
+&lt;workflowConstant name="ldapGetSubscriberIdKey"&gt;CHLDAP_QueryLDAPEntries/0/msisdn&lt;/workflowConstant&gt;
+&lt;workflowConstant name="ldapValiditySecs"&gt;600&lt;/workflowConstant&gt;
+&lt;workflowConstant name="notificationSmsChannel"&gt;SmsChannel&lt;/workflowConstant&gt;
+&lt;workflowConstant name="notificationSmsConnection"&gt;SmsConnection&lt;/workflowConstant&gt;
+&lt;workflowConstant name="notificationSmsMessageOptions"&gt;DEFAULT&lt;/workflowConstant&gt;
+&lt;workflowConstant name="Push_SmsChannel"&gt;SmsChannel&lt;/workflowConstant&gt;
+&lt;workflowConstant name="Push_SmsConnection"&gt;SmsConnection&lt;/workflowConstant&gt;
+&lt;workflowConstant name="radiusValiditySecs"&gt;600&lt;/workflowConstant&gt;
+&lt;workflowConstant name="subscriberInfoValiditySecs"&gt;600&lt;/workflowConstant&gt;
+&lt;/workflowConstants&gt;</parameter>
+        </parameter>
+    </function>
+
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>
+           <parameter>load data fdft_WorkflowConstants.xml</parameter>
+        </parameter>
+    </function>
+
+    <function name="queryResponse" module="Remote">
+        <parameter>^Loaded workflowconstant</parameter>
+        <parameter>response</parameter>
+    </function>
+</test>

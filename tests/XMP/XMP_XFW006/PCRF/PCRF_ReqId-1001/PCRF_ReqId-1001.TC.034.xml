@@ -1,0 +1,213 @@
+<test>
+
+	<name>PCRF_ReqId-1001.TC.034.xml</name>
+
+	<description>Validate hundred of DIAMETER sessions created and terminated correctly</description>
+
+	<!-- Load 100 Subscriber DB Update File -->
+	<function name="setVariable" module="Basic">
+		<parameter>100SubscribersFile</parameter>
+		<file>xmp_pcrf_100Subscribers.xml</file>
+	</function>
+
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>xmp_pcrf_100Subscribers.xml</parameter>
+		<variable>100SubscribersFile</variable>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load db </parameter>
+			<parameter>xmp_pcrf_100Subscribers.xml</parameter>
+		</parameter>
+	</function>		
+
+	<function name="queryResponse" module="Remote">
+		<parameter>SUCCESS: XML upload completed</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- XTT DIAMETER Client opens connection "one" to PCRF listetning port. -->
+	<loop name="subscriberId" start="787367700" stop="787367800" step="1">
+	<function name="createConnection" module="Diameter">
+		<parameter>one</parameter>
+		<configuration>DIAMETERCLIENT/IP</configuration>
+		<configuration>DIAMETERCLIENT/PORT</configuration>
+	</function>
+
+	<!--  XTT DIAMETER Client sends CER and receives CEA -->
+	<function name="sendDiameterRequest" module="Diameter">
+		<parameter>one</parameter>
+		<xml>
+			<CAPABILITIES_EXCHANGE_REQUEST version="1"  overrideCommandCode="257" applicationID="16777238" hopbyhopID="456" endtoendID="789" proxiable="true" error="false" tretr="false">
+				<SESSION_ID overrideAVPCode="" value="SESSION_ID;xtt@724.com;A1_B" mandatory="true" protected="false" vendorspecific="false" vendorID="" />
+				<VENDOR_ID  value="10415" mandatory="true" protected="false" vendorspecific="false" vendorID="" />
+				<ORIGIN_REALM           value="ORIGIN_REALM"        mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<HOST_IP_ADDRESS        value="0001AC140983" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<PRODUCT_NAME           value="PRODUCT_NAME" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<SUPPORTED_VENDOR_ID    value="10415" mandatory="true" protected="false" vendorspecific="false"  vendorID="" />
+				<AUTH_APPLICATION_ID    value="16777238" mandatory="true" protected="false" vendorspecific="false"  vendorID="" />
+			</CAPABILITIES_EXCHANGE_REQUEST>
+		</xml>
+		<parameter>STORERESULT</parameter>
+	</function>
+
+	<!-- Headers validation of CEA commandcode 257 -->
+	<function name="compareString" module="Basic">
+		<variable>DIAMETER/one/HEADER/commandcode</variable >
+		<parameter>257</parameter>
+	</function>
+
+	<!-- AVP validation of CEA -->
+	<function name="compareString" module="Basic">
+		<variable>DIAMETER/one/AVP/RESULT_CODE</variable>
+		<parameter>2001</parameter>
+	</function>
+
+	<!-- XTT DIAMETER Client sends CCR and receives CCA. -->
+	<function name="sendDiameterRequest" module="Diameter">
+		<parameter>one</parameter>
+			<xml>
+				<CREDIT_CONTROL_REQUEST version="1" overrideCommandCode="272" applicationID="16777238" hopbyhopID="456" endtoendID="789" proxiable="true" error="false" tretr="false">
+					<SESSION_ID             value="SESSION_ID;xtt@724.com;A1_B"/>
+					<ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+					<ORIGIN_REALM           value="ORIGIN_REALM" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+					<DESTINATION_REALM      value="DESTINATION_REALM" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+					<AUTH_APPLICATION_ID    value="16777238" mandatory="true" protected="false" vendorspecific="false"  vendorID="" />
+					<CC_REQUEST_TYPE        value="INITIAL_REQUEST"   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+					<CC_REQUEST_NUMBER      value="0" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+					<IP_CAN_TYPE            value="00000000" overrideavpcode="1027" mandatory="false" protected="false" vendorspecific="true"   vendorID="10415"/>
+					<RAT_TYPE               value="00010000" overrideavpcode="1032" mandatory="false" protected="false" vendorspecific="true"  vendorID="10415"/>
+					<FRAMED_IP_ADDRESS      value="0a043c34" overrideavpcode="8" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+					<SUBSCRIPTION_ID         mandatory="true" protected="false" vendorspecific="false"  vendorID="">
+						<SUBSCRIPTION_ID_TYPE  value="0000000"       mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>  //END_USER_E164=0   END_USER_IMSI=1   END_USER_SIP_URI=2   END_USER_NAI=3   END_USER_PRIVATE=4
+						<SUBSCRIPTION_ID_DATA  variable="subscriberId"       mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+					</SUBSCRIPTION_ID>
+				</CREDIT_CONTROL_REQUEST>
+			</xml>
+		
+		<parameter>STORERESULT</parameter>
+	</function>
+
+	<!-- Headers validation of CCA commandcode 272 -->
+	<function name="compareString" module="Basic">
+		<variable>DIAMETER/one/HEADER/commandcode</variable >
+		<parameter>272</parameter>
+	</function>
+	 <!-- AVP validation of CCA -->
+	<function name="compareString" module="Basic">
+		<variable>DIAMETER/one/AVP/RESULT_CODE</variable>
+		<parameter>2001</parameter>
+	</function>
+
+	<!-- Make sure the session information has been added to PRESENCE-STORE. -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<configuration>remote/command</configuration>
+			<parameter>
+				<parameter>pse3cli -a </parameter>
+				<variable>subscriberId</variable>
+				<parameter> -t SubscriberId rba TI:F.CEE.PRESENCE-STORE:PSE3</parameter>
+			</parameter>
+		</parameter>
+	</function>
+	<function name="queryResponse" module="Remote">
+		<parameter>&lt;addressType&gt;GxSessionId&lt;/addressType&gt;</parameter>
+		<parameter>response</parameter>
+	</function>
+
+	<!-- Exchange of CCR/CCA to TERMINATE the session; make sure session deleted from the store -->
+	<function name="sendDiameterRequest" module="Diameter">
+		<parameter>one</parameter>
+		<xml>
+			<CREDIT_CONTROL_REQUEST version="1" overrideCommandCode="272" applicationID="16777238" hopbyhopID="456" endtoendID="789" proxiable="true" error="false" tretr="false">
+				<SESSION_ID             value="SESSION_ID;xtt@724.com;A1_B"/>
+				<ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<ORIGIN_REALM           value="ORIGIN_REALM" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<DESTINATION_REALM           value="DESTINATION_REALM" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<AUTH_APPLICATION_ID    value="16777238" mandatory="true" protected="false" vendorspecific="false"  vendorID="" />
+				<CC_REQUEST_TYPE        value="TERMINATION_REQUEST"   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<CC_REQUEST_NUMBER      value="2" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<FRAMED_IP_ADDRESS      value="0a043c34" overrideavpcode="8" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>                   
+				<SUBSCRIPTION_ID         mandatory="true" protected="false" vendorspecific="false"  vendorID="">
+					<SUBSCRIPTION_ID_TYPE  value="00000000"       mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+					<SUBSCRIPTION_ID_DATA  variable="subscriberId"       mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				</SUBSCRIPTION_ID>  
+			</CREDIT_CONTROL_REQUEST>
+		</xml>
+		<parameter>STORERESULT</parameter>
+	</function>
+
+	<!-- Headers validation of CCA commandcode 272 -->
+	<function name="compareString" module="Basic">
+		<variable>DIAMETER/one/HEADER/commandcode</variable >
+		<parameter>272</parameter>
+	</function>
+
+	<!-- AVP validation of CCA -->
+	<function name="queryText" module="Basic">
+		<variable>DIAMETER/one/AVP/RESULT_CODE</variable>
+		<parameter>var1</parameter>
+		<parameter>2001</parameter>
+	</function>
+
+	<function name="queryText" module="Basic">
+		<variable>DIAMETER/one/AVP/CC_REQUEST_NUMBER</variable>
+		<parameter>var1</parameter>
+		<parameter>2</parameter>
+	</function>
+
+	<function name="queryText" module="Basic">
+		<variable>DIAMETER/one/AVP/CC_REQUEST_TYPE</variable>
+		<parameter>var1</parameter>
+		<parameter>TERMINATION_REQUEST</parameter>
+	</function>
+
+	<function name="closeConnection" module="Diameter">
+		<parameter>one</parameter>
+	</function>
+
+	<!-- Stopping Diameter Server -->
+	<function name="stopDiameterServer" module="Diameter" />
+
+	<!-- Make sure the session information has been removed from PRESENCE-STORE. -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<configuration>remote/command</configuration>
+			<parameter>
+				<parameter> pse3cli -a </parameter>
+				<variable>subscriberId</variable>
+				<parameter> -t SubscriberId rba TI:F.CEE.PRESENCE-STORE:PSE3</parameter>
+			</parameter>
+		</parameter>
+	</function>
+	<function name="queryResponseNegative" module="Remote">
+		<parameter>&lt;addressType&gt;GxSessionId&lt;/addressType&gt;</parameter>
+	</function>
+	</loop>
+
+	<!-- remove the 100 Subscribers loaded above -->
+	<function name="setVariable" module="Basic">
+		<parameter>xmp_pcrf_DatabaseUpdateFile</parameter>
+		<file>xmp_pcrf_100Subscribers_remove.xml</file>
+	</function>
+
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>xmp_pcrf_100Subscribers_remove.xml</parameter>
+		<variable>xmp_pcrf_DatabaseUpdateFile</variable>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load db </parameter>
+			<parameter>xmp_pcrf_100Subscribers_remove.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>SUCCESS: XML upload completed</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+</test>

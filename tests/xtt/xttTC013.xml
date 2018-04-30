@@ -1,0 +1,43 @@
+<test>
+    <name>XTT.TC.009</name>
+    <description>Test SQLConnection and FunctionModule_SQL</description>
+    
+    <function name="openConnection" module="SQL">
+        <parameter>SQL1</parameter>
+        <parameter>oracle.jdbc.OracleDriver</parameter>
+        <parameter>jdbc:oracle:thin:@pangan.len.tantau.com:1521:pangan</parameter>
+        <parameter>XMG_RPS</parameter>
+        <parameter>xmg</parameter>
+    </function>
+    
+    <function name="query" module="SQL">
+        <parameter>SQL1</parameter>
+        <parameter>query1</parameter>
+        <parameter>SELECT SCR_IDENTIFIER,SCR_USERID,SCR_STATUS FROM OAM_SUBSCRIBER</parameter>
+    </function>
+
+    <function name="update" module="SQL">
+        <parameter>SQL1</parameter>
+        <parameter>insert1</parameter>
+        <!--parameter>SELECT SCR_IDENTIFIER,SCR_USERID FROM OAM_SUBSCRIBER</parameter-->
+        <parameter>INSERT INTO OAM_SUBSCRIBER (SCR_IDENTIFIER,SCR_USERID,SCR_STATUS) VALUES (9999,'INSERTESTUSER','OFFLINE')</parameter>
+    </function>
+
+    <function name="query" module="SQL">
+        <parameter>SQL1</parameter>
+        <parameter>query1</parameter>
+        <parameter>SELECT SCR_IDENTIFIER,SCR_USERID,SCR_STATUS FROM OAM_SUBSCRIBER</parameter>
+    </function>
+
+    <function name="update" module="SQL">
+        <parameter>SQL1</parameter>
+        <parameter>query1</parameter>
+        <parameter>DELETE FROM OAM_SUBSCRIBER WHERE SCR_IDENTIFIER=9999 and SCR_USERID='INSERTESTUSER'</parameter>
+    </function>
+
+    <function name="closeConnection" module="SQL">
+        <parameter>SQL1</parameter>
+    </function>
+
+
+</test>

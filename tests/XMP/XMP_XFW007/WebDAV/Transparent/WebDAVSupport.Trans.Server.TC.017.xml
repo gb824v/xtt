@@ -1,0 +1,52 @@
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+WebDAVSupport.Trans.Server.TC.017  - Validate XMP handles corrupted request headers.
+
+Test Description:
+ 1. Start Web-Server.
+ 2. Set Server return code for HTTP Response.
+ 3  Stop Web-Server.
+ 
+Expected Result:
+ -  XMP should Validate PROPFIND Request and its Response through Transperant Proxy.
+
+Main XTT Commands:
+      
+ 1.  - startWebServer
+
+ 2.  - setServerReturnCode 		
+
+ 3. - stopWebServer
+      
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- Test Start  -->
+
+<test>
+    <name>WebDAVSupport.Trans.Server.TC.017</name>
+
+    <description>Start web server to Validate XMP handles corrupted request headers during transparent proxy</description>
+
+    <function name="startWebServer" module="HTTP"/>
+
+    <function name="setServerHeader" module="HTTP">
+        <parameter>content-type</parameter>
+        <parameter>text/xml; charset="utf-8"</parameter>
+    </function>
+
+    <function name="setServerReturnCode" module="HTTP">
+        <parameter>400</parameter>
+    </function>
+
+    <function name="setServerReturnMessage" module="HTTP">
+        <parameter> Bad Request</parameter>
+    </function>
+
+    <function name="setCacheFile" module="HTTP">
+        <parameter>/file</parameter>
+		<parameter></parameter>
+    </function>
+   <function name="waitForRequests" module="HTTP">
+        <parameter>1</parameter>
+    </function>
+   <function name="stopWebServer" module="HTTP"/>
+
+</test>

@@ -1,0 +1,20 @@
+<test>
+	<name>EnhancementsforVFGroup.TC.999</name>
+	<description>Rollback Video Optimization test Environment</description>
+
+	<!-- Load Video Optimization File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>videoTCemptyrules.xml</parameter>
+		<parameter>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;videoOptimization&gt;&lt;optimizationSettings&gt;&lt;/optimizationSettings&gt;&lt;/videoOptimization&gt;</parameter>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>load data videoTCemptyrules.xml</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded videooptimization.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+</test>

@@ -1,0 +1,75 @@
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+KasperskyVirusScanningIntegration.TC.0013  - WAP GET / Virus Check is enabled / Requested web page doesn't contain virus / XMP allows the use case to continue.
+
+Test Description:
+ 1. Radius Logon
+ 2. Send non-virus Infected data in WAP GET Proxy Request
+ 3. Check Response Code
+ 4. Radius Logoff
+ 
+Expected Result:
+ -  XMP should allow the use case to continue and sends the web page responded by the Target Web Server to the HTTP Client UA.
+
+XTT Commands:
+      startWebServer
+ 1. - Radius log-ON
+
+ 2.   - sendGetRequest 		"WAP" "http://SYSTEM-IP/test.html"
+
+ 3.   - checkResponseCode	"HTTP" "200"
+
+ 4. - Radius log-OFF
+      stopWebServer
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- Test Start  -->
+<test>
+	<function name="testName" module="Basic">
+		<parameter>KasperskyVirusScanningIntegration.TC.013</parameter>
+	</function>
+	
+    <description>WAP GET / Virus Check is enabled / Requested web page doesn't contain virus / XMP allows the use case to continue</description>
+
+	<!-- Start Web Server -->
+	<function name="startWebServer" module="HTTP"/>
+	<function name="setCacheFile" module="HTTP">
+		<parameter>test.html</parameter>
+		<file>test.html</file>
+	</function>
+
+	<!-- Radius Login -->
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+	
+	<function name="connectGateway" module="WAP"> </function>
+
+	<!-- Send non-virus Infected data in WAP Get Proxy Request -->
+    <function name="sendGetRequest" module="WAP">
+        <parameter>
+            <parameter>http://</parameter>
+            <configuration>SYSTEM/IP</configuration>
+            <parameter>:</parameter>
+            <configuration>WEBSERVER/PORT</configuration>
+			<parameter>/test.html</parameter>
+			</parameter>
+    </function>
+
+	<!-- Validate Response Code Send by XMP -->
+    <function name="checkResponseCode" module="WAP">
+        <parameter>200</parameter>
+    </function>
+			
+	<function name="disconnectGateway" module="WAP" />
+
+	<!-- Radius Logoff -->
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+	<!-- Stop Web Server -->
+    <function name="stopWebServer" module="HTTP"/>
+
+</test>

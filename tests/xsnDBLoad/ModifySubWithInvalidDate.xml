@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<dbupdates> 
+
+<subscribers>
+
+<!-- XSN.DBLoad.SubrMod.TC002.11 Should not allow Modify with invalid day: 32 Jan -->
+	<add subscriber=""253456112""> <born value=""1995-01-31""/></add>
+	<modify subscriber=""253456112""> <born value=""2004-01-32""/> </modify> 
+
+
+</subscribers>
+</dbupdates>

@@ -1,0 +1,3 @@
+http://*.meetic.ch/*
+http://*.bbc.co.uk/*
+http://*.elovedates.com/*

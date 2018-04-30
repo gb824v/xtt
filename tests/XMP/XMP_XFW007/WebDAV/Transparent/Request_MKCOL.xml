@@ -1,0 +1,6 @@
+<!-- MKCOL Request for Transperant Proxy -->
+<?xml version="1.0" encoding="utf-8" ?>
+	<D:mkcol xmlns:D="DAV:">
+		<D:prop xmlns:R="http://www.foo.bar">
+		</D:prop>
+	</D:mkcol>

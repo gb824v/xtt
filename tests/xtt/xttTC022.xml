@@ -1,0 +1,79 @@
+<test>
+    <name>XTT.TC.022</name>
+
+    <description>Test the updateNode and updateAttribute function of module xml</description>
+
+    <function name="createDocument" module="XML">
+        <parameter>axml</parameter>
+        <parameter>&lt;?xml version="1.0"?&gt;
+          &lt;!DOCTYPE service SYSTEM "service"&gt;
+            &lt;service id="1293939439"&gt;
+                &lt;phonenumber&gt;41791234567&lt;/phonenumber&gt;
+                &lt;servicenumber&gt;123&lt;/servicenumber&gt;
+                &lt;parameters&gt;
+                    &lt;parameter id="1"&gt;
+                        &lt;name&gt;kanton&lt;/name&gt;
+                        &lt;value&gt;vaud&lt;/value&gt;
+                    &lt;/parameter&gt;
+                    &lt;parameter id="2"&gt;
+                        &lt;name&gt;sprache&lt;/name&gt;
+                        &lt;value&gt;fr&lt;/value&gt;
+                    &lt;/parameter&gt;
+                &lt;/parameters&gt;
+            &lt;/service&gt;        
+        </parameter>
+    </function>
+   
+    <function name="documentToVariable" module="XML">
+        <parameter>axml</parameter>
+        <parameter>info</parameter>
+    </function>
+
+    <function name="info" module="Basic">
+        <parameter></parameter>
+        <variable>info</variable>
+    </function>
+
+	<function name="updateNode" module="XML">
+       <parameter>axml</parameter>
+       <parameter>/service/phonenumber</parameter>
+       <parameter>12345678912</parameter>
+    </function>
+
+	<!-- Node cannot be updated as it has child nodes , hence the TC would fail-->
+	<!--
+	<function name="updateNode" module="XML">
+       <parameter>axml</parameter>
+       <parameter>/service/parameters/parameter[@id = 1]</parameter>
+       <parameter>1235456456456</parameter>
+    </function>
+	-->
+   
+	<function name="updateAttribute" module="XML">
+       <parameter>axml</parameter>
+       <parameter>/service/parameters/parameter[@id = 1]</parameter>
+       <parameter>id</parameter>
+	   <parameter>5</parameter>
+    </function>
+
+    <!-- Atrribute doesnot exist, hence TC would fail -->
+    <!--
+	<function name="updateAttribute" module="XML">
+        <parameter>axml</parameter>
+        <parameter>/service/parameters/parameter[@id = 5]</parameter>
+        <parameter>ggfdsfdsf</parameter>
+		<parameter>5</parameter>
+    </function>
+	-->
+	 
+    <function name="documentToVariable" module="XML">
+        <parameter>axml</parameter>
+        <parameter>info</parameter>
+    </function>
+
+	<function name="info" module="Basic">
+        <parameter></parameter>
+        <variable>info</variable>
+    </function>
+
+</test>

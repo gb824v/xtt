@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsnCategories 
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:noNamespaceSchemaLocation="xsncategories.xsd">
+    <categories>
+        <category name="alwaysBlock" standardFilter="allow" subscriberFilterable="false"/>
+        <category name="alwaysAllow" standardFilter="allow" subscriberFilterable="false"/>
+        <category name="DrugsAlcoholTobacco" minAge="18" standardFilter="block"/>
+        <category name="Gambling" minAge="18" standardFilter="block"/>
+        <category name="NoCategory" subscriberFilterable="false"/>
+        <category name="OkForAnyAge"/>
+        <category name="SexuallyExplicit" minAge="18" standardFilter="block"/>
+        <category name="UnknownSurfControlCategory" subscriberFilterable="false"/>
+        <category name="Violence" minAge="55" standardFilter="block"/>
+    </categories>
+    <categoryMappings>
+        <map externalName="Adult/Sexually Explicit" category="SexuallyExplicit" />
+        <map externalName="Advertisements" category="OkForAnyAge" />
+        <map externalName="Arts &amp; Entertainment" category="OkForAnyAge" />
+        <map externalName="Chat" category="OkForAnyAge" />
+        <map externalName="Computing &amp; Internet" category="OkForAnyAge" />
+        <map externalName="Criminal Skills" category="alwaysBlock" />
+        <map externalName="Drugs, Alcohol &amp; Tobacco" category="DrugsAlcoholTobacco" />
+        <map externalName="Education" category="OkForAnyAge" />
+        <map externalName="Finance &amp; Investment" category="OkForAnyAge" />
+        <map externalName="Food &amp; Drink" category="OkForAnyAge" />
+        <map externalName="Gambling" category="Gambling" />
+        <map externalName="Games" category="OkForAnyAge" />
+        <map externalName="Glamour &amp; Intimate Apparel" category="SexuallyExplicit" />
+        <map externalName="Government &amp; Politics" category="OkForAnyAge" />
+        <map externalName="Hacking" category="alwaysBlock" />
+        <map externalName="Hate Speech" category="Violence" />
+        <map externalName="Health &amp; Medicine" category="OkForAnyAge" />
+        <map externalName="Hobbies &amp; Recreation" category="OkForAnyAge" />
+        <map externalName="Hosting Sites" category="OkForAnyAge" />
+        <map externalName="Job Search &amp; Career Development" category="OkForAnyAge" />
+        <map externalName="Kids Sites" category="OkForAnyAge" />
+        <map externalName="Lifestyle &amp; Culture" category="OkForAnyAge" />
+        <map externalName="Motor Vehicles" category="OkForAnyAge" />
+        <map externalName="News" category="OkForAnyAge" />
+        <map externalName="Personals &amp; Dating" category="OkForAnyAge" />
+        <map externalName="Photo Searches" category="OkForAnyAge" />
+        <map externalName="Real Estate" category="OkForAnyAge" />
+        <map externalName="Reference" category="OkForAnyAge" />
+        <map externalName="Religion" category="OkForAnyAge" />
+        <map externalName="Remote Proxies" category="OkForAnyAge" />
+        <map externalName="Search Engines" category="OkForAnyAge" />
+        <map externalName="Sex Education" category="OkForAnyAge" />
+        <map externalName="Shopping" category="OkForAnyAge" />
+        <map externalName="Sports" category="OkForAnyAge" />
+        <map externalName="Streaming Media" category="OkForAnyAge" />
+        <map externalName="Travel" category="OkForAnyAge" />
+        <map externalName="Usenet News" category="OkForAnyAge" />
+        <map externalName="Violence" category="Violence" />
+        <map externalName="Weapons" category="Violence" />
+<!--  Use the external name * to select the category that you want to assign 
+      to any request for which the category assigned by SurfControl is not 
+      explicitly mapped to an XMP category using a <map> tag. -->
+        <map externalName="*" category="UnknownSurfControlCategory" />
+<!--  Set the external name to the empty string to select the category that you 
+      want to assign to any request for which SurfControl does not assign any 
+      category. -->
+        <map externalName="" category="NoCategory"/>
+    </categoryMappings>
+    <urlCategories>
+<!-- The next two <category> tags make sure that subscribers can
+     always access the screens to which we redirect blocked HTTP requests.
+     In a production environment, you should change the urlPattern values
+     below to replace the * for the domain with the IP address that the
+     load balancer in front of XMP is using to listen for HTTP traffic
+     that it distributes across the WEB-APP processes that host the 
+     appropriate WAR files. -->
+        <category name="alwaysAllow" urlPattern="*://*:*/XMPBlocked/*"/>
+        <category name="alwaysAllow" urlPattern="*://*:*/SmallXMPBlocked/*"/>
+<!-- Here we have rules that define categories for requests to 4 different 
+     domains. For example, the first rule sets the category to alwaysAllow for
+     the 724.com domain.  -->
+        <category name="alwaysAllow" urlPattern="*://{(.+\.|)}724.com/*"/>
+        <category name="alwaysAllow" urlPattern="*://{(.+\.|)}telco.com/portal*"/>
+        <category name="alwaysBlock" urlPattern="*://{(.+\.|)}americannaziparty.com/*"/>
+        <category name="Gambling" urlPattern="*://{(.+\.|)}BetterTimes.com/*"/>
+        <category name="alwaysBlock" urlPattern="*://{(.+\.|)}casino.world.com/*"/>
+    </urlCategories>
+</xsnCategories>

@@ -1,0 +1,944 @@
+<test>
+    <configuration>xsnUserConfig.xml</configuration>
+    <function name="testName" module="Basic">
+        <parameter>XSN.SEND.MM7.TC.009</parameter>
+    </function>
+    <description>Block VASID SEX MMS noCommunity</description>
+
+    <function name="startMMSCServer" module="MMSC"/>
+
+    <function name="createMM7Soap" module="VASP">
+        <parameter>SubmitReq</parameter>
+        <configuration>VASP/VASPID</configuration>
+        <parameter>XXX</parameter>
+    </function>
+    <function name="setMessageBoundary" module="VASP">
+        <parameter>000001message</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SenderIdentification']</parameter>
+        <parameter>SenderAddress</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SenderAddress']</parameter>
+        <parameter>Number</parameter>
+        <parameter>12345</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SubmitReq']</parameter>
+        <parameter>MM7Version</parameter>
+        <configuration>VASP/MM7Version</configuration>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SubmitReq']</parameter>
+        <parameter>Recipients</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='Recipients']</parameter>
+        <parameter>To</parameter>
+    </function>
+    <function name="addSoapData" module="VASP">
+        <parameter>//*[local-name()='To'][last()]</parameter>
+        <parameter>Number</parameter>
+        <configuration>noCommunity/AdultUser</configuration>
+    </function>
+    <function name="addSoapData" module="VASP">
+        <parameter>//*[local-name()='To'][last()]</parameter>
+        <parameter>Number</parameter>
+        <configuration>noCommunity/AdultUserStandardFilter</configuration>
+    </function>
+    <function name="addSoapData" module="VASP">
+        <parameter>//*[local-name()='To'][last()]</parameter>
+        <parameter>Number</parameter>
+        <configuration>noCommunity/ChildUserAbove16</configuration>
+    </function>
+    <function name="addSoapData" module="VASP">
+        <parameter>//*[local-name()='To'][last()]</parameter>
+        <parameter>Number</parameter>
+        <configuration>noCommunity/ChildUserAbove16StandardFilter</configuration>
+    </function>
+    <function name="addSoapData" module="VASP">
+        <parameter>//*[local-name()='To'][last()]</parameter>
+        <parameter>Number</parameter>
+        <configuration>noCommunity/ChildUserBelow16</configuration>
+    </function>
+    <function name="addSoapData" module="VASP">
+        <parameter>//*[local-name()='To'][last()]</parameter>
+        <parameter>Number</parameter>
+        <configuration>noCommunity/ChildUserBelow16StandardFilter</configuration>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SubmitReq']</parameter>
+        <parameter>Content</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='Content']</parameter>
+        <parameter>href</parameter>
+        <parameter>cid:xtt-test002</parameter>
+    </function>
+    <function name="addContent" module="VASP">
+        <file>sendMM7data2.txt</file>
+    </function>
+    <function name="soapToVariable" module="VASP">
+        <parameter>SOAPTEST</parameter>
+    </function>
+    <!--
+    <function name="Info" module="basic">
+        <configuration>VASP/XMLNSMM7</configuration>
+        <parameter>
+</parameter>
+        <configuration>VASP/MM7XSD</configuration>
+        <parameter>
+</parameter>
+	    <variable>SOAPTEST</variable>
+    </function>
+    -->
+	<function name="validateXML" module="XML">
+	    <variable>SOAPTEST</variable>
+ 	    <parameter></parameter>
+        <configuration>VASP/XMLNSENV</configuration>
+        <configuration>VASP/SOAPXSD</configuration>
+        <configuration>VASP/XMLNSMM7</configuration>
+        <configuration>VASP/MM7XSD</configuration>
+    </function>
+
+    <!--function name="previewRequest" module="VASP" /-->
+    <function name="sendPostRequest" module="VASP"/>
+    <function name="checkResponseCode" module="VASP">
+        <parameter>200</parameter>
+    </function>
+	<function name="validateXML" module="XML">
+	    <variable>HTTP/BODY/PLAIN</variable>
+ 	    <parameter></parameter>
+        <configuration>MMSCSERVER/XMLNSENV</configuration>
+        <configuration>MMSCSERVER/SOAPXSD</configuration>
+        <configuration>MMSCSERVER/XMLNSMM7</configuration>
+        <configuration>MMSCSERVER/MM7XSD</configuration>
+    </function>    
+    <function name="queryBody" module="VASP">
+        <parameter>temp</parameter>
+        <parameter>&lt;StatusCode&gt;1000&lt;/StatusCode&gt;</parameter>
+    </function>
+
+    <function name="waitForRequests" module="MMSC">
+        <parameter>1</parameter>
+    </function>
+
+	<function name="validateXML" module="XML">
+	    <variable>MMSCSERVER/MM7/SOAP</variable>
+ 	    <parameter></parameter>
+        <configuration>VASP/XMLNSENV</configuration>
+        <configuration>VASP/SOAPXSD</configuration>
+        <configuration>VASP/XMLNSMM7</configuration>
+        <configuration>VASP/MM7XSD</configuration>
+    </function>
+
+    <function name="queryText" module="Basic">
+        <variable>MMSCSERVER/MM7/SOAP</variable>
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>&lt;Number&gt;</parameter>
+            <configuration>noCommunity/AdultUser</configuration>
+            <parameter>&lt;/Number&gt;</parameter>
+        </parameter>
+    </function>
+    <function name="queryText" module="Basic">
+        <variable>MMSCSERVER/MM7/SOAP</variable>
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>&lt;Number&gt;</parameter>
+            <configuration>noCommunity/AdultUserStandardFilter</configuration>
+            <configuration>XSN/blocked</configuration>
+            <parameter>&lt;/Number&gt;</parameter>
+        </parameter>
+    </function>
+    <function name="queryText" module="Basic">
+        <variable>MMSCSERVER/MM7/SOAP</variable>
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>&lt;Number&gt;</parameter>
+            <configuration>noCommunity/ChildUserAbove16</configuration>
+            <configuration>XSN/blocked</configuration>
+            <parameter>&lt;/Number&gt;</parameter>
+        </parameter>
+    </function>
+    <function name="queryText" module="Basic">
+        <variable>MMSCSERVER/MM7/SOAP</variable>
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>&lt;Number&gt;</parameter>
+            <configuration>noCommunity/ChildUserAbove16StandardFilter</configuration>
+            <configuration>XSN/blocked</configuration>
+            <parameter>&lt;/Number&gt;</parameter>
+        </parameter>
+    </function>
+    <function name="queryText" module="Basic">
+        <variable>MMSCSERVER/MM7/SOAP</variable>
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>&lt;Number&gt;</parameter>
+            <configuration>noCommunity/ChildUserBelow16</configuration>
+            <configuration>XSN/blocked</configuration>
+            <parameter>&lt;/Number&gt;</parameter>
+        </parameter>
+    </function>
+    <function name="queryText" module="Basic">
+        <variable>MMSCSERVER/MM7/SOAP</variable>
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>&lt;Number&gt;</parameter>
+            <configuration>noCommunity/ChildUserBelow16StandardFilter</configuration>
+            <configuration>XSN/blocked</configuration>
+            <parameter>&lt;/Number&gt;</parameter>
+        </parameter>
+    </function>
+
+
+
+    <function name="createMM7Soap" module="VASP">
+        <parameter>SubmitReq</parameter>
+        <configuration>VASP/VASPID</configuration>
+        <parameter>XXXY</parameter>
+    </function>
+    <function name="setMessageBoundary" module="VASP">
+        <parameter>000001message</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SenderIdentification']</parameter>
+        <parameter>SenderAddress</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SenderAddress']</parameter>
+        <parameter>Number</parameter>
+        <parameter>12345</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SubmitReq']</parameter>
+        <parameter>MM7Version</parameter>
+        <configuration>VASP/MM7Version</configuration>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SubmitReq']</parameter>
+        <parameter>Recipients</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='Recipients']</parameter>
+        <parameter>To</parameter>
+    </function>
+    <function name="addSoapData" module="VASP">
+        <parameter>//*[local-name()='To'][last()]</parameter>
+        <parameter>Number</parameter>
+        <configuration>noCommunity/AdultUser</configuration>
+    </function>
+    <function name="addSoapData" module="VASP">
+        <parameter>//*[local-name()='To'][last()]</parameter>
+        <parameter>Number</parameter>
+        <configuration>noCommunity/AdultUserStandardFilter</configuration>
+    </function>
+    <function name="addSoapData" module="VASP">
+        <parameter>//*[local-name()='To'][last()]</parameter>
+        <parameter>Number</parameter>
+        <configuration>noCommunity/ChildUserAbove16</configuration>
+    </function>
+    <function name="addSoapData" module="VASP">
+        <parameter>//*[local-name()='To'][last()]</parameter>
+        <parameter>Number</parameter>
+        <configuration>noCommunity/ChildUserAbove16StandardFilter</configuration>
+    </function>
+    <function name="addSoapData" module="VASP">
+        <parameter>//*[local-name()='To'][last()]</parameter>
+        <parameter>Number</parameter>
+        <configuration>noCommunity/ChildUserBelow16</configuration>
+    </function>
+    <function name="addSoapData" module="VASP">
+        <parameter>//*[local-name()='To'][last()]</parameter>
+        <parameter>Number</parameter>
+        <configuration>noCommunity/ChildUserBelow16StandardFilter</configuration>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SubmitReq']</parameter>
+        <parameter>Content</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='Content']</parameter>
+        <parameter>href</parameter>
+        <parameter>cid:xtt-test002</parameter>
+    </function>
+    <function name="addContent" module="VASP">
+        <file>sendMM7data2.txt</file>
+    </function>
+    <function name="soapToVariable" module="VASP">
+        <parameter>SOAPTEST</parameter>
+    </function>
+    <!--
+    <function name="Info" module="basic">
+        <configuration>VASP/XMLNSMM7</configuration>
+        <parameter>
+</parameter>
+        <configuration>VASP/MM7XSD</configuration>
+        <parameter>
+</parameter>
+	    <variable>SOAPTEST</variable>
+    </function>
+    -->
+	<function name="validateXML" module="XML">
+	    <variable>SOAPTEST</variable>
+ 	    <parameter></parameter>
+        <configuration>VASP/XMLNSENV</configuration>
+        <configuration>VASP/SOAPXSD</configuration>
+        <configuration>VASP/XMLNSMM7</configuration>
+        <configuration>VASP/MM7XSD</configuration>
+    </function>
+
+
+    <!--function name="previewRequest" module="VASP" /-->
+    <function name="sendPostRequest" module="VASP"/>
+    <function name="checkResponseCode" module="VASP">
+        <parameter>200</parameter>
+    </function>
+	<function name="validateXML" module="XML">
+	    <variable>HTTP/BODY/PLAIN</variable>
+ 	    <parameter></parameter>
+        <configuration>MMSCSERVER/XMLNSENV</configuration>
+        <configuration>MMSCSERVER/SOAPXSD</configuration>
+        <configuration>MMSCSERVER/XMLNSMM7</configuration>
+        <configuration>MMSCSERVER/MM7XSD</configuration>
+    </function>    
+    <function name="queryBody" module="VASP">
+        <parameter>temp</parameter>
+        <parameter>&lt;StatusCode&gt;1000&lt;/StatusCode&gt;</parameter>
+    </function>
+
+    <function name="waitForRequests" module="MMSC">
+        <parameter>2</parameter>
+    </function>
+	<function name="validateXML" module="XML">
+	    <variable>MMSCSERVER/MM7/SOAP</variable>
+ 	    <parameter></parameter>
+        <configuration>VASP/XMLNSENV</configuration>
+        <configuration>VASP/SOAPXSD</configuration>
+        <configuration>VASP/XMLNSMM7</configuration>
+        <configuration>VASP/MM7XSD</configuration>
+    </function>
+
+    <function name="queryText" module="Basic">
+        <variable>MMSCSERVER/MM7/SOAP</variable>
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>&lt;Number&gt;</parameter>
+            <configuration>noCommunity/AdultUser</configuration>
+            <parameter>&lt;/Number&gt;</parameter>
+        </parameter>
+    </function>
+    <function name="queryText" module="Basic">
+        <variable>MMSCSERVER/MM7/SOAP</variable>
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>&lt;Number&gt;</parameter>
+            <configuration>noCommunity/AdultUserStandardFilter</configuration>
+            <parameter>&lt;/Number&gt;</parameter>
+        </parameter>
+    </function>
+    <function name="queryText" module="Basic">
+        <variable>MMSCSERVER/MM7/SOAP</variable>
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>&lt;Number&gt;</parameter>
+            <configuration>noCommunity/ChildUserAbove16</configuration>
+            <parameter>&lt;/Number&gt;</parameter>
+        </parameter>
+    </function>
+    <function name="queryText" module="Basic">
+        <variable>MMSCSERVER/MM7/SOAP</variable>
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>&lt;Number&gt;</parameter>
+            <configuration>noCommunity/ChildUserAbove16StandardFilter</configuration>
+            <parameter>&lt;/Number&gt;</parameter>
+        </parameter>
+    </function>
+    <function name="queryText" module="Basic">
+        <variable>MMSCSERVER/MM7/SOAP</variable>
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>&lt;Number&gt;</parameter>
+            <configuration>noCommunity/ChildUserBelow16</configuration>
+            <parameter>&lt;/Number&gt;</parameter>
+        </parameter>
+    </function>
+    <function name="queryText" module="Basic">
+        <variable>MMSCSERVER/MM7/SOAP</variable>
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>&lt;Number&gt;</parameter>
+            <configuration>noCommunity/ChildUserBelow16StandardFilter</configuration>
+            <parameter>&lt;/Number&gt;</parameter>
+        </parameter>
+    </function>
+
+
+
+
+    <function name="createMM7Soap" module="VASP">
+        <parameter>SubmitReq</parameter>
+        <configuration>VASP/VASPID</configuration>
+        <parameter>YXXX</parameter>
+    </function>
+    <function name="setMessageBoundary" module="VASP">
+        <parameter>000001message</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SenderIdentification']</parameter>
+        <parameter>SenderAddress</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SenderAddress']</parameter>
+        <parameter>Number</parameter>
+        <parameter>12345</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SubmitReq']</parameter>
+        <parameter>MM7Version</parameter>
+        <configuration>VASP/MM7Version</configuration>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SubmitReq']</parameter>
+        <parameter>MM7Version</parameter>
+        <configuration>VASP/MM7Version</configuration>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SubmitReq']</parameter>
+        <parameter>Recipients</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='Recipients']</parameter>
+        <parameter>To</parameter>
+    </function>
+    <function name="addSoapData" module="VASP">
+        <parameter>//*[local-name()='To'][last()]</parameter>
+        <parameter>Number</parameter>
+        <configuration>noCommunity/AdultUser</configuration>
+    </function>
+    <function name="addSoapData" module="VASP">
+        <parameter>//*[local-name()='To'][last()]</parameter>
+        <parameter>Number</parameter>
+        <configuration>noCommunity/AdultUserStandardFilter</configuration>
+    </function>
+    <function name="addSoapData" module="VASP">
+        <parameter>//*[local-name()='To'][last()]</parameter>
+        <parameter>Number</parameter>
+        <configuration>noCommunity/ChildUserAbove16</configuration>
+    </function>
+    <function name="addSoapData" module="VASP">
+        <parameter>//*[local-name()='To'][last()]</parameter>
+        <parameter>Number</parameter>
+        <configuration>noCommunity/ChildUserAbove16StandardFilter</configuration>
+    </function>
+    <function name="addSoapData" module="VASP">
+        <parameter>//*[local-name()='To'][last()]</parameter>
+        <parameter>Number</parameter>
+        <configuration>noCommunity/ChildUserBelow16</configuration>
+    </function>
+    <function name="addSoapData" module="VASP">
+        <parameter>//*[local-name()='To'][last()]</parameter>
+        <parameter>Number</parameter>
+        <configuration>noCommunity/ChildUserBelow16StandardFilter</configuration>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SubmitReq']</parameter>
+        <parameter>Content</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='Content']</parameter>
+        <parameter>href</parameter>
+        <parameter>cid:xtt-test002</parameter>
+    </function>
+    <function name="addContent" module="VASP">
+        <file>sendMM7data2.txt</file>
+    </function>
+    <function name="soapToVariable" module="VASP">
+        <parameter>SOAPTEST</parameter>
+    </function>
+    <!--
+    <function name="Info" module="basic">
+        <configuration>VASP/XMLNSMM7</configuration>
+        <parameter>
+</parameter>
+        <configuration>VASP/MM7XSD</configuration>
+        <parameter>
+</parameter>
+	    <variable>SOAPTEST</variable>
+    </function>
+    -->
+	<function name="validateXML" module="XML">
+	    <variable>SOAPTEST</variable>
+ 	    <parameter></parameter>
+        <configuration>VASP/XMLNSENV</configuration>
+        <configuration>VASP/SOAPXSD</configuration>
+        <configuration>VASP/XMLNSMM7</configuration>
+        <configuration>VASP/MM7XSD</configuration>
+    </function>
+
+
+    <!--function name="previewRequest" module="VASP" /-->
+    <function name="sendPostRequest" module="VASP"/>
+    <function name="checkResponseCode" module="VASP">
+        <parameter>200</parameter>
+    </function>
+	<function name="validateXML" module="XML">
+	    <variable>HTTP/BODY/PLAIN</variable>
+ 	    <parameter></parameter>
+        <configuration>MMSCSERVER/XMLNSENV</configuration>
+        <configuration>MMSCSERVER/SOAPXSD</configuration>
+        <configuration>MMSCSERVER/XMLNSMM7</configuration>
+        <configuration>MMSCSERVER/MM7XSD</configuration>
+    </function>    
+    <function name="queryBody" module="VASP">
+        <parameter>temp</parameter>
+        <parameter>&lt;StatusCode&gt;1000&lt;/StatusCode&gt;</parameter>
+    </function>
+
+    <function name="waitForRequests" module="MMSC">
+        <parameter>2</parameter>
+    </function>
+	<function name="validateXML" module="XML">
+	    <variable>MMSCSERVER/MM7/SOAP</variable>
+ 	    <parameter></parameter>
+        <configuration>VASP/XMLNSENV</configuration>
+        <configuration>VASP/SOAPXSD</configuration>
+        <configuration>VASP/XMLNSMM7</configuration>
+        <configuration>VASP/MM7XSD</configuration>
+    </function>
+
+    <function name="queryText" module="Basic">
+        <variable>MMSCSERVER/MM7/SOAP</variable>
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>&lt;Number&gt;</parameter>
+            <configuration>noCommunity/AdultUser</configuration>
+            <parameter>&lt;/Number&gt;</parameter>
+        </parameter>
+    </function>
+    <function name="queryText" module="Basic">
+        <variable>MMSCSERVER/MM7/SOAP</variable>
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>&lt;Number&gt;</parameter>
+            <configuration>noCommunity/AdultUserStandardFilter</configuration>
+            <parameter>&lt;/Number&gt;</parameter>
+        </parameter>
+    </function>
+    <function name="queryText" module="Basic">
+        <variable>MMSCSERVER/MM7/SOAP</variable>
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>&lt;Number&gt;</parameter>
+            <configuration>noCommunity/ChildUserAbove16</configuration>
+            <parameter>&lt;/Number&gt;</parameter>
+        </parameter>
+    </function>
+    <function name="queryText" module="Basic">
+        <variable>MMSCSERVER/MM7/SOAP</variable>
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>&lt;Number&gt;</parameter>
+            <configuration>noCommunity/ChildUserAbove16StandardFilter</configuration>
+            <parameter>&lt;/Number&gt;</parameter>
+        </parameter>
+    </function>
+    <function name="queryText" module="Basic">
+        <variable>MMSCSERVER/MM7/SOAP</variable>
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>&lt;Number&gt;</parameter>
+            <configuration>noCommunity/ChildUserBelow16</configuration>
+            <parameter>&lt;/Number&gt;</parameter>
+        </parameter>
+    </function>
+    <function name="queryText" module="Basic">
+        <variable>MMSCSERVER/MM7/SOAP</variable>
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>&lt;Number&gt;</parameter>
+            <configuration>noCommunity/ChildUserBelow16StandardFilter</configuration>
+            <parameter>&lt;/Number&gt;</parameter>
+        </parameter>
+    </function>
+
+    <function name="createMM7Soap" module="VASP">
+        <parameter>SubmitReq</parameter>
+        <configuration>VASP/VASPID</configuration>
+        <parameter>XXXX</parameter>
+    </function>
+    <function name="setMessageBoundary" module="VASP">
+        <parameter>000001message</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SenderIdentification']</parameter>
+        <parameter>SenderAddress</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SenderAddress']</parameter>
+        <parameter>Number</parameter>
+        <parameter>12345</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SubmitReq']</parameter>
+        <parameter>MM7Version</parameter>
+        <configuration>VASP/MM7Version</configuration>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SubmitReq']</parameter>
+        <parameter>MM7Version</parameter>
+        <configuration>VASP/MM7Version</configuration>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SubmitReq']</parameter>
+        <parameter>Recipients</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='Recipients']</parameter>
+        <parameter>To</parameter>
+    </function>
+    <function name="addSoapData" module="VASP">
+        <parameter>//*[local-name()='To'][last()]</parameter>
+        <parameter>Number</parameter>
+        <configuration>noCommunity/AdultUser</configuration>
+    </function>
+    <function name="addSoapData" module="VASP">
+        <parameter>//*[local-name()='To'][last()]</parameter>
+        <parameter>Number</parameter>
+        <configuration>noCommunity/AdultUserStandardFilter</configuration>
+    </function>
+    <function name="addSoapData" module="VASP">
+        <parameter>//*[local-name()='To'][last()]</parameter>
+        <parameter>Number</parameter>
+        <configuration>noCommunity/ChildUserAbove16</configuration>
+    </function>
+    <function name="addSoapData" module="VASP">
+        <parameter>//*[local-name()='To'][last()]</parameter>
+        <parameter>Number</parameter>
+        <configuration>noCommunity/ChildUserAbove16StandardFilter</configuration>
+    </function>
+    <function name="addSoapData" module="VASP">
+        <parameter>//*[local-name()='To'][last()]</parameter>
+        <parameter>Number</parameter>
+        <configuration>noCommunity/ChildUserBelow16</configuration>
+    </function>
+    <function name="addSoapData" module="VASP">
+        <parameter>//*[local-name()='To'][last()]</parameter>
+        <parameter>Number</parameter>
+        <configuration>noCommunity/ChildUserBelow16StandardFilter</configuration>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SubmitReq']</parameter>
+        <parameter>Content</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='Content']</parameter>
+        <parameter>href</parameter>
+        <parameter>cid:xtt-test002</parameter>
+    </function>
+    <function name="addContent" module="VASP">
+        <file>sendMM7data2.txt</file>
+    </function>
+    <function name="soapToVariable" module="VASP">
+        <parameter>SOAPTEST</parameter>
+    </function>
+    <!--
+    <function name="Info" module="basic">
+        <configuration>VASP/XMLNSMM7</configuration>
+        <parameter>
+</parameter>
+        <configuration>VASP/MM7XSD</configuration>
+        <parameter>
+</parameter>
+	    <variable>SOAPTEST</variable>
+    </function>
+    -->
+	<function name="validateXML" module="XML">
+	    <variable>SOAPTEST</variable>
+ 	    <parameter></parameter>
+        <configuration>VASP/XMLNSENV</configuration>
+        <configuration>VASP/SOAPXSD</configuration>
+        <configuration>VASP/XMLNSMM7</configuration>
+        <configuration>VASP/MM7XSD</configuration>
+    </function>
+
+
+    <!--function name="previewRequest" module="VASP" /-->
+    <function name="sendPostRequest" module="VASP"/>
+    <function name="checkResponseCode" module="VASP">
+        <parameter>200</parameter>
+    </function>
+	<function name="validateXML" module="XML">
+	    <variable>HTTP/BODY/PLAIN</variable>
+ 	    <parameter></parameter>
+        <configuration>MMSCSERVER/XMLNSENV</configuration>
+        <configuration>MMSCSERVER/SOAPXSD</configuration>
+        <configuration>MMSCSERVER/XMLNSMM7</configuration>
+        <configuration>MMSCSERVER/MM7XSD</configuration>
+    </function>    
+    <function name="queryBody" module="VASP">
+        <parameter>temp</parameter>
+        <parameter>&lt;StatusCode&gt;1000&lt;/StatusCode&gt;</parameter>
+    </function>
+
+    <function name="waitForRequests" module="MMSC">
+        <parameter>2</parameter>
+    </function>
+	<function name="validateXML" module="XML">
+	    <variable>MMSCSERVER/MM7/SOAP</variable>
+ 	    <parameter></parameter>
+        <configuration>VASP/XMLNSENV</configuration>
+        <configuration>VASP/SOAPXSD</configuration>
+        <configuration>VASP/XMLNSMM7</configuration>
+        <configuration>VASP/MM7XSD</configuration>
+    </function>
+
+    <function name="queryText" module="Basic">
+        <variable>MMSCSERVER/MM7/SOAP</variable>
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>&lt;Number&gt;</parameter>
+            <configuration>noCommunity/AdultUser</configuration>
+            <parameter>&lt;/Number&gt;</parameter>
+        </parameter>
+    </function>
+    <function name="queryText" module="Basic">
+        <variable>MMSCSERVER/MM7/SOAP</variable>
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>&lt;Number&gt;</parameter>
+            <configuration>noCommunity/AdultUserStandardFilter</configuration>
+            <parameter>&lt;/Number&gt;</parameter>
+        </parameter>
+    </function>
+    <function name="queryText" module="Basic">
+        <variable>MMSCSERVER/MM7/SOAP</variable>
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>&lt;Number&gt;</parameter>
+            <configuration>noCommunity/ChildUserAbove16</configuration>
+            <parameter>&lt;/Number&gt;</parameter>
+        </parameter>
+    </function>
+    <function name="queryText" module="Basic">
+        <variable>MMSCSERVER/MM7/SOAP</variable>
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>&lt;Number&gt;</parameter>
+            <configuration>noCommunity/ChildUserAbove16StandardFilter</configuration>
+            <parameter>&lt;/Number&gt;</parameter>
+        </parameter>
+    </function>
+    <function name="queryText" module="Basic">
+        <variable>MMSCSERVER/MM7/SOAP</variable>
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>&lt;Number&gt;</parameter>
+            <configuration>noCommunity/ChildUserBelow16</configuration>
+            <parameter>&lt;/Number&gt;</parameter>
+        </parameter>
+    </function>
+    <function name="queryText" module="Basic">
+        <variable>MMSCSERVER/MM7/SOAP</variable>
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>&lt;Number&gt;</parameter>
+            <configuration>noCommunity/ChildUserBelow16StandardFilter</configuration>
+            <parameter>&lt;/Number&gt;</parameter>
+        </parameter>
+    </function>
+
+
+    <function name="createMM7Soap" module="VASP">
+        <parameter>SubmitReq</parameter>
+        <configuration>VASP/VASPID</configuration>
+        <parameter>YYYY</parameter>
+    </function>
+    <function name="setMessageBoundary" module="VASP">
+        <parameter>000001message</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SenderIdentification']</parameter>
+        <parameter>SenderAddress</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SenderAddress']</parameter>
+        <parameter>Number</parameter>
+        <parameter>12345</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SubmitReq']</parameter>
+        <parameter>MM7Version</parameter>
+        <configuration>VASP/MM7Version</configuration>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SubmitReq']</parameter>
+        <parameter>MM7Version</parameter>
+        <configuration>VASP/MM7Version</configuration>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SubmitReq']</parameter>
+        <parameter>Recipients</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='Recipients']</parameter>
+        <parameter>To</parameter>
+    </function>
+    <function name="addSoapData" module="VASP">
+        <parameter>//*[local-name()='To'][last()]</parameter>
+        <parameter>Number</parameter>
+        <configuration>noCommunity/AdultUser</configuration>
+    </function>
+    <function name="addSoapData" module="VASP">
+        <parameter>//*[local-name()='To'][last()]</parameter>
+        <parameter>Number</parameter>
+        <configuration>noCommunity/AdultUserStandardFilter</configuration>
+    </function>
+    <function name="addSoapData" module="VASP">
+        <parameter>//*[local-name()='To'][last()]</parameter>
+        <parameter>Number</parameter>
+        <configuration>noCommunity/ChildUserAbove16</configuration>
+    </function>
+    <function name="addSoapData" module="VASP">
+        <parameter>//*[local-name()='To'][last()]</parameter>
+        <parameter>Number</parameter>
+        <configuration>noCommunity/ChildUserAbove16StandardFilter</configuration>
+    </function>
+    <function name="addSoapData" module="VASP">
+        <parameter>//*[local-name()='To'][last()]</parameter>
+        <parameter>Number</parameter>
+        <configuration>noCommunity/ChildUserBelow16</configuration>
+    </function>
+    <function name="addSoapData" module="VASP">
+        <parameter>//*[local-name()='To'][last()]</parameter>
+        <parameter>Number</parameter>
+        <configuration>noCommunity/ChildUserBelow16StandardFilter</configuration>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SubmitReq']</parameter>
+        <parameter>Content</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='Content']</parameter>
+        <parameter>href</parameter>
+        <parameter>cid:xtt-test002</parameter>
+    </function>
+    <function name="addContent" module="VASP">
+        <file>sendMM7data2.txt</file>
+    </function>
+    <function name="soapToVariable" module="VASP">
+        <parameter>SOAPTEST</parameter>
+    </function>
+    <!--
+    <function name="Info" module="basic">
+        <configuration>VASP/XMLNSMM7</configuration>
+        <parameter>
+</parameter>
+        <configuration>VASP/MM7XSD</configuration>
+        <parameter>
+</parameter>
+	    <variable>SOAPTEST</variable>
+    </function>
+    -->
+	<function name="validateXML" module="XML">
+	    <variable>SOAPTEST</variable>
+ 	    <parameter></parameter>
+        <configuration>VASP/XMLNSENV</configuration>
+        <configuration>VASP/SOAPXSD</configuration>
+        <configuration>VASP/XMLNSMM7</configuration>
+        <configuration>VASP/MM7XSD</configuration>
+    </function>
+
+
+    <!--function name="previewRequest" module="VASP" /-->
+    <function name="sendPostRequest" module="VASP"/>
+    <function name="checkResponseCode" module="VASP">
+        <parameter>200</parameter>
+    </function>
+	<function name="validateXML" module="XML">
+	    <variable>HTTP/BODY/PLAIN</variable>
+ 	    <parameter></parameter>
+        <configuration>MMSCSERVER/XMLNSENV</configuration>
+        <configuration>MMSCSERVER/SOAPXSD</configuration>
+        <configuration>MMSCSERVER/XMLNSMM7</configuration>
+        <configuration>MMSCSERVER/MM7XSD</configuration>
+    </function>    
+    <function name="queryBody" module="VASP">
+        <parameter>temp</parameter>
+        <parameter>&lt;StatusCode&gt;1000&lt;/StatusCode&gt;</parameter>
+    </function>
+
+    <function name="waitForRequests" module="MMSC">
+        <parameter>2</parameter>
+    </function>
+	<function name="validateXML" module="XML">
+	    <variable>MMSCSERVER/MM7/SOAP</variable>
+ 	    <parameter></parameter>
+        <configuration>VASP/XMLNSENV</configuration>
+        <configuration>VASP/SOAPXSD</configuration>
+        <configuration>VASP/XMLNSMM7</configuration>
+        <configuration>VASP/MM7XSD</configuration>
+    </function>
+
+    <function name="queryText" module="Basic">
+        <variable>MMSCSERVER/MM7/SOAP</variable>
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>&lt;Number&gt;</parameter>
+            <configuration>noCommunity/AdultUser</configuration>
+            <parameter>&lt;/Number&gt;</parameter>
+        </parameter>
+    </function>
+    <function name="queryText" module="Basic">
+        <variable>MMSCSERVER/MM7/SOAP</variable>
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>&lt;Number&gt;</parameter>
+            <configuration>noCommunity/AdultUserStandardFilter</configuration>
+            <parameter>&lt;/Number&gt;</parameter>
+        </parameter>
+    </function>
+    <function name="queryText" module="Basic">
+        <variable>MMSCSERVER/MM7/SOAP</variable>
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>&lt;Number&gt;</parameter>
+            <configuration>noCommunity/ChildUserAbove16</configuration>
+            <parameter>&lt;/Number&gt;</parameter>
+        </parameter>
+    </function>
+    <function name="queryText" module="Basic">
+        <variable>MMSCSERVER/MM7/SOAP</variable>
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>&lt;Number&gt;</parameter>
+            <configuration>noCommunity/ChildUserAbove16StandardFilter</configuration>
+            <parameter>&lt;/Number&gt;</parameter>
+        </parameter>
+    </function>
+    <function name="queryText" module="Basic">
+        <variable>MMSCSERVER/MM7/SOAP</variable>
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>&lt;Number&gt;</parameter>
+            <configuration>noCommunity/ChildUserBelow16</configuration>
+            <parameter>&lt;/Number&gt;</parameter>
+        </parameter>
+    </function>
+    <function name="queryText" module="Basic">
+        <variable>MMSCSERVER/MM7/SOAP</variable>
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>&lt;Number&gt;</parameter>
+            <configuration>noCommunity/ChildUserBelow16StandardFilter</configuration>
+            <parameter>&lt;/Number&gt;</parameter>
+        </parameter>
+    </function>
+
+
+    <function name="stopMMSCServer" module="MMSC"/>
+
+</test>

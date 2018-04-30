@@ -1,0 +1,28 @@
+<test>
+	<function name="testName" module="Basic">
+		<parameter>BZ.TC.10221</parameter>
+	</function>
+
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>bzTC10221.js</parameter>
+		<file>bzTC10221.js</file>
+    </function>
+
+    <!-- pleas upload the file bzTC10221.log manually to the location where RemoteXTT is running -->
+	<function name="writeRemoteBinaryFile" module="Remote">
+		<parameter>bzTC10221.log</parameter>
+		<base64file>bzTC10221.log</base64file>
+    </function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+	    <parameter>
+		    <configuration>remote/command</configuration>
+    		<parameter>logscan -in bzTC10221.log -script bzTC10221.js -out bzTC10221.csv</parameter>
+    	</parameter>
+    </function>
+
+    <function name="queryResponseNegative" module="Remote">
+    	<parameter>SyntaxError</parameter>
+    </function>
+
+</test>

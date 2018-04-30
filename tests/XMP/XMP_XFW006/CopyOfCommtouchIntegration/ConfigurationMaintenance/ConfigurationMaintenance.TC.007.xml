@@ -1,0 +1,128 @@
+<test>
+	<function name="testName" module="Basic">
+		<parameter>ConfigurationMaintenance.TC.007.xml</parameter>
+	</function>
+	<description>Validate updating online updatable CCF_CFG_SaveCtengineCacheToFile configuration parameter to a file name triggers the CCF component to write the volatile in-memory cache into a file / Make sure that the file is valid and it could be reloaded into ctengine again</description>
+	
+	<!-- Get the name of CONTENT-CATEGORIZER process -->
+	<function name="activeProcessToVar" module="Remote">
+		<parameter>CONTENT-CATEGORIZER</parameter>
+		<parameter>Name_Of_Content_Categorizer_Process</parameter>
+	</function>
+	
+	
+	<!-- Delete Previously Loaded Cache File -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>delete file /ctengine/urlf.cache</parameter>
+	</function>
+	
+	
+	<!-- Copy and Rename xmp_ctengine_cache.file -->
+	<function name="executeRemoteCommand" module="Remote">
+		<parameter>
+			<parameter>cp </parameter>
+			<configuration>remote/path</configuration>
+			<parameter>examples/xmp_ctengine_cache.file urlf.cache</parameter>
+		</parameter>
+	</function>
+	
+	
+	<!-- Load urlf.cache -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>load file urlf.cache /ctengine/urlf.cache</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded '/ctengine/urlf.cache' from 'urlf.cache'</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	
+	<function name="sleep" module="Basic">
+		<parameter>2500</parameter>
+	</function>
+	
+	
+	<!-- Check CFG_FileTable to make sure that urlf.cache is loaded-->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>run command cmu -c -d </parameter>
+			<variable>Name_Of_Content_Categorizer_Process</variable>
+		</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>CONFIGSERVER_FILE_CFG_FileTable\[.*\].Filename.*: /ctengine/urlf.cache</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>CONFIGSERVER_FILE_CFG_FileTable\[.\].ContentType              : octet_stream</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	
+	
+	<!-- Remove previously loaded /tmp/urlf.cache.tmp if any -->
+	<function name="executeRemoteCommand" module="Remote">
+		<parameter>
+			<parameter>rm /tmp/urlf.cache.tmp</parameter>
+		</parameter>
+	</function>
+	
+	
+	<!-- Write the volatile in-memory cache into a file -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>run command cmu -C CCF_CFG_SaveCtengineCacheToFile </parameter>
+			<variable>Name_Of_Content_Categorizer_Process</variable>
+			<parameter> /tmp/urlf.cache.tmp</parameter>
+		</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>CCF_CFG_SaveCtengineCacheToFile                             : /tmp/urlf.cache.tmp</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	
+	
+	<!-- Load /tmp/urlf.cache.tmp -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>load file /tmp/urlf.cache.tmp</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded '/urlf.cache.tmp' from '/tmp/urlf.cache.tmp'</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	
+	<function name="sleep" module="Basic">
+		<parameter>2500</parameter>
+	</function>
+	
+	
+	<!-- Check CFG_FileTable to make sure that urlf.cache is loaded-->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>run command cmu -c -d </parameter>
+			<variable>Name_Of_Content_Categorizer_Process</variable>
+		</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>CONFIGSERVER_FILE_CFG_FileTable\[.*\].Filename.*: /ctengine/urlf.cache</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>CONFIGSERVER_FILE_CFG_FileTable\[.\].ContentType              : octet_stream</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	
+	
+	<!-- Delete Previously Loaded Cache Files -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>delete file urlf.cache.tmp</parameter>
+	</function>
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>delete file /ctengine/urlf.cache</parameter>
+	</function>
+</test>

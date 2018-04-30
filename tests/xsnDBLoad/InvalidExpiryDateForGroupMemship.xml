@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dbupdates> 
+
+<!-- XSN.DBLoad.GroupMemAdd.TC008.5	Expiry day is invalid : YYYY-06-31	-->
+
+<groupMembers>
+<add group="MyGroup"
+subscriber="1234575"
+expiry="2007-06-31T23:00:00-08:00" />
+</groupMembers>
+
+</dbupdates> 

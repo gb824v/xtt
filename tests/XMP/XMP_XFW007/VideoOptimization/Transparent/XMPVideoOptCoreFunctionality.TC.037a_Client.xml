@@ -1,0 +1,297 @@
+<test>
+
+	<function name="testName" module="Basic">
+		<parameter>XMPVideoOptCoreFunctionality.TC.037a_Client</parameter>
+	</function>
+
+	<description>Validate Control Item , Chunk Items of a video are reaped based on the "MS_ExpiryTime" attribute of Control Item , configuration of video expiration period for Online condition</description>
+
+	<!-- Delete Message Store -->
+	<subtest>deleteMediaStoreAll.xml</subtest>
+
+	<function name="disableProxy" module="HTTP" />
+
+	<!-- Query the name of the active MEDIA-STORE process -->
+	<function name="activeProcessToVar" module="Remote">
+		<parameter>MEDIA-STORE</parameter>
+		<parameter>Media_Store_Process_Name</parameter>
+	</function>
+
+	<!-- Prepare the ContextStatistics File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>vo_ContextStatistics.xml</parameter>
+		<xml>
+		<contextStatistics>
+			<contextStatistic condition="FTR_OptimizeVideo is true and 
+			LSA_LogicalLog matches '^TCP-ROUTER'"
+			statisticName="VideoOptimization"
+			key="MSR_Name"
+			maxCounters="100"
+			rateIntervalSeconds="180" />
+		</contextStatistics>
+		</xml>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>vo_ContextStatistics.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded contextstatistics.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Prepare the Request Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>vo_reqmod_online_opt.xml</parameter>
+		<xml>
+		<requestModifications xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="requestmodifications.xsd">
+		<table name="DisableThings" phase="httpRequest">
+			<selector>
+				<modifyContext name="Skip_CACHE" value="'true'"/>
+				<modifyContext name="Skip_VIRUSSCANNER" value="'true'"/>
+				<modifyContext name="FTR_HtmlTidyDisable" value="'true'"/>
+				<modifyContext name="Skip_COOKIE" value="'true'"/>
+				<modifyContext name="Skip_ICC" value="'true'"/>
+				<modifyContext name="FTR_MultipartCompose_Disable" value="'true'"/>
+				<modifyContext name="FTR_Prefetch_Disable" value="'true'"/>
+				<modifyContext name="FTR_Deflate_Disable" value="'true'"/>
+				<modifyContext name="FTR_Gzip_Disable" value="'true'"/>
+			</selector>
+		</table>
+		<table name="blip_videoOptimization" phase="httpRequest">
+			<selector urlPattern="http://*/videos/{.*\.flv}">
+				<modifyContext name="FTR_OptimizeVideo" value="'true'"/>
+				<modifyContext name="FTR_WaitForOptimizedContent" value="'true'"/>
+			</selector>
+		</table>
+		</requestModifications>
+		</xml>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>vo_reqmod_online_opt.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded requestmodifications.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Radius Login -->
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+	<!-- Send the video retrival request -->
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>
+			<parameter>http://</parameter>
+			<configuration>webserver/ip</configuration>
+			<parameter>/videos/Ddspringle1-OpenOceanTorrus105.flv</parameter>
+		</parameter>
+	</function>
+
+	<!-- Validate Response Code Send by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<!-- amocli search for Optimized Video in Media Store -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>run command amocli -e (MS_Status=='done') -m0 search TI:F.CEE.</parameter>
+			<variable>Media_Store_Process_Name</variable>
+			<parameter>:AMO</parameter>
+		</parameter>
+	</function>
+
+	<!-- Check for final status of chunks stored in the Media Store, it should be in "Done" status-->
+	<function name="queryResponse" module="Remote">
+		<parameter>MS_Status=done</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!--Check for High priority item associated with the real-time use case-->
+	<function name="queryResponse" module="Remote">
+		<parameter>MS_Priority=99</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Check for final chunk stored in the Media Store-->
+	<function name="queryResponse" module="Remote">
+		<parameter>searchComplete=true</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Check for MS_Url & MS_Name -->
+	<function name="queryResponse" module="Remote">
+		<parameter>
+			<parameter>MS_Url=http://</parameter>
+			<configuration>webserver/ip</configuration>
+			<parameter>/videos/Ddspringle1-OpenOceanTorrus105.flv</parameter>
+		</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>
+			<parameter>MS_Name=http://</parameter>
+			<configuration>webserver/ip</configuration>
+			<parameter>/videos/Ddspringle1-OpenOceanTorrus105.flv</parameter>
+		</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Check for itemId of chunks stored in the Media Store-->
+	<function name="queryResponse" module="Remote">
+		<parameter>itemId=(.*)dataId</parameter>
+		<parameter>itemId</parameter>
+	</function>
+
+	<function name="info" module="Basic">
+		<parameter>itemId=</parameter>
+		<variable>itemId</variable>
+	</function>
+
+	<!-- Check for MS_ExpiryTime of chunk stored in the Media Store-->
+	<function name="queryResponse" module="Remote">
+		<parameter>MS_ExpiryTime=(.*)MS_Name</parameter>
+		<parameter>ExpiryTime</parameter>
+	</function>
+
+	<function name="info" module="Basic">
+		<parameter>MS_ExpiryTime=</parameter>
+		<variable>ExpiryTime</variable>
+	</function>
+
+	<!-- Get the latest time to update MS_ExpiryTime for testing -->
+	<function name="getRemoteSystemTime" module="Remote">
+		<parameter>currentTime</parameter>
+	</function>
+
+	<!-- Add 120 seconds in current time for updating MS_ExpiryTime -->
+	<function name="createEpochDateString" module="Basic">
+		<variable>currentTime</variable>
+		<parameter>yyyy-MM-dd'T'HH:mm:ss'Z'</parameter>
+		<parameter>futureTime1</parameter>
+		<parameter>120</parameter>
+		<parameter>UTC</parameter>
+	</function>
+
+	<!-- amocli command to Update MS_ExpiryTime for testing -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>run command amocli -n </parameter>
+			<variable>itemId</variable>
+			<parameter> -a MS_ExpiryTime=</parameter>
+			<variable>futureTime1</variable>
+			<parameter> ua TI:F.CEE.</parameter>
+			<variable>Media_Store_Process_Name</variable>
+			<parameter>:AMO</parameter>
+		</parameter>
+	</function>
+
+	<!-- amocli search for updated Expiry time changed for Optimized Video in Media Store -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>run command amocli -e (MS_Status=='done') -m0 search TI:F.CEE.</parameter>
+			<variable>Media_Store_Process_Name</variable>
+			<parameter>:AMO</parameter>
+		</parameter>
+	</function>
+
+	<!-- Check for MS_ExpiryTime of chunk stored in the Media Store-->
+	<function name="queryResponse" module="Remote">
+		<parameter>MS_ExpiryTime=(.*)MS_Name</parameter>
+		<parameter>ExpiryTime</parameter>
+	</function>
+
+	<function name="info" module="Basic">
+		<parameter>Updated MS_ExpiryTime=</parameter>
+		<variable>ExpiryTime</variable>
+	</function>
+
+	<!-- Check for total number of Optimized Chunks stored in Media Store-->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>run command amocli -k count TI:F.CEE.</parameter>
+			<variable>Media_Store_Process_Name</variable>
+			<parameter>:AMO</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>amocli: 3 items counted</parameter>
+		<parameter>response</parameter>
+	</function>
+
+	<!-- Radius Logoff -->
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+	<!-- Sleep for Reaper Process -->
+	<function name="sleep" module="BASIC">
+		<parameter>120000</parameter>
+	</function>
+
+	<!-- Check message store after sleeping up to MS_ExpiryTime, it should contain 0 items -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>run command amocli -k count TI:F.CEE.</parameter>
+			<variable>Media_Store_Process_Name</variable>
+			<parameter>:AMO</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>amocli: 0 items counted</parameter>
+		<parameter>response</parameter>
+	</function>
+
+	<!-- Purge the Request Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>REQMOD_EmptyRules.xml</parameter>
+		<parameter>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;requestModifications&gt;&lt;/requestModifications&gt;</parameter>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>REQMOD_EmptyRules.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded requestmodifications.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Purge the ContextStatistics File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>vo_EmptyContextStatistics.xml</parameter>
+		<parameter>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;contextStatistics&gt;&lt;/contextStatistics&gt;</parameter>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>vo_EmptyContextStatistics.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded contextstatistics.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+</test>

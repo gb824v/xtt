@@ -1,0 +1,196 @@
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+REQMODEnhancements.TC.002  - Validate REQMOD registers for file updates (BZ14801) / Use a valid URL list file.
+
+Test Description:
+ 1. Radius Logon
+ 2. Prepare and load the Request Modification File and BlackList.txt file.
+ 3.	Send HTTP Get Proxy Request.
+ 4. Check Response Code
+ 5. Purge the Request Modification File.
+ 6. Radius Logoff
+ 
+Expected Result:
+ -  XMP should Block valid URL mentioned in BlackList.txt with "Site blocked because the URL is in the Black List" HTTP Status.
+
+XTT Commands:
+      startWebServer
+ 1. - Radius log-ON
+
+ 2. - Prepare and load the Request Modification File and BlackList.txt file. 
+
+ 3.   - sendGetRequest 		"HTTP" "http://www.yahoo.com"
+
+ 4.   - checkResponseCode	"HTTP" "403"
+
+ 5. - modify the urlList in BlackList.txt file.
+
+ 6.  - sendGetRequest 		"HTTP" "http://www.yahoo.com"
+
+ 7.  - checkResponseCode	"HTTP" "200"
+
+ 8.  - sendGetRequest 		"HTTP" "http://www.microsoft.com"
+
+ 9.  - checkResponseCode	"HTTP" "403"
+ 
+ 10. - Purge the Request Modification File
+
+ 11. - Radius log-OFF
+      stopWebServer
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- Test Start  -->
+<test>
+	<function name="testName" module="Basic">
+		<parameter>REQMODEnhancements.TC.002</parameter>
+	</function>
+
+    <description>Validate REQMOD registers for file updates (BZ14801) / Use a valid URL list file</description>
+
+	<!-- Prepare Black List -->
+	<subtest>URLListsForREQMODEnhancements.TC.002.xml</subtest>
+
+	<!-- Start Web Server -->
+	<function name="startWebServer" module="HTTP"/>
+
+	<!-- Radius Login -->
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+	    <parameter>12346</parameter>
+    </function>
+	
+	<function name="setHeader" module="HTTP">
+		<parameter>Accept-Encoding</parameter>
+		<parameter>0</parameter>
+	</function>
+	
+	<function name="setHeader" module="HTTP">
+		<parameter>Accept</parameter>
+		<parameter>*/*</parameter>
+	</function>
+	
+	<function name="setHeader" module="HTTP">
+		<parameter>User-Agent</parameter>
+		<parameter>XTT/0.1</parameter>
+	</function>
+
+	<!-- Prepare the Request Modification File -->
+<function name="writeRemoteFile" module="Remote">
+	<parameter>REQMOD_REQMODEnhancements.TC.002.xml</parameter>
+		<xml>
+<requestModifications xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="requestmodifications.xsd">
+	<table name="SetMobileAccelerationDefaults">
+		<selector urlList="BlackList.txt">
+		<denyAccess reason="'Site blocked because the URL is in the Black List'"/>
+	</selector>
+	</table>
+</requestModifications>
+</xml>
+</function>
+	
+<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>REQMOD_REQMODEnhancements.TC.002.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded requestmodifications.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+		
+	 <!-- Send HTTP Get Proxy Request -->
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://www.yahoo.com</parameter>
+	</function>
+	
+	<!-- Validate Response Code Send by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>403</parameter>
+	</function>
+	
+	<function name="checkHeader" module="HTTP">
+		<parameter>null</parameter>
+		<parameter>HTTP/1.1 403 Site blocked because the URL is in the Black List</parameter>
+	</function>
+
+	<!-- Prepare the Request Modification File -->
+<function name="writeRemoteFile" module="Remote">
+	<parameter>REQMOD_REQMODEnhancements.TC.002.xml</parameter>
+		<xml>
+<requestModifications xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="requestmodifications.xsd">
+	<table name="SetMobileAccelerationDefaults">
+		<selector urlList="BlackList1.txt">
+		<denyAccess reason="'Site blocked because the URL is in the Black List'"/>
+	</selector>
+	</table>
+</requestModifications>
+</xml>
+</function>
+	
+<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>REQMOD_REQMODEnhancements.TC.002.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded requestmodifications.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	
+	<!-- Send HTTP Get Proxy Request -->
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://www.yahoo.com</parameter>
+	</function>
+	
+	<!-- Validate Response Code Send by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+	
+	<!-- Send HTTP Get Proxy Request -->
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://www.microsoft.com</parameter>
+	</function>
+	
+	<!-- Validate Response Code Send by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>403</parameter>
+	</function>
+	
+	<function name="checkHeader" module="HTTP">
+		<parameter>null</parameter>
+		<parameter>HTTP/1.1 403 Site blocked because the URL is in the Black List</parameter>
+	</function>
+
+	    
+	<!-- Purge the Request Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>REQMOD_EmptyRules.xml</parameter>
+		<parameter>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;requestModifications&gt;&lt;/requestModifications&gt;</parameter>
+    </function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>REQMOD_EmptyRules.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded requestmodifications.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>  
+   
+    	<!-- Radius Logoff -->
+    <function name="radiusLogoff" module="Radius">
+	    <parameter>xttuser</parameter>
+	    <parameter>12346</parameter>
+    </function>
+	
+	<!-- Stop Web Server -->
+    <function name="stopWebServer" module="HTTP"/>
+    
+</test>

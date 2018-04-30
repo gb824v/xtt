@@ -1,0 +1,4022 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="newpkg" Name="XSN Package" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd">
+<PackageHeader>
+<XPDLVersion>1.0</XPDLVersion>
+<Vendor>724 Solutions Inc</Vendor>
+<Created>2006-04-07</Created>
+<Description>This file contains XPDL workflows for Sentinel.
+        $Id: xtt-xsn-xpdl.xml,v 1.2 2006/07/21 17:05:21 cvsbuild Exp $</Description>
+</PackageHeader>
+<WorkflowProcesses>
+<WorkflowProcess Id="HTTP-ROUTER-Process" Name="HTTP-ROUTER-Process">
+<ProcessHeader>
+<Created>2006-02-09 14:33:55</Created>
+</ProcessHeader>
+<FormalParameters>
+<FormalParameter Id="IM_User" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="HTA_DomainName" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="HTA_Uri" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="HTA_Path" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="HTA_Protocol" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="HTA_ReqHdr_subscriberidhdr" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_Age" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_Category" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_Communities" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_Filtered" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_Groups" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_InDatabase" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_Result" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_ResultSystem" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_ResultSubscriber" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_ResultCommunities" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_SkipCacheResult" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_SubscriberId" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+</FormalParameters>
+<DataFields>
+<DataField Id="XSN_WebAppIPAddress" IsArray="FALSE" Name="XSN_WebAppIPAddress">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+<InitialValue>'172.20.2.8'</InitialValue>
+<Description>EDIT THIS
+
+Replace this value with the IP address of the web application server.</Description>
+</DataField>
+<DataField Id="XSN_WebAppIPPort" IsArray="FALSE" Name="XSN_WebAppIPPort">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+<InitialValue>'8087'</InitialValue>
+<Description>EDIT THIS
+
+Replace this value with the IP port of the web application server.</Description>
+</DataField>
+<DataField Id="XSN_WebAppUrlPrefix" IsArray="FALSE" Name="XSN_WebAppUrlPrefix">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+<InitialValue>'http://'+XSN_WebAppIPAddress+':'+XSN_WebAppIPPort</InitialValue>
+<Description>DO NOT EDIT
+
+This is the url prefix of all the portal applications</Description>
+</DataField>
+<DataField Id="XSN_RedirectUrlPrefix" IsArray="FALSE" Name="XSN_RedirectUrlPrefix">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+<InitialValue>XSN_WebAppUrlPrefix+'/SentinelBlocked'</InitialValue>
+<Description>DO NOT EDIT
+
+This is the url prefix to which all redirected requests are sent.</Description>
+</DataField>
+<DataField Id="XSN_AgeIsUnknownScreen" IsArray="FALSE" Name="XSN_AgeIsUnknownScreen">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+<InitialValue>'ageIsUnknown.html'</InitialValue>
+<Description>DO NOT EDIT</Description>
+</DataField>
+<DataField Id="XSN_AlwaysBlockScreen" IsArray="FALSE" Name="XSN_AlwaysBlockScreen">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+<InitialValue>'always.html'</InitialValue>
+<Description>DO NOT EDIT</Description>
+</DataField>
+<DataField Id="XSN_BlockedByPersonalFiltersScreen" IsArray="FALSE" Name="XSN_BlockedByPersonalFiltersScreen">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+<InitialValue>'byPersonalFilters.html'</InitialValue>
+<Description>DO NOT EDIT</Description>
+</DataField>
+<DataField Id="XSN_BlockedBySystemFiltersScreen" IsArray="FALSE" Name="XSN_BlockedBySystemFiltersScreen">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+<InitialValue>'bySystemFilters.html'</InitialValue>
+<Description>DO NOT EDIT</Description>
+</DataField>
+<DataField Id="XSN_BlockedByCommunityFiltersScreen" IsArray="FALSE" Name="XSN_BlockedByCommunityFiltersScreen">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+<InitialValue>'byCommunityFilters.html'</InitialValue>
+<Description>DO NOT EDIT</Description>
+</DataField>
+<DataField Id="XSN_SubscriberIsUnregisteredScreen" IsArray="FALSE" Name="XSN_SubscriberIsUnregisteredScreen">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+<InitialValue>'subscriberIsUnregistered.html'</InitialValue>
+<Description>DO NOT EDIT</Description>
+</DataField>
+<DataField Id="XSN_SkipCachePutResult" IsArray="FALSE" Name="XSN_SkipCachePutResult">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+<InitialValue>''</InitialValue>
+<Description>Internal variable</Description>
+</DataField>
+<DataField Id="XSN_RedirectScreen" IsArray="FALSE" Name="XSN_RedirectScreen">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+<InitialValue>''</InitialValue>
+<Description>Internal variable</Description>
+</DataField>
+</DataFields>
+<Participants>
+<Participant Id="newpkg_par1" Name="HTTP-WPE">
+<ParticipantType Type="SYSTEM"/>
+</Participant>
+</Participants>
+<Applications>
+<Application Id="ApplySubscriberProfile" Name="ApplySubscriberProfile">
+<FormalParameters>
+<FormalParameter Id="ASP_UserId" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Category" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Protocol" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Domain" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Path" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Filtered" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_InDatabase" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Result" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_ResultAge" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_ResultSubscriber" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_ResultCommunities" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Age" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Communities" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Groups" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+</FormalParameters>
+</Application>
+<Application Id="AuditAndNotification" Name="AuditAndNotification">
+<FormalParameters>
+<FormalParameter Id="BAN_UserId" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_Communities" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_Category" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_Protocol" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_Domain" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_Path" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_Result" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_ResultAge" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_ResultSubscriber" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_ResultCommunities" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+</FormalParameters>
+</Application>
+<Application Id="SkipCache" Name="SkipCache">
+<FormalParameters>
+<FormalParameter Id="SKIPCACHE_Operation" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="SKIPCACHE_Key" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="SKIPCACHE_GetResult" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+</FormalParameters>
+</Application>
+<Application Id="SystemCategorizor" Name="SystemCategorizor">
+<FormalParameters>
+<FormalParameter Id="REQMOD_Category" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="HTA_DomainName" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="HTA_Path" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="HTA_Port" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+</FormalParameters>
+</Application>
+<Application Id="UrlCategorizor" Name="UrlCategorizor">
+<FormalParameters>
+<FormalParameter Id="SURFCONTROL_Category" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="SURFCONTROL_Domain" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="SURFCONTROL_Path" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+</FormalParameters>
+</Application>
+<Application Id="evaluate" Name="evaluate">
+<FormalParameters>
+<FormalParameter Id="WPE_EvaluateInput" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="WPE_EvaluateResult" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="WPE_EvaluateDefault" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+</FormalParameters>
+</Application>
+<Application Id="exitForward" Name="exitForward"/>
+<Application Id="exitHttpAuthenticate" Name="exitHttpAuthenticate">
+<FormalParameters>
+<FormalParameter Id="WPE_HttpRealm" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+</FormalParameters>
+</Application>
+<Application Id="exitHttpRedirect" Name="exitHttpRedirect">
+<FormalParameters>
+<FormalParameter Id="WPE_HttpRedirectUrl" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="WPE_HttpRedirectOriginalUrlParamName" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="WPE_HttpRedirectOriginalUrl" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="WPE_HttpRedirectPrefixParamName" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="WPE_HttpRedirectPrefix" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+</FormalParameters>
+</Application>
+<Application Id="exitResourceError" Name="exitResourceError"/>
+</Applications>
+<ActivitySets>
+<ActivitySet Id="SelectRedirectionScreen">
+<Activities>
+<Activity Id="HTTP-ROUTER-Process_act31" Name="Blocked by the system filters?">
+<Route/>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Split Type="XOR">
+<TransitionRefs>
+<TransitionRef Id="HTTP-ROUTER-Process_tra11"/>
+<TransitionRef Id="HTTP-ROUTER-Process_tra10"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="FreeTextExpressionParticipant"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="162,325"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="HTTP-ROUTER-Process_act41" Name="Blocked by a personal filter?">
+<Route/>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Split Type="XOR">
+<TransitionRefs>
+<TransitionRef Id="HTTP-ROUTER-Process_tra15"/>
+<TransitionRef Id="HTTP-ROUTER-Process_tra21"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="FreeTextExpressionParticipant"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="162,504"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="newpkg_wp1_act91122" Name="Screen &quot;Blocked by Personal Filters&quot;">
+<Implementation>
+<Tool Id="evaluate" Type="PROCEDURE">
+<ActualParameters>
+<ActualParameter>XSN_BlockedByPersonalFiltersScreen</ActualParameter>
+<ActualParameter>XSN_RedirectScreen</ActualParameter>
+<ActualParameter>''</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="FreeTextExpressionParticipant"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="356,504"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="newpkg_wp1_act91" Name="Screen &quot;Always Block&quot;">
+<Implementation>
+<Tool Id="evaluate" Type="PROCEDURE">
+<ActualParameters>
+<ActualParameter>XSN_AlwaysBlockScreen</ActualParameter>
+<ActualParameter>XSN_RedirectScreen</ActualParameter>
+<ActualParameter>''</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="FreeTextExpressionParticipant"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="351,47"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="HTTP-ROUTER-Process_act2" Name="Always Blocking?">
+<Route/>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Split Type="XOR">
+<TransitionRefs>
+<TransitionRef Id="HTTP-ROUTER-Process_tra1"/>
+<TransitionRef Id="HTTP-ROUTER-Process_tra2"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="FreeTextExpressionParticipant"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="160,45"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="newpkg_wp1_act9112111" Name="Screen &quot;Blocked by Community Filters&quot;">
+<Implementation>
+<Tool Id="evaluate" Type="PROCEDURE">
+<ActualParameters>
+<ActualParameter>XSN_BlockedByCommunityFiltersScreen</ActualParameter>
+<ActualParameter>XSN_RedirectScreen</ActualParameter>
+<ActualParameter>''</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="FreeTextExpressionParticipant"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="354,236"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="newpkg_wp1_act911311" Name="Screen &quot;Too Young&quot;">
+<Implementation>
+<Tool Id="evaluate" Type="PROCEDURE">
+<ActualParameters>
+<ActualParameter>XSN_BlockedBySystemFiltersScreen</ActualParameter>
+<ActualParameter>XSN_RedirectScreen</ActualParameter>
+<ActualParameter>''</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="FreeTextExpressionParticipant"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="601,417"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="newpkg_wp1_act91141" Name="Screen &quot;Age Unknown&quot;">
+<Implementation>
+<Tool Id="evaluate" Type="PROCEDURE">
+<ActualParameters>
+<ActualParameter>XSN_AgeIsUnknownScreen</ActualParameter>
+<ActualParameter>XSN_RedirectScreen</ActualParameter>
+<ActualParameter>''</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="FreeTextExpressionParticipant"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="599,323"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="HTTP-ROUTER-Process_act311" Name="Blocked by the community filters?">
+<Route/>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Split Type="XOR">
+<TransitionRefs>
+<TransitionRef Id="HTTP-ROUTER-Process_tra9"/>
+<TransitionRef Id="HTTP-ROUTER-Process_tra12"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="FreeTextExpressionParticipant"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="161,234"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="HTTP-ROUTER-Process_act3" Name="HTTP 500 error code">
+<Description>This activity should never be reached.</Description>
+<Implementation>
+<Tool Id="exitResourceError" Type="PROCEDURE">
+<Description>Causes a HTTP 500 to be returned.  This should not be reached.</Description>
+</Tool>
+</Implementation>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="FreeTextExpressionParticipant"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="354,601"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="newpkg_wp1_act91121111" Name="Screen &quot;Register and Validate Age&quot;">
+<Implementation>
+<Tool Id="evaluate" Type="PROCEDURE">
+<ActualParameters>
+<ActualParameter>XSN_SubscriberIsUnregisteredScreen</ActualParameter>
+<ActualParameter>XSN_RedirectScreen</ActualParameter>
+<ActualParameter>''</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="FreeTextExpressionParticipant"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="354,141"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="HTTP-ROUTER-Process_act4" Name="Not registered?">
+<Route/>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Split Type="XOR">
+<TransitionRefs>
+<TransitionRef Id="HTTP-ROUTER-Process_tra16"/>
+<TransitionRef Id="HTTP-ROUTER-Process_tra17"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="FreeTextExpressionParticipant"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="161,141"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="HTTP-ROUTER-Process_act5" Name="Age Known?">
+<Route/>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Split Type="XOR">
+<TransitionRefs>
+<TransitionRef Id="HTTP-ROUTER-Process_tra14"/>
+<TransitionRef Id="HTTP-ROUTER-Process_tra13"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="FreeTextExpressionParticipant"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="356,323"/>
+</ExtendedAttributes>
+</Activity>
+</Activities>
+<Transitions>
+<Transition From="HTTP-ROUTER-Process_act41" Id="HTTP-ROUTER-Process_tra21" To="newpkg_wp1_act91122">
+<Condition Type="CONDITION">XSN_ResultSubscriber=='BLOCK'</Condition>
+<Description>Is the page blocked by the subscriber?</Description>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="HTTP-ROUTER-Process_act2" Id="HTTP-ROUTER-Process_tra1" To="newpkg_wp1_act91">
+<Condition Type="CONDITION">XSN_Category=='alwaysBlock'</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="HTTP-ROUTER-Process_act311" Id="HTTP-ROUTER-Process_tra9" To="HTTP-ROUTER-Process_act31">
+<Condition Type="OTHERWISE"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="HTTP-ROUTER-Process_act311" Id="HTTP-ROUTER-Process_tra12" To="newpkg_wp1_act9112111">
+<Condition Type="CONDITION">XSN_ResultCommunities contains 'BLOCK'</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="HTTP-ROUTER-Process_act41" Id="HTTP-ROUTER-Process_tra15" To="HTTP-ROUTER-Process_act3">
+<Condition Type="OTHERWISE"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="220,622"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="HTTP-ROUTER-Process_act2" Id="HTTP-ROUTER-Process_tra2" To="HTTP-ROUTER-Process_act4">
+<Condition Type="OTHERWISE"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="HTTP-ROUTER-Process_act4" Id="HTTP-ROUTER-Process_tra16" To="HTTP-ROUTER-Process_act311">
+<Condition Type="OTHERWISE"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="HTTP-ROUTER-Process_act4" Id="HTTP-ROUTER-Process_tra17" To="newpkg_wp1_act91121111">
+<Condition Type="CONDITION">XSN_InDatabase=='FALSE'</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="HTTP-ROUTER-Process_act31" Id="HTTP-ROUTER-Process_tra10" To="HTTP-ROUTER-Process_act5">
+<Condition Type="CONDITION">XSN_ResultSystem == 'BLOCK'</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="HTTP-ROUTER-Process_act31" Id="HTTP-ROUTER-Process_tra11" To="HTTP-ROUTER-Process_act41">
+<Condition Type="OTHERWISE"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="HTTP-ROUTER-Process_act5" Id="HTTP-ROUTER-Process_tra13" To="newpkg_wp1_act911311">
+<Condition Type="OTHERWISE"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="410,444"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="HTTP-ROUTER-Process_act5" Id="HTTP-ROUTER-Process_tra14" To="newpkg_wp1_act91141">
+<Condition Type="CONDITION">XSN_Age == 0</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+</Transitions>
+</ActivitySet>
+</ActivitySets>
+<Activities>
+<Activity Id="newpkg_wp1_act1" Name="System Categorization">
+<Implementation>
+<Tool Id="SystemCategorizor" Type="APPLICATION">
+<ActualParameters>
+<ActualParameter>XSN_Category</ActualParameter>
+<ActualParameter>HTA_DomainName</ActualParameter>
+<ActualParameter>HTA_Path</ActualParameter>
+<ActualParameter>HTA_Port</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>newpkg_par1</Performer>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Split Type="XOR">
+<TransitionRefs>
+<TransitionRef Id="newpkg_wp1_tra5"/>
+<TransitionRef Id="newpkg_wp1_tra6"/>
+<TransitionRef Id="HTTP-ROUTER-Process_tra6"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="newpkg_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="520,114"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="newpkg_wp1_act3" Name="Categorize Url">
+<Implementation>
+<Tool Id="UrlCategorizor" Type="APPLICATION">
+<ActualParameters>
+<ActualParameter>XSN_Category</ActualParameter>
+<ActualParameter>HTA_DomainName</ActualParameter>
+<ActualParameter>HTA_Path</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>newpkg_par1</Performer>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Split Type="XOR">
+<TransitionRefs>
+<TransitionRef Id="newpkg_wp1_tra4"/>
+<TransitionRef Id="HTTP-ROUTER-Process_tra7"/>
+<TransitionRef Id="HTTP-ROUTER-Process_tra8"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="newpkg_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="517,504"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="newpkg_wp1_act6" Name="Redirect">
+<Implementation>
+<Tool Id="exitHttpRedirect" Type="PROCEDURE">
+<ActualParameters>
+<ActualParameter>XSN_RedirectUrlPrefix+'/'+XSN_RedirectScreen</ActualParameter>
+<ActualParameter>'uri'</ActualParameter>
+<ActualParameter>HTA_Uri</ActualParameter>
+<ActualParameter>'portalprefix'</ActualParameter>
+<ActualParameter>XSN_WebAppUrlPrefix</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>newpkg_par1</Performer>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="newpkg_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="347,899"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="newpkg_wp1_act7" Name="Allow Request">
+<Implementation>
+<Tool Id="exitForward" Type="PROCEDURE"/>
+</Implementation>
+<Performer>newpkg_par1</Performer>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Join Type="XOR"/>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="newpkg_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="821,747"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="newpkg_wp1_act8" Name="Apply Filters">
+<Implementation>
+<Tool Id="ApplySubscriberProfile" Type="APPLICATION">
+<ActualParameters>
+<ActualParameter>XSN_SubscriberId</ActualParameter>
+<ActualParameter>XSN_Category</ActualParameter>
+<ActualParameter>'http'</ActualParameter>
+<ActualParameter>HTA_DomainName</ActualParameter>
+<ActualParameter>HTA_Path</ActualParameter>
+<ActualParameter>XSN_Filtered</ActualParameter>
+<ActualParameter>XSN_InDatabase</ActualParameter>
+<ActualParameter>XSN_Result</ActualParameter>
+<ActualParameter>XSN_ResultSystem</ActualParameter>
+<ActualParameter>XSN_ResultSubscriber</ActualParameter>
+<ActualParameter>XSN_ResultCommunities</ActualParameter>
+<ActualParameter>XSN_Age</ActualParameter>
+<ActualParameter>XSN_Communities</ActualParameter>
+<ActualParameter>XSN_Groups</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>newpkg_par1</Performer>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Join Type="XOR"/>
+<Split Type="XOR">
+<TransitionRefs>
+<TransitionRef Id="newpkg_wp1_tra10"/>
+<TransitionRef Id="newpkg_wp1_tra3"/>
+<TransitionRef Id="HTTP-ROUTER-Process_tra3"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="newpkg_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="517,599"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="newpkg_wp1_act10" Name="Authenticate">
+<Implementation>
+<Tool Id="exitHttpAuthenticate" Type="PROCEDURE">
+<ActualParameters>
+<ActualParameter>'Sentinel'</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>newpkg_par1</Performer>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="newpkg_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="331,313"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="newpkg_wp1_act9" Name="Get Subscriber Id">
+<Implementation>
+<Tool Id="evaluate" Type="PROCEDURE">
+<ActualParameters>
+<ActualParameter>HTA_ReqHdr_subscriberidhdr</ActualParameter>
+<ActualParameter>XSN_SubscriberId</ActualParameter>
+<ActualParameter>IM_User</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>newpkg_par1</Performer>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Split Type="XOR">
+<TransitionRefs>
+<TransitionRef Id="newpkg_wp1_tra12"/>
+<TransitionRef Id="newpkg_wp1_tra2"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="newpkg_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="518,211"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="newpkg_wp1_act5" Name="Is Url Categorized?">
+<Description>Tests if the categorization is already set</Description>
+<Route/>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Split Type="XOR">
+<TransitionRefs>
+<TransitionRef Id="newpkg_wp1_tra13"/>
+<TransitionRef Id="newpkg_wp1_tra11"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="newpkg_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="515,412"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="newpkg_wp1_act11" Name="Audit and Notification">
+<Implementation>
+<Tool Id="AuditAndNotification">
+<ActualParameters>
+<ActualParameter>XSN_SubscriberId</ActualParameter>
+<ActualParameter>XSN_Communities</ActualParameter>
+<ActualParameter>XSN_Category</ActualParameter>
+<ActualParameter>"http"</ActualParameter>
+<ActualParameter>HTA_DomainName</ActualParameter>
+<ActualParameter>HTA_Path</ActualParameter>
+<ActualParameter>XSN_Result</ActualParameter>
+<ActualParameter>XSN_ResultSystem</ActualParameter>
+<ActualParameter>XSN_ResultSubscriber</ActualParameter>
+<ActualParameter>XSN_ResultCommunities</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>newpkg_par1</Performer>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="newpkg_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="347,694"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="newpkg_wp1_act4" Name="Is User in SkipCache?">
+<Implementation>
+<Tool Id="SkipCache" Type="APPLICATION">
+<ActualParameters>
+<ActualParameter>'Get'</ActualParameter>
+<ActualParameter>XSN_SubscriberId</ActualParameter>
+<ActualParameter>XSN_SkipCacheResult</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>newpkg_par1</Performer>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Split Type="XOR">
+<TransitionRefs>
+<TransitionRef Id="newpkg_wp1_tra16"/>
+<TransitionRef Id="newpkg_wp1_tra8"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="newpkg_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="516,310"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="newpkg_wp1_act12" Name="Add User to Skip Cache">
+<Implementation>
+<Tool Id="SkipCache">
+<ActualParameters>
+<ActualParameter>'Put'</ActualParameter>
+<ActualParameter>XSN_SubscriberId</ActualParameter>
+<ActualParameter>XSN_SkipCachePutResult</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>newpkg_par1</Performer>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="newpkg_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="695,669"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="HTTP-ROUTER-Process_act1" Name="Select Redirection Screen">
+<BlockActivity BlockId="SelectRedirectionScreen"/>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Join Type="XOR"/>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="newpkg_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="347,794"/>
+</ExtendedAttributes>
+</Activity>
+</Activities>
+<Transitions>
+<Transition From="newpkg_wp1_act3" Id="newpkg_wp1_tra4" To="newpkg_wp1_act8">
+<Condition Type="OTHERWISE"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="newpkg_wp1_act9" Id="newpkg_wp1_tra12" To="newpkg_wp1_act10">
+<Condition Type="CONDITION">XSN_SubscriberId == ''</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="387,239"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="newpkg_wp1_act8" Id="newpkg_wp1_tra10" To="newpkg_wp1_act7">
+<Condition Type="CONDITION">XSN_Result == 'ALLOW'&amp;&amp;XSN_Filtered=='TRUE'</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="573,767"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="newpkg_wp1_act1" Id="newpkg_wp1_tra5" To="newpkg_wp1_act9">
+<Condition Type="OTHERWISE"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="newpkg_wp1_act1" Id="newpkg_wp1_tra6" To="newpkg_wp1_act7">
+<Condition Type="CONDITION">XSN_Category == 'alwaysAllow'</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="880,141"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="newpkg_wp1_act5" Id="newpkg_wp1_tra11" To="newpkg_wp1_act3">
+<Condition Type="OTHERWISE"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="newpkg_wp1_act9" Id="newpkg_wp1_tra2" To="newpkg_wp1_act4">
+<Condition Type="OTHERWISE"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="newpkg_wp1_act5" Id="newpkg_wp1_tra13" To="newpkg_wp1_act8">
+<Condition Type="CONDITION">!(XSN_Category=='')</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="683,445-684,624"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="newpkg_wp1_act4" Id="newpkg_wp1_tra8" To="newpkg_wp1_act5">
+<Condition Type="OTHERWISE"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="newpkg_wp1_act8" Id="newpkg_wp1_tra3" To="newpkg_wp1_act12">
+<Condition Type="CONDITION">XSN_Result == 'ALLOW'&amp;&amp;XSN_Filtered=='FALSE'</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="newpkg_wp1_act12" Id="newpkg_wp1_tra15" To="newpkg_wp1_act7">
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="newpkg_wp1_act4" Id="newpkg_wp1_tra16" To="newpkg_wp1_act7">
+<Condition Type="CONDITION">XSN_SkipCacheResult =='Found'</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="816,337"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="newpkg_wp1_act8" Id="HTTP-ROUTER-Process_tra3" To="newpkg_wp1_act11">
+<Condition Type="OTHERWISE"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="newpkg_wp1_act11" Id="HTTP-ROUTER-Process_tra4" To="HTTP-ROUTER-Process_act1">
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="HTTP-ROUTER-Process_act1" Id="HTTP-ROUTER-Process_tra5" To="newpkg_wp1_act6">
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="newpkg_wp1_act1" Id="HTTP-ROUTER-Process_tra6" To="HTTP-ROUTER-Process_act1">
+<Condition Type="CONDITION">XSN_Category='alwaysBlock'</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="197,144-197,813"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="newpkg_wp1_act3" Id="HTTP-ROUTER-Process_tra7" To="HTTP-ROUTER-Process_act1">
+<Condition Type="CONDITION">XSN_Category='alwaysBlock'</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="274,531-274,734"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="newpkg_wp1_act3" Id="HTTP-ROUTER-Process_tra8" To="newpkg_wp1_act7">
+<Condition Type="CONDITION">XSN_Category == 'alwaysAllow'</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="772,531"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+</Transitions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BLOCK_PARTICIPANT_ORDER" Value="SelectRedirectionScreen;FreeTextExpressionParticipant"/>
+<ExtendedAttribute Name="JaWE_GRAPH_START_OF_WORKFLOW" Value="JaWE_GRAPH_PARTICIPANT_ID=newpkg_par1,CONNECTING_ACTIVITY_ID=newpkg_wp1_act1,X_OFFSET=561,Y_OFFSET=28,JaWE_GRAPH_TRANSITION_STYLE=SIMPLE_ROUTING_BEZIER,TYPE=START_DEFAULT"/>
+<ExtendedAttribute Name="JaWE_GRAPH_WORKFLOW_PARTICIPANT_ORIENTATION" Value="HORIZONTAL"/>
+<ExtendedAttribute Name="JaWE_GRAPH_WORKFLOW_PARTICIPANT_ORDER" Value="newpkg_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_END_OF_WORKFLOW" Value="JaWE_GRAPH_PARTICIPANT_ID=newpkg_par1,CONNECTING_ACTIVITY_ID=newpkg_wp1_act6,X_OFFSET=388,Y_OFFSET=1011,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=END_DEFAULT"/>
+<ExtendedAttribute Name="JaWE_GRAPH_END_OF_WORKFLOW" Value="JaWE_GRAPH_PARTICIPANT_ID=newpkg_par1,CONNECTING_ACTIVITY_ID=newpkg_wp1_act10,X_OFFSET=372,Y_OFFSET=426,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=END_DEFAULT"/>
+<ExtendedAttribute Name="JaWE_GRAPH_END_OF_WORKFLOW" Value="JaWE_GRAPH_PARTICIPANT_ID=newpkg_par1,CONNECTING_ACTIVITY_ID=newpkg_wp1_act7,X_OFFSET=862,Y_OFFSET=899,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=END_DEFAULT"/>
+<ExtendedAttribute Name="JaWE_GRAPH_END_OF_BLOCK" Value="ACTIVITY_SET_ID=SelectRedirectionScreen,JaWE_GRAPH_PARTICIPANT_ID=FreeTextExpressionParticipant,CONNECTING_ACTIVITY_ID=newpkg_wp1_act91122,X_OFFSET=543,Y_OFFSET=515,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=END_DEFAULT"/>
+<ExtendedAttribute Name="JaWE_GRAPH_START_OF_BLOCK" Value="ACTIVITY_SET_ID=SelectRedirectionScreen,JaWE_GRAPH_PARTICIPANT_ID=FreeTextExpressionParticipant,CONNECTING_ACTIVITY_ID=HTTP-ROUTER-Process_act2,X_OFFSET=70,Y_OFFSET=56,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=START_DEFAULT"/>
+<ExtendedAttribute Name="JaWE_GRAPH_END_OF_BLOCK" Value="ACTIVITY_SET_ID=SelectRedirectionScreen,JaWE_GRAPH_PARTICIPANT_ID=FreeTextExpressionParticipant,CONNECTING_ACTIVITY_ID=newpkg_wp1_act91,X_OFFSET=539,Y_OFFSET=58,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=END_DEFAULT"/>
+<ExtendedAttribute Name="JaWE_GRAPH_END_OF_BLOCK" Value="ACTIVITY_SET_ID=SelectRedirectionScreen,JaWE_GRAPH_PARTICIPANT_ID=FreeTextExpressionParticipant,CONNECTING_ACTIVITY_ID=newpkg_wp1_act9112111,X_OFFSET=539,Y_OFFSET=247,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=END_DEFAULT"/>
+<ExtendedAttribute Name="JaWE_GRAPH_END_OF_BLOCK" Value="ACTIVITY_SET_ID=SelectRedirectionScreen,JaWE_GRAPH_PARTICIPANT_ID=FreeTextExpressionParticipant,CONNECTING_ACTIVITY_ID=newpkg_wp1_act91141,X_OFFSET=772,Y_OFFSET=334,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=END_DEFAULT"/>
+<ExtendedAttribute Name="JaWE_GRAPH_END_OF_BLOCK" Value="ACTIVITY_SET_ID=SelectRedirectionScreen,JaWE_GRAPH_PARTICIPANT_ID=FreeTextExpressionParticipant,CONNECTING_ACTIVITY_ID=newpkg_wp1_act911311,X_OFFSET=771,Y_OFFSET=428,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=END_DEFAULT"/>
+<ExtendedAttribute Name="JaWE_GRAPH_END_OF_BLOCK" Value="ACTIVITY_SET_ID=SelectRedirectionScreen,JaWE_GRAPH_PARTICIPANT_ID=FreeTextExpressionParticipant,CONNECTING_ACTIVITY_ID=HTTP-ROUTER-Process_act3,X_OFFSET=544,Y_OFFSET=611,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=END_DEFAULT"/>
+<ExtendedAttribute Name="JaWE_GRAPH_END_OF_BLOCK" Value="ACTIVITY_SET_ID=SelectRedirectionScreen,JaWE_GRAPH_PARTICIPANT_ID=FreeTextExpressionParticipant,CONNECTING_ACTIVITY_ID=newpkg_wp1_act91121111,X_OFFSET=538,Y_OFFSET=152,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=END_DEFAULT"/>
+</ExtendedAttributes>
+</WorkflowProcess>
+<WorkflowProcess Id="MM7-ROUTER-Process-Message" Name="MM7-ROUTER-Process-Message">
+<ProcessHeader>
+<Created>2006-03-30 10:54:48</Created>
+<Description>This is a sample where blocked recipients get an modified, hopefully invalid value</Description>
+</ProcessHeader>
+<FormalParameters>
+<FormalParameter Id="XSN_Category" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_SubscriberId" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_Keywords" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_Shortcode" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_Age" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_Filtered" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_Groups" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_InDatabase" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_Communities" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_Result" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_ResultSystem" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_ResultSubscriber" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_ResultCommunities" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="CH_Block" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="MM7_Req_RecipientsTo" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="MM7_Req_RecipientsCc" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="MM7_Req_RecipientsBcc" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="MM7_Req_VASPID" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="MM7_Req_Keywords" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="MM7_Req_VASID" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="MM7_Req_ServiceCode" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="MM7_Req_Sender" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="Request_Content_Types" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+</FormalParameters>
+<DataFields>
+<DataField Id="XSN_BlockedList" IsArray="FALSE">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</DataField>
+<DataField Id="XSN_SkipCacheResult" IsArray="FALSE">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</DataField>
+</DataFields>
+<Participants>
+<Participant Id="MM7-WFP_par1" Name="MMS-WPE">
+<ParticipantType Type="SYSTEM"/>
+</Participant>
+</Participants>
+<Applications>
+<Application Id="SystemCategorizor" Name="SystemCategorizor">
+<Description>The Application (Chlet) used to perform MMS categorization</Description>
+<FormalParameters>
+<FormalParameter Id="REQMOD_Category" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="REQMOD_ServiceProviderAddress" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="REQMOD_VaspId" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="REQMOD_Keywords" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="REQMOD_ContentType" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="REQMOD_ServiceCode" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="REQMOD_VasId" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+</FormalParameters>
+</Application>
+<Application Id="MmsRecipientProcessor" Name="MmsRecipientProcessor">
+<Description>Checks category rights of each of the recipients from a list</Description>
+<FormalParameters>
+<FormalParameter Id="MRP_RecipientList" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="MRP_BlockedRecipientList" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_Category" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+</FormalParameters>
+</Application>
+<Application Id="evaluate" Name="evaluate">
+<FormalParameters>
+<FormalParameter Id="WPE_EvaluateInput" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="WPE_EvaluateResult" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+</FormalParameters>
+</Application>
+<Application Id="AuditAndNotification" Name="AuditAndNotification">
+<FormalParameters>
+<FormalParameter Id="BAN_UserId" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_Communities" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_Category" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_Protocol" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_Result" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_ResultAge" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_ResultSubscriber" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_ResultCommunities" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_Keywords" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_Shortcode" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+</FormalParameters>
+</Application>
+<Application Id="SkipCache" Name="SkipCache">
+<FormalParameters>
+<FormalParameter Id="SKIPCACHE_Operation" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="SKIPCACHE_Key" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="SKIPCACHE_GetResult" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+</FormalParameters>
+</Application>
+<Application Id="ApplySubscriberProfile" Name="ApplySubscriberProfile">
+<FormalParameters>
+<FormalParameter Id="ASP_UserId" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Category" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Protocol" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Filtered" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_InDatabase" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Result" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_ResultAge" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_ResultSubscriber" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_ResultCommunities" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Age" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Communities" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Groups" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Keywords" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Shortcode" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+</FormalParameters>
+</Application>
+</Applications>
+<Activities>
+<Activity Id="PROCESS_MESSAGE-Process_act1" Name="Message Type">
+<Route/>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Split Type="XOR">
+<TransitionRefs>
+<TransitionRef Id="PROCESS_MESSAGE-Process_tra2"/>
+<TransitionRef Id="MM7-ROUTER-Process-Message_tra4"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="507,148"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="PROCESS_MESSAGE-Process_act3" Name="Allow">
+<Description>No Policy Enforcement</Description>
+<Route/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="467,301"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="MM7-WFP_act22" Name="System Categorization">
+<Description>Calls the CATEGORIZOR chlet to assign a category to the MMS</Description>
+<Implementation>
+<Tool Id="SystemCategorizor" Type="APPLICATION">
+<ActualParameters>
+<ActualParameter>XSN_Category</ActualParameter>
+<ActualParameter>MM7_Req_Sender</ActualParameter>
+<ActualParameter>MM7_Req_VASPID</ActualParameter>
+<ActualParameter>XSN_Keywords</ActualParameter>
+<ActualParameter>Request_Content_Types</ActualParameter>
+<ActualParameter>MM7_Req_ServiceCode</ActualParameter>
+<ActualParameter>MM7_Req_VASID</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>MM7-WFP_par1</Performer>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Split Type="XOR">
+<TransitionRefs>
+<TransitionRef Id="MM7-ROUTER-Process-Message_tra3"/>
+<TransitionRef Id="MM7-ROUTER-Process-Message_tra1"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="313,301"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="MM7-WFP_act221" Name="System Categorization">
+<Description>Calls the CATEGORIZOR chlet to assign a category to the MMS</Description>
+<Implementation>
+<Tool Id="SystemCategorizor" Type="APPLICATION">
+<ActualParameters>
+<ActualParameter>XSN_Category</ActualParameter>
+<ActualParameter>MM7_Req_RecipientsTo + ',' + MM7_Req_RecipientsCc + ',' + MM7_Req_RecipientsBcc</ActualParameter>
+<ActualParameter>MM7_Req_VASPID</ActualParameter>
+<ActualParameter>XSN_Keywords</ActualParameter>
+<ActualParameter>Request_Content_Types</ActualParameter>
+<ActualParameter>MM7_Req_ServiceCode</ActualParameter>
+<ActualParameter>MM7_Req_VASID</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>MM7-WFP_par1</Performer>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Split Type="XOR">
+<TransitionRefs>
+<TransitionRef Id="MM7-ROUTER-Process-Message_tra6"/>
+<TransitionRef Id="MM7-ROUTER-Process-Message_tra5"/>
+<TransitionRef Id="MM7-ROUTER-Process-Message_tra7"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="779,442"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="MM7-ROUTER-Process-Message_act2" Name="Block">
+<Implementation>
+<Tool Id="evaluate" Type="PROCEDURE">
+<ActualParameters>
+<ActualParameter>'True'</ActualParameter>
+<ActualParameter>CH_Block</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>MM7-WFP_par1</Performer>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Join Type="XOR"/>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="652,793"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="PROCESS_SUBSCRIBER-Process_act2" Name="Audit and Notification">
+<Implementation>
+<Tool Id="AuditAndNotification" Type="APPLICATION">
+<ActualParameters>
+<ActualParameter>XSN_SubscriberId</ActualParameter>
+<ActualParameter>XSN_Communities</ActualParameter>
+<ActualParameter>'mms'</ActualParameter>
+<ActualParameter>XSN_Result</ActualParameter>
+<ActualParameter>XSN_ResultSystem</ActualParameter>
+<ActualParameter>XSN_ResultSubscriber</ActualParameter>
+<ActualParameter>XSN_Category</ActualParameter>
+<ActualParameter>XSN_ResultCommunities</ActualParameter>
+<ActualParameter>XSN_Keywords</ActualParameter>
+<ActualParameter>XSN_Shortcode</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>MM7-WFP_par1</Performer>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="652,705"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="newpkg_wp1_act12" Name="Add User to Skip Cache">
+<Implementation>
+<Tool Id="SkipCache">
+<ActualParameters>
+<ActualParameter>'Put'</ActualParameter>
+<ActualParameter>XSN_SubscriberId</ActualParameter>
+<ActualParameter>XSN_SkipCacheResult</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>MM7-WFP_par1</Performer>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="904,705"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="newpkg_wp1_act4" Name="Is User in SkipCache?">
+<Implementation>
+<Tool Id="SkipCache" Type="APPLICATION">
+<ActualParameters>
+<ActualParameter>'Get'</ActualParameter>
+<ActualParameter>XSN_SubscriberId</ActualParameter>
+<ActualParameter>XSN_SkipCacheResult</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>MM7-WFP_par1</Performer>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Split Type="XOR">
+<TransitionRefs>
+<TransitionRef Id="MM7-ROUTER-Process-Subscriber_tra4"/>
+<TransitionRef Id="MM7-ROUTER-Process-Subscriber_tra3"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="779,533"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="PROCESS_SUBSCRIBER-Process_act1" Name="Apply Filters">
+<Implementation>
+<Tool Id="ApplySubscriberProfile" Type="APPLICATION">
+<ActualParameters>
+<ActualParameter>XSN_SubscriberId</ActualParameter>
+<ActualParameter>XSN_Category</ActualParameter>
+<ActualParameter>'mms'</ActualParameter>
+<ActualParameter>XSN_Filtered</ActualParameter>
+<ActualParameter>XSN_InDatabase</ActualParameter>
+<ActualParameter>XSN_Result</ActualParameter>
+<ActualParameter>XSN_ResultSystem</ActualParameter>
+<ActualParameter>XSN_ResultSubscriber</ActualParameter>
+<ActualParameter>XSN_ResultCommunities</ActualParameter>
+<ActualParameter>XSN_Age</ActualParameter>
+<ActualParameter>XSN_Communities</ActualParameter>
+<ActualParameter>XSN_Groups</ActualParameter>
+<ActualParameter>XSN_Keywords</ActualParameter>
+<ActualParameter>XSN_Shortcode</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>MM7-WFP_par1</Performer>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Split Type="XOR">
+<TransitionRefs>
+<TransitionRef Id="PROCESS_SUBSCRIBER-Process_tra2"/>
+<TransitionRef Id="PROCESS_SUBSCRIBER-Process_tra1"/>
+<TransitionRef Id="MM7-ROUTER-Process-Subscriber_tra5"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="779,618"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="PROCESS_MESSAGE-Process_act31" Name="Allow">
+<Description>No Policy Enforcement</Description>
+<Route/>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Join Type="XOR"/>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="1032,793"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="MM7-ROUTER-Process-Message_act311" Name="Set SubscriberId">
+<Implementation>
+<Tool Id="evaluate" Type="PROCEDURE">
+<ActualParameters>
+<ActualParameter>MM7_Req_Sender</ActualParameter>
+<ActualParameter>XSN_SubscriberId</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>MM7-WFP_par1</Performer>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="779,287"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="MM7-ROUTER-Process-Message_act5" Name="Process 'To' Recipients">
+<Implementation>
+<SubFlow Id="MM7-ProcessRecipients">
+<ActualParameters>
+<ActualParameter>XSN_Category</ActualParameter>
+<ActualParameter>MM7_Req_RecipientsTo</ActualParameter>
+</ActualParameters>
+</SubFlow>
+</Implementation>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="313,394"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="MM7-ROUTER-Process-Message_act51" Name="Process 'Cc' Recipients">
+<Implementation>
+<SubFlow Id="MM7-ProcessRecipients">
+<ActualParameters>
+<ActualParameter>XSN_Category</ActualParameter>
+<ActualParameter>MM7_Req_RecipientsCc</ActualParameter>
+</ActualParameters>
+</SubFlow>
+</Implementation>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="313,475"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="MM7-ROUTER-Process-Message_act52" Name="Process 'Bcc' Recipients">
+<Implementation>
+<SubFlow Id="MM7-ProcessRecipients">
+<ActualParameters>
+<ActualParameter>XSN_Category</ActualParameter>
+<ActualParameter>MM7_Req_RecipientsBcc</ActualParameter>
+</ActualParameters>
+</SubFlow>
+</Implementation>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="313,555"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="MM7-ROUTER-Process-Message_act312" Name="Set Keywords">
+<Implementation>
+<Tool Id="evaluate" Type="PROCEDURE">
+<ActualParameters>
+<ActualParameter>MM7_Req_Keywords</ActualParameter>
+<ActualParameter>XSN_Keywords</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>MM7-WFP_par1</Performer>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="507,78"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="MM7-ROUTER-Process-Message_act3111" Name="Set Shortcode">
+<Implementation>
+<Tool Id="evaluate" Type="PROCEDURE">
+<ActualParameters>
+<ActualParameter>MM7_Req_RecipientsTo + ',' + MM7_Req_RecipientsCc + ',' + MM7_Req_RecipientsBcc</ActualParameter>
+<ActualParameter>XSN_Shortcode</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>MM7-WFP_par1</Performer>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="779,364"/>
+</ExtendedAttributes>
+</Activity>
+</Activities>
+<Transitions>
+<Transition From="PROCESS_MESSAGE-Process_act1" Id="PROCESS_MESSAGE-Process_tra2" To="MM7-ROUTER-Process-Message_act311">
+<Condition Type="CONDITION">MM7_Req_MessageType=='DeliverReq'</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="840,169"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="MM7-WFP_act22" Id="MM7-ROUTER-Process-Message_tra3" To="PROCESS_MESSAGE-Process_act3">
+<Condition Type="CONDITION">XSN_Category == 'alwaysAllow'</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="MM7-WFP_act22" Id="MM7-ROUTER-Process-Message_tra1" To="MM7-ROUTER-Process-Message_act5">
+<Condition Type="OTHERWISE"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="PROCESS_MESSAGE-Process_act1" Id="MM7-ROUTER-Process-Message_tra4" To="MM7-WFP_act22">
+<Condition Type="CONDITION">MM7_Req_MessageType=='SubmitReq'</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="369,173"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="MM7-WFP_act221" Id="MM7-ROUTER-Process-Message_tra5" To="PROCESS_MESSAGE-Process_act31">
+<Condition Type="CONDITION">XSN_Category == 'alwaysAllow'</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="1112,466"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="MM7-WFP_act221" Id="MM7-ROUTER-Process-Message_tra6" To="MM7-ROUTER-Process-Message_act2">
+<Condition Type="CONDITION">XSN_Category == 'alwaysBlock'</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="617,471-617,819"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="PROCESS_SUBSCRIBER-Process_act1" Id="PROCESS_SUBSCRIBER-Process_tra1" To="PROCESS_SUBSCRIBER-Process_act2">
+<Condition Type="OTHERWISE"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="PROCESS_SUBSCRIBER-Process_act1" Id="PROCESS_SUBSCRIBER-Process_tra2" To="PROCESS_MESSAGE-Process_act31">
+<Condition Type="CONDITION">XSN_Result == 'ALLOW'&amp;&amp;XSN_Filtered=='TRUE'</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="837,816"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="newpkg_wp1_act4" Id="MM7-ROUTER-Process-Subscriber_tra3" To="PROCESS_MESSAGE-Process_act31">
+<Condition Type="CONDITION">XSN_SkipCacheResult =='Found'</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="1067,560"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="PROCESS_SUBSCRIBER-Process_act1" Id="MM7-ROUTER-Process-Subscriber_tra5" To="newpkg_wp1_act12">
+<Condition Type="CONDITION">XSN_Result == 'ALLOW'&amp;&amp;XSN_Filtered=='FALSE'</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="newpkg_wp1_act4" Id="MM7-ROUTER-Process-Subscriber_tra4" To="PROCESS_SUBSCRIBER-Process_act1">
+<Condition Type="OTHERWISE"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="PROCESS_SUBSCRIBER-Process_act2" Id="MM7-ROUTER-Process-Message_tra2" To="MM7-ROUTER-Process-Message_act2">
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="MM7-WFP_act221" Id="MM7-ROUTER-Process-Message_tra7" To="newpkg_wp1_act4">
+<Condition Type="OTHERWISE"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="newpkg_wp1_act12" Id="MM7-ROUTER-Process-Message_tra8" To="PROCESS_MESSAGE-Process_act31">
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="MM7-ROUTER-Process-Message_act5" Id="MM7-ROUTER-Process-Message_tra11" To="MM7-ROUTER-Process-Message_act51">
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="MM7-ROUTER-Process-Message_act51" Id="MM7-ROUTER-Process-Message_tra12" To="MM7-ROUTER-Process-Message_act52">
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="MM7-ROUTER-Process-Message_act311" Id="MM7-ROUTER-Process-Message_tra18" To="MM7-ROUTER-Process-Message_act3111">
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="MM7-ROUTER-Process-Message_act312" Id="MM7-ROUTER-Process-Message_tra9" To="PROCESS_MESSAGE-Process_act1">
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="MM7-ROUTER-Process-Message_act3111" Id="MM7-ROUTER-Process-Message_tra10" To="MM7-WFP_act221">
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+</Transitions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_WORKFLOW_PARTICIPANT_ORDER" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_END_OF_WORKFLOW" Value="JaWE_GRAPH_PARTICIPANT_ID=MM7-WFP_par1,CONNECTING_ACTIVITY_ID=MM7-ROUTER-Process-Message_act2,X_OFFSET=693,Y_OFFSET=934,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=END_DEFAULT"/>
+<ExtendedAttribute Name="JaWE_GRAPH_END_OF_WORKFLOW" Value="JaWE_GRAPH_PARTICIPANT_ID=MM7-WFP_par1,CONNECTING_ACTIVITY_ID=PROCESS_MESSAGE-Process_act3,X_OFFSET=508,Y_OFFSET=434,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=END_DEFAULT"/>
+<ExtendedAttribute Name="JaWE_GRAPH_END_OF_WORKFLOW" Value="JaWE_GRAPH_PARTICIPANT_ID=MM7-WFP_par1,CONNECTING_ACTIVITY_ID=PROCESS_MESSAGE-Process_act31,X_OFFSET=1073,Y_OFFSET=930,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=END_DEFAULT"/>
+<ExtendedAttribute Name="JaWE_GRAPH_END_OF_WORKFLOW" Value="JaWE_GRAPH_PARTICIPANT_ID=MM7-WFP_par1,CONNECTING_ACTIVITY_ID=MM7-ROUTER-Process-Message_act52,X_OFFSET=354,Y_OFFSET=815,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=END_DEFAULT"/>
+<ExtendedAttribute Name="JaWE_GRAPH_START_OF_WORKFLOW" Value="JaWE_GRAPH_PARTICIPANT_ID=MM7-WFP_par1,CONNECTING_ACTIVITY_ID=MM7-ROUTER-Process-Message_act312,X_OFFSET=548,Y_OFFSET=12,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=START_DEFAULT"/>
+</ExtendedAttributes>
+</WorkflowProcess>
+<WorkflowProcess Id="MM7-ROUTER-Process-Subscriber" Name="MM7-ROUTER-Process-Subscriber">
+<ProcessHeader>
+<Created>2006-04-07 14:50:47</Created>
+</ProcessHeader>
+<FormalParameters>
+<FormalParameter Id="XSN_Category" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_SubscriberId" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_Keywords" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_Shortcode" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_Age" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_Filtered" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_Groups" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_InDatabase" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_Communities" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_Result" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_ResultSystem" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_ResultSubscriber" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_ResultCommunities" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="MRP_Result" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="MRP_UserId" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="MM7_Req_VASPID" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+</FormalParameters>
+<DataFields>
+<DataField Id="XSN_SkipCacheResult" IsArray="FALSE">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</DataField>
+</DataFields>
+<Participants>
+<Participant Id="MM7-WFP_par1" Name="MMS-WPE">
+<ParticipantType Type="SYSTEM"/>
+</Participant>
+</Participants>
+<Applications>
+<Application Id="ApplySubscriberProfile" Name="ApplySubscriberProfile">
+<FormalParameters>
+<FormalParameter Id="ASP_UserId" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Category" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Protocol" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Filtered" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_InDatabase" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Result" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_ResultAge" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_ResultSubscriber" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_ResultCommunities" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Age" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Communities" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Groups" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Keywords" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Shortcode" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+</FormalParameters>
+</Application>
+<Application Id="AuditAndNotification" Name="AuditAndNotification">
+<FormalParameters>
+<FormalParameter Id="BAN_UserId" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_Communities" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_Category" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_Protocol" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_Result" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_ResultAge" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_ResultSubscriber" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_ResultCommunities" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_Keywords" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_Shortcode" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+</FormalParameters>
+</Application>
+<Application Id="evaluate" Name="evaluate">
+<FormalParameters>
+<FormalParameter Id="WPE_EvaluateInput" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="WPE_EvaluateResult" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+</FormalParameters>
+</Application>
+<Application Id="SkipCache" Name="SkipCache">
+<FormalParameters>
+<FormalParameter Id="SKIPCACHE_Operation" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="SKIPCACHE_Key" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="SKIPCACHE_GetResult" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+</FormalParameters>
+</Application>
+</Applications>
+<Activities>
+<Activity Id="PROCESS_SUBSCRIBER-Process_act1" Name="Apply Filters">
+<Implementation>
+<Tool Id="ApplySubscriberProfile" Type="APPLICATION">
+<ActualParameters>
+<ActualParameter>MRP_UserId</ActualParameter>
+<ActualParameter>XSN_Category</ActualParameter>
+<ActualParameter>'mms'</ActualParameter>
+<ActualParameter>XSN_Filtered</ActualParameter>
+<ActualParameter>XSN_InDatabase</ActualParameter>
+<ActualParameter>XSN_Result</ActualParameter>
+<ActualParameter>XSN_ResultSystem</ActualParameter>
+<ActualParameter>XSN_ResultSubscriber</ActualParameter>
+<ActualParameter>XSN_ResultCommunities</ActualParameter>
+<ActualParameter>XSN_Age</ActualParameter>
+<ActualParameter>XSN_Communities</ActualParameter>
+<ActualParameter>XSN_Groups</ActualParameter>
+<ActualParameter>XSN_Keywords</ActualParameter>
+<ActualParameter>XSN_Shortcode</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>MM7-WFP_par1</Performer>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Split Type="XOR">
+<TransitionRefs>
+<TransitionRef Id="PROCESS_SUBSCRIBER-Process_tra2"/>
+<TransitionRef Id="PROCESS_SUBSCRIBER-Process_tra1"/>
+<TransitionRef Id="MM7-ROUTER-Process-Subscriber_tra5"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="308,474"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="PROCESS_SUBSCRIBER-Process_act2" Name="Audit and Notification">
+<Implementation>
+<Tool Id="AuditAndNotification" Type="APPLICATION">
+<ActualParameters>
+<ActualParameter>MRP_UserId</ActualParameter>
+<ActualParameter>XSN_Communities</ActualParameter>
+<ActualParameter>XSN_Category</ActualParameter>
+<ActualParameter>'mms'</ActualParameter>
+<ActualParameter>XSN_Result</ActualParameter>
+<ActualParameter>XSN_ResultSystem</ActualParameter>
+<ActualParameter>XSN_ResultSubscriber</ActualParameter>
+<ActualParameter>XSN_ResultCommunities</ActualParameter>
+<ActualParameter>XSN_Keywords</ActualParameter>
+<ActualParameter>XSN_Shortcode</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>MM7-WFP_par1</Performer>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="180,571"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="PROCESS_SUBSCRIBER-Process_act31" Name="Block">
+<Implementation>
+<Tool Id="evaluate" Type="PROCEDURE">
+<ActualParameters>
+<ActualParameter>'BLOCK'</ActualParameter>
+<ActualParameter>MRP_Result</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>MM7-WFP_par1</Performer>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Join Type="XOR"/>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="180,668"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="MM7-ROUTER-Process-Subscriber_act1" Name="Always blocks?">
+<Route/>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Split Type="XOR">
+<TransitionRefs>
+<TransitionRef Id="MM7-ROUTER-Process-Subscriber_tra2"/>
+<TransitionRef Id="MM7-ROUTER-Process-Subscriber_tra1"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="310,294"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="newpkg_wp1_act4" Name="Is User in SkipCache?">
+<Implementation>
+<Tool Id="SkipCache" Type="APPLICATION">
+<ActualParameters>
+<ActualParameter>'Get'</ActualParameter>
+<ActualParameter>MRP_UserId</ActualParameter>
+<ActualParameter>XSN_SkipCacheResult</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>MM7-WFP_par1</Performer>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Split Type="XOR">
+<TransitionRefs>
+<TransitionRef Id="MM7-ROUTER-Process-Subscriber_tra4"/>
+<TransitionRef Id="MM7-ROUTER-Process-Subscriber_tra3"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="310,376"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="newpkg_wp1_act12" Name="Add User to Skip Cache">
+<Implementation>
+<Tool Id="SkipCache">
+<ActualParameters>
+<ActualParameter>'Put'</ActualParameter>
+<ActualParameter>MRP_UserId</ActualParameter>
+<ActualParameter>XSN_SkipCacheResult</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>MM7-WFP_par1</Performer>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="446,569"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="PROCESS_SUBSCRIBER-Process_act33" Name="Allow">
+<Implementation>
+<Tool Id="evaluate" Type="PROCEDURE">
+<ActualParameters>
+<ActualParameter>'ALLOW'</ActualParameter>
+<ActualParameter>MRP_Result</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>MM7-WFP_par1</Performer>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Join Type="XOR"/>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="591,668"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="MM7-ROUTER-Process-Message_act3111" Name="Set Shortcode">
+<Implementation>
+<Tool Id="evaluate" Type="PROCEDURE">
+<ActualParameters>
+<ActualParameter>MM7_Req_VASPID</ActualParameter>
+<ActualParameter>XSN_Shortcode</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>MM7-WFP_par1</Performer>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="310,210"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="MM7-ROUTER-Process-Message_act3112" Name="Set SubscriberId">
+<Implementation>
+<Tool Id="evaluate" Type="PROCEDURE">
+<ActualParameters>
+<ActualParameter>MRP_UserId</ActualParameter>
+<ActualParameter>XSN_SubscriberId</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>MM7-WFP_par1</Performer>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="310,137"/>
+</ExtendedAttributes>
+</Activity>
+</Activities>
+<Transitions>
+<Transition From="PROCESS_SUBSCRIBER-Process_act1" Id="PROCESS_SUBSCRIBER-Process_tra1" To="PROCESS_SUBSCRIBER-Process_act2">
+<Condition Type="OTHERWISE"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="PROCESS_SUBSCRIBER-Process_act1" Id="PROCESS_SUBSCRIBER-Process_tra2" To="PROCESS_SUBSCRIBER-Process_act33">
+<Condition Type="CONDITION">XSN_Result == 'ALLOW'&amp;&amp;XSN_Filtered=='TRUE'</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="368,692"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="PROCESS_SUBSCRIBER-Process_act2" Id="PROCESS_SUBSCRIBER-Process_tra3" To="PROCESS_SUBSCRIBER-Process_act31">
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="MM7-ROUTER-Process-Subscriber_act1" Id="MM7-ROUTER-Process-Subscriber_tra1" To="PROCESS_SUBSCRIBER-Process_act31">
+<Condition Type="CONDITION">XSN_Category=='alwaysBlocked'</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="95,320-95,696"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="MM7-ROUTER-Process-Subscriber_act1" Id="MM7-ROUTER-Process-Subscriber_tra2" To="newpkg_wp1_act4">
+<Condition Type="OTHERWISE"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="newpkg_wp1_act4" Id="MM7-ROUTER-Process-Subscriber_tra3" To="PROCESS_SUBSCRIBER-Process_act33">
+<Condition Type="CONDITION">XSN_SkipCacheResult =='Found'</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="649,399"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="newpkg_wp1_act4" Id="MM7-ROUTER-Process-Subscriber_tra4" To="PROCESS_SUBSCRIBER-Process_act1">
+<Condition Type="OTHERWISE"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="PROCESS_SUBSCRIBER-Process_act1" Id="MM7-ROUTER-Process-Subscriber_tra5" To="newpkg_wp1_act12">
+<Condition Type="CONDITION">XSN_Result == 'ALLOW'&amp;&amp;XSN_Filtered=='FALSE'</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="newpkg_wp1_act12" Id="MM7-ROUTER-Process-Subscriber_tra6" To="PROCESS_SUBSCRIBER-Process_act33">
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="MM7-ROUTER-Process-Message_act3111" Id="MM7-ROUTER-Process-Subscriber_tra7" To="MM7-ROUTER-Process-Subscriber_act1">
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="MM7-ROUTER-Process-Message_act3112" Id="MM7-ROUTER-Process-Subscriber_tra8" To="MM7-ROUTER-Process-Message_act3111">
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+</Transitions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_WORKFLOW_PARTICIPANT_ORIENTATION" Value="HORIZONTAL"/>
+<ExtendedAttribute Name="JaWE_GRAPH_WORKFLOW_PARTICIPANT_ORDER" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_END_OF_WORKFLOW" Value="JaWE_GRAPH_PARTICIPANT_ID=MM7-WFP_par1,CONNECTING_ACTIVITY_ID=PROCESS_SUBSCRIBER-Process_act31,X_OFFSET=221,Y_OFFSET=760,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=END_DEFAULT"/>
+<ExtendedAttribute Name="JaWE_GRAPH_END_OF_WORKFLOW" Value="JaWE_GRAPH_PARTICIPANT_ID=MM7-WFP_par1,CONNECTING_ACTIVITY_ID=PROCESS_SUBSCRIBER-Process_act33,X_OFFSET=632,Y_OFFSET=759,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=END_DEFAULT"/>
+<ExtendedAttribute Name="JaWE_GRAPH_START_OF_WORKFLOW" Value="JaWE_GRAPH_PARTICIPANT_ID=MM7-WFP_par1,CONNECTING_ACTIVITY_ID=MM7-ROUTER-Process-Message_act3112,X_OFFSET=351,Y_OFFSET=37,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=START_DEFAULT"/>
+</ExtendedAttributes>
+</WorkflowProcess>
+<WorkflowProcess Id="newpkg_wp1" Name="SMS-ROUTER-Process-Message">
+<ProcessHeader>
+<Created>2006-03-30 10:54:48</Created>
+<Description>This is a sample where blocked recipients get an modified, hopefully invalid value</Description>
+</ProcessHeader>
+<FormalParameters>
+<FormalParameter Id="XSN_Category" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_SubscriberId" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_Keywords" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_Shortcode" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_Age" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_Filtered" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_Groups" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_InDatabase" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_Communities" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_Result" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_ResultSystem" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_ResultSubscriber" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_ResultCommunities" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="CH_Block" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="SMSF_ChannelOut" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="SMSF_ConnectionOut" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="SMSF_DestinationAddressOut" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="SMS_SourceAddress" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="SMS_DestinationAddress" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="SMSF_ChannelTypeIn" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="SMSF_SourceAddressIn" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="SMSF_DestinationAddressIn" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="SMSF_ForwardChannelOut" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="SMSF_ForwardConnectionOut" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="SPA_SMSKeywords" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+</FormalParameters>
+<DataFields>
+<DataField Id="XSN_BlockedList" IsArray="FALSE">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</DataField>
+<DataField Id="XSN_SkipCacheResult" IsArray="FALSE">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</DataField>
+<DataField Id="XSN_Recipients" IsArray="FALSE">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+<InitialValue>SMSF_DestinationAddressIn</InitialValue>
+</DataField>
+</DataFields>
+<Participants>
+<Participant Id="MM7-WFP_par1" Name="SMS-WPE">
+<ParticipantType Type="SYSTEM"/>
+</Participant>
+</Participants>
+<Applications>
+<Application Id="SystemCategorizor" Name="SystemCategorizor">
+<Description>The Application (Chlet) used to perform MMS categorization</Description>
+<FormalParameters>
+<FormalParameter Id="REQMOD_Category" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="REQMOD_ServiceProviderAddress" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="REQMOD_Keywords" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+</FormalParameters>
+</Application>
+<Application Id="SmsRecipientProcessor" Name="SmsRecipientProcessor">
+<Description>Checks category rights of each of the recipients from a list</Description>
+<FormalParameters>
+<FormalParameter Id="SRP_RecipientList" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="SRP_BlockedRecipientList" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_Category" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+</FormalParameters>
+</Application>
+<Application Id="AuditAndNotification" Name="AuditAndNotification">
+<FormalParameters>
+<FormalParameter Id="BAN_UserId" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_Communities" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_Category" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_Protocol" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_Result" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_ResultAge" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_ResultSubscriber" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_ResultCommunities" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_Keywords" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_Shortcode" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+</FormalParameters>
+</Application>
+<Application Id="SkipCache" Name="SkipCache">
+<FormalParameters>
+<FormalParameter Id="SKIPCACHE_Operation" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="SKIPCACHE_Key" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="SKIPCACHE_GetResult" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+</FormalParameters>
+</Application>
+<Application Id="ApplySubscriberProfile" Name="ApplySubscriberProfile">
+<FormalParameters>
+<FormalParameter Id="ASP_UserId" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Category" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Protocol" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Filtered" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_InDatabase" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Result" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_ResultAge" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_ResultSubscriber" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_ResultCommunities" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Age" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Communities" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Groups" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Keywords" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Shortcode" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+</FormalParameters>
+</Application>
+<Application Id="exitForward" Name="exitForward"/>
+<Application Id="exitParamError" Name="exitParamError"/>
+<Application Id="evaluate" Name="evaluate">
+<FormalParameters>
+<FormalParameter Id="WPE_EvaluateInput" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="WPE_EvaluateDefault" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="WPE_EvaluateResult" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+</FormalParameters>
+</Application>
+</Applications>
+<Activities>
+<Activity Id="PROCESS_MESSAGE-Process_act1" Name="Channel Type">
+<Route/>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Split Type="XOR">
+<TransitionRefs>
+<TransitionRef Id="PROCESS_MESSAGE-Process_tra2"/>
+<TransitionRef Id="MM7-ROUTER-Process-Message_tra4"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="448,81"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="PROCESS_MESSAGE-Process_act2" Name="Process Recipients">
+<Implementation>
+<Tool Id="SmsRecipientProcessor" Type="APPLICATION">
+<ActualParameters>
+<ActualParameter>XSN_Recipients</ActualParameter>
+<ActualParameter>XSN_BlockedList</ActualParameter>
+<ActualParameter>XSN_Category</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>MM7-WFP_par1</Performer>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Split Type="XOR">
+<TransitionRefs>
+<TransitionRef Id="newpkg_wp1_tra4"/>
+<TransitionRef Id="newpkg_wp1_tra2"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="235,281"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="PROCESS_MESSAGE-Process_act3" Name="Set Channel">
+<Description>No Policy Enforcement</Description>
+<Implementation>
+<Tool Id="evaluate" Type="PROCEDURE">
+<ActualParameters>
+<ActualParameter>SMSF_ForwardChannelOut</ActualParameter>
+<ActualParameter>''</ActualParameter>
+<ActualParameter>SMSF_ChannelOut</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="395,443"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="MM7-WFP_act22" Name="System Categorization">
+<Description>Calls the CATEGORIZOR chlet to assign a category to the MMS</Description>
+<Implementation>
+<Tool Id="SystemCategorizor" Type="APPLICATION">
+<ActualParameters>
+<ActualParameter>XSN_Category</ActualParameter>
+<ActualParameter>SMSF_SourceAddressIn</ActualParameter>
+<ActualParameter>XSN_Keywords</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>MM7-WFP_par1</Performer>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Split Type="XOR">
+<TransitionRefs>
+<TransitionRef Id="MM7-ROUTER-Process-Message_tra3"/>
+<TransitionRef Id="newpkg_wp1_tra1"/>
+<TransitionRef Id="newpkg_wp1_tra5"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="235,180"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="MM7-WFP_act221" Name="System Categorization">
+<Description>Calls the CATEGORIZOR chlet to assign a category to the MMS</Description>
+<Implementation>
+<Tool Id="SystemCategorizor" Type="APPLICATION">
+<ActualParameters>
+<ActualParameter>XSN_Category</ActualParameter>
+<ActualParameter>SMSF_DestinationAddressOut</ActualParameter>
+<ActualParameter>XSN_Keywords</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>MM7-WFP_par1</Performer>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Split Type="XOR">
+<TransitionRefs>
+<TransitionRef Id="MM7-ROUTER-Process-Message_tra6"/>
+<TransitionRef Id="MM7-ROUTER-Process-Message_tra5"/>
+<TransitionRef Id="MM7-ROUTER-Process-Message_tra7"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="786,346"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="MM7-ROUTER-Process-Message_act2" Name="Block">
+<Implementation>
+<Tool Id="exitParamError" Type="PROCEDURE"/>
+</Implementation>
+<Performer>MM7-WFP_par1</Performer>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Join Type="XOR"/>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="601,692"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="PROCESS_SUBSCRIBER-Process_act2" Name="Audit and Notification">
+<Implementation>
+<Tool Id="AuditAndNotification" Type="APPLICATION">
+<ActualParameters>
+<ActualParameter>XSN_SubscriberId</ActualParameter>
+<ActualParameter>XSN_Communities</ActualParameter>
+<ActualParameter>XSN_Category</ActualParameter>
+<ActualParameter>'sms'</ActualParameter>
+<ActualParameter>XSN_Result</ActualParameter>
+<ActualParameter>XSN_ResultSystem</ActualParameter>
+<ActualParameter>XSN_ResultSubscriber</ActualParameter>
+<ActualParameter>XSN_ResultCommunities</ActualParameter>
+<ActualParameter>XSN_Keywords</ActualParameter>
+<ActualParameter>XSN_Shortcode</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>MM7-WFP_par1</Performer>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="601,609"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="newpkg_wp1_act12" Name="Add User to Skip Cache">
+<Implementation>
+<Tool Id="SkipCache">
+<ActualParameters>
+<ActualParameter>'Put'</ActualParameter>
+<ActualParameter>XSN_SubscriberId</ActualParameter>
+<ActualParameter>XSN_Result</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>MM7-WFP_par1</Performer>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="938,522"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="newpkg_wp1_act4" Name="Is User in SkipCache?">
+<Implementation>
+<Tool Id="SkipCache" Type="APPLICATION">
+<ActualParameters>
+<ActualParameter>'Get'</ActualParameter>
+<ActualParameter>XSN_SubscriberId</ActualParameter>
+<ActualParameter>XSN_SkipCacheResult</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>MM7-WFP_par1</Performer>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Split Type="XOR">
+<TransitionRefs>
+<TransitionRef Id="MM7-ROUTER-Process-Subscriber_tra4"/>
+<TransitionRef Id="MM7-ROUTER-Process-Subscriber_tra3"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="786,424"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="PROCESS_SUBSCRIBER-Process_act1" Name="Apply Filters">
+<Implementation>
+<Tool Id="ApplySubscriberProfile" Type="APPLICATION">
+<ActualParameters>
+<ActualParameter>XSN_SubscriberId</ActualParameter>
+<ActualParameter>XSN_Category</ActualParameter>
+<ActualParameter>'sms'</ActualParameter>
+<ActualParameter>XSN_Filtered</ActualParameter>
+<ActualParameter>XSN_InDatabase</ActualParameter>
+<ActualParameter>XSN_Result</ActualParameter>
+<ActualParameter>XSN_ResultSystem</ActualParameter>
+<ActualParameter>XSN_ResultSubscriber</ActualParameter>
+<ActualParameter>XSN_ResultCommunities</ActualParameter>
+<ActualParameter>XSN_Age</ActualParameter>
+<ActualParameter>XSN_Communities</ActualParameter>
+<ActualParameter>XSN_Groups</ActualParameter>
+<ActualParameter>XSN_Keywords</ActualParameter>
+<ActualParameter>XSN_Shortcode</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>MM7-WFP_par1</Performer>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Split Type="XOR">
+<TransitionRefs>
+<TransitionRef Id="PROCESS_SUBSCRIBER-Process_tra2"/>
+<TransitionRef Id="PROCESS_SUBSCRIBER-Process_tra1"/>
+<TransitionRef Id="MM7-ROUTER-Process-Subscriber_tra5"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="784,522"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="PROCESS_MESSAGE-Process_act31" Name="Allow">
+<Description>No Policy Enforcement</Description>
+<Implementation>
+<Tool Id="exitForward" Type="PROCEDURE"/>
+</Implementation>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="1077,835"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="newpkg_wp1_act1" Name="Block">
+<Implementation>
+<Tool Id="exitParamError" Type="PROCEDURE"/>
+</Implementation>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Join Type="XOR"/>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="73,593"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="PROCESS_MESSAGE-Process_act311" Name="Allow">
+<Description>No Policy Enforcement</Description>
+<Implementation>
+<Tool Id="exitForward" Type="PROCEDURE"/>
+</Implementation>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="395,593"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="PROCESS_MESSAGE-Process_act32" Name="Set Connection">
+<Description>No Policy Enforcement</Description>
+<Implementation>
+<Tool Id="evaluate" Type="PROCEDURE">
+<ActualParameters>
+<ActualParameter>SMSF_ForwardConnectionOut</ActualParameter>
+<ActualParameter>''</ActualParameter>
+<ActualParameter>SMSF_ConnectionOut</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="395,519"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="PROCESS_MESSAGE-Process_act33" Name="Set Channel">
+<Description>No Policy Enforcement</Description>
+<Implementation>
+<Tool Id="evaluate" Type="PROCEDURE">
+<ActualParameters>
+<ActualParameter>SMSF_ForwardChannelOut</ActualParameter>
+<ActualParameter>''</ActualParameter>
+<ActualParameter>SMSF_ChannelOut</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Join Type="XOR"/>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="1077,684"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="PROCESS_MESSAGE-Process_act321" Name="Set Connection">
+<Description>No Policy Enforcement</Description>
+<Implementation>
+<Tool Id="evaluate" Type="PROCEDURE">
+<ActualParameters>
+<ActualParameter>SMSF_ForwardConnectionOut</ActualParameter>
+<ActualParameter>SMS_DestinationAddress</ActualParameter>
+<ActualParameter>SMSF_ConnectionOut</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="1077,761"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="PROCESS_MESSAGE-Process_act331" Name="Set Destination Address">
+<Description>No Policy Enforcement</Description>
+<Implementation>
+<Tool Id="evaluate" Type="PROCEDURE">
+<ActualParameters>
+<ActualParameter>SMSF_DestinationAddressIn</ActualParameter>
+<ActualParameter>SMS_DestinationAddress</ActualParameter>
+<ActualParameter>SMSF_DestinationAddressOut</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="786,277"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="PROCESS_MESSAGE-Process_act3311" Name="Set Destination Address">
+<Description>No Policy Enforcement</Description>
+<Implementation>
+<Tool Id="evaluate" Type="PROCEDURE">
+<ActualParameters>
+<ActualParameter>XSN_Recipients</ActualParameter>
+<ActualParameter>''</ActualParameter>
+<ActualParameter>SMSF_DestinationAddressOut</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Join Type="XOR"/>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="395,361"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="MM7-ROUTER-Process-Message_act312" Name="Set Keywords">
+<Implementation>
+<Tool Id="evaluate" Type="PROCEDURE">
+<ActualParameters>
+<ActualParameter>SPA_SMSKeywords</ActualParameter>
+<ActualParameter>''</ActualParameter>
+<ActualParameter>XSN_Keywords</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>MM7-WFP_par1</Performer>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="448,7"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="MM7-ROUTER-Process-Message_act3121" Name="Set Shortcode">
+<Implementation>
+<Tool Id="evaluate" Type="PROCEDURE">
+<ActualParameters>
+<ActualParameter>SMSF_SourceAddressIn</ActualParameter>
+<ActualParameter>''</ActualParameter>
+<ActualParameter>XSN_Shortcode</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>MM7-WFP_par1</Performer>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="786,206"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="MM7-ROUTER-Process-Message_act311" Name="Set SubscriberId">
+<Implementation>
+<Tool Id="evaluate" Type="PROCEDURE">
+<ActualParameters>
+<ActualParameter>SMS_SourceAddress</ActualParameter>
+<ActualParameter>''</ActualParameter>
+<ActualParameter>XSN_SubscriberId</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>MM7-WFP_par1</Performer>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="786,129"/>
+</ExtendedAttributes>
+</Activity>
+</Activities>
+<Transitions>
+<Transition From="PROCESS_MESSAGE-Process_act1" Id="PROCESS_MESSAGE-Process_tra2" To="MM7-ROUTER-Process-Message_act311">
+<Condition Type="CONDITION">SMSF_ChannelTypeIn=='CONNECT'</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="841,106"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="MM7-WFP_act22" Id="MM7-ROUTER-Process-Message_tra3" To="PROCESS_MESSAGE-Process_act3311">
+<Condition Type="CONDITION">XSN_Category == 'alwaysAllow'</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="450,204"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="PROCESS_MESSAGE-Process_act1" Id="MM7-ROUTER-Process-Message_tra4" To="MM7-WFP_act22">
+<Condition Type="CONDITION">SMSF_ChannelTypeIn=='LISTEN'</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="292,106"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="MM7-WFP_act221" Id="MM7-ROUTER-Process-Message_tra5" To="PROCESS_MESSAGE-Process_act33">
+<Condition Type="CONDITION">XSN_Category == 'alwaysAllow'</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="1156,371"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="MM7-WFP_act221" Id="MM7-ROUTER-Process-Message_tra6" To="MM7-ROUTER-Process-Message_act2">
+<Condition Type="CONDITION">XSN_Category == 'alwaysBlock'</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="560,369-560,718"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="PROCESS_SUBSCRIBER-Process_act1" Id="PROCESS_SUBSCRIBER-Process_tra1" To="PROCESS_SUBSCRIBER-Process_act2">
+<Condition Type="OTHERWISE"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="PROCESS_SUBSCRIBER-Process_act1" Id="PROCESS_SUBSCRIBER-Process_tra2" To="PROCESS_MESSAGE-Process_act33">
+<Condition Type="CONDITION">XSN_Result == 'ALLOW'&amp;&amp;XSN_Filtered=='TRUE'</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="841,706"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="newpkg_wp1_act4" Id="MM7-ROUTER-Process-Subscriber_tra3" To="PROCESS_MESSAGE-Process_act33">
+<Condition Type="CONDITION">XSN_SkipCacheResult =='Found'</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="1118,447"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="PROCESS_SUBSCRIBER-Process_act1" Id="MM7-ROUTER-Process-Subscriber_tra5" To="newpkg_wp1_act12">
+<Condition Type="CONDITION">XSN_Result == 'ALLOW'&amp;&amp;XSN_Filtered=='FALSE'</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="newpkg_wp1_act4" Id="MM7-ROUTER-Process-Subscriber_tra4" To="PROCESS_SUBSCRIBER-Process_act1">
+<Condition Type="OTHERWISE"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="PROCESS_SUBSCRIBER-Process_act2" Id="MM7-ROUTER-Process-Message_tra2" To="MM7-ROUTER-Process-Message_act2">
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="MM7-WFP_act221" Id="MM7-ROUTER-Process-Message_tra7" To="newpkg_wp1_act4">
+<Condition Type="OTHERWISE"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="newpkg_wp1_act12" Id="MM7-ROUTER-Process-Message_tra8" To="PROCESS_MESSAGE-Process_act33">
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="MM7-WFP_act22" Id="newpkg_wp1_tra1" To="PROCESS_MESSAGE-Process_act2">
+<Condition Type="OTHERWISE"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="PROCESS_MESSAGE-Process_act2" Id="newpkg_wp1_tra2" To="PROCESS_MESSAGE-Process_act3311">
+<Condition Type="OTHERWISE"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="PROCESS_MESSAGE-Process_act2" Id="newpkg_wp1_tra4" To="newpkg_wp1_act1">
+<Condition Type="CONDITION">XSN_Recipients=''</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="149,308"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="MM7-WFP_act22" Id="newpkg_wp1_tra5" To="newpkg_wp1_act1">
+<Condition Type="CONDITION">XSN_Category == 'alwaysBlock'</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="117,205"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="PROCESS_MESSAGE-Process_act3" Id="newpkg_wp1_tra6" To="PROCESS_MESSAGE-Process_act32">
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="PROCESS_MESSAGE-Process_act32" Id="newpkg_wp1_tra7" To="PROCESS_MESSAGE-Process_act311">
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="PROCESS_MESSAGE-Process_act33" Id="newpkg_wp1_tra8" To="PROCESS_MESSAGE-Process_act321">
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="PROCESS_MESSAGE-Process_act321" Id="newpkg_wp1_tra9" To="PROCESS_MESSAGE-Process_act31">
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="PROCESS_MESSAGE-Process_act331" Id="newpkg_wp1_tra10" To="MM7-WFP_act221">
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="PROCESS_MESSAGE-Process_act3311" Id="newpkg_wp1_tra11" To="PROCESS_MESSAGE-Process_act3">
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="MM7-ROUTER-Process-Message_act312" Id="newpkg_wp1_tra3" To="PROCESS_MESSAGE-Process_act1">
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="MM7-ROUTER-Process-Message_act3121" Id="newpkg_wp1_tra12" To="PROCESS_MESSAGE-Process_act331">
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="MM7-ROUTER-Process-Message_act311" Id="newpkg_wp1_tra14" To="MM7-ROUTER-Process-Message_act3121">
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+</Transitions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_WORKFLOW_PARTICIPANT_ORDER" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_END_OF_WORKFLOW" Value="JaWE_GRAPH_PARTICIPANT_ID=MM7-WFP_par1,CONNECTING_ACTIVITY_ID=MM7-ROUTER-Process-Message_act2,X_OFFSET=642,Y_OFFSET=791,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=END_DEFAULT"/>
+<ExtendedAttribute Name="JaWE_GRAPH_END_OF_WORKFLOW" Value="JaWE_GRAPH_PARTICIPANT_ID=MM7-WFP_par1,CONNECTING_ACTIVITY_ID=PROCESS_MESSAGE-Process_act31,X_OFFSET=1118,Y_OFFSET=930,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=END_DEFAULT"/>
+<ExtendedAttribute Name="JaWE_GRAPH_END_OF_WORKFLOW" Value="JaWE_GRAPH_PARTICIPANT_ID=MM7-WFP_par1,CONNECTING_ACTIVITY_ID=newpkg_wp1_act1,X_OFFSET=114,Y_OFFSET=699,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=END_DEFAULT"/>
+<ExtendedAttribute Name="JaWE_GRAPH_END_OF_WORKFLOW" Value="JaWE_GRAPH_PARTICIPANT_ID=MM7-WFP_par1,CONNECTING_ACTIVITY_ID=PROCESS_MESSAGE-Process_act311,X_OFFSET=436,Y_OFFSET=695,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=END_DEFAULT"/>
+<ExtendedAttribute Name="JaWE_GRAPH_START_OF_WORKFLOW" Value="JaWE_GRAPH_PARTICIPANT_ID=MM7-WFP_par1,CONNECTING_ACTIVITY_ID=MM7-ROUTER-Process-Message_act312,X_OFFSET=277,Y_OFFSET=18,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=START_DEFAULT"/>
+</ExtendedAttributes>
+</WorkflowProcess>
+<WorkflowProcess Id="newpkg_wp2" Name="SMS-ROUTER-Process-Subscriber">
+<ProcessHeader>
+<Created>2006-04-07 14:50:47</Created>
+</ProcessHeader>
+<FormalParameters>
+<FormalParameter Id="SRP_UserId" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="SRP_Result" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_Category" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_Filtered" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_InDatabase" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_Result" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_ResultDefault" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_ResultSubscriber" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_ResultCommunities" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_Age" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_Communities" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_Groups" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_Keywords" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_ServiceProviderAddress" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+</FormalParameters>
+<DataFields>
+<DataField Id="XSN_SkipCacheResult" IsArray="FALSE">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</DataField>
+</DataFields>
+<Participants>
+<Participant Id="MM7-WFP_par1" Name="SMS-WPE">
+<ParticipantType Type="SYSTEM"/>
+</Participant>
+</Participants>
+<Applications>
+<Application Id="ApplySubscriberProfile" Name="ApplySubscriberProfile">
+<FormalParameters>
+<FormalParameter Id="ASP_UserId" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Category" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Protocol" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Filtered" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_InDatabase" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Result" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_ResultDefault" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_ResultSubscriber" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_ResultCommunities" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Age" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Communities" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Groups" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Keywords" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="ASP_Shortcode" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+</FormalParameters>
+</Application>
+<Application Id="AuditAndNotification" Name="AuditAndNotification">
+<FormalParameters>
+<FormalParameter Id="BAN_UserId" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_Communities" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_Category" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_Protocol" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_Result" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_ResultAge" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_ResultSubscriber" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_ResultCommunities" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_Keywords" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="BAN_Shortcode" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+</FormalParameters>
+</Application>
+<Application Id="evaluate" Name="evaluate">
+<FormalParameters>
+<FormalParameter Id="WPE_EvaluateInput" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="WPE_EvaluateResult" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+</FormalParameters>
+</Application>
+<Application Id="SkipCache" Name="SkipCache">
+<FormalParameters>
+<FormalParameter Id="SKIPCACHE_Operation" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="SKIPCACHE_Key" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="SKIPCACHE_GetResult" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+</FormalParameters>
+</Application>
+</Applications>
+<Activities>
+<Activity Id="PROCESS_SUBSCRIBER-Process_act1" Name="Apply Filters">
+<Implementation>
+<Tool Id="ApplySubscriberProfile" Type="APPLICATION">
+<ActualParameters>
+<ActualParameter>SRP_UserId</ActualParameter>
+<ActualParameter>XSN_Category</ActualParameter>
+<ActualParameter>'sms'</ActualParameter>
+<ActualParameter>XSN_Filtered</ActualParameter>
+<ActualParameter>XSN_InDatabase</ActualParameter>
+<ActualParameter>XSN_Result</ActualParameter>
+<ActualParameter>XSN_ResultDefault</ActualParameter>
+<ActualParameter>XSN_ResultSubscriber</ActualParameter>
+<ActualParameter>XSN_ResultCommunities</ActualParameter>
+<ActualParameter>XSN_Age</ActualParameter>
+<ActualParameter>XSN_Communities</ActualParameter>
+<ActualParameter>XSN_Groups</ActualParameter>
+<ActualParameter>XSN_Keywords</ActualParameter>
+<ActualParameter>XSN_ServiceProviderAddress</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>MM7-WFP_par1</Performer>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Split Type="XOR">
+<TransitionRefs>
+<TransitionRef Id="PROCESS_SUBSCRIBER-Process_tra2"/>
+<TransitionRef Id="PROCESS_SUBSCRIBER-Process_tra1"/>
+<TransitionRef Id="MM7-ROUTER-Process-Subscriber_tra5"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="308,289"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="PROCESS_SUBSCRIBER-Process_act2" Name="Audit and Notification">
+<Implementation>
+<Tool Id="AuditAndNotification" Type="APPLICATION">
+<ActualParameters>
+<ActualParameter>SRP_UserId</ActualParameter>
+<ActualParameter>XSN_Communities</ActualParameter>
+<ActualParameter>XSN_Category</ActualParameter>
+<ActualParameter>'sms'</ActualParameter>
+<ActualParameter>XSN_Result</ActualParameter>
+<ActualParameter>XSN_ResultDefault</ActualParameter>
+<ActualParameter>XSN_ResultSubscriber</ActualParameter>
+<ActualParameter>XSN_ResultCommunities</ActualParameter>
+<ActualParameter>XSN_Keywords</ActualParameter>
+<ActualParameter>XSN_ServiceProviderAddress</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>MM7-WFP_par1</Performer>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="181,387"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="PROCESS_SUBSCRIBER-Process_act31" Name="Block">
+<Implementation>
+<Tool Id="evaluate" Type="PROCEDURE">
+<ActualParameters>
+<ActualParameter>'BLOCK'</ActualParameter>
+<ActualParameter>SRP_Result</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>MM7-WFP_par1</Performer>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="181,483"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="newpkg_wp1_act4" Name="Is User in SkipCache?">
+<Implementation>
+<Tool Id="SkipCache" Type="APPLICATION">
+<ActualParameters>
+<ActualParameter>'Get'</ActualParameter>
+<ActualParameter>SRP_UserId</ActualParameter>
+<ActualParameter>XSN_SkipCacheResult</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>MM7-WFP_par1</Performer>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Split Type="XOR">
+<TransitionRefs>
+<TransitionRef Id="MM7-ROUTER-Process-Subscriber_tra4"/>
+<TransitionRef Id="MM7-ROUTER-Process-Subscriber_tra3"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="310,191"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="newpkg_wp1_act12" Name="Add User to Skip Cache">
+<Implementation>
+<Tool Id="SkipCache">
+<ActualParameters>
+<ActualParameter>'Put'</ActualParameter>
+<ActualParameter>SRP_UserId</ActualParameter>
+<ActualParameter>XSN_Result</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>MM7-WFP_par1</Performer>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="446,387"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="PROCESS_SUBSCRIBER-Process_act33" Name="Allow">
+<Implementation>
+<Tool Id="evaluate" Type="PROCEDURE">
+<ActualParameters>
+<ActualParameter>'ALLOW'</ActualParameter>
+<ActualParameter>SRP_Result</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>MM7-WFP_par1</Performer>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Join Type="XOR"/>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="591,483"/>
+</ExtendedAttributes>
+</Activity>
+</Activities>
+<Transitions>
+<Transition From="PROCESS_SUBSCRIBER-Process_act1" Id="PROCESS_SUBSCRIBER-Process_tra1" To="PROCESS_SUBSCRIBER-Process_act2">
+<Condition Type="CONDITION">XSN_Result == 'BLOCK'</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="PROCESS_SUBSCRIBER-Process_act1" Id="PROCESS_SUBSCRIBER-Process_tra2" To="PROCESS_SUBSCRIBER-Process_act33">
+<Condition Type="CONDITION">XSN_Result == 'ALLOW'&amp;&amp;XSN_Filtered=='TRUE'</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="366,507"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="PROCESS_SUBSCRIBER-Process_act2" Id="PROCESS_SUBSCRIBER-Process_tra3" To="PROCESS_SUBSCRIBER-Process_act31">
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="newpkg_wp1_act4" Id="MM7-ROUTER-Process-Subscriber_tra3" To="PROCESS_SUBSCRIBER-Process_act33">
+<Condition Type="CONDITION">XSN_SkipCacheResult =='Found'</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="646,212"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="newpkg_wp1_act4" Id="MM7-ROUTER-Process-Subscriber_tra4" To="PROCESS_SUBSCRIBER-Process_act1">
+<Condition Type="OTHERWISE"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="PROCESS_SUBSCRIBER-Process_act1" Id="MM7-ROUTER-Process-Subscriber_tra5" To="newpkg_wp1_act12">
+<Condition Type="CONDITION">XSN_Result == 'ALLOW'&amp;&amp;XSN_Filtered=='FALSE'</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="newpkg_wp1_act12" Id="MM7-ROUTER-Process-Subscriber_tra6" To="PROCESS_SUBSCRIBER-Process_act33">
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+</Transitions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_WORKFLOW_PARTICIPANT_ORIENTATION" Value="HORIZONTAL"/>
+<ExtendedAttribute Name="JaWE_GRAPH_WORKFLOW_PARTICIPANT_ORDER" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_START_OF_WORKFLOW" Value="JaWE_GRAPH_PARTICIPANT_ID=MM7-WFP_par1,CONNECTING_ACTIVITY_ID=newpkg_wp1_act4,X_OFFSET=351,Y_OFFSET=93,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=START_DEFAULT"/>
+<ExtendedAttribute Name="JaWE_GRAPH_END_OF_WORKFLOW" Value="JaWE_GRAPH_PARTICIPANT_ID=MM7-WFP_par1,CONNECTING_ACTIVITY_ID=PROCESS_SUBSCRIBER-Process_act31,X_OFFSET=222,Y_OFFSET=597,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=END_DEFAULT"/>
+<ExtendedAttribute Name="JaWE_GRAPH_END_OF_WORKFLOW" Value="JaWE_GRAPH_PARTICIPANT_ID=MM7-WFP_par1,CONNECTING_ACTIVITY_ID=PROCESS_SUBSCRIBER-Process_act33,X_OFFSET=632,Y_OFFSET=599,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=END_DEFAULT"/>
+</ExtendedAttributes>
+</WorkflowProcess>
+<WorkflowProcess Id="MM7-ProcessRecipients" Name="MM7-ProcessRecipients">
+<ProcessHeader>
+<Created>2006-05-19 09:39:44</Created>
+</ProcessHeader>
+<FormalParameters>
+<FormalParameter Id="XSN_Category" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="RecipientList" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+</FormalParameters>
+<DataFields>
+<DataField Id="XSN_BlockedRecipientsList" IsArray="FALSE">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</DataField>
+</DataFields>
+<Participants>
+<Participant Id="MM7-WFP_par1" Name="MMS-WPE">
+<ParticipantType Type="SYSTEM"/>
+</Participant>
+</Participants>
+<Applications>
+<Application Id="MmsRecipientProcessor" Name="MmsRecipientProcessor">
+<Description>Checks category rights of each of the recipients from a list</Description>
+<FormalParameters>
+<FormalParameter Id="MRP_RecipientList" Mode="INOUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="MRP_BlockedRecipientList" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="XSN_Category" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+</FormalParameters>
+</Application>
+<Application Id="evaluate" Name="evaluate">
+<FormalParameters>
+<FormalParameter Id="WPE_EvaluateInput" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+<FormalParameter Id="WPE_EvaluateResult" Mode="OUT">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</FormalParameter>
+</FormalParameters>
+</Application>
+</Applications>
+<Activities>
+<Activity Id="PROCESS_MESSAGE-Process_act2" Name="Process Recipients">
+<Implementation>
+<Tool Id="MmsRecipientProcessor" Type="APPLICATION">
+<ActualParameters>
+<ActualParameter>RecipientList</ActualParameter>
+<ActualParameter>XSN_BlockedRecipientsList</ActualParameter>
+<ActualParameter>XSN_Category</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>MM7-WFP_par1</Performer>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Split Type="XOR">
+<TransitionRefs>
+<TransitionRef Id="MM7-ProcessRecipients_tra2"/>
+<TransitionRef Id="PROCESS_MESSAGE-Process_tra8"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="302,166"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="PROCESS_MESSAGE-Process_act6" Name="Update Recipients List">
+<Implementation>
+<Tool Id="evaluate" Type="PROCEDURE">
+<ActualParameters>
+<ActualParameter>XSN_BlockedRecipientsList+',' +RecipientList</ActualParameter>
+<ActualParameter>RecipientList</ActualParameter>
+</ActualParameters>
+</Tool>
+</Implementation>
+<Performer>MM7-WFP_par1</Performer>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="302,246"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="MM7-ROUTER-Process-Message_act1" Name="Empty Recipients List?">
+<Route/>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Split Type="XOR">
+<TransitionRefs>
+<TransitionRef Id="MM7-ProcessRecipients_tra1"/>
+<TransitionRef Id="MM7-ROUTER-Process-Message_tra10"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="302,81"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="MM7-ProcessRecipients_act11" Name="All Recipients valid">
+<Route/>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Join Type="XOR"/>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="448,166"/>
+</ExtendedAttributes>
+</Activity>
+</Activities>
+<Transitions>
+<Transition From="PROCESS_MESSAGE-Process_act2" Id="PROCESS_MESSAGE-Process_tra8" To="PROCESS_MESSAGE-Process_act6">
+<Condition Type="OTHERWISE"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="MM7-ROUTER-Process-Message_act1" Id="MM7-ROUTER-Process-Message_tra10" To="PROCESS_MESSAGE-Process_act2">
+<Condition Type="OTHERWISE"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="MM7-ROUTER-Process-Message_act1" Id="MM7-ProcessRecipients_tra1" To="MM7-ProcessRecipients_act11">
+<Condition Type="CONDITION">RecipientList==''</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="PROCESS_MESSAGE-Process_act2" Id="MM7-ProcessRecipients_tra2" To="MM7-ProcessRecipients_act11">
+<Condition Type="CONDITION">XSN_BlockedRecipientsList==''</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+</Transitions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_WORKFLOW_PARTICIPANT_ORDER" Value="MM7-WFP_par1"/>
+<ExtendedAttribute Name="JaWE_GRAPH_START_OF_WORKFLOW" Value="JaWE_GRAPH_PARTICIPANT_ID=MM7-WFP_par1,CONNECTING_ACTIVITY_ID=MM7-ROUTER-Process-Message_act1,X_OFFSET=343,Y_OFFSET=19,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=START_DEFAULT"/>
+<ExtendedAttribute Name="JaWE_GRAPH_END_OF_WORKFLOW" Value="JaWE_GRAPH_PARTICIPANT_ID=MM7-WFP_par1,CONNECTING_ACTIVITY_ID=PROCESS_MESSAGE-Process_act6,X_OFFSET=343,Y_OFFSET=336,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=END_DEFAULT"/>
+<ExtendedAttribute Name="JaWE_GRAPH_END_OF_WORKFLOW" Value="JaWE_GRAPH_PARTICIPANT_ID=MM7-WFP_par1,CONNECTING_ACTIVITY_ID=MM7-ProcessRecipients_act11,X_OFFSET=489,Y_OFFSET=332,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=END_DEFAULT"/>
+</ExtendedAttributes>
+</WorkflowProcess>
+</WorkflowProcesses>
+<ExtendedAttributes>
+<ExtendedAttribute Name="EDITING_TOOL" Value="Together Workflow Editor Professional"/>
+<ExtendedAttribute Name="EDITING_TOOL_VERSION" Value="2.0-2-P-20060228-0859"/>
+</ExtendedAttributes>
+</Package>

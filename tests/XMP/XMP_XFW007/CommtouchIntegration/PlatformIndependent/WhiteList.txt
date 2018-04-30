@@ -1,0 +1,4 @@
+http://*.724.com/*
+http://*.white.xtt724.com/*
+http://www.yahoo.com
+

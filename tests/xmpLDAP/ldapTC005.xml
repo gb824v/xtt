@@ -1,0 +1,55 @@
+<test>
+	<name>LDAP.TC.003</name>
+    <description>One wap 1.1 request with LDAP lookup negative</description>
+
+	<function name="setVariable" module="Basic">
+		<parameter>dummyMSISDN</parameter>
+		<parameter>
+    		<parameter>998_</parameter>
+            <configuration>SYSTEM/IP</configuration>
+		</parameter>
+	</function>
+	
+    <subtest name="deletePSEAll" file="deletePSEAll.xml"/>
+    <subtest name="deletePSEMSISDN" file="deletePSEMSISDN.xml">
+        <parameter>0797777777</parameter>
+        <parameter>0799999999</parameter>
+    </subtest>
+    <subtest name="loadReqmod" file="loadReqmod.xml"/>
+
+	<function name="setVariable" module="Basic">
+		<parameter>ldapconfig</parameter>
+		<file>ldapconfig2.xml</file>
+	</function>
+	<function name="replace" module="Basic">
+		<parameter>ldapconfig</parameter>
+		<parameter>IPADDRESSTOKEN</parameter>
+        <configuration>SYSTEM/IP</configuration>
+	</function>
+
+	<function name="startWebServer" module="HTTP"/>
+	<function name="startLDAPServer" module="LDAP">
+		<variable>ldapconfig</variable>
+	</function>
+
+    <function name="connectGateway" module="WAP"/>
+	<function name="sendGetRequest" module="WAP">
+		<parameter>http://ldap1.xtt724.com/</parameter>
+	</function>
+	<function name="checkResponseCode" module="WAP">
+		<parameter>200</parameter>
+	</function>
+    <function name="disconnectGateway" module="WAP"/>
+	<function name="waitForRequests" module="LDAP">
+		<parameter>1</parameter>
+	</function>
+	<function name="checkServerHeader" module="HTTP">
+		<parameter>MSISDN</parameter>
+		<variable>dummyMSISDN</variable>
+	</function>
+
+	<function name="stopLDAPServer" module="LDAP"/>
+	<function name="stopWebServer" module="HTTP"/>
+
+    <subtest name="unloadReqmod" file="unloadReqmod.xml"/>
+</test>

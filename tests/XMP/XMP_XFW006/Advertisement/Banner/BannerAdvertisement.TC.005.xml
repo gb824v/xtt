@@ -1,0 +1,103 @@
+<!-- 
+BannerAdvertisement.TC.005  - Validate XMP can reliably link last 10 displayed banner adverts to their clickthrough URLs for a particular subscriber.
+
+Test Description:
+ 1. Radius Logon
+ 2. Send Get request for banner page up to 10 times.
+ 3. Send Get request for clickthrough page up to 10 times.
+ 4. Radius Logoff
+ 
+Expected Result:
+ -  XMP should reliably link last 10 displayed banner adverts to their clickthrough URLs for a particular subscriber.
+
+XTT Commands:
+      
+ 1.  - Radius log-ON
+ 2.  - sendGetRequest              for banner page with loop up to 10 times.
+ 3.  - sendGetRequest              for clickthrough page with loop up to 10 times.
+ 4.  - Radius log-OFF
+-->
+
+<test>
+
+	<function name="testName" module="Basic">
+		<parameter>BannerAdvertisement.TC.005</parameter>
+	</function>
+
+	<description>Validate XMP can reliably link last 10 displayed banner adverts to their clickthrough URLs for a particular subscriber.</description>
+
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+	    <parameter>12345</parameter>
+	</function>
+	
+	<!-- Setting Loop up to 10 times for xmp-banner URL -->
+	<loop name="processLoop1" start="12345" stop="12355" step="1">
+		<function name="sendGetRequest" module="HTTP">
+			<parameter>
+			<parameter>http://</parameter>
+			<configuration>system/ip</configuration>
+			<parameter>:</parameter>
+			<configuration>webserver/port</configuration>
+			<parameter><parameter>/xmp-banner?</parameter><parameter><variable>processLoop1</variable></parameter></parameter>
+			</parameter>
+		</function>
+
+		<function name="setVariable" module="Basic">
+            <parameter>
+                <parameter>HTTP/BODY/PLAIN/</parameter>
+                <variable>processLoop1</variable>
+            </parameter>
+            <variable>HTTP/BODY/PLAIN</variable>
+        </function>
+
+		<function name="checkResponseCode" module="HTTP">
+			<parameter>200</parameter>
+		</function>
+
+		<function name="sleep" module="Basic">
+			<parameter>3000</parameter>
+		</function>
+	</loop>
+	<!-- Loop Ends here -->
+	
+	<!-- Setting Loop up to 10 times for xmp-clickthrough URL -->
+	<loop name="processLoop2" start="12345" stop="12355" step="1">
+		<function name="sendGetRequest"	module="HTTP">
+			<parameter>
+			<parameter>http://</parameter>
+			<configuration>system/ip</configuration>
+			<parameter>:</parameter>
+			<configuration>webserver/port</configuration>
+			<parameter><parameter>/xmp-clickthrough?</parameter><parameter><variable>processLoop2</variable></parameter></parameter>
+			</parameter>
+		</function>
+
+		<function name="checkResponseCode" module="HTTP">
+			<parameter>200</parameter>
+		</function>
+
+		<function name="setVariable" module="Basic">
+            <parameter>
+                <parameter>HTTP/BODY/PLAIN/</parameter>
+                <variable>processLoop2</variable>
+            </parameter>
+            <variable>HTTP/BODY/PLAIN</variable>
+        </function>
+
+		<function name="sleep" module="Basic">
+			<parameter>3000</parameter>
+		</function>
+	</loop>
+	<!-- Loop Ends here -->
+
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12345</parameter>
+	</function>
+
+        <function name="sleep" module="Basic">
+                <parameter>20000</parameter>
+        </function>
+
+</test>

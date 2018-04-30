@@ -1,0 +1,19 @@
+<test>
+
+    <function name="sendRemoteCommand" module="Remote">
+        <parameter>writeFile xtt-xsn-empty-smsconnections.xml </parameter>
+        <parameter>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;xsnSmsConnections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="S:\source\xsd\xsnConnectUCPions.xsd"&gt;&lt;/xsnSmsConnections&gt;</parameter>
+    </function>
+    
+    <function name="sendRemoteCommand" module="Remote">
+        <configuration>xsn/path</configuration>
+        <configuration>xsn/xms</configuration>
+        <parameter>load data xtt-xsn-empty-smsconnections.xml</parameter>
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        <parameter>^Loaded</parameter>
+        <parameter>response</parameter>
+    </function>
+
+</test>

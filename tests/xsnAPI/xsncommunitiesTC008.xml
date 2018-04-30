@@ -1,0 +1,35 @@
+ <test>
+ 
+     
+     <!-- [Test case Input File] : communities_addMembersToCommuinities.xml  -->
+     
+     <description> SOAP-API: Communities :Test case 10.2.2.8: [XSN.Communities.TC.008] Add Member to the Community </description>
+
+	<function name="testName" module="Basic">
+		<parameter>XSN.COMMUNITIES.TC.008</parameter>
+	</function>
+          
+	<function name="SOAPClient" module="SOAP_API" >
+		<parameter>
+			 <parameter>http://</parameter>
+			 <configuration>XSN/IP</configuration>
+			 <parameter>:</parameter>
+			 <configuration>XSN/PORT</configuration>
+			 <parameter>/jaxws-policy-communities/communities</parameter>
+		</parameter>
+		<file>communities_addMembersToCommuinities.xml</file>
+		<parameter>Body/addMembersResponse</parameter>
+	</function>
+     
+	<function name="queryResponse" module="SOAP_API">
+	     <!-- You want to check what the last command did, this is a java regular expression -->
+	     <parameter></parameter>
+	     <!-- Ignore this paramter, it stores the result to a variable (not important in this test -->
+	     <parameter>dev/null</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+
+ </test>

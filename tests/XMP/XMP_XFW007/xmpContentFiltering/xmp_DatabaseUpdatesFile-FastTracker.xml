@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Example database updates file for XMP. This file is in the 
+     XMP "training" directory. It loads dummy
+     data that is used in the instructions in the Installation
+     Guide to test that XMP is working correctly.  -->
+<dbupdates>
+    <subscribers>
+        <add subscriber="0787367500" >
+            <attribute name="FirstName" value="xttuser500" />
+            <attribute name="LastName" value="xttuser500" />
+            <attribute name="DateOfBirth" value="1963-07-09" /> 
+       </add>
+        <add subscriber="0787367501" >
+            <attribute name="FirstName" value="xttuser501" />
+            <attribute name="LastName" value="xttuser501" />
+            <attribute name="DateOfBirth" value="1996-04-05" /> 
+       </add>
+        <add subscriber="0787367502" >
+            <attribute name="FirstName" value="xttuser502" />
+            <attribute name="LastName" value="xttuser502" />
+            <attribute name="DateOfBirth" value="1984-04-05" /> 
+       </add>
+        <add subscriber="0787367503" >
+            <attribute name="FirstName" value="xttuser503" />
+            <attribute name="LastName" value="xttuser503" />
+       </add>
+        <add subscriber="0787367601" >
+            <attribute name="FirstName" value="xttuser601" />
+            <attribute name="LastName" value="xttuser601" />
+            <attribute name="DateOfBirth" value="1996-07-05" /> 
+       </add>
+        <add subscriber="0787367602" >
+            <attribute name="FirstName" value="xttuser602" />
+            <attribute name="LastName" value="xttuser602" />
+            <attribute name="DateOfBirth" value="1984-07-05" /> 
+       </add>
+        <add subscriber="0787367603" >
+            <attribute name="FirstName" value="xttuser603" />
+            <attribute name="LastName" value="xttuser603" />
+       </add>
+        <add subscriber="0787367701" >
+            <attribute name="FirstName" value="xttuser701" />
+            <attribute name="LastName" value="xttuser701" />
+            <attribute name="DateOfBirth" value="1996-01-05" /> 
+       </add>
+        <add subscriber="0787367702" >
+            <attribute name="FirstName" value="xttuser702" />
+            <attribute name="LastName" value="xttuser702" />
+            <attribute name="DateOfBirth" value="1984-08-05" /> 
+       </add>
+        <add subscriber="0787367703" >
+            <attribute name="FirstName" value="xttuser703" />
+            <attribute name="LastName" value="xttuser703" />
+       </add>
+        <add subscriber="0787367802" >
+            <attribute name="FirstName" value="xttuser802" />
+            <attribute name="LastName" value="xttuser802" />
+            <attribute name="DateOfBirth" value="1984-08-08" /> 
+       </add>
+        <add subscriber="0787367803" >
+            <attribute name="FirstName" value="xttuser803" />
+            <attribute name="LastName" value="xttuser803" />
+            <attribute name="DateOfBirth" value="1984-08-07" /> 
+       </add>
+        <add subscriber="0787367804" >
+            <attribute name="FirstName" value="xttuser804" />
+            <attribute name="LastName" value="xttuser804" />
+            <attribute name="DateOfBirth" value="1984-08-04" /> 
+       </add>
+    </subscribers>
+    <communities>
+        <add name="blockTravel" />
+        <add name="blockPorn" />
+    </communities>
+    <communityAdmins>
+        <add community="blockTravel"
+             name="xttuser500"
+             subscriber="0787367500"
+             wantAudit="Yes"
+             wantNotifications="Yes" />
+        <add community="blockPorn"
+             name="xttuser500"
+             subscriber="0787367500"
+             wantAudit="Yes"
+             wantNotifications="Yes" />
+    </communityAdmins>
+    <communityMembers>
+        <add subscriber="0787367601"
+             community="blockTravel" 
+             name="xttuser601" />
+        <add subscriber="0787367602"
+             community="blockTravel" 
+             name="xttuser602" />
+        <add subscriber="0787367603"
+             community="blockTravel" 
+             name="xttuser603" />
+        <add subscriber="0787367701"
+             community="blockPorn" 
+             name="xttuser701" />
+        <add subscriber="0787367702"
+             community="blockPorn" 
+             name="xttuser702" />
+        <add subscriber="0787367703"
+             community="blockPorn" 
+             name="xttuser703" />
+    </communityMembers>
+    <filters>
+        <set community="blockTravel" scheme="customFilters" >
+            <categories>
+               <block category="Travel" />
+            </categories>        
+        </set>
+        <set community="blockPorn" scheme="customFilters" >
+            <categories>
+               <block category="Porn" />
+            </categories>
+            <internetFilters>
+               <block urlPattern="http://www.nzz.ch" />
+               <exception urlPattern="http://www.playboy.com" />
+            </internetFilters>
+        </set>
+        <set subscriber="0787367802" scheme="customFilters" >
+            <categories>
+               <block category="Travel" />
+            </categories>        
+            <internetFilters>
+               <block urlPattern="http://www.azonline.ch" />
+               <exception urlPattern="http://www.travel.com" />
+            </internetFilters>
+        </set>
+        <set subscriber="0787367803" scheme="noFilters" />
+        <set subscriber="0787367804" scheme="standardFilters" />
+    </filters>
+</dbupdates>

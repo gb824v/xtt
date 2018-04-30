@@ -1,0 +1,135 @@
+<test>
+
+    <function name="testName" module="Basic">
+        <parameter>SECURITY.TC.002</parameter>
+    </function>
+
+    <subtest>securityTC000.xml</subtest>
+    		
+		<!-- load certificates -->
+    <function name="executeRemoteXMSCommand" module="Remote">
+			<parameter>
+				<parameter>load file </parameter>
+				<configuration>remote/path</configuration>
+				<parameter>key/demo_wap1_server_certificate.wtls</parameter>
+			</parameter>
+    </function>
+    <function name="queryResponse" module="Remote">
+        <parameter>Loaded</parameter>
+        <parameter>test</parameter>
+    </function>
+    
+    <function name="executeRemoteXMSCommand" module="Remote">
+			<parameter>
+				<parameter>load file </parameter>
+				<configuration>remote/path</configuration>
+				<parameter>key/demo_wap1_server_private_key.der</parameter>
+			</parameter>
+    </function>
+    <function name="queryResponse" module="Remote">
+        <parameter>Loaded</parameter>
+        <parameter>test</parameter>
+    </function>
+    
+    <function name="executeRemoteXMSCommand" module="Remote">
+			<parameter>
+				<parameter>load file </parameter>
+				<configuration>remote/path</configuration>
+				<parameter>key/demo_inet_client_private_key.der</parameter>
+			</parameter>
+    </function>
+    <function name="queryResponse" module="Remote">
+        <parameter>Loaded</parameter>
+        <parameter>test</parameter>
+    </function>
+    
+    <function name="executeRemoteXMSCommand" module="Remote">
+			<parameter>
+				<parameter>load file </parameter>
+				<configuration>remote/path</configuration>
+				<parameter>key/demo_inet_client_certificate.der</parameter>
+			</parameter>
+    </function>
+    <function name="queryResponse" module="Remote">
+        <parameter>Loaded</parameter>
+        <parameter>test</parameter>
+    </function>
+    
+    <function name="executeRemoteXMSCommand" module="Remote">
+			<parameter>
+				<parameter>load file </parameter>
+				<configuration>remote/path</configuration>
+				<parameter>key/demo_inet_client_ca_certificate.der</parameter>
+			</parameter>
+    </function>
+    <function name="queryResponse" module="Remote">
+        <parameter>Loaded</parameter>
+        <parameter>test</parameter>
+    </function>
+    
+    
+	<function name="writeRemoteBinaryFile" module="Remote">
+		<parameter>xttroot.der</parameter>
+		<base64file>xttroot.der</base64file>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load file </parameter>
+			<parameter>xttroot.der</parameter>
+		</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded '/certificates/xttroot.der' from 'xttroot.der'</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+    
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>load data securityCRLOFF.xml</parameter>
+    </function>
+    <function name="queryResponse" module="Remote">
+        <parameter>Loaded security</parameter>
+        <parameter>test</parameter>
+    </function>
+
+    <function name="startSecureWebServer" module="HTTP"/>
+
+    <function name="disableKeepAlive" module="HTTP"/>
+
+    <function name="connectGateway" module="WAP"/>
+
+    <function name="radiusLogon" module="Radius">
+        <parameter>xttuser</parameter>
+        <parameter>12346</parameter>
+    </function>    
+    
+    <function name="sendGetRequest" module="WAP">
+        <parameter>
+            <parameter>https://</parameter>
+            <configuration>system/ip</configuration>
+            <parameter>/</parameter>         
+        </parameter>
+    </function>
+
+    <function name="checkResponseCode" module="WAP">
+        <parameter>200</parameter>
+    </function>
+
+    <function name="radiusLogoff" module="Radius">
+        <parameter>xttuser</parameter>
+        <parameter>12346</parameter>
+    </function>    
+
+    <function name="disconnectGateway" module="WAP"/>
+
+    <function name="stopSecureWebServer" module="HTTP" />
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>load data securityBlank.xml</parameter>
+    </function>
+
+    <subtest>securityTC999.xml</subtest>    
+    
+</test>

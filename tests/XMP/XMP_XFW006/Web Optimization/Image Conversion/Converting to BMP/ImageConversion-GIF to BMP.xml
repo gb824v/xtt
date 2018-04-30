@@ -1,0 +1,199 @@
+<test>
+<name>ImageConversion-GIF to BMP</name>
+<qcid>55</qcid>
+<description>
+The purpose in checking  the GIF->BMP conversion
+</description>
+<steps>
+Clean the logs
+Load the default voPlugin file
+Load the default reqmod
+Verify the default reqmod was loaded
+Set the acceptable HTTP header
+Send a request for GIF image
+Verify the HTTP response code
+Sleeping for 3 seconds
+Verify the latest transaction log
+Export the latest transaction into tmp file
+Search 'HTG_ContentType' into tmp file
+Verify 'HTG_ContentType' value
+Search 'ICC_Rsp_ICX_CONVERSION_TypeIn' into tmp file
+Verify 'ICC_Rsp_ICX_CONVERSION_TypeIn' value
+Search 'ICC_Rsp_ICX_CONVERSION_TypeOut' into tmp file
+Verify 'ICC_Rsp_ICX_CONVERSION_TypeOut' value
+Search 'IM_ContentType' into tmp file
+Verify  'IM_ContentType' value
+Search 'Skip_ICC' into tmp file
+Verify 'Skip_ICC' value
+Create an empty reqmod
+Load the empty reqmod
+Verify the reqmod was loaded
+</steps>
+<designer>eitanr </designer>
+<creationdate>2012-02-13 10:37:28 </creationdate>
+<testlevel>Regression</testlevel>
+<xfwVersion>XMP_XFW006</xfwVersion>
+<mandatory>false</mandatory>
+<stepname>Clean the logs</stepname>
+<stepid>1</stepid>
+<function name="restartProcess" module="Remote">
+<parameter>LOG.*</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Load the default voPlugin file</stepname>
+<stepid>2</stepid>
+<function name="executeRemoteXMSCommand" module="Remote">
+<parameter>load data /home/xmp/config/dynamic/voPlugin.xml</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Load the default reqmod</stepname>
+<stepid>3</stepid>
+<function name="executeRemoteXMSCommand" module="Remote">
+<parameter>load data /home/xmp/config/dynamic/Reqmod.xml</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Verify the default reqmod was loaded</stepname>
+<stepid>4</stepid>
+<function name="queryResponse" module="Remote">
+<parameter>^Loaded requestmodifications.*</parameter>
+<parameter>dev/null</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Set the acceptable HTTP header</stepname>
+<stepid>5</stepid>
+<function name="setHeader" module="HTTP">
+<parameter>Accept</parameter>
+<parameter>image/bmp</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Send a request for GIF image</stepname>
+<stepid>6</stepid>
+<function name="sendGetRequest" module="HTTP">
+<parameter>
+<parameter>http://10.1.1.37/content/images/GIF/Superman.gif </parameter>
+</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Verify the HTTP response code</stepname>
+<stepid>7</stepid>
+<function name="checkResponseCode" module="HTTP">
+<parameter>200</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Sleeping for 3 seconds</stepname>
+<stepid>8</stepid>
+<function name="sleep" module="Basic">
+<parameter>3000</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Verify the latest transaction log</stepname>
+<stepid>9</stepid>
+<function name="getNewestRemoteFileName" module="Remote">
+<parameter>newestTransactionLog</parameter>
+<configuration>remote/logpath</configuration>
+<parameter>XMP</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Export the latest transaction into tmp file</stepname>
+<stepid>10</stepid>
+<function name="executeRemoteXMSCommand" module="Remote">
+<parameter>
+<configuration>remote/command</configuration>
+<parameter> logscan -in </parameter>
+<variable>newestTransactionLog</variable>
+<parameter> -out tmp.log</parameter>
+</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Search 'HTG_ContentType' into tmp file</stepname>
+<stepid>11</stepid>
+<function name="executeRemoteCommand" module="Remote">
+<parameter>
+<parameter>/bin/grep HTG_ContentType: image/gif tmp.log</parameter>
+</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Verify 'HTG_ContentType' value</stepname>
+<stepid>12</stepid>
+<function name="queryResponse" module="Remote">
+<parameter>HTG_ContentType: image/gif</parameter>
+<parameter>data</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Search 'ICC_Rsp_ICX_CONVERSION_TypeIn' into tmp file</stepname>
+<stepid>13</stepid>
+<function name="executeRemoteCommand" module="Remote">
+<parameter>/bin/grep ICC_Rsp_ICX_CONVERSION_TypeIn: image/gif tmp.log</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Verify 'ICC_Rsp_ICX_CONVERSION_TypeIn' value</stepname>
+<stepid>14</stepid>
+<function name="queryResponse" module="Remote">
+<parameter>ICC_Rsp_ICX_CONVERSION_TypeIn: image/gif</parameter>
+<parameter>data</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Search 'ICC_Rsp_ICX_CONVERSION_TypeOut' into tmp file</stepname>
+<stepid>15</stepid>
+<function name="executeRemoteCommand" module="Remote">
+<parameter>
+<parameter>/bin/grep ICC_Rsp_ICX_CONVERSION_TypeOut: image/bmp tmp.log</parameter>
+</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Verify 'ICC_Rsp_ICX_CONVERSION_TypeOut' value</stepname>
+<stepid>16</stepid>
+<function name="queryResponse" module="Remote">
+<parameter>ICC_Rsp_ICX_CONVERSION_TypeOut: image/bmp</parameter>
+<parameter>data</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Search 'IM_ContentType' into tmp file</stepname>
+<stepid>17</stepid>
+<function name="executeRemoteCommand" module="Remote">
+<parameter>/bin/grep IM_ContentType: image/bmp tmp.log</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Verify  'IM_ContentType' value</stepname>
+<stepid>18</stepid>
+<function name="queryResponse" module="Remote">
+<parameter>IM_ContentType: image/bmp</parameter>
+<parameter>data</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Search 'Skip_ICC' into tmp file</stepname>
+<stepid>19</stepid>
+<function name="executeRemoteCommand" module="Remote">
+<parameter>/bin/grep Skip_ICC: false tmp.log</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Verify 'Skip_ICC' value</stepname>
+<stepid>20</stepid>
+<function name="queryResponse" module="Remote">
+<parameter>Skip_ICC: false</parameter>
+<parameter>data</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Create an empty reqmod</stepname>
+<stepid>21</stepid>
+<function name="writeRemoteFile" module="Remote">
+<parameter>REQMOD_EmptyRules.xml</parameter>
+<parameter>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;requestModifications&gt;&lt;/requestModifications&gt;</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Load the empty reqmod</stepname>
+<stepid>22</stepid>
+<function name="executeRemoteXMSCommand" module="Remote">
+<parameter>
+<parameter>load data </parameter>
+<parameter>REQMOD_EmptyRules.xml</parameter>
+</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>Verify the reqmod was loaded</stepname>
+<stepid>23</stepid>
+<function name="queryResponse" module="Remote">
+<parameter>^Loaded requestmodifications.*</parameter>
+<parameter>dev/null</parameter>
+</function>
+</test>

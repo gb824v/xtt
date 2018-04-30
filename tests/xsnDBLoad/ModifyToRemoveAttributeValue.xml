@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<dbupdates> 
+<subscribers>
+
+	<remove subscriber="253456116" />
+
+	<add subscriber="263456116">
+	<firstName value="firstName BeforeRemove"/>
+	<lastName value="LastName BeforeRemove"/>
+	<born value="2006-05-04"/>
+	<password value="BeforeRemove"/>
+	</add>
+
+<!-- XSN.DBLoad.SubrMod.TC002.17 Modify to remove FirstName of a Subscriber -->
+	<modify subscriber="263456116" >  <firstName/>
+	</modify> 
+
+
+<!-- XSN.DBLoad.SubrMod.TC002.18 Modify to Remove LastName of a Subscriber	--> 
+	<modify subscriber="263456116" > 
+	<lastName/>
+	</modify>
+
+<!-- XSN.DBLoad.SubrMod.TC002.19 Modify to Remove Born date of a Subscriber -->
+	<modify subscriber="263456116" > 
+	<born/>
+	</modify>
+
+<!-- XSN.DBLoad.SubrMod.TC002.20 Modify to Remove Password of a Subscriber -->
+	<modify subscriber="263456116" >  
+	<password/>
+	</modify>
+
+
+
+</subscribers>
+</dbupdates>
+

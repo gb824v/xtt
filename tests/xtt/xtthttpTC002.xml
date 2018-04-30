@@ -1,0 +1,107 @@
+<test>
+    <name>xtthttpTC002</name>
+    <description>Test case which shows how responses can be sent slowly from HTTP module</description>
+
+    <function name="startWebServer" module="HTTP"/>
+	
+	<function name="setServerBodyDelayms" module="HTTP">
+        <parameter>10000</parameter>
+    </function> 
+    
+	<function name="createDocument" module="XML">
+        <parameter>bxml</parameter>
+        <parameter>&lt;?xml version="1.0"?&gt;
+&lt;!DOCTYPE service SYSTEM "service"&gt;
+            &lt;service id="1293939439"&gt;
+                &lt;phonenumber&gt;41791234567&lt;/phonenumber&gt;
+                &lt;servicenumber&gt;123&lt;/servicenumber&gt;
+                &lt;parameters&gt;
+                    &lt;parameter id="1"&gt;
+                        &lt;name&gt;kanton&lt;/name&gt;
+                        &lt;value&gt;vaud&lt;/value&gt;
+                    &lt;/parameter&gt;
+                    &lt;parameter id="2"&gt;
+                        &lt;name&gt;sprache&lt;/name&gt;
+                        &lt;value&gt;fr&lt;/value&gt;
+                    &lt;/parameter&gt;
+                &lt;/parameters&gt;
+            &lt;/service&gt;        
+        </parameter>
+    </function>
+
+    <function name="createDocument" module="XML">
+        <parameter>axml</parameter>
+        <xml>
+            <service id="1293939439">
+                <phonenumber>41791234567</phonenumber>
+                <servicenumber>123</servicenumber>
+                <parameters>
+                    <parameter id="1">
+                        <name>kanton</name>
+                        <value>vaud</value>
+                    </parameter>
+                    <parameter id="2">
+                        <name>sprache</name>
+                        <value>fr</value>
+                    </parameter>
+                </parameters>
+            </service>        
+        </xml>
+    </function>
+
+    <function name="setHeader" module="XML">
+        <parameter>axml</parameter>
+        <parameter>content-type</parameter>
+        <parameter>text/xml</parameter>
+    </function>
+
+    <function name="setDocType" module="XML">
+        <parameter>axml</parameter>
+        <parameter>service</parameter>
+        <!--parameter>service.dtd</parameter-->
+    </function>
+
+    <function name="documentToVariable" module="XML">
+        <parameter>axml</parameter>
+        <parameter>info</parameter>
+    </function>
+
+    <function name="info" module="Basic">
+        <parameter>
+</parameter>
+        <variable>info</variable>
+    </function>
+
+	<function name="validateXML" module="XML">
+	    <parameter>axml</parameter>
+ 	    <parameter></parameter>
+    </function>
+
+	<function name="sendPostRequest" module="XML">
+	    <parameter>axml</parameter>
+ 	    <parameter>response</parameter>
+ 	    <parameter>http://127.0.0.1/</parameter>
+    </function>
+
+	<function name="validateXML" module="XML">
+	    <parameter>response</parameter>
+ 	    <parameter></parameter>
+    </function>
+
+	<function name="queryHeader" module="XML">
+	    <parameter>response</parameter>
+	    <parameter>dev/null</parameter>
+ 	    <parameter>content-type</parameter>
+ 	    <parameter>text/html</parameter>
+    </function>
+
+	<function name="queryHeader" module="XML">
+	    <parameter>response</parameter>
+	    <parameter>dev/null</parameter>
+ 	    <parameter>content-type</parameter>
+ 	    <parameter>/</parameter>
+    </function>
+
+    <function name="stopWebServer" module="HTTP"/>
+
+</test>

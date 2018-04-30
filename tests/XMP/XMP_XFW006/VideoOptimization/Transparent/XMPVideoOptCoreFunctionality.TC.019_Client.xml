@@ -1,0 +1,247 @@
+
+<!-- For this test case Product View file should contain following mediaStore firstChunkRequestTimeout:-
+ <mediaStore reaperSecs="10800" chunkSizeBytes="8192" firstChunkRequestTimeout="5" chunkRequestTimeout="30" maxMemorySizeMBytes="300"/> -->
+
+<test>
+	<function name="testName" module="Basic">
+		<parameter>XMPVideoOptCoreFunctionality.TC.019</parameter>
+	</function>
+
+	<description>HTTP agent requests a video / Video is not in MEDIA-STORE (FTR_OptimizeVideo context: true, MSR_WaitForOptimizedContent context: true) / Non-Optimized Content should be sent to HTTP Agent after MSR_CFG_ChunkItemTimeoutSecs elapsed without receiving a chunk from VIDEO-STORE</description>
+
+
+	<!-- Delete Message Store -->
+	<subtest>deleteMediaStoreAll.xml</subtest>
+
+	<function name="disableProxy" module="HTTP" />
+
+	<function name="disableKeepAlive" module="HTTP"/>
+
+	<!-- Query the name of the active MEDIA-STORE process -->
+	<function name="activeProcessToVar" module="Remote">
+		<parameter>MEDIA-STORE</parameter>
+		<parameter>Media_Store_Process_Name</parameter>
+	</function>
+
+	<function name="activeProcessToVar" module="Remote">
+		<parameter>TCP-ROUTER</parameter>
+		<parameter>TCP-ROUTER</parameter>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>enable trac -v MSR TCP-ROUTER.*.*</parameter>
+	</function>
+
+	<!-- Prepare the ContextStatistics File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>vo_ContextStatistics.xml</parameter>
+		<xml>
+		<contextStatistics>
+			<contextStatistic condition="FTR_OptimizeVideo is true"
+			statisticName="VideoOptimization"
+			key="MSR_Name"
+			maxCounters="100"
+			rateIntervalSeconds="180" />
+		</contextStatistics>
+		</xml>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>vo_ContextStatistics.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded contextstatistics.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Prepare the Request Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>vo_reqmod_online_opt.xml</parameter>
+		<xml>
+		<requestModifications xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="requestmodifications.xsd">
+		<table name="DisableThings" phase="httpRequest">
+			<selector>
+				<modifyContext name="Skip_CACHE" value="'true'"/>
+				<modifyContext name="Skip_VIRUSSCANNER" value="'true'"/>
+				<modifyContext name="FTR_HtmlTidyDisable" value="'true'"/>
+				<modifyContext name="Skip_COOKIE" value="'true'"/>
+				<modifyContext name="Skip_ICC" value="'true'"/>
+				<modifyContext name="FTR_MultipartCompose_Disable" value="'true'"/>
+				<modifyContext name="FTR_Prefetch_Disable" value="'true'"/>
+				<modifyContext name="FTR_Deflate_Disable" value="'true'"/>
+				<modifyContext name="FTR_Gzip_Disable" value="'true'"/>
+			</selector>
+		</table>
+		<table name="Add Category to the HTTP Header" phase="httpResponse" >
+			<selector>
+			<modifyContext name="HTA_RespHdr_HTG_ResponseStatus" value="HTG_ResponseStatus" />
+			<modifyContext name="HTA_RespHdr_IM_ContentLength" value="IM_ContentLength" />
+			</selector>
+		</table>
+		<table name="blip_videoOptimization" phase="httpRequest">
+			<selector urlPattern="http://*/videos/{.*\.flv}">
+				<modifyContext name="FTR_OptimizeVideo" value="'true'"/>
+				<modifyContext name="FTR_WaitForOptimizedContent" value="'true'"/>
+			</selector>
+		</table>
+		</requestModifications>
+		</xml>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>vo_reqmod_online_opt.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded requestmodifications.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Radius Login -->
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+	<!-- Stoping all Video Optimizer processes -->
+	<function name="stopProcesses" module="Remote">
+		<parameter>VIDEO-OPTIMIZER</parameter>
+	</function>
+
+	<function name="checkProcessStatus" module="Remote">
+		<parameter>VIDEO-OPTIMIZER</parameter>
+		<parameter>Stopped</parameter>
+	</function>
+
+	<!-- Send the video retrieval request -->
+
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>
+			<parameter>http://</parameter>
+			<configuration>webserver/ip</configuration>
+			<parameter>/videos/Tarabonner-FlightControl637.flv</parameter>
+		</parameter>
+	</function>
+
+	<!-- Validate Response Code Send by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<!-- Sleep a while until video optimization will start -->
+	<function name="sleep" module="Basic">
+		<parameter>16000</parameter>
+	</function>
+
+	<function name="executeRemoteCommand" module="Remote">
+		<parameter>
+			<parameter>tail -15 </parameter>
+			<configuration>remote/procpath</configuration>
+			<parameter>/</parameter>
+			<variable>TCP-ROUTER/0</variable>
+			<parameter>/</parameter>
+			<variable>TCP-ROUTER/0</variable>
+			<parameter>.out</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+			<parameter>getChunk .* seconds</parameter>
+			<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Starting all Video Optimizer processes -->
+	<function name="startProcesses" module="Remote">
+		<parameter>VIDEO-OPTIMIZER</parameter>
+	</function>
+
+	<function name="checkProcessStatus" module="Remote">
+		<parameter>VIDEO-OPTIMIZER</parameter>
+		<parameter>Running</parameter>
+		<parameter>*Running</parameter>
+	</function>
+
+	<!-- Sleep a while until video optimization will start -->
+	<function name="sleep" module="Basic">
+		<parameter>16000</parameter>
+	</function>
+
+	<!-- Check for total number of Optimized Chunks stored in Media Store-->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>run command amocli -k count TI:F.CEE.</parameter>
+			<variable>Media_Store_Process_Name</variable>
+			<parameter>:AMO</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>amocli: 0 items counted</parameter>
+		<parameter>response</parameter>
+	</function>
+
+	<!-- Checking Response headers of http request, it should contain null values for non-optimized video -->
+	<function name="queryText" module="BASIC">
+		<variable>HTTP/HEADER/HTG_ResponseStatus</variable>
+		<parameter>dev/null</parameter>
+		<parameter>200</parameter>
+	</function>
+
+	<function name="compareString" module="Basic">
+		<variable>HTTP/HEADER/Content-Length</variable>
+		<variable>HTTP/HEADER/IM_ContentLength</variable>
+	</function>
+
+	<!-- Radius Logoff -->
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+	<!-- Purge the Request Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>REQMOD_EmptyRules.xml</parameter>
+		<parameter>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;requestModifications&gt;&lt;/requestModifications&gt;</parameter>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>REQMOD_EmptyRules.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded requestmodifications.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Purge the ContextStatistics File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>vo_EmptyContextStatistics.xml</parameter>
+		<parameter>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;contextStatistics&gt;&lt;/contextStatistics&gt;</parameter>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>vo_EmptyContextStatistics.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded contextstatistics.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Stop Web Server -->
+	<function name="stopWebServer" module="HTTP"/>
+
+</test>

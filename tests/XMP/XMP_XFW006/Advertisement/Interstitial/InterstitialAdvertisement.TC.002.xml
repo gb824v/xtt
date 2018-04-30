@@ -1,0 +1,67 @@
+<!--
+InterstitialAdvertisement.TC.002  - Validate Interstitial Advertisement use case performs only with GET requests, not with POST and any other HTTP request types [1 request to XMP].
+
+Test Description:
+ 1. Radius Logon
+ 2. Start Web Server for http request.
+ 3. Set post data.
+ 4. Send Post request to http://872383.724xtt.com.
+ 5. Stop Web Server.
+ 6. Radius Logoff
+ 
+Expected Result:
+ -  XMP should not process the Post Interstitial Advertisement request and should show main page without any Interstitial 
+ Advertisement .
+
+XTT Main Commands:
+
+ 1.  - Radius log-ON
+ 2.  - startWebServer
+ 3.  - setPostData
+ 3.  - sendPostRequest
+ 4.  - stopWebServer
+ 5.  - Radius log-OFF
+-->
+
+<test>
+
+	<function name="testName" module="Basic">
+		<parameter>InterstitialAdvertisement.TC.002</parameter>
+	</function>
+
+	<description>Validate Interstitial Advertisement use case performs only with GET requests, not with POST and any other HTTP request types [1 request to XMP]</description>
+
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12345</parameter>
+	</function>
+
+	<function name="startWebServer" module="HTTP"/>
+
+	<function name="setPostData" module="HTTP">
+		<parameter>postData</parameter>
+		<parameter>one-value</parameter>
+	</function>
+
+	<function name="sendPostRequest" module="HTTP">
+		<parameter>
+		<parameter>http://872383.724xtt.com/ </parameter>
+		</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<function name="stopWebServer" module="HTTP"/>
+
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12345</parameter>
+	</function>
+
+        <function name="sleep" module="Basic">
+                <parameter>20000</parameter>
+        </function>
+
+</test>

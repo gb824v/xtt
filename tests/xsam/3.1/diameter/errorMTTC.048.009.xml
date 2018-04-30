@@ -1,0 +1,145 @@
+<test>
+    <name>MBSPPB_ErrorScenarios_MT_TC.048.009</name>
+    <configuration>../configXSAM.xml</configuration>
+
+    <description>[TPI->SMS / IscpDirectDebitFailureHandling = TERMINATE_OR_BUFFER / ISCP returns DIAMETER_INVALID_HDR_BITS ] processing stops</description>
+<!-- 
+
+Settings / Services
+____________________
+
+ServiceName      ServiceGroup    Template   IscpDirectDebitFailureHandling  IscpInterrogate
+___________________________________________________________________________________________________
+         
+XTT3-600          4003            SMSSubmit    0 = TERMINATE_OR_BUFFER       9 = always interrogate
+
+
+
+Testscenario
+____________
+
+ISCP (XTT)                          MBS                           TP                     SMSC
+
+   |                                 |                             |                       |
+   | CAPABILITIES_EXCHANGE_REQUEST   |                             |                       |
+   | - - - - - - - - - - - - - - >   |                             |                       |
+   | < - - - - - - - - - - - - - -   |                             |                       |
+   |                                 |           sendSMS           |                       | 
+   |                                 |  < - - - - - - - - - - -    |                       |
+   |                                 |                             |                       |                         
+   |    CREDIT_CONTROL_REQUEST       |                             |                       |
+   | < - - - - - - - - - - - - - -   |                             |                       |
+   |                                 |                             |                       |
+   |    CREDIT_CONTROL_ANSWER        |                             |                       |
+   |  ( DIAMETER_INVALID_HDR_BITS )  |                             |                       |
+   | - - - - - - - - - - - - - - >   |                             |                       |
+   |                                 |                             |                       |
+-->
+
+    <function name="startSMSCServer" module="SMS"/>
+    
+    <function name="setVariable" module="Basic">
+         <parameter>SKIP_DIAMETER</parameter>
+         <parameter>true</parameter>
+    </function>
+
+    <function name="setVariable" module="Basic">
+         <parameter>SKIP_SMSC</parameter>
+         <parameter>true</parameter>
+    </function>
+
+    <function name="setVariable" module="Basic">
+        <parameter>ISCP_DIRECT_DEBIT_FAILURE_HANDLING</parameter>
+        <parameter>0</parameter>
+    </function>
+
+    <function name="setVariable" module="Basic">
+        <parameter>SERVICE-SHORTID</parameter>
+        <parameter>
+            <configuration>xsam/serviceGroupPrefix</configuration>
+            <configuration>xsam/serviceGroupNoSMSDDFH</configuration>
+         </parameter>
+    </function>
+    
+    <function name="setVariable" module="Basic">
+        <parameter>SERVICE-NAME</parameter>
+        <parameter>
+            <parameter>XTT</parameter><configuration>xsam/serviceGroupNoSMSDDFH</configuration><parameter>-</parameter><configuration>xsam/serviceNoSMSDDFH</configuration><variable>ISCP_DIRECT_DEBIT_FAILURE_HANDLING</variable><parameter></parameter>
+        </parameter>
+    </function>
+        
+    <function name="setVariable" module="Basic">
+        <parameter>AMOUNT</parameter>
+        <parameter>11.734</parameter>
+    </function>
+
+    <function name="startDiameterServer" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT</configuration>
+        <parameter>
+            <parameter>
+&lt;Diameter&gt;
+    &lt;response&gt;
+        &lt;DISCONNECT_PEER_REQUEST proxiable="true" error="false" tretr="false"&gt;
+            &lt;RESULT_CODE            value="DIAMETER_SUCCESS"    mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_REALM           value="ORIGIN_REALM"        mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+        &lt;/DISCONNECT_PEER_REQUEST&gt; 
+        &lt;DEVICE_WATCHDOG_REQUEST proxiable="true" error="false" tretr="false"&gt;
+            &lt;RESULT_CODE            value="DIAMETER_SUCCESS"    mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_REALM           value="DESTINATION_REALM"   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+        &lt;/DEVICE_WATCHDOG_REQUEST&gt;
+        &lt;CAPABILITIES_EXCHANGE_REQUEST proxiable="true" error="false" tretr="false"&gt;
+            &lt;RESULT_CODE            value="DIAMETER_SUCCESS"    mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_REALM           value="ORIGIN_REALM"        mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;VENDOR_ID              request="VENDOR_ID" /&gt;
+            &lt;PRODUCT_NAME           request="PRODUCT_NAME" /&gt;
+            &lt;SUPPORTED_VENDOR_ID    request="SUPPORTED_VENDOR_ID" /&gt;
+            &lt;AUTH_APPLICATION_ID    request="AUTH_APPLICATION_ID" /&gt;
+        &lt;/CAPABILITIES_EXCHANGE_REQUEST&gt;
+        &lt;CREDIT_CONTROL_REQUEST proxiable="true" error="false" tretr="false"&gt;
+            &lt;SESSION_ID             request="SESSION_ID"/&gt;
+            &lt;RESULT_CODE            value="DIAMETER_INVALID_HDR_BITS "    mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;ORIGIN_REALM           request="DESTINATION_REALM" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;AUTH_APPLICATION_ID    value="4"                   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;CC_REQUEST_TYPE        request="CC_REQUEST_TYPE"   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+            &lt;CC_REQUEST_NUMBER      request="CC_REQUEST_NUMBER" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/&gt;
+        &lt;/CREDIT_CONTROL_REQUEST&gt;
+        
+    &lt;/response&gt;
+&lt;/Diameter&gt;
+            </parameter>
+        </parameter>
+        <parameter>30000</parameter>
+    </function>
+    
+    <function name="waitForSpecificRequests" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT</configuration>
+        <parameter>CAPABILITIES_EXCHANGE_REQUEST</parameter>
+        <parameter>1</parameter>
+    </function>
+
+    <thread>
+        <function name="sleep" module="Basic">
+             <configuration>DIAMETERSERVER/TIMEOUT</configuration>
+        </function>
+        <function name="waitForSpecificRequests" module="Diameter">
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>CREDIT_CONTROL_REQUEST</parameter>
+            <parameter>1</parameter>
+        </function>
+    </thread>
+
+    <!-- SMS from TP -->
+    <subtest>sendSMS-errorMTTC.xml</subtest>
+
+     <function name="waitForTimeoutMessages" module="SMS">
+        <parameter>20000</parameter>
+     </function>
+
+    <function name="stopDiameterServer" module="Diameter"/>
+    <function name="stopSMSCServer" module="SMS"/>
+
+</test>

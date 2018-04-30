@@ -1,0 +1,29 @@
+<test>
+
+	<function name="testName" module="Basic">
+		<parameter>XMPVideoOptCoreFunctionality.TC.017_Server</parameter>
+	</function>
+
+	<description>HTTP agent requests a video / "status" attribute of Control Item is "done" (FTR_OptimizeVideo context: false, MSR_WaitForOptimizedContent context: true) / Non-Optimized Content should be sent to HTTP Agent</description>
+
+	<!-- Start Web Server -->
+	<function name="startWebServer" module="HTTP"/>
+
+	<function name="setServerHeader" module="HTTP">
+		<parameter>content-type</parameter>
+		<parameter>video/x-flv</parameter>
+	</function>
+
+	<function name="setServerReturnCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<!-- Sleep a while until video optimization will start -->
+	<function name="sleep" module="Basic">
+		<parameter>30000</parameter>
+	</function>
+
+	<!-- Stop Web Server -->
+	<function name="stopWebServer" module="HTTP"/>
+
+</test>

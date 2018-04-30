@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<dbupdates> 
+<subscribers>
+
+<!-- XSN.DBLoad.SubrMod.TC002.7 Modify with valid date : Separator used is front slash -->
+	<remove subscriber="253456108"/>
+	<add subscriber="253456108"> <born value="1995-01-31"/></add>
+	<modify subscriber="253456108"> 
+	<born value="1990/01/31"/>
+	</modify>
+
+
+<!-- XSN.DBLoad.SubrMod.TC002.11 Should not allow Modify with invalid day: 32 Jan -->
+
+	<add subscriber="253456112"> <born value="1995-01-31"/></add>
+	<modify subscriber="253456112"> 
+	<born value="2004-01-32"/>
+	</modify>
+
+<!-- XSN.DBLoad.SubrMod.TC002.15 Should not allow Modify nonexisting record : Subscriber id is not in database -->
+	<remove subscriber="NewSubID"/>
+	<modify subscriber="NewSubID"> 
+	<firstName value="SomeName"/>
+	</modify>
+
+
+<!-- XSN.DBLoad.SubrMod.TC002.16 Modify without using mandatory attribute -->
+	<remove subscriber="253456115"/>
+	<add subscriber="253456115"> <born value="1995-01-31"/></add>
+	<modify >  			
+	<born value="2006-13-01"/>
+	</modify>
+
+
+</subscribers>
+</dbupdates>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+
+<dbupdates> 
+<subscribers>
+
+	<remove subscriber="123456785" />
+	
+	<add subscriber="123456785"> <firstName value="First_Name1"/> <"Address1" value="Hello123"/> <!-- optional additional attribute -->
+	
+	
+</subscribers>
+</dbupdates>

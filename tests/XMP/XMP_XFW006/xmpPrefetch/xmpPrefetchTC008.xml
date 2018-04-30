@@ -1,0 +1,110 @@
+<test>	    
+	<name>XMP.PREFETCH.TC.008</name>
+    <description>Prefetch application/wml+xml</description>
+
+	<subtest>deleteCacheAll.xml</subtest>
+    <subtest>loadReqmod.xml</subtest>
+
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+	<function name="startWebServer" module="HTTP"/>
+	<function name="setServerHeader" module="HTTP">
+		<parameter>Last-Modified</parameter>
+		<parameter>Wed, 15 Nov 1995 04:58:08 GMT</parameter>
+	</function>	
+
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>prefetchTC008_img.wbmp</parameter>
+		<base64File>wbmp.wbmp</base64File>
+    </function>
+    <function name="setCacheFile" module="HTTP">
+		<parameter>prefetchTC008.xwml</parameter>
+        <parameter>
+<parameter>&lt;wml&gt;
+&lt;card id="Hauptkarte" title="Dies ist die erste Karte"&gt;
+&lt;pre&gt;This is the initial file FILLTO64CHARACTERSXXXXXXXXXXXXXXXXXXXXX&lt;/pre&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/prefetchTC008_img.wbmp"/&gt;
+&lt;/card&gt;
+&lt;/wml&gt;
+</parameter>
+        </parameter>
+    </function>
+
+	<function name="sendGetRequest" module="HTTP">
+        <parameter>
+    		<parameter>http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/prefetchTC008.xwml</parameter>
+        </parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>	
+	<function name="waitForRequests" module="HTTP">
+		<parameter>2</parameter>
+	</function>	
+
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>This is the initial file FILLTO64CHARACTERSXXXXXXXXXXXXXXXXXXXXX</parameter>
+    </function>
+
+    <function name="setCacheFile" module="HTTP">
+		<parameter>prefetchTC008.xwml</parameter>
+        <parameter>
+<parameter>&lt;wml&gt;
+&lt;card id="Hauptkarte" title="Dies ist die erste Karte"&gt;
+This is the file that should not be retrieved AGAINDOTHEFILLXXXX
+&lt;/card&gt;
+&lt;/wml&gt;
+</parameter>
+        </parameter>
+    </function>
+
+    <thread>
+    	<function name="waitForTimeoutRequests" module="HTTP">
+    		<parameter>10000</parameter>
+    		<parameter>2</parameter>
+    	</function>	
+	</thread>
+	<function name="sendGetRequest" module="HTTP">
+        <parameter>
+    		<parameter>http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/prefetchTC008.xwml</parameter>
+        </parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>	
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>This is the initial file FILLTO64CHARACTERSXXXXXXXXXXXXXXXXXXXXX</parameter>
+    </function>
+    <function name="queryBodyNegative" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>This is the file that should not be retrieved AGAINDOTHEFILLXXXX</parameter>
+    </function>
+	<function name="sendGetRequest" module="HTTP">
+        <parameter>
+    		<parameter>http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/prefetchTC008_img.wbmp</parameter>
+        </parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>	
+
+    <subtest>unloadReqmod.xml</subtest>
+
+	<function name="stopWebServer" module="HTTP"/>
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function> 
+</test>

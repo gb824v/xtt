@@ -1,0 +1,24 @@
+<test>
+       
+      <description> SOAP-API-Communities{(addAdmins( )}: Test for addAdmins. </description>
+      
+	 <function name="testName" module="Basic">
+		<parameter>XMP-Communities-3.12.1.0</parameter>
+	</function>
+
+	<function name="SOAPClient" module="SOAP_API" >
+		<parameter>
+			 <configuration>XMP/PROTOCOL</configuration>
+			 <configuration>XMP/IP</configuration>
+			 <parameter>:</parameter>
+			 <configuration>XMP/PORT/</configuration>
+			 <parameter>/jaxws-policy-communities/communities</parameter>
+		</parameter>
+		<file>XMP-add-Admin-null.xml</file>
+		<parameter>Body/return</parameter>
+	</function>
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>500</parameter>
+	</function>
+       
+ </test>

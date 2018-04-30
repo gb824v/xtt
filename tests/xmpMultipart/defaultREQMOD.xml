@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<requestModifications xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+                      xsi:noNamespaceSchemaLocation="requestmodifications.xsd">
+	<table name="SetMobileAccelerationDefaults">
+		<!-- This table enables content caching, MIME multipart composition, pre-fetch, and all 
+                     compression algorithms, and it disables the 
+removal of interlacing. These are the 
+                     default settings. We use explicit rules to select the default settings here, 
+                     simply to make XMP add the appropriate context
+ elements, so that we see them in 
+                     the transaction logs. -->
+		<selector>
+			<modifyContext name="Skip_CACHE" value="'false'"/>
+			<modifyContext name="FTR_MultipartCompose_Disable" value="'false'"/>
+			<modifyContext name="FTR_Prefetch_Disable" value="'false'"/>
+			<modifyContext name="FTR_Deflate_Disable" value="'false'"/>
+			<modifyContext name="FTR_Gzip_Disable" value="'false'"/>
+			<modifyContext name="FTR_LZW_Disable" value="'false'"/>
+			<modifyContext name="FTR_RemoveInterlacing" value="'false'"/>
+		</selector>
+	</table>
+	<table name="CheckDeviceMimeMultipartSupport">
+		<!-- This table disables the MIME multipart composition feature for
+ devices that don't 
+                     support MIME multipart. We use the information extracted by the WURFL component 
+                     to decide
+ whether the device supports MIME multipart. -->
+		<selector context="WURFL_C_multipart_support != 'true'">
+			<modifyContext name="FTR_MultipartCompose_Disable" value="'true'"/>
+		</selector>
+	</table>
+	<table name="CheckDeviceColors">
+		<!-- Set the maximum image color depth to the maximum supported by the
+ target device. 
+                     To find out what image size the device supports, use
+ the UA-color request header
+                     if it is present, otherwise use the WURFL
+ information.  -->
+		<selector context="[HTA_ReqHdr_ua-color] equals 'mono2'">
+			<modifyContext name="FTR_MaxImageColors" value="'4'"/>
+			<modifyContext name="FTR_MaxImageGreyscale" value="'true'"/>
+		</selector>
+		<selector context="[HTA_ReqHdr_ua-color] equals 'mono4'">
+			<modifyContext name="FTR_MaxImageColors" value="'16'"/>
+			<modifyContext name="FTR_MaxImageGreyscale" value="'true'"/>
+		</selector>
+		<selector context="[HTA_ReqHdr_ua-color] equals 'color8'">
+			<modifyContext name="FTR_MaxImageColors" value="'256'"/>
+			<modifyContext name="FTR_MaxImageGreyscale" value="'false'"/>
+		</selector>
+		<selector context="[HTA_ReqHdr_ua-color] equals 'color16'">
+			<modifyContext name="FTR_MaxImageColors" value="'32768'"/>
+			<modifyContext name="FTR_MaxImageGreyscale" value="'false'"/>
+		</selector>
+		<selector context="[HTA_ReqHdr_ua-color] equals 'color24'">
+			<modifyContext name="FTR_MaxImageColors" value="'16777216'"/>
+			<modifyContext name="FTR_MaxImageGreyscale" value="'false'"/>
+		</selector>
+		<selector context="[HTA_ReqHdr_ua-color] equals 'color32'">
+			<modifyContext name="FTR_MaxImageColors" value="'4294967296'"/>
+			<modifyContext name="FTR_MaxImageGreyscale" value="'false'"/>
+		</selector>
+		<selector context="not(WURFL_C_colors equals '')">
+			<modifyContext name="FTR_MaxImageColors" value="WURFL_C_colors"/>
+		</selector>
+		<selector context="WURFL_C_greyscale equals 'true'">
+			<modifyContext name="FTR_MaxImageGreyscale" value="'true'"/>
+		</selector>
+	</table>
+	<table name="CheckDeviceScreenSize">
+		<!-- Set the maximum image size to the maximum supported by the target device. To find 
+                     out what image size the device supports, use the
+ UA-pixels header if it is present,
+                     otherwise use the
+ WURFL information.  -->
+		<selector context="[HTA_ReqHdr_ua-pixels] != ''">
+			<applyRegexp pattern="([0-9]+)x([0-9]+)" value="[HTA_ReqHdr_ua-pixels]"/>
+			<modifyContext name="FTR_MaxImageHeight" value="'$1'"/>
+			<modifyContext name="FTR_MaxImageWidth" value="'$2'"/>
+		</selector>
+		<selector context="(WURFL_C_height != '') and
+            
+                       (WURFL_C_width != '') ">
+			<modifyContext name="FTR_MaxImageHeight" value="WURFL_C_height"/>
+			<modifyContext name="FTR_MaxImageWidth" value="WURFL_C_width"/>
+		</selector>
+	</table>
+</requestModifications>
+ 

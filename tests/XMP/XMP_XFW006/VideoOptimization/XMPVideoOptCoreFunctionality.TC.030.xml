@@ -1,0 +1,292 @@
+<test>
+
+	<function name="testName" module="Basic">
+		<parameter>XMPVideoOptCoreFunctionality.TC.030</parameter>
+	</function>
+
+	<description>VSM initiates a Video Optimization Request / Video is not in MEDIA-STORE (MSR_WaitForOptimizedContent context: false)</description>
+
+	<!-- Start Web Server -->
+	<function name="startWebServer" module="HTTP"/>
+
+	<function name="setClientTimeout" module="HTTP">
+		<parameter>120000</parameter>
+	</function>
+
+	<function name="disableKeepAlive" module="HTTP"/>
+
+	<function name="setServerHeader" module="HTTP">
+		<parameter>content-type</parameter>
+		<parameter>video/x-flv</parameter>
+	</function>
+
+	<function name="setServerReturnCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<!-- Delete Message Store -->
+	<subtest>deleteMediaStoreAll.xml</subtest>
+
+	<!-- Query the name of the active MEDIA-STORE process -->
+	<function name="activeProcessToVar" module="Remote">
+		<parameter>MEDIA-STORE</parameter>
+		<parameter>Media_Store_Process_Name</parameter>
+	</function>
+	
+	<!-- Query the name of the LOGGER process -->
+	<function name="activeProcessToVar" module="Remote">
+		<parameter>LOGGER</parameter>
+		<parameter>Logger_Process_Name</parameter>
+	</function>
+
+	<!-- Prepare the ContextStatistics File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>vo_ContextStatistics.xml</parameter>
+		<xml>
+		<contextStatistics>
+			<contextStatistic condition="FTR_OptimizeVideo is true"
+			statisticName="VideoOptimization"
+			key="MSR_Name"
+			maxCounters="100"
+			rateIntervalSeconds="90" />
+		</contextStatistics>
+		</xml>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>vo_ContextStatistics.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded contextstatistics.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Prepare the Request Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>vo_reqmod_offline_opt.xml</parameter>
+		<xml>
+		<requestModifications xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="requestmodifications.xsd">
+		<table name="DisableThings" phase="httpRequest">
+			<selector>
+				<modifyContext name="Skip_CACHE" value="'true'"/>
+				<modifyContext name="Skip_VIRUSSCANNER" value="'true'"/>
+				<modifyContext name="FTR_HtmlTidyDisable" value="'true'"/>
+				<modifyContext name="Skip_COOKIE" value="'true'"/>
+				<modifyContext name="Skip_ICC" value="'true'"/>
+				<modifyContext name="FTR_MultipartCompose_Disable" value="'true'"/>
+				<modifyContext name="FTR_Prefetch_Disable" value="'true'"/>
+				<modifyContext name="FTR_Deflate_Disable" value="'true'"/>
+				<modifyContext name="FTR_Gzip_Disable" value="'true'"/>
+			</selector>
+		</table>
+		<table name="XTT_videoOptimization" phase="httpRequest">
+			<selector urlPattern="http://*/videos/{.*\.flv}">
+				<modifyContext name="FTR_OptimizeVideo" value="'true'"/>
+				<modifyContext name="FTR_WaitForOptimizedContent" value="'false'"/>
+			</selector>
+		</table>
+		</requestModifications>
+		</xml>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>vo_reqmod_offline_opt.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded requestmodifications.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Check the CCS statistics-->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<configuration>remote/command</configuration>
+			<parameter>
+				<parameter>cmu -O CCS -d </parameter>
+				<variable>Logger_Process_Name</variable>
+			</parameter>
+		</parameter>
+	</function>
+
+	<!-- Radius Login -->
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+	<!-- Setting Loop up to 5 times for send Request -->
+	<loop name="request" start="0" stop="5" step="1">
+		<function name="sendGetRequest" module="HTTP">
+			<parameter>
+				<parameter>http://</parameter>
+				<configuration>system/ip</configuration>
+				<parameter>/videos/Ddspringle1-OpenOceanTorrus105.flv</parameter>
+			</parameter>
+		</function>
+
+		<!-- Validate Response Code Send by XMP -->
+		<function name="checkResponseCode" module="HTTP">
+			<parameter>200</parameter>
+		</function>
+	</loop>
+
+	<!-- Sleep to complete video optimization -->
+	<function name="sleep" module="Basic">
+		<parameter>120000</parameter>
+	</function>
+
+	<!-- check the latest CCS statistics-->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<configuration>remote/command</configuration>
+			<parameter>
+				<parameter>cmu -O CCS -d </parameter>
+				<variable>Logger_Process_Name</variable>
+			</parameter>
+		</parameter>
+	</function>
+
+	<!-- Radius Logoff -->
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+	<!-- amocli search for Optimized Video stored in Media Store -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>run command amocli -e "MS_Status=='done'" -m0 search TI:F.CEE.</parameter>
+			<variable>Media_Store_Process_Name</variable>
+			<parameter>:AMO</parameter>
+		</parameter>
+	</function>
+
+	<!-- Check for optimized chunks stored in the media store-->
+	<function name="queryResponse" module="Remote">
+		<parameter>MS_Status=done</parameter>
+		<parameter>dev/null</parameter>
+	</function> 
+
+	<!--Check for Low priority item associated with the background use case-->
+	<function name="queryResponse" module="Remote">
+		<parameter>MS_Priority=00</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Check for final chunk stored in the Media Store-->
+	<function name="queryResponse" module="Remote">
+		<parameter>searchComplete=true</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Check for MS_Url & MS_Name -->
+	<function name="queryResponse" module="Remote">
+		<parameter>
+			<parameter>MS_Url=http://</parameter>
+			<configuration>system/ip</configuration>
+			<parameter>/videos/Ddspringle1-OpenOceanTorrus105.flv</parameter>
+		</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>
+			<parameter>MS_Name=http://</parameter>
+			<configuration>system/ip</configuration>
+			<parameter>/videos/Ddspringle1-OpenOceanTorrus105.flv</parameter>
+		</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Check for total number of Optimized Chunks stored in Media Store-->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>run command amocli -k count TI:F.CEE.</parameter>
+			<variable>Media_Store_Process_Name</variable>
+			<parameter>:AMO</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>amocli: 2 items counted</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>run command amocli -e "MS_ChunkNr=='000000000'" -m0 search TI:F.CEE.</parameter>
+			<variable>Media_Store_Process_Name</variable>
+			<parameter>:AMO</parameter>
+		</parameter>
+	</function>
+
+	<!-- Check for MS_ControlDataId of chunks stored in the Media Store-->
+	<function name="queryResponse" module="Remote">
+		<parameter>MS_ControlDataId=(.*)MS_FinalChunk</parameter>
+		<parameter>ControlDataId</parameter>
+	</function>
+
+	<function name="info" module="Basic">
+		<parameter>MS_ControlDataId=</parameter>
+		<variable>ControlDataId</variable>
+	</function>
+
+	<!-- Purge the Request Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>REQMOD_EmptyRules.xml</parameter>
+		<parameter>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;requestModifications&gt;&lt;/requestModifications&gt;</parameter>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>REQMOD_EmptyRules.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded requestmodifications.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Purge the ContextStatistics File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>vo_EmptyContextStatistics.xml</parameter>
+		<parameter>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;contextStatistics&gt;&lt;/contextStatistics&gt;</parameter>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>vo_EmptyContextStatistics.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded contextstatistics.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Stop Web Server -->
+	<function name="stopWebServer" module="HTTP"/>
+
+	<!-- check the CCS statistics-->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<configuration>remote/command</configuration>
+			<parameter>
+				<parameter>cmu -O CCS -d </parameter>
+				<variable>Logger_Process_Name</variable>
+			</parameter>
+		</parameter>
+	</function>
+
+</test>

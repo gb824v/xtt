@@ -1,0 +1,87 @@
+<test>
+    <name>SecondsToString</name>
+    <!--function name="setVariable" module="Basic">
+        <parameter>inSeconds</parameter>
+        <parameter>0</parameter>
+    </function-->
+
+    <function name="calculate" module="Basic">
+        <parameter>inSeconds</parameter>
+        <parameter>
+            <variable>inSeconds</variable>
+            <parameter>/1000</parameter>
+        </parameter>
+    </function>
+    
+    <function name="calculate" module="Basic">
+        <parameter>seconds</parameter>
+        <parameter>
+            <variable>inSeconds</variable>
+            <parameter>%60</parameter>
+        </parameter>
+    </function>
+    <function name="calculate" module="Basic">
+        <parameter>inSeconds</parameter>
+        <parameter>
+            <parameter>(</parameter>
+            <variable>inSeconds</variable>
+            <parameter>-</parameter>
+            <variable>seconds</variable>
+            <parameter>)/60</parameter>
+        </parameter>
+    </function>
+    
+    <function name="calculate" module="Basic">
+        <parameter>minutes</parameter>
+        <parameter>
+            <variable>inSeconds</variable>
+            <parameter>%60</parameter>
+        </parameter>
+    </function>
+    <function name="calculate" module="Basic">
+        <parameter>inSeconds</parameter>
+        <parameter>
+            <parameter>(</parameter>
+            <variable>inSeconds</variable>
+            <parameter>-</parameter>
+            <variable>minutes</variable>
+            <parameter>)/60</parameter>
+        </parameter>
+    </function>     
+    
+    <function name="calculate" module="Basic">
+        <parameter>hours</parameter>
+        <parameter>
+            <variable>inSeconds</variable>
+            <parameter>%24</parameter>
+        </parameter>
+    </function>
+    <function name="calculate" module="Basic">
+        <parameter>inSeconds</parameter>
+        <parameter>
+            <parameter>(</parameter>
+            <variable>inSeconds</variable>
+            <parameter>-</parameter>
+            <variable>hours</variable>
+            <parameter>)/24</parameter>
+        </parameter>
+    </function>
+    
+    <function name="setVariable" module="Basic">
+        <parameter>time</parameter>
+        <parameter>
+            <variable>inSeconds</variable>
+            <parameter>day(s) </parameter>
+            <variable>hours</variable>
+            <parameter>hour(s) </parameter>
+            <variable>minutes</variable>
+            <parameter>minute(s) </parameter>
+            <variable>seconds</variable>
+            <parameter>second(s)</parameter>                                    
+        </parameter>
+    </function>     
+    
+    <!--function name="info" module="Basic">
+        <variable>time</variable>
+    </function-->  
+</test>

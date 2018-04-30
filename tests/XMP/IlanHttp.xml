@@ -1,0 +1,32 @@
+<test>
+<name>IlanHttp</name>
+<qcid>55</qcid>
+<description>
+55
+</description>
+<steps>
+HTTP/startWebServer
+HTTP/sendGetRequest
+HTTP/checkResponseCode
+</steps>
+<designer>guyb </designer>
+<creationdate>2012-03-29 09:32:31 </creationdate>
+<testlevel>Integration</testlevel>
+<xfwVersion>XMP_XFW006</xfwVersion>
+<mandatory>false</mandatory>
+<stepname>HTTP/startWebServer</stepname>
+<stepid>1</stepid>
+<function name="startWebServer" module="HTTP"/>
+<mandatory>false</mandatory>
+<stepname>HTTP/sendGetRequest</stepname>
+<stepid>2</stepid>
+<function name="sendGetRequest" module="HTTP">
+<parameter>http://127.0.0.1/image.resp</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/checkResponseCode</stepname>
+<stepid>3</stepid>
+<function name="checkResponseCode" module="HTTP">
+<parameter>200</parameter>
+</function>
+</test>

@@ -1,0 +1,21 @@
+<configuration>
+    <xmp41>
+        <licenseFile>/home/danielk/XMP/XMP41/DYNAMICCONFIG/license-XMP-lanta.xml</licenseFile>
+        <privateKeyPassword>demo1234</privateKeyPassword>
+        <examplesDir>examples/</examplesDir>
+        <cfgDir>cfg/</cfgDir>
+        <workflowXPDL>xmp.xpdl</workflowXPDL>
+        <workflowCXPDL>xmp.cxpdl</workflowCXPDL>
+        <workflowConstants>xmp_WorkflowConstants.xml</workflowConstants>
+        <dashboardFile>Dashboard.xml</dashboardFile>
+        <reqmodFile>xmp_RequestModifications.xml</reqmodFile>
+        <wurflFile>wurfl.xml</wurflFile>
+        <throttlingFile>xmp_ThrottlingFile.xml</throttlingFile>
+        <downloadFDFTScript>xmp_download_fasttracker_files</downloadFDFTScript>
+        <validateFDFTScript>fdft_validate_config</validateFDFTScript>
+        <fdftProcessName>CONTENT-CATEGORIZER.lanta</fdftProcessName>
+        <webApplication>
+          <ipPort>172.20.2.89:9998</ipPort>
+        </webApplication>        
+    </xmp41>
+</configuration>

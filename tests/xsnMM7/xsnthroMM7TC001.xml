@@ -1,0 +1,214 @@
+<test>
+    <configuration>xsnUserConfig.xml</configuration>
+    <function name="testName" module="Basic">
+        <parameter>XSN.THRO.MM7.TC.001</parameter>
+    </function>
+    <description>Throttle MMS for unknown VASP/Recipient</description>
+
+    <function name="sendRemoteCommand" module="Remote">
+        <parameter>writeFile xsnThrottleMM7TC001.xml </parameter>
+        <xml>
+            <xsnThrottling xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="xsnThrottling.xsd">
+                <mm7Router>
+                    <global concurrentRequests="500" requestRate="1200" intervalMilliseconds="1000" validityMilliseconds="10000" />
+                    <throttles>
+                        <throttle name="VaspAndVasID" validityMilliseconds="2000" >
+                            <field>MM7_Req_MessageType</field>
+                            <field>MM7_Req_VASPID</field>
+                            <field>MM7_Req_VASID</field>
+                            <limit concurrentRequests="5" requestRate="1" intervalMilliseconds="1000" >
+                                <value>SubmitReq</value>
+                                <value>VASPID001</value>
+                                <value>*</value>
+                            </limit>
+                        </throttle>
+                    </throttles>
+                </mm7Router>
+            </xsnThrottling>
+        </xml>
+    </function>
+    <function name="sendRemoteCommand" module="Remote">
+        <configuration>xsn/path</configuration>
+        <configuration>xsn/xms</configuration>
+        <configuration>xsn/loaddata</configuration>
+        <parameter>xsnThrottleMM7TC001.xml</parameter>
+    </function>
+    <function name="queryResponse" module="Remote">
+        <parameter>^Loaded </parameter>
+        <parameter>response</parameter>
+    </function>
+
+
+    <function name="startMMSCServer" module="MMSC"/>
+
+    <function name="createMM7Soap" module="VASP"/>
+    <function name="setMessageBoundary" module="VASP">
+        <parameter>000001message</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SubmitReq']</parameter>
+        <parameter>MM7Version</parameter>
+        <configuration>VASP/MM7Version</configuration>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SubmitReq']</parameter>
+        <parameter>Recipients</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='Recipients']</parameter>
+        <parameter>To</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='To'][last()]</parameter>
+        <parameter>Number</parameter>
+        <configuration>noCommunity/UnknownUser</configuration>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SubmitReq']</parameter>
+        <parameter>Content</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='Content']</parameter>
+        <parameter>href</parameter>
+        <parameter>cid:xtt-test002</parameter>
+    </function>
+    <function name="addContent" module="VASP">
+        <file>sendMM7data2.txt</file>
+    </function>
+    <!--function name="previewRequest" module="VASP" /-->
+    <loop name="threadLoop" start="0" stop="100" step="1">
+            <!--function name="throttle" module="Throttle">
+                <parameter>tc001</parameter>
+            </function-->
+            <!--function name="previewRequest" module="VASP" /-->
+            <function name="sendPostRequest" module="VASP"/>
+            <function name="checkResponseCode" module="VASP">
+                <parameter>200</parameter>
+            </function>
+            <function name="queryBody" module="VASP">
+                <parameter>temp</parameter>
+                <parameter>&lt;StatusText&gt;(Success)&lt;/StatusText&gt;</parameter>
+            </function>
+            <function name="queryBody" module="VASP">
+                <parameter>temp</parameter>
+                <parameter>&lt;StatusCode&gt;(1000)&lt;/StatusCode&gt;</parameter>
+            </function>
+
+    </loop>
+
+    <function name="waitForRequests" module="MMSC">
+        <parameter>100</parameter>
+    </function>
+
+    <function name="setVariable" module="Basic">
+        <parameter>ThrottleTC001-passed</parameter>
+        <parameter>false</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+        <parameter>ThrottleTC001-success</parameter>
+        <parameter>false</parameter>
+    </function>
+    <function name="createMM7Soap" module="VASP">
+        <parameter>SubmitReq</parameter>
+        <parameter>VASPID001</parameter>
+        <parameter>VASID002</parameter>
+    </function>
+    <function name="setMessageBoundary" module="VASP">
+        <parameter>000001message</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SubmitReq']</parameter>
+        <parameter>MM7Version</parameter>
+        <configuration>VASP/MM7Version</configuration>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SubmitReq']</parameter>
+        <parameter>Recipients</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='Recipients']</parameter>
+        <parameter>To</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='To'][last()]</parameter>
+        <parameter>Number</parameter>
+        <configuration>noCommunity/UnknownUser</configuration>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='SubmitReq']</parameter>
+        <parameter>Content</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='Content']</parameter>
+        <parameter>href</parameter>
+        <parameter>cid:xtt-test002</parameter>
+    </function>
+    <function name="addContent" module="VASP">
+        <file>sendMM7data2.txt</file>
+    </function>
+    <!--function name="previewRequest" module="VASP" /-->
+    <loop name="threadLoop" start="0" stop="100" step="1">
+            <!--function name="throttle" module="Throttle">
+                <parameter>tc001</parameter>
+            </function-->
+            <!--function name="previewRequest" module="VASP" /-->
+            <function name="sendPostRequest" module="VASP"/>
+            <function name="checkResponseCode" module="VASP">
+                <parameter>200</parameter>
+                <parameter>500</parameter>
+            </function>
+            <function name="queryBody" module="VASP">
+                <parameter>temp</parameter>
+                <parameter>&lt;StatusText&gt;(Success|Throttled)&lt;/StatusText&gt;</parameter>
+            </function>
+            <function name="queryBody" module="VASP">
+                <parameter>temp</parameter>
+                <parameter>&lt;StatusCode&gt;(1000|4006)&lt;/StatusCode&gt;</parameter>
+            </function>
+            <conditional variable="temp" targetValue="4006">
+                <function name="setVariable" module="Basic">
+                    <parameter>ThrottleTC001-passed</parameter>
+                    <parameter>true</parameter>
+                </function>
+            </conditional>
+            <conditional variable="temp" targetValue="1000">
+                <function name="setVariable" module="Basic">
+                    <parameter>ThrottleTC001-success</parameter>
+                    <parameter>true</parameter>
+                </function>
+            </conditional>
+    </loop>
+
+    <function name="waitForRequests" module="MMSC">
+        <parameter>101</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>ThrottleTC001-passed</variable>
+        <parameter>true</parameter>
+    </function>
+    <function name="compareString" module="Basic">
+        <variable>ThrottleTC001-success</variable>
+        <parameter>true</parameter>
+    </function>
+    <function name="sendRemoteCommand" module="Remote">
+        <parameter>writeFile xsnThrottleMM7TC001.xml </parameter>
+        <xml>
+            <xsnThrottling xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="xsnThrottling.xsd">
+            </xsnThrottling>
+        </xml>
+    </function>
+    <function name="sendRemoteCommand" module="Remote">
+        <configuration>xsn/path</configuration>
+        <configuration>xsn/xms</configuration>
+        <configuration>xsn/loaddata</configuration>
+        <parameter>xsnThrottleMM7TC001.xml</parameter>
+    </function>
+    <function name="queryResponse" module="Remote">
+        <parameter>^Loaded </parameter>
+        <parameter>response</parameter>
+    </function>
+
+
+    <function name="stopMMSCServer" module="MMSC"/>
+
+</test>

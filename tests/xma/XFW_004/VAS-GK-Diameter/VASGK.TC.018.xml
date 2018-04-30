@@ -1,0 +1,51 @@
+<test>
+
+	<name>VASGK.TC.018</name>
+
+	<description>Send corrupted XML request to VASGK, VASGK reject payload with proper error response.</description>
+
+	<!-- Setting content type for xml payload request -->
+	<function name="setHeader" module="HTTP">
+		<parameter>content-type</parameter>
+		<parameter>text/xml; charset="utf-8"</parameter>
+	</function>
+
+	<!-- sending wrong content length to corrupt the xml payload -->
+	<function name="setHeader" module="HTTP">
+		<parameter>Content-Length</parameter>
+		<parameter>abc</parameter>
+	</function>
+
+	<!-- Setting post data for xml request -->
+	<function name="setTextPostData" module="HTTP">
+		<parameter>
+			<crlf>&lt;?xml version="1.0"?&gt;</crlf>
+			<crlf>&lt;vasgk-check&gt;</crlf>
+			<crlf>	&lt;request&gt;</crlf>
+			<crlf>		&lt;sender-address address-type="MSISDN"&gt;41794440001&lt;/sender-address&gt;</crlf>
+			<crlf>		&lt;recipient-address address-type="MSISDN"&gt;41794440002&lt;/recipient-address&gt;</crlf>
+			<crlf>		&lt;mobile-originating&gt;</crlf>
+			<crlf>			&lt;message-text&gt;sample message text&lt;/message-text&gt;</crlf>
+			<crlf>		&lt;/mobile-originating&gt;</crlf>
+			<crlf>	&lt;/request&gt;</crlf>
+			<crlf>&lt;/vasgk-check&gt;</crlf>
+		</parameter>
+	</function>
+
+	<!-- Sending XML post request to VAS-GK process -->
+	<function name="sendPostRequest" module="HTTP">
+		<parameter>
+			<parameter>http://</parameter>
+			<configuration>VASGK/Ip</configuration>
+			<parameter>:</parameter>
+			<configuration>VASGK/Port</configuration>
+			<parameter>/</parameter>
+		</parameter>
+	</function>
+
+	<!-- Check response of xml payload -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>400</parameter>
+	</function>
+
+</test>

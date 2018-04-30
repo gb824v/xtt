@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<dbupdates> 
+<subscribers>
+
+	<remove subscriber="253456116"/>
+	<add subscriber="263456116"> 
+	</add>
+
+	<!-- XSN.DBLoad.SubrRem.TC003.1 Remove Subscriber Id -->
+
+	<remove subscriber="263456116"/> 
+
+	<!-- XSN.DBLoad.SubrRem.TC003.2 Remove nonexisting record -->
+	<remove subscriber="Not there" /> 
+	
+	
+	<add subscriber="263456117" > 
+	</add> 
+</subscribers>
+
+<communities> 
+	<add name="Flower/Wall" />
+	<add name="Wall" />
+</communities>
+
+<communityMembers> 
+	<add community="Flower/Wall" subscriber="263456117" />
+</communityMembers>
+	<communityAdmins>
+	<add community="Wall" subscriber="263456117" />
+</communityAdmins>
+
+<subscribers> 
+	<!-- XSN.DBLoad.SubrRem.TC003.3 Remove Subscriber Id , where the subscriber is a community member and an Admin of a community. -->
+	<remove subscriber="263456117"/>  
+
+</subscribers>
+
+</dbupdates>
+

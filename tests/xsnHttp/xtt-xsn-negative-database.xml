@@ -1,0 +1,148 @@
+<dbupdates>
+    <subscribers>
+        <remove subscriber="0041628882001" />
+        <remove subscriber="0041628882002" />
+        <remove subscriber="0041628882003" />
+        <remove subscriber="0041628882004" />
+        <remove subscriber="0041628882005" />
+        <remove subscriber="0041628882006" />        
+                
+        <add subscriber="0041628882001">
+            <firstName value="XttUser2" />
+            <lastName value="ZeroZeroOne" />
+            <born value="1983-05-20" />
+        </add>    
+        
+        <add subscriber="0041628882002">
+            <firstName value="XttUser2" />
+            <lastName value="ZeroZeroTwo" />
+            <born value="1973-05-20" />
+        </add>   
+        
+        <add subscriber="0041628882003">
+            <firstName value="XttUser2" />
+            <lastName value="ZeroZeroThree" />
+            <born value="1973-05-20" />
+        </add>    
+        
+        <add subscriber="0041628882004">
+            <firstName value="XttUser2" />
+            <lastName value="ZeroZeroFour" />
+            <born value="1963-05-20" />
+        </add>   
+        
+        <add subscriber="0041628882005">
+            <firstName value="XttUser2" />
+            <lastName value="ZeroZeroFive" />
+            <born value="1973-05-20" />
+        </add>    
+        
+        <add subscriber="0041628882006">
+            <firstName value="XttUser2" />
+            <lastName value="ZeroZeroSix" />
+            <born value="1963-05-20" />
+        </add>                                                       
+    </subscribers>
+
+    <communities>
+        <remove name="XTT/HttpNegativeTest/CommunityOne" />
+        <remove name="XTT/HttpNegativeTest/CommunityTwo" />
+        <remove name="XTT/HttpNegativeTest/CommunityThree" />
+        <remove name="XTT/HttpNegativeTest/CommunityFour" />
+        <remove name="XTT/HttpNegativeTest/CommunityFive" />
+        <remove name="XTT/HttpNegativeTest/CommunitySix" />
+                        
+        <add name="XTT/HttpNegativeTest/CommunityOne" />
+        <add name="XTT/HttpNegativeTest/CommunityTwo" />
+        <add name="XTT/HttpNegativeTest/CommunityThree" />
+        <add name="XTT/HttpNegativeTest/CommunityFour" />
+        <add name="XTT/HttpNegativeTest/CommunityFive" />
+        <add name="XTT/HttpNegativeTest/CommunitySix" />        
+    </communities>
+    
+    <communityMembers>
+        <add community="XTT/HttpNegativeTest/CommunityOne" name="NumberOne" subscriber="0041628882001" />
+        
+        <add community="XTT/HttpNegativeTest/CommunityTwo" name="NumberOne" subscriber="0041628882002" />
+        
+        <add community="XTT/HttpNegativeTest/CommunityThree" name="NumberOne" subscriber="0041628882003" />
+        
+        <add community="XTT/HttpNegativeTest/CommunityFour" name="NumberOne" subscriber="0041628882004" />
+        
+        <add community="XTT/HttpNegativeTest/CommunityFive" name="NumberOne" subscriber="0041628882005" />
+        
+        <add community="XTT/HttpNegativeTest/CommunitySix" name="NumberOne" subscriber="0041628882006" />        
+    </communityMembers>    
+    
+    <xsnFilters>
+        <set subscriber="0041628882001" scheme="customFilters" >
+            <categories />
+        </set>
+        
+        <set subscriber="0041628882002" scheme="customFilters" >
+            <categories />
+        </set>   
+
+        <set subscriber="0041628882003" scheme="customFilters" >
+            <categories />
+        </set>
+        
+        <set subscriber="0041628882004" scheme="customFilters" >
+            <categories />
+        </set>
+
+        <set subscriber="0041628882005" scheme="customFilters" >
+            <categories />
+        </set>
+        
+        <set subscriber="0041628882006" scheme="customFilters" >
+            <categories />
+        </set>
+
+        <set community="XTT/HttpNegativeTest/CommunityOne" scheme="customFilters" >
+            <categories /> 
+            <internetFilters>
+                <block urlPattern="http:/wowhead.com" />
+            </internetFilters>                       
+        </set>  
+        
+        <set community="XTT/HttpNegativeTest/CommunityTwo" scheme="customFilters" >
+            <categories /> 
+            <internetFilters>
+                <block urlPattern="*" />
+                <exception urlPattern="http:/wowhead.com" />
+            </internetFilters>                       
+        </set> 
+        
+        <set community="XTT/HttpNegativeTest/CommunityThree" scheme="customFilters" >
+            <categories /> 
+            <internetFilters>
+                <block urlPattern="wowhead.com/" />
+            </internetFilters>                       
+        </set>  
+        
+        <set community="XTT/HttpNegativeTest/CommunityFour" scheme="customFilters" >
+            <categories /> 
+            <internetFilters>
+                <block urlPattern="*" />
+                <exception urlPattern="wowhead.com/" />
+            </internetFilters>                       
+        </set>
+        
+        <set community="XTT/HttpNegativeTest/CommunityFive" scheme="customFilters" >
+            <categories /> 
+            <internetFilters>
+                <block urlPattern="172.20.14.*" />
+            </internetFilters>                       
+        </set>  
+        
+        <set community="XTT/HttpNegativeTest/CommunitySix" scheme="customFilters" >
+            <categories /> 
+            <internetFilters>
+                <block urlPattern="*" />
+                <exception urlPattern="172.20.14.*" />
+            </internetFilters>                       
+        </set>                        
+    </xsnFilters>    
+</dbupdates>    
+          

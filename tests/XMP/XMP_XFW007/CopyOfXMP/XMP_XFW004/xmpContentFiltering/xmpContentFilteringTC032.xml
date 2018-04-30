@@ -1,0 +1,30 @@
+<test>
+    <function name="testName" module="Basic">
+        <parameter>XMP.CONTENTFILTERING.TC.032</parameter>
+     </function>
+	
+    <description>Standard Filter: No Category / www.chaska.ch is in OkForAnyAge by means of urlPattern, User is in DB [age=12], URL is accessible</description>
+        
+    <!-- Radius logon - User is in DB [age=12] -->
+    <function name="radiusLogon" module="Radius">
+	<parameter>0787367501</parameter>
+	<parameter>0787367501</parameter>
+	<configuration>system/Ip</configuration>
+    </function> 
+      
+    <!-- http://www.chaska.ch/ : urlCategories : No Category (0)  -->
+    <function name="sendGetRequest" module="HTTP">
+	 <parameter>http://www.chaska.ch/</parameter>
+    </function>
+	
+    <function name="checkResponseCode" module="HTTP">
+	<parameter>200</parameter>
+    </function>
+	    
+    <!-- Radius logoff - User is in DB [age=12] -->
+    <function name="radiusLogoff" module="Radius">
+	<parameter>0787367501</parameter>
+	<parameter>0787367501</parameter>
+	<configuration>system/Ip</configuration>
+    </function> 
+</test>

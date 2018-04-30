@@ -1,0 +1,214 @@
+<dbupdates>
+	<subscribers>
+		<remove subscriber="0041790000001" />
+		<remove subscriber="0041790000002" />
+		<remove subscriber="0041790000003" />
+		<remove subscriber="0041790000004" />
+		<remove subscriber="0041790000005" />
+		<remove subscriber="0041790000006" />
+		<remove subscriber="0041790000007" />
+		<remove subscriber="0041790000008" />
+		<remove subscriber="0041790000009" />
+		<remove subscriber="0041790000010" />
+
+
+		<add subscriber="0041790000001">
+			<firstName value="AdultUser" />
+			<lastName value="noCommunity" />
+			<born value="1970-01-01" />
+		</add>
+
+		<add subscriber="0041790000002">
+			<firstName value="ChildUserAbove16" />
+			<lastName value="noCommunity" />
+			<born value="1990-06-06" />
+		</add>
+
+		<add subscriber="0041790000003">
+			<firstName value="ChildUserBelow16" />
+			<lastName value="noCommunity" />
+			<born value="2000-11-11" />
+		</add>
+
+		<add subscriber="0041790000004">
+			<firstName value="AdultUserStandardFilter" />
+			<lastName value="noCommunity" />
+			<born value="1970-01-01" />
+		</add>
+
+		<add subscriber="0041790000005">
+			<firstName value="ChildUserAbove16StandardFilter" />
+			<lastName value="noCommunity" />
+			<born value="1990-06-06" />
+		</add>
+
+		<add subscriber="0041790000006">
+			<firstName value="ChildUserBelow16StandardFilter" />
+			<lastName value="noCommunity" />
+			<born value="2000-11-11" />
+		</add>
+
+		<add subscriber="0041790000007">
+			<firstName value="AdultUserCustomFilter" />
+			<lastName value="noCommunity" />
+			<born value="1970-01-01" />
+		</add>
+
+		<add subscriber="0041790000008">
+			<firstName value="ChildUserAbove16CustomFilter" />
+			<lastName value="noCommunity" />
+			<born value="1990-06-06" />
+		</add>
+
+		<add subscriber="0041790000009">
+			<firstName value="ChildUserBelow16CustomFilter" />
+			<lastName value="noCommunity" />
+			<born value="2000-11-11" />
+		</add>
+
+		<add subscriber="0041790000010">
+			<firstName value="AdultUserCustomFilterNoGames" />
+			<lastName value="noCommunity" />
+			<born value="1970-01-01" />
+		</add>
+
+
+	</subscribers>
+
+	<communities>
+		<remove name="XTT/MM7Test/CommunityOne" />
+		<remove name="XTT/MM7Test/CommunityTwo" />
+		<remove name="XTT/MM7Test/CommunityThree" />
+		<remove name="XTT/MM7Test/CommunityFour" />
+		<remove name="XTT/MM7Test/CommunityFive" />
+		<remove name="XTT/MM7Test/CommunitySix" />
+		<remove name="XTT/MM7Test/CommunitySix/ChildOne" />
+		<remove name="XTT/MM7Test/CommunitySeven" />
+
+		<add name="XTT/MM7Test/CommunityOne" />
+		<add name="XTT/MM7Test/CommunityTwo" />
+		<add name="XTT/MM7Test/CommunityThree" />
+		<add name="XTT/MM7Test/CommunityFour" />
+		<add name="XTT/MM7Test/CommunityFive" />
+		<add name="XTT/MM7Test/CommunitySix" />
+		<add name="XTT/MM7Test/CommunitySix/ChildOne" />
+		<add name="XTT/MM7Test/CommunitySeven" />
+	</communities>
+
+	<!--
+	<communityMembers>
+		<add community="XTT/MM7Test/CommunityOne" name="NumberFour" subscriber="0041628881004" />
+
+		<add community="XTT/MM7Test/CommunityTwo" name="NumberFive" subscriber="0041628881005" />
+
+		<add community="XTT/MM7Test/CommunityOne" name="NumberSix" subscriber="0041628881006" />
+		<add community="XTT/MM7Test/CommunityTwo" name="NumberSix" subscriber="0041628881006" />
+
+		<add community="XTT/MM7Test/CommunityThree" name="NumberSeven" subscriber="0041628881007" />
+		<add community="XTT/MM7Test/CommunityFour" name="NumberSeven" subscriber="0041628881007" />
+		<add community="XTT/MM7Test/CommunityFive" name="NumberSeven" subscriber="0041628881007" />
+
+		<add community="XTT/MM7Test/CommunitySix" name="NumberEight" subscriber="0041628881008" />
+
+		<add community="XTT/MM7Test/CommunitySix/ChildOne" name="NumberNine" subscriber="0041628881009" />
+
+		<add community="XTT/MM7Test/CommunitySeven" name="NumberTwelve" subscriber="0041628881012" />$
+	</communityMembers>
+		-->
+<!--
+	<communityAdmins>
+		<add community="XTT/MM7Test/CommunitySeven" name="AdminNumberOne" subscriber="0041628881013" wantAudit="Yes" wantNotifications="Yes" />
+	</communityAdmins>
+-->
+	<xsnFilters>
+		<set subscriber="0041790000001" scheme="noFilters" >
+			<categories />
+		</set>
+		<set subscriber="0041790000002" scheme="noFilters" >
+			<categories />
+		</set>
+		<set subscriber="0041790000003" scheme="noFilters" >
+			<categories />
+		</set>
+		<set subscriber="0041790000004" scheme="standardFilters" >
+			<categories />
+		</set>
+		<set subscriber="0041790000005" scheme="standardFilters" >
+			<categories />
+		</set>
+		<set subscriber="0041790000006" scheme="standardFilters" >
+			<categories />
+		</set>
+		<set subscriber="0041790000007" scheme="customFilters" >
+			<categories>
+				<block category="mapDrugsAlcoholTobacco" />
+				<block category="mapPersonalsDating" />
+				<block category="mapSports" />
+			</categories>
+		</set>
+		<set subscriber="0041790000008" scheme="customFilters" >
+			<categories>
+				<block category="mapDrugsAlcoholTobacco" />
+				<block category="mapSports" />
+			</categories>
+		</set>
+		<set subscriber="0041790000009" scheme="customFilters" >
+			<categories>
+				<block category="mapSports" />
+			</categories>
+		</set>
+		<set subscriber="0041790000010" scheme="customFilters" >
+			<categories>
+				<block category="mapGames" />
+			</categories>
+		</set>
+
+
+
+
+		<set community="XTT/MM7Test/CommunityOne" scheme="customFilters" >
+			<categories>
+				<block category="mapAdultSexuallyExplicit" />
+			</categories>
+		</set>
+
+		<set community="XTT/MM7Test/CommunityTwo" scheme="customFilters" >
+			<categories>
+				<block category="mapAdultSexuallyExplicit" />
+			</categories>
+			<internetFilters>
+				<exception urlPattern="playboy.com" />
+			</internetFilters>
+		</set>
+
+		<set community="XTT/MM7Test/CommunityThree" scheme="customFilters" >
+			<categories>
+				<block category="mapGovernmentPolitics" />
+			</categories>
+		</set>
+
+		<set community="XTT/MM7Test/CommunityFour" scheme="customFilters" >
+			<categories>
+				<block category="mapNews" />
+			</categories>
+		</set>
+
+		<set community="XTT/MM7Test/CommunityFive" scheme="customFilters" >
+			<categories>
+				<block category="mapTravel" />
+			</categories>
+		</set>
+
+		<set community="XTT/MM7Test/CommunitySix" scheme="customFilters" >
+			<categories>
+				<block category="mapShopping" />
+			</categories>
+		</set>
+
+		<set community="XTT/MM7Test/CommunitySix/ChildOne" scheme="customFilters" >
+			<categories>
+				<block category="mapSports" />
+			</categories>
+		</set>
+	</xsnFilters>
+</dbupdates>

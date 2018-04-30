@@ -1,0 +1,27 @@
+<test>
+    <function name="testName" module="Basic">
+        <parameter>XMP.CONTENTFILTERING.TC.XXX</parameter>
+     </function>
+	
+    <description>Check that all processes are running and that are no cores</description>
+
+    <!-- just check of there are any corefiles -->
+    <function name="executeRemoteCommand" module="Remote">
+        <parameter>
+            <parameter>find </parameter>
+            <configuration>REMOTE/PROCPATH</configuration>
+            <parameter> -name *.core</parameter>
+        </parameter>
+    </function>
+
+    <function name="queryResponse" module="Remote">
+        <parameter></parameter>
+        <parameter>result</parameter>
+    </function>
+
+    <!-- just check if all the processes are running -->
+    <function name="checkAllProcessesStatus" module="Remote">
+        <parameter>Running</parameter>
+    </function>
+      
+</test>

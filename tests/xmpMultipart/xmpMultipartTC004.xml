@@ -1,0 +1,621 @@
+<test>
+	<name>XMP.MULTIPART.TC.004</name>
+    <description>MULTIPART WURFL maxNumberObjects</description>
+
+	<subtest>deleteCacheAll.xml</subtest>
+
+	<subtest>loadWURFL.xml</subtest>
+
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+	<function name="startWebServer" module="HTTP"/>
+
+	<function name="setHeader" module="HTTP">
+		<parameter>User-Agent</parameter>
+		<parameter>XTT/multipart</parameter>
+	</function>
+
+
+	<function name="setServerHeader" module="HTTP">
+		<parameter>Last-Modified</parameter>
+		<parameter>Wed, 15 Nov 1995 04:58:08 GMT</parameter>
+	</function>
+
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>MULTIPARTTC004_01.gif</parameter>
+		<base64File>red.gif</base64File>
+    </function>
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>MULTIPARTTC004_02.gif</parameter>
+		<base64File>red.gif</base64File>
+    </function>
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>MULTIPARTTC004_03.gif</parameter>
+		<base64File>red.gif</base64File>
+    </function>
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>MULTIPARTTC004_04.gif</parameter>
+		<base64File>red.gif</base64File>
+    </function>
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>MULTIPARTTC004_05.gif</parameter>
+		<base64File>red.gif</base64File>
+    </function>
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>MULTIPARTTC004_06.gif</parameter>
+		<base64File>red.gif</base64File>
+    </function>
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>MULTIPARTTC004_07.gif</parameter>
+		<base64File>red.gif</base64File>
+    </function>
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>MULTIPARTTC004_08.gif</parameter>
+		<base64File>red.gif</base64File>
+    </function>
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>MULTIPARTTC004_09.gif</parameter>
+		<base64File>red.gif</base64File>
+    </function>
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>MULTIPARTTC004_10.gif</parameter>
+		<base64File>red.gif</base64File>
+    </function>
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>MULTIPARTTC004_11.gif</parameter>
+		<base64File>red.gif</base64File>
+    </function>
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>MULTIPARTTC004_12.gif</parameter>
+		<base64File>red.gif</base64File>
+    </function>
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>MULTIPARTTC004_13.gif</parameter>
+		<base64File>red.gif</base64File>
+    </function>
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>MULTIPARTTC004_14.gif</parameter>
+		<base64File>red.gif</base64File>
+    </function>
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>MULTIPARTTC004_15.gif</parameter>
+		<base64File>red.gif</base64File>
+    </function>
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>MULTIPARTTC004_16.gif</parameter>
+		<base64File>red.gif</base64File>
+    </function>
+
+    <function name="setCacheFile" module="HTTP">
+		<parameter>MULTIPARTTC004.html</parameter>
+        <parameter>
+<parameter>&lt;html&gt;
+&lt;body&gt;
+&lt;pre&gt;This is the initial file FILLTO64CHARACTERSXXXXXXXXXXXXXXXXXXXXX
+&lt;/pre&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC004_01.gif"/&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC004_02.gif"/&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC004_03.gif"/&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC004_04.gif"/&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC004_05.gif"/&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC004_06.gif"/&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC004_07.gif"/&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC004_08.gif"/&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC004_09.gif"/&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC004_10.gif"/&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC004_11.gif"/&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC004_12.gif"/&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC004_13.gif"/&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC004_14.gif"/&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC004_15.gif"/&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC004_16.gif"/&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</parameter>
+        </parameter>
+    </function>
+
+	<function name="sendGetRequest" module="HTTP">
+        <parameter>
+    		<parameter>http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC004.html</parameter>
+        </parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+	<function name="waitForRequests" module="HTTP">
+		<parameter>17</parameter>
+	</function>
+
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>This is the initial file FILLTO64CHARACTERSXXXXXXXXXXXXXXXXXXXXX</parameter>
+    </function>
+
+    <function name="setCacheFile" module="HTTP">
+		<parameter>MULTIPARTTC004.html</parameter>
+<xml><html>
+<body>
+This is the file that should not be retrieved AGAINDOTHEFILLXXXX
+</body>
+</html>
+</xml>
+    </function>
+
+    <thread>
+    	<function name="waitForTimeoutRequests" module="HTTP">
+    		<parameter>5000</parameter>
+    		<parameter>17</parameter>
+    	</function>
+	</thread>
+	<function name="sendGetRequest" module="HTTP">
+        <parameter>
+    		<parameter>http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC004.html</parameter>
+        </parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>This is the initial file FILLTO64CHARACTERSXXXXXXXXXXXXXXXXXXXXX</parameter>
+    </function>
+    <function name="queryBodyNegative" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>This is the file that should not be retrieved AGAINDOTHEFILLXXXX</parameter>
+    </function>
+	<function name="queryHeader" module="HTTP">
+                <parameter>dev/null</parameter>
+                <parameter>
+		   <parameter>content-type</parameter>
+		   <parameter>multipart/related;boundary=</parameter>
+                </parameter>
+	</function>
+	<function name="queryHeader" module="HTTP">
+                <parameter>dev/null</parameter>
+                <parameter>
+		   <parameter>warning</parameter>
+		   <parameter>214</parameter>
+                </parameter>
+	</function>
+	<function name="queryHeader" module="HTTP">
+                <parameter>dev/null</parameter>
+                <parameter>
+		   <parameter>warning</parameter>
+		   <parameter>Transformation applied</parameter>
+                </parameter>
+	</function>
+	<!--function name="writeFile" module="basic">
+		<parameter>test.txt</parameter>
+		<variable>HTTP/BODY/PLAIN</variable>
+	</function-->
+
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>[cC]ontent-[tT]ype: image/gif\r\n[cC]ontent-[tT]ransfer-[eE]ncoding: binary\r\n[cC]ontent-[lL]ocation: http://</parameter><configuration>SYSTEM/IP</configuration><parameter>/MULTIPARTTC004_01.gif</parameter>
+        </parameter>
+    </function>
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>[cC]ontent-[tT]ype: image/gif\r\n[cC]ontent-[tT]ransfer-[eE]ncoding: binary\r\n[cC]ontent-[lL]ocation: http://</parameter><configuration>SYSTEM/IP</configuration><parameter>/MULTIPARTTC004_02.gif</parameter>
+        </parameter>
+    </function>
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>[cC]ontent-[tT]ype: image/gif\r\n[cC]ontent-[tT]ransfer-[eE]ncoding: binary\r\n[cC]ontent-[lL]ocation: http://</parameter><configuration>SYSTEM/IP</configuration><parameter>/MULTIPARTTC004_03.gif</parameter>
+        </parameter>
+    </function>
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>[cC]ontent-[tT]ype: image/gif\r\n[cC]ontent-[tT]ransfer-[eE]ncoding: binary\r\n[cC]ontent-[lL]ocation: http://</parameter><configuration>SYSTEM/IP</configuration><parameter>/MULTIPARTTC004_04.gif</parameter>
+        </parameter>
+    </function>
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>[cC]ontent-[tT]ype: image/gif\r\n[cC]ontent-[tT]ransfer-[eE]ncoding: binary\r\n[cC]ontent-[lL]ocation: http://</parameter><configuration>SYSTEM/IP</configuration><parameter>/MULTIPARTTC004_05.gif</parameter>
+        </parameter>
+    </function>
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>[cC]ontent-[tT]ype: image/gif\r\n[cC]ontent-[tT]ransfer-[eE]ncoding: binary\r\n[cC]ontent-[lL]ocation: http://</parameter><configuration>SYSTEM/IP</configuration><parameter>/MULTIPARTTC004_06.gif</parameter>
+        </parameter>
+    </function>
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>[cC]ontent-[tT]ype: image/gif\r\n[cC]ontent-[tT]ransfer-[eE]ncoding: binary\r\n[cC]ontent-[lL]ocation: http://</parameter><configuration>SYSTEM/IP</configuration><parameter>/MULTIPARTTC004_07.gif</parameter>
+        </parameter>
+    </function>
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>[cC]ontent-[tT]ype: image/gif\r\n[cC]ontent-[tT]ransfer-[eE]ncoding: binary\r\n[cC]ontent-[lL]ocation: http://</parameter><configuration>SYSTEM/IP</configuration><parameter>/MULTIPARTTC004_08.gif</parameter>
+        </parameter>
+    </function>
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>[cC]ontent-[tT]ype: image/gif\r\n[cC]ontent-[tT]ransfer-[eE]ncoding: binary\r\n[cC]ontent-[lL]ocation: http://</parameter><configuration>SYSTEM/IP</configuration><parameter>/MULTIPARTTC004_09.gif</parameter>
+        </parameter>
+    </function>
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>[cC]ontent-[tT]ype: image/gif\r\n[cC]ontent-[tT]ransfer-[eE]ncoding: binary\r\n[cC]ontent-[lL]ocation: http://</parameter><configuration>SYSTEM/IP</configuration><parameter>/MULTIPARTTC004_10.gif</parameter>
+        </parameter>
+    </function>
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>[cC]ontent-[tT]ype: image/gif\r\n[cC]ontent-[tT]ransfer-[eE]ncoding: binary\r\n[cC]ontent-[lL]ocation: http://</parameter><configuration>SYSTEM/IP</configuration><parameter>/MULTIPARTTC004_11.gif</parameter>
+        </parameter>
+    </function>
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>[cC]ontent-[tT]ype: image/gif\r\n[cC]ontent-[tT]ransfer-[eE]ncoding: binary\r\n[cC]ontent-[lL]ocation: http://</parameter><configuration>SYSTEM/IP</configuration><parameter>/MULTIPARTTC004_12.gif</parameter>
+        </parameter>
+    </function>
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>[cC]ontent-[tT]ype: image/gif\r\n[cC]ontent-[tT]ransfer-[eE]ncoding: binary\r\n[cC]ontent-[lL]ocation: http://</parameter><configuration>SYSTEM/IP</configuration><parameter>/MULTIPARTTC004_13.gif</parameter>
+        </parameter>
+    </function>
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>[cC]ontent-[tT]ype: image/gif\r\n[cC]ontent-[tT]ransfer-[eE]ncoding: binary\r\n[cC]ontent-[lL]ocation: http://</parameter><configuration>SYSTEM/IP</configuration><parameter>/MULTIPARTTC004_14.gif</parameter>
+        </parameter>
+    </function>
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>[cC]ontent-[tT]ype: image/gif\r\n[cC]ontent-[tT]ransfer-[eE]ncoding: binary\r\n[cC]ontent-[lL]ocation: http://</parameter><configuration>SYSTEM/IP</configuration><parameter>/MULTIPARTTC004_15.gif</parameter>
+        </parameter>
+    </function>
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>[cC]ontent-[tT]ype: image/gif\r\n[cC]ontent-[tT]ransfer-[eE]ncoding: binary\r\n[cC]ontent-[lL]ocation: http://</parameter><configuration>SYSTEM/IP</configuration><parameter>/MULTIPARTTC004_16.gif</parameter>
+        </parameter>
+    </function>
+
+	<function name="sleep" module="Basic">
+		<parameter>6000</parameter>
+	</function>
+
+
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>MULTIPARTTC004_2_01.gif</parameter>
+		<base64File>red.gif</base64File>
+    </function>
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>MULTIPARTTC004_2_02.gif</parameter>
+		<base64File>red.gif</base64File>
+    </function>
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>MULTIPARTTC004_2_03.gif</parameter>
+		<base64File>red.gif</base64File>
+    </function>
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>MULTIPARTTC004_2_04.gif</parameter>
+		<base64File>red.gif</base64File>
+    </function>
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>MULTIPARTTC004_2_05.gif</parameter>
+		<base64File>red.gif</base64File>
+    </function>
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>MULTIPARTTC004_2_06.gif</parameter>
+		<base64File>red.gif</base64File>
+    </function>
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>MULTIPARTTC004_2_07.gif</parameter>
+		<base64File>red.gif</base64File>
+    </function>
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>MULTIPARTTC004_2_08.gif</parameter>
+		<base64File>red.gif</base64File>
+    </function>
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>MULTIPARTTC004_2_09.gif</parameter>
+		<base64File>red.gif</base64File>
+    </function>
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>MULTIPARTTC004_2_10.gif</parameter>
+		<base64File>red.gif</base64File>
+    </function>
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>MULTIPARTTC004_2_11.gif</parameter>
+		<base64File>red.gif</base64File>
+    </function>
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>MULTIPARTTC004_2_12.gif</parameter>
+		<base64File>red.gif</base64File>
+    </function>
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>MULTIPARTTC004_2_13.gif</parameter>
+		<base64File>red.gif</base64File>
+    </function>
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>MULTIPARTTC004_2_14.gif</parameter>
+		<base64File>red.gif</base64File>
+    </function>
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>MULTIPARTTC004_2_15.gif</parameter>
+		<base64File>red.gif</base64File>
+    </function>
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>MULTIPARTTC004_2_16.gif</parameter>
+		<base64File>red.gif</base64File>
+    </function>
+    <function name="setCacheFileBase64" module="HTTP">
+		<parameter>MULTIPARTTC004_2_17.gif</parameter>
+		<base64File>red.gif</base64File>
+    </function>
+
+    <function name="setCacheFile" module="HTTP">
+		<parameter>MULTIPARTTC004_2.html</parameter>
+        <parameter>
+<parameter>&lt;html&gt;
+&lt;body&gt;
+&lt;pre&gt;This is the initial file FILLTO64CHARACTERSXXXXXXXXXXXXXXXXXXXXX
+&lt;/pre&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC004_2_01.gif"/&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC004_2_02.gif"/&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC004_2_03.gif"/&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC004_2_04.gif"/&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC004_2_05.gif"/&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC004_2_06.gif"/&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC004_2_07.gif"/&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC004_2_08.gif"/&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC004_2_09.gif"/&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC004_2_10.gif"/&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC004_2_11.gif"/&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC004_2_12.gif"/&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC004_2_13.gif"/&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC004_2_14.gif"/&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC004_2_15.gif"/&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC004_2_16.gif"/&gt;
+&lt;br/&gt;&lt;img src="http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC004_2_17.gif"/&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</parameter>
+        </parameter>
+    </function>
+
+    <thread>
+    	<function name="waitForRequests" module="HTTP">
+	    	<parameter>34</parameter>
+	    </function>
+    	<function name="waitForTimeoutRequests" module="HTTP">
+    		<parameter>5000</parameter>
+    		<parameter>34</parameter>
+    	</function>
+	</thread>
+	<function name="sendGetRequest" module="HTTP">
+        <parameter>
+    		<parameter>http://</parameter>
+    		<configuration>system/ip</configuration>
+    		<parameter>/MULTIPARTTC004_2.html</parameter>
+        </parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>This is the initial file FILLTO64CHARACTERSXXXXXXXXXXXXXXXXXXXXX</parameter>
+    </function>
+	<function name="queryHeader" module="HTTP">
+                <parameter>dev/null</parameter>
+		<parameter>content-type</parameter>
+		<parameter>multipart/related;boundary=</parameter>
+	</function>
+	<function name="queryHeader" module="HTTP">
+                <parameter>dev/null</parameter>
+		<parameter>warning</parameter>
+		<parameter>214</parameter>
+	</function>
+	<function name="queryHeader" module="HTTP">
+                <parameter>dev/null</parameter>
+		<parameter>warning</parameter>
+		<parameter>Transformation applied</parameter>
+	</function>	
+	<!--function name="writeFile" module="basic">
+		<parameter>test.txt</parameter>
+		<variable>HTTP/BODY/PLAIN</variable>
+	</function-->
+
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>[cC]ontent-[tT]ype: image/gif\r\n[cC]ontent-[tT]ransfer-[eE]ncoding: binary\r\n[cC]ontent-[lL]ocation: http://</parameter><configuration>SYSTEM/IP</configuration><parameter>/MULTIPARTTC004_2_01.gif</parameter>
+        </parameter>
+    </function>
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>[cC]ontent-[tT]ype: image/gif\r\n[cC]ontent-[tT]ransfer-[eE]ncoding: binary\r\n[cC]ontent-[lL]ocation: http://</parameter><configuration>SYSTEM/IP</configuration><parameter>/MULTIPARTTC004_2_02.gif</parameter>
+        </parameter>
+    </function>
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>[cC]ontent-[tT]ype: image/gif\r\n[cC]ontent-[tT]ransfer-[eE]ncoding: binary\r\n[cC]ontent-[lL]ocation: http://</parameter><configuration>SYSTEM/IP</configuration><parameter>/MULTIPARTTC004_2_03.gif</parameter>
+        </parameter>
+    </function>
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>[cC]ontent-[tT]ype: image/gif\r\n[cC]ontent-[tT]ransfer-[eE]ncoding: binary\r\n[cC]ontent-[lL]ocation: http://</parameter><configuration>SYSTEM/IP</configuration><parameter>/MULTIPARTTC004_2_04.gif</parameter>
+        </parameter>
+    </function>
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>[cC]ontent-[tT]ype: image/gif\r\n[cC]ontent-[tT]ransfer-[eE]ncoding: binary\r\n[cC]ontent-[lL]ocation: http://</parameter><configuration>SYSTEM/IP</configuration><parameter>/MULTIPARTTC004_2_05.gif</parameter>
+        </parameter>
+    </function>
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>[cC]ontent-[tT]ype: image/gif\r\n[cC]ontent-[tT]ransfer-[eE]ncoding: binary\r\n[cC]ontent-[lL]ocation: http://</parameter><configuration>SYSTEM/IP</configuration><parameter>/MULTIPARTTC004_2_06.gif</parameter>
+        </parameter>
+    </function>
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>[cC]ontent-[tT]ype: image/gif\r\n[cC]ontent-[tT]ransfer-[eE]ncoding: binary\r\n[cC]ontent-[lL]ocation: http://</parameter><configuration>SYSTEM/IP</configuration><parameter>/MULTIPARTTC004_2_07.gif</parameter>
+        </parameter>
+    </function>
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>[cC]ontent-[tT]ype: image/gif\r\n[cC]ontent-[tT]ransfer-[eE]ncoding: binary\r\n[cC]ontent-[lL]ocation: http://</parameter><configuration>SYSTEM/IP</configuration><parameter>/MULTIPARTTC004_2_08.gif</parameter>
+        </parameter>
+    </function>
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>[cC]ontent-[tT]ype: image/gif\r\n[cC]ontent-[tT]ransfer-[eE]ncoding: binary\r\n[cC]ontent-[lL]ocation: http://</parameter><configuration>SYSTEM/IP</configuration><parameter>/MULTIPARTTC004_2_09.gif</parameter>
+        </parameter>
+    </function>
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>[cC]ontent-[tT]ype: image/gif\r\n[cC]ontent-[tT]ransfer-[eE]ncoding: binary\r\n[cC]ontent-[lL]ocation: http://</parameter><configuration>SYSTEM/IP</configuration><parameter>/MULTIPARTTC004_2_10.gif</parameter>
+        </parameter>
+    </function>
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>[cC]ontent-[tT]ype: image/gif\r\n[cC]ontent-[tT]ransfer-[eE]ncoding: binary\r\n[cC]ontent-[lL]ocation: http://</parameter><configuration>SYSTEM/IP</configuration><parameter>/MULTIPARTTC004_2_11.gif</parameter>
+        </parameter>
+    </function>
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>[cC]ontent-[tT]ype: image/gif\r\n[cC]ontent-[tT]ransfer-[eE]ncoding: binary\r\n[cC]ontent-[lL]ocation: http://</parameter><configuration>SYSTEM/IP</configuration><parameter>/MULTIPARTTC004_2_12.gif</parameter>
+        </parameter>
+    </function>
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>[cC]ontent-[tT]ype: image/gif\r\n[cC]ontent-[tT]ransfer-[eE]ncoding: binary\r\n[cC]ontent-[lL]ocation: http://</parameter><configuration>SYSTEM/IP</configuration><parameter>/MULTIPARTTC004_2_13.gif</parameter>
+        </parameter>
+    </function>
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>[cC]ontent-[tT]ype: image/gif\r\n[cC]ontent-[tT]ransfer-[eE]ncoding: binary\r\n[cC]ontent-[lL]ocation: http://</parameter><configuration>SYSTEM/IP</configuration><parameter>/MULTIPARTTC004_2_14.gif</parameter>
+        </parameter>
+    </function>
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>[cC]ontent-[tT]ype: image/gif\r\n[cC]ontent-[tT]ransfer-[eE]ncoding: binary\r\n[cC]ontent-[lL]ocation: http://</parameter><configuration>SYSTEM/IP</configuration><parameter>/MULTIPARTTC004_2_15.gif</parameter>
+        </parameter>
+    </function>
+    <function name="queryBody" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>[cC]ontent-[tT]ype: image/gif\r\n[cC]ontent-[tT]ransfer-[eE]ncoding: binary\r\n[cC]ontent-[lL]ocation: http://</parameter><configuration>SYSTEM/IP</configuration><parameter>/MULTIPARTTC004_2_16.gif</parameter>
+        </parameter>
+    </function>
+    <function name="queryBodyNegative" module="HTTP">
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>[cC]ontent-[tT]ype: image/gif\r\n[cC]ontent-[tT]ransfer-[eE]ncoding: binary\r\n[cC]ontent-[lL]ocation: http://</parameter><configuration>SYSTEM/IP</configuration><parameter>/MULTIPARTTC004_2_17.gif</parameter>
+        </parameter>
+    </function>
+
+
+
+	<subtest>emptyWURFL.xml</subtest>
+
+	<function name="stopWebServer" module="HTTP"/>
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+</test>

@@ -1,0 +1,41 @@
+<test>
+    <function name="testName" module="Basic">
+        <parameter>XMP.CONTENTFILTERING.TC.012</parameter>
+     </function>
+	
+    <description>Standard Filter: Alcohol and Tobacco (443) / standardFilter="allow" / minAge=16 / subscriberFilterable=true, User is NOT in DB, URL is NOT accessible / Redirection Page#2</description>
+        
+    <!-- Radius logon - User not in DB -->
+    <function name="radiusLogon" module="Radius">
+	<parameter>0787367499</parameter>
+	<parameter>0787367499</parameter>
+	<configuration>system/Ip</configuration>
+    </function> 
+      
+    <!-- Redirected to /XMPBlocked/ageIsUnknown.html -->  
+    <!-- XMP forwards blocked request to its WebServer -->
+    <function name="disableFollowRedirects" module="HTTP" />
+
+    <!-- http://www.glenfiddich.com/ : urlCategories : Alcohol and Tobacco (443)  -->
+    <function name="sendGetRequest" module="HTTP">
+	 <parameter>http://www.bacardi.com/</parameter>
+    </function>
+	
+    <function name="checkResponseCode" module="HTTP">
+	<parameter>302</parameter>
+    </function>
+	
+    <function name="queryHeader" module="HTTP">
+	 <parameter>dev/null</parameter>
+	 <parameter>location</parameter>
+         <parameter>XMPBlocked/ageIsUnknown.html$</parameter>		
+    </function>		
+    
+    
+    <!-- Radius logoff - User not in DB -->
+    <function name="radiusLogoff" module="Radius">
+	<parameter>0787367499</parameter>
+	<parameter>0787367499</parameter>
+	<configuration>system/Ip</configuration>
+    </function> 
+</test>

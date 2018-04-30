@@ -1,0 +1,67 @@
+ <test>
+	<name>RTSP.TC.009_Server</name>
+	<description>Test RTSP SET_PARAMETER method for Client to Server scenario</description>
+
+    <!-- client side server for responses -->
+    <function name="setVariable" module="Basic">
+        <parameter>SERVER</parameter>
+        <configuration>RTSPSERVER/PORT</configuration>
+    </function>
+
+    <!-- server side server for requests -->
+    <function name="startRTSPServer" module="RTSP">
+        <variable>SERVER</variable>
+        <configuration>RTSPSERVER/TIMEOUT</configuration>
+        <testpath>rtsp</testpath>
+    </function>
+		
+    <function name="waitForVariable" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>SERVER</variable>
+            <parameter>/SETUP/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+    <function name="removeVariables" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>SERVER</variable>
+            <parameter>/SETUP/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+	<function name="setVariable" module="Basic">
+        <parameter>barparam</parameter>
+        <base64encode>
+            <crlf>barparam</crlf>
+        </base64encode>
+    </function>
+	
+	<function name="setServerHeader" module="RTSP">
+        <parameter>Content-Type</parameter>
+        <parameter>text/parameters</parameter>
+    </function>
+	
+    <function name="setServerHeader" module="RTSP">
+        <parameter>Content-Length</parameter>
+        <base64bytelength><variable>barparam</variable></base64bytelength>
+    </function>
+
+   <function name="waitForVariable" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>SERVER</variable>
+            <parameter>/SET_PARAMETER/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+    <function name="removeVariables" module="Basic">
+        <parameter>
+            <parameter>RTSP/</parameter>
+            <variable>SERVER</variable>
+            <parameter>/SET_PARAMETER/FINISHED/REQUEST</parameter>
+        </parameter>
+    </function>
+
+    <function name="stopRTSPServer" module="RTSP"/>
+
+</test>

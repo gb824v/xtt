@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmpProductView>
+   <configuration configurationName="XMPTest" description="Post Build XMP Integration" licenseFile="UPDATE_XFW_INSTALL_DIR/cfg/UPDATE_XFW_LICENSE_FILE" systemName="UPDATE_XFW_HOST_NM" />
+   <systemEnvironment jdkDirectory="UPDATE_XFW_HOST_JDK" operatingSystem="UPDATE_XFW_HOST_OS" userId="UPDATE_XFW_HOST_USER" windowsFileSystemRoot="C:/" workspaceDirectory="UPDATE_XFW_PROC" />
+	<capacity>
+		<capacityLimits processType="DEFAULT" blockSizeKBytes="32" concurrentConnections="20" concurrentRequests="100" />
+		<capacityLimits blockSizeKBytes="32" concurrentRequests="2" processType="VIDEO-OPTIMIZER"/>
+		<capacityLimits blockSizeKBytes="32" concurrentConnections="50"  maxMessageSizeBytes="4096" concurrentRequests="100" processType="DIAMETER-TRANSPORT"/>
+	</capacity>
+	<auxiliarySystems>
+		<dns>
+			<dnsServer ipAddress="UPDATE_XFW_HOST_IP" />
+		</dns>
+		<icap>
+			<icapServer name="xttrespmod" url="icap://UPDATE_XFW_HOST_IP:1344/respmod" />
+			<icapServer name="xttreqmod" url="icap://UPDATE_XFW_HOST_IP:1344/reqmod" />
+		</icap>
+		<radius>
+			<radiusProfile name="default" useInterimUpdateForSessionStart="true" useInterimUpdateForDynamicUpdates="true" obey3gppStopRules="false" dummySubscriberIdPrefix="999_">
+				<radiusAttributes>
+					<ipAddressAttribute radiusAttributeNumber="8" vendorAttribute="0" vendorId="0" conversionType="Ip4AddrToString" />
+					<subscriberIdAttribute radiusAttributeNumber="1" vendorAttribute="0" vendorId="0" conversionType="OctSeqToString" />
+					<additionalAttribute name="NASIPAddress" radiusAttributeNumber="4" />
+					<additionalAttribute name="NASIdentifier" radiusAttributeNumber="32" />
+					<additionalAttribute name="IMSI" radiusAttributeNumber="224" />
+					<additionalAttribute name="SGSN_IpAddress" radiusAttributeNumber="228" />
+					<additionalAttribute name="GGSN_IpAddress" radiusAttributeNumber="227" />
+					<additionalAttribute name="GPRS_ChargingID" radiusAttributeNumber="225" />
+					<additionalAttribute name="Prepaid_Ind" radiusAttributeNumber="226" />
+					<additionalAttribute name="Vendor_Attr" radiusAttributeNumber="26" vendorId="0" vendorAttribute="0" conversionType="Ip4AddrToString" />
+				</radiusAttributes>
+			</radiusProfile>
+         <radiusServer radiusProfile="default" sharedSecret="tttester" ipAddress="UPDATE_XFW_HOST_IP" />
+			<radiusServer radiusProfile="default" sharedSecret="tttester" ipAddress="UPDATE_XFW_HOST_IP" />
+		</radius>
+		<ldap>
+			<ldapServer authenticationMethod="simple" password="UPDATE_LDAP_ENCRYPTED_PASSWORD" url="ldap://UPDATE_XFW_HOST_IP:389" user="cn=Manager,o=wap_ext">
+				<query baseDn="cn=sis,o=wap_ext" defRefAlias="never" name="GetSubscriberId" scope="sub" searchFilter="'(login-ip=' + TCP_RemoteIpAddress + ')'" sizeLimit="1" timeLimitSecs="0" typesOnly="false">
+					<resultAttribute multipleValues="false" name="msisdn"/>
+				</query>
+			</ldapServer>
+		</ldap> 
+		<!--sti url="http://UPDATE_XFW_HOST_IP:8989/OMASTI.xml" /-->
+		<diameter originRealm="originalRealm">
+      <channel application="Gx" ipAddress="UPDATE_XFW_HOST_IP" name="GXCHANNEL" port="6868"/>
+      <channel application="Rx" ipAddress="UPDATE_XFW_HOST_IP" name="RXCHANNEL" port="6869"/>
+    </diameter>
+	</auxiliarySystems>
+	<cookieStore typeOfStore="database" maxStoreMins="129600">
+	<!--cookieStore typeOfStore="in-memory" maxStoreMins="129600"-->
+		<storePersistentCookies deleteAtSessionStart="false" />
+	</cookieStore>
+	<database>
+		<embedded />
+		<!--oracle service="sunora10.internal.724.com" oracleClientDirectory="/opt/oracle/10.2.0" username="xmp41_b33" password="0d9PXL7jpDHNLLRvskPTKN8KL7bm/6k01v3p0i/gmsu0Kmj9XsKEWasWsHxE1YoRbPKzlsse46g=" /-->
+	</database>
+	<subscriberDatabase/>
+	<httpCache maxProcessCacheSizeMbytes="1" maxStoreTimeMins="1" maxStoreItemSizeKbytes="1" >
+		<intelligentCachingRefresh percentageItemAge="20" maxFreshnessTimeMins="4320" minFreshnessTimeMins="0" />
+	</httpCache>
+	<interception/>
+   <logging logDirectory="UPDATE_XFW_LOG" logPeriod="Midnight" maxLogFileSizeMBytes="100" >
+	</logging>
+	<monitoring enableMetering="true" logInSyslog="true" >
+		<healthChecks>
+			<dbHelper maxLatencySecs="30" okLatencySecs="10" pollIntervalSecs="60" />
+			<dnsHelper pollIntervalSecs="60" resolveAddress="yahoo.com" />
+			<internetHelper pollIntervalSecs="60" >
+				<urlToPoll>http://www.google.com</urlToPoll>
+				<urlToPoll>http://www.yahoo.com</urlToPoll>
+			</internetHelper>
+		</healthChecks>
+		<snmp>
+			<accept>
+				<inet>
+					<sourceNms community="public" manager="UPDATE_XFW_HOST_IP" accessRight="READ_WRITE" />
+				</inet>
+			</accept>
+      <send udpPort="1620">
+        <targetNms community="public" manager="UPDATE_XFW_HOST_IP"/>
+      </send>
+		</snmp>
+	</monitoring>
+	<persistentHttpConnections maxInConnections="29" maxOutConnections="29" maxOutHosts="29" />
+	<!--presence/-->
+	<urlMatching>
+		<matchEquivalentHostsInUrls lookupIntervalSecs="10" >
+			<wildcardReplacement>www</wildcardReplacement>
+		</matchEquivalentHostsInUrls>
+	</urlMatching>
+	<virusScanning>
+		<kaspersky installDirectory="UPDATE_KASPERSKY_HOME" />
+	</virusScanning>
+	<proxySets>
+		<proxySet name="TEST_SET_1" algorithm="OrderedPriority" maxPersistentConnections="10" >
+			<proxyServer name="TEST_SET_1_1" ipAddress="UPDATE_XFW_HOST_IP" port="8111" />
+		</proxySet>
+		<proxySet name="TEST_SET_2" algorithm="OrderedPriority" maxPersistentConnections="10" >
+			<proxyServer name="TEST_SET_2_1" ipAddress="UPDATE_XFW_HOST_IP" port="8223" />
+		</proxySet>
+		<proxySet name="TEST_SET_3" algorithm="OrderedPriority" maxPersistentConnections="10" >
+			<proxyServer name="TEST_SET_3_1" ipAddress="UPDATE_XFW_HOST_IP" port="8333" />
+			<proxyServer name="TEST_SET_3_2" ipAddress="UPDATE_XFW_HOST_IP" port="8334" />
+			<proxyServer name="TEST_SET_3_3" ipAddress="UPDATE_XFW_HOST_IP" port="8335" />
+		</proxySet>
+		<proxySet name="BlueCoat" algorithm="EqualPriority" maxPersistentConnections="10" >
+			<proxyServer name="BlueCoat_1" ipAddress="UPDATE_XFW_HOST_IP" port="8444" />
+			<!--proxyServer name="BlueCoat_1" ipAddress="83.224.72.226" port="80" /-->
+		</proxySet>
+	</proxySets>
+	<contentFiltering>
+		<ctengine connectionString="LicenseKey=00008001U1063Y07191H; ServerAddress=webres%d.t.ctmail.com" />
+	</contentFiltering>
+	<mediaStore reaperSecs="10800" chunkSizeBytes="32768" firstChunkRequestTimeout="15" chunkRequestTimeout="30" maxMemorySizeMBytes="100"/>
+	<trafficOptimization/>
+	<pcrf />
+	<xupdates>
+		<xupdate description="An XUpdate to enable memory debug" >
+         <file name="UPDATE_XFW_INSTALL_DIR/cfg/xupdate-memory-debug-on.xml" />
+		</xupdate>
+		<xupdate description="Enable virus scanning for all content types" >
+         <file name="UPDATE_XFW_INSTALL_DIR/cfg/virus-scanning-for-all-content.xml" />
+		</xupdate>
+		<xupdate description="Keep more than 7 logfiles since logs/cores otherwise get rotated out too fast for the integration tests" >
+			<file name="UPDATE_XFW_INSTALL_DIR/cfg/xupdate-keep-logfiles.xml" />
+		</xupdate>
+		<xupdate description="Update timeout configuration for DIAMETER">
+			<code>&lt;?xml version="1.0"?&gt;
+	&lt;modifications xmlns="http://www.xmldb.org/xupdate" version="1.0"&gt;
+		&lt;!-- Update timeout configuration for DIAMETER --&gt;
+		&lt;update select="//component-view/processgroup[starts-with(@name,'DIAMETER-TRANSPORT.')]/component/DIAMETER_CFG/ChannelList/ChannelDef/peerConnections/PeerConnectionDef[1]/maxSessions"&gt;1&lt;/update&gt;
+	&lt;/modifications&gt;</code>
+		</xupdate>
+		<!--xupdate description="An XUpdate to configure WEB-APP" >
+         <file name="UPDATE_XFW_INSTALL_DIR/cfg/xupdate-web-app.xml" />
+		</xupdate-->
+		<!--xupdate description="A temporary XUpdate to properly configure WAP1-PROXY" >
+         <file name="UPDATE_XFW_INSTALL_DIR/cfg/xupdate-wap1-proxy.xml" />
+		</xupdate-->
+		<!--xupdate description="A temporary XUpdate to properly configure cache" >
+         <file name="UPDATE_XFW_INSTALL_DIR/cfg/xupdate-cache.xml" />
+		</xupdate-->
+	</xupdates>
+	
+	<customModules>
+		<modules>
+			<reqmod name="XTTCustModule" description="XTTCustModule" >
+				<containerProcesses>
+					<containerProcess name="CUST.*" />
+				</containerProcesses>
+				<javaProgram className="XTTCustModule" storeCustomDataInMib="false">
+					<javaArchives>
+						<javaArchive name="UPDATE_XFW_INSTALL_DIR/XTT/tests/XMP/XMP_XFW004/Addon/RequestModification/Bugzilla24052/XTTCustModule.jar"/>
+					</javaArchives>
+				</javaProgram>
+			</reqmod>
+		</modules>
+	</customModules>
+	
+	<machines>
+      <machine hostEmbeddedDatabase="true" hostExternalDatabaseSupport="false" hostName="UPDATE_XFW_HOST_NM" operatingSystem="UPDATE_XFW_HOST_OS" description="Post build integration">
+			<titaniumAddresses>
+				<titaniumAddress ipAddress="UPDATE_XFW_HOST_IP"/>
+			</titaniumAddresses>
+			<managementServer>
+				<dashboardListenAddress ipAddress="UPDATE_XFW_HOST_IP" port="1453"/>
+				<dashboardListenAddressSecure ipAddress="UPDATE_XFW_HOST_IP" port="1454"/>
+				<snmpListenAddress ipAddress="UPDATE_XFW_HOST_IP" port="1610"/>
+				<radiusListenAddress ipAddress="UPDATE_XFW_HOST_IP" port="1813" />
+			</managementServer>
+			<processes>
+				<appServices processNameSuffix="1" />
+				<httpProxy processNameSuffix="1">
+					<listenAddress ipAddress="UPDATE_XFW_HOST_IP" port="4000" />
+				</httpProxy>
+				<httpProxy processNameSuffix="2">
+					<listenAddress ipAddress="UPDATE_XFW_HOST_IP" port="4001" />
+				</httpProxy>
+				<tcpRouter processNameSuffix="1" requestPreviewTimeoutMicros="500000" responsePreviewTimeoutMicros="500000">
+					<listenAddress ipAddress="UPDATE_XFW_HOST_IP" port="4010" />
+				</tcpRouter>
+				<tcpRouter processNameSuffix="2" requestPreviewTimeoutMicros="500000" responsePreviewTimeoutMicros="500000">
+					<listenAddress ipAddress="UPDATE_XFW_HOST_IP" port="4012" />
+				</tcpRouter>
+				<wap1Proxy processNameSuffix="1">
+					<wap1ListenAddress ipAddress="UPDATE_XFW_HOST_IP" connectionOrientedPort="9201" connectionOrientedPortSecure="9203" connectionlessPort="9200" connectionlessPortSecure="9202" />
+				</wap1Proxy>
+        <webApplication enableWebServices="true" processNameSuffix="1" shutdownPort="8006">
+          <listenAddress ipAddress="UPDATE_XFW_HOST_IP" port="9998"/>
+          <listenAddressSecure ipAddress="UPDATE_XFW_HOST_IP" port="9999"/>
+          <webapps>
+            <webapp>XMPCustomerCare.war</webapp>
+            <webapp>advert.war</webapp>
+          </webapps>
+        </webApplication>
+				<kasperskyDaemon>
+					<listenAddress ipAddress="UPDATE_XFW_HOST_IP" port="9001"/>
+				</kasperskyDaemon>
+				<pushPapIn processNameSuffix="1">
+					<listenAddress ipAddress="UPDATE_XFW_HOST_IP" port="9002"/>
+				</pushPapIn>
+            <pushStorePartition backupMachineName="UPDATE_XFW_HOST_NM" partitionNumber="1"/>
+				<pushSmsOut processNameSuffix="1" pushStorePartitionNumber="1"/>
+				<pushUdpOut processNameSuffix="1" pushStorePartitionNumber="1"/>
+				<smsConnect channel="SmsChannel" processNameSuffix="1"/>
+				<pushPapnOut processNameSuffix="1" pushStorePartitionNumber="1"/>
+				<mediaStorePartition backupMachineName="UPDATE_XFW_HOST_NM" partitionNumber="1" />
+				<videoOptimizer mediaStorePartitionNumber="1" processNameSuffix="1" />
+				<videoOptimizer mediaStorePartitionNumber="1" processNameSuffix="2" />
+				<cust processNameSuffix="1"/>
+				<diameterIn channel="GXCHANNEL" processNameSuffix="1"/>
+				<diameterTransport channel="GXCHANNEL" mode="peer" processNameSuffix="1">
+                    <hostIpAddress ipAddress="UPDATE_XFW_HOST_IP"/>
+					<listenAddress ipAddress="UPDATE_XFW_HOST_IP" port="5868"/>
+				</diameterTransport>
+				<diameterOut channel="GXCHANNEL" processNameSuffix="1"/> 
+			</processes>
+		</machine>
+	</machines>
+</xmpProductView>

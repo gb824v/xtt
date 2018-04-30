@@ -1,0 +1,18 @@
+<test>
+    <configuration>xsnUserConfig.xml</configuration>
+    <function name="testName" module="Basic">
+        <parameter>XSN.INIT.MM7.TC.999</parameter>
+    </function>
+    <description>Restore all original xsn configuration</description>
+
+    <function name="sendRemoteCommand" module="Remote">
+        <configuration>xsn/path</configuration>
+        <configuration>xsn/xms</configuration>
+        <configuration>xsn/loaddata</configuration>
+        <parameter>xttOldCategories.xml</parameter>
+    </function>
+    <function name="queryResponse" module="Remote">
+        <parameter>^Loaded</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+</test>

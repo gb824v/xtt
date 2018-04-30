@@ -1,0 +1,19 @@
+<test>
+    <name>VALRULES.INITIALIZE</name>
+    <configuration>configXSAM.xml</configuration>
+    <description>Load the valrules.jar File</description>
+
+    <function name="writeRemoteBinaryFile" module="Remote">
+        <parameter>valrules.jar</parameter>
+        <base64file>valrules.jar</base64file>
+    </function>
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>load file ./valrules.jar</parameter>
+    </function>
+    <function name="queryResponse" module="Remote">
+        <parameter>^Loaded</parameter>
+        <parameter>response</parameter>
+    </function>
+
+</test>

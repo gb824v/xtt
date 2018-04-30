@@ -1,0 +1,69 @@
+<test>
+<name>BlueCoatIntegration.TC.999</name>
+<qcid>55</qcid>
+<description>
+Rollback BlueCoat test Environment
+</description>
+<steps>
+Remote/writeRemoteFile
+Remote/executeRemoteXMSCommand
+Remote/executeRemoteXMSCommand
+Remote/queryResponse
+Remote/queryResponse
+Remote/executeRemoteXMSCommand
+Remote/queryResponse
+Remote/executeRemoteXMSCommand
+Remote/queryResponse
+</steps>
+<designer>guyb </designer>
+<creationdate>2012-01-19 13:54:53 </creationdate>
+<testlevel>Regression</testlevel>
+<xfwVersion>XMP_XFW006</xfwVersion>
+<stepname>Remote/writeRemoteFile</stepname>
+<function name="writeRemoteFile" module="Remote">
+<parameter>reqmodTCemptyrules.xml</parameter>
+<parameter>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;requestModifications&gt;&lt;/requestModifications&gt;</parameter>
+</function>
+<stepname>Remote/executeRemoteXMSCommand</stepname>
+<function name="executeRemoteXMSCommand" module="Remote">
+<parameter>load data reqmodTCemptyrules.xml</parameter>
+</function>
+<stepname>Remote/executeRemoteXMSCommand</stepname>
+<function name="executeRemoteXMSCommand" module="Remote">
+<parameter>
+<parameter>delete file </parameter>
+<parameter>illegalbluecoatcategories.url</parameter>
+</parameter>
+</function>
+<stepname>Remote/queryResponse</stepname>
+<function name="queryResponse" module="Remote">
+<parameter>Loaded requestmodifications</parameter>
+<parameter>dev/null</parameter>
+</function>
+<stepname>Remote/queryResponse</stepname>
+<function name="queryResponse" module="Remote">
+<parameter>Deleted file '/url/illegalbluecoatcategories.url'</parameter>
+<parameter>dev/null</parameter>
+</function>
+<stepname>Remote/executeRemoteXMSCommand</stepname>
+<function name="executeRemoteXMSCommand" module="Remote">
+<parameter>
+<parameter>delete file </parameter>
+<parameter>sensitivebluecoatcategories.url</parameter>
+</parameter>
+</function>
+<stepname>Remote/queryResponse</stepname>
+<function name="queryResponse" module="Remote">
+<parameter>Deleted file '/url/sensitivebluecoatcategories.url'</parameter>
+<parameter>dev/null</parameter>
+</function>
+<stepname>Remote/executeRemoteXMSCommand</stepname>
+<function name="executeRemoteXMSCommand" module="Remote">
+<parameter>load data BlueCoat_pre_WorkflowConstants.xml</parameter>
+</function>
+<stepname>Remote/queryResponse</stepname>
+<function name="queryResponse" module="Remote">
+<parameter>Loaded workflowconstants</parameter>
+<parameter>dev/null</parameter>
+</function>
+</test>

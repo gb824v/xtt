@@ -1,0 +1,34 @@
+ <test>
+ 
+     <!-- Test case 10.2.1.3.1: [XSN.Operators.TC.003.1] Add Operators which is already present -->
+     
+     <description> SOAP-API: Operators : Add Operators which is already present </description>
+
+	<function name="testName" module="Basic">
+		<parameter>XSN.NEGATIVE.OPERATORS.TC.003.1</parameter>
+	</function>
+
+	<function name="SOAPClient" module="SOAP_API" >
+		<parameter>
+			 <parameter>http://</parameter>
+			 <configuration>XSN/IP</configuration>
+			 <parameter>:</parameter>
+			 <configuration>XSN/PORT</configuration>
+			 <parameter>/jaxws-policy-operators/operators</parameter>
+		</parameter>
+		<file>operators_create.xml</file>
+		<parameter>Body/Fault/faultstring</parameter>
+	</function>
+
+	<function name="queryResponse" module="SOAP_API">
+	     <!-- You want to check what the last command did, this is a java regular expression -->
+	     <parameter>DuplicateOperatorException</parameter>
+	     <!-- Ignore this paramter, it stores the result to a variable (not important in this test -->
+	     <parameter>dev/null</parameter>
+	</function> 
+
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>500</parameter>
+	</function>
+
+ </test>

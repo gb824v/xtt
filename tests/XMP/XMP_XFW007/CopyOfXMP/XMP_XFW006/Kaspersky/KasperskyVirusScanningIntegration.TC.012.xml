@@ -1,0 +1,98 @@
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+KasperskyVirusScanningIntegration.TC.0012  - WAP GET / Virus Check is enabled / Requested web page contains virus (eicar) / XMP blocks.
+
+Test Description:
+ 1. Radius Logon
+ 2. Send virus Infected data in WAP GET Proxy Request
+ 3. Check Response Code
+ 4. Radius Logoff
+ 
+Expected Result:
+ -  XMP should Block this request and Redirected to 'blockedByVirusScannerUrl' mentioned in the workflow constant file.
+
+XTT Commands:
+      startWebServer
+ 1. - Radius log-ON
+
+ 2.   - sendGetRequest 		"WAP" "http://SYSTEM-IP/viruspage.html"
+
+ 3.   - checkResponseCode	"HTTP" "302"
+
+ 4. - Radius log-OFF
+      stopWebServer
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- Test Start  -->
+<test>
+	<function name="testName" module="Basic">
+		<parameter>KasperskyVirusScanningIntegration.TC.012</parameter>
+	</function>
+	
+    <description>WAP GET / Virus Check is enabled / Requested web page contains virus (eicar) / XMP blocks</description>
+
+<subtest>virus_scan_reqmod.xml</subtest>
+
+	 <function name="disableFollowRedirects" module="HTTP"/> 
+
+	<!-- Start Web Server -->
+	<function name="startWebServer" module="HTTP" />
+
+	<function name="setCacheFileBase64" module="HTTP">
+		<parameter>virus.bin</parameter>
+		<base64decode><file>base64virus.bin</file></base64decode>
+	</function>
+
+	<!-- Radius Login -->
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+	<function name="connectGateway" module="WAP"> </function>
+
+	<!-- Send virus Infected data in WAP Get Proxy Request -->
+	<function name="sendGetRequest" module="WAP">
+		<parameter>
+			<parameter>http://</parameter>
+			<configuration>SYSTEM/IP</configuration>
+			<parameter>:</parameter>
+			<configuration>WEBSERVER/PORT</configuration>
+			<parameter>/virus.bin</parameter>
+		   </parameter>
+	</function>
+
+	<!-- Validate Response Code Send by XMP -->
+	<function name="checkResponseCode" module="WAP">
+		<parameter>302</parameter>
+	</function>
+
+					
+	<function name="disconnectGateway" module="WAP" />
+
+	<!-- Purge the Request Modification File -->
+<!--	<function name="writeRemoteFile" module="Remote">
+		<parameter>REQMOD_EmptyRules.xml</parameter>
+		<parameter>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;requestModifications&gt;&lt;/requestModifications&gt;</parameter>
+    </function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>REQMOD_EmptyRules.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded requestmodifications.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+-->	
+	<!-- Radius Logoff -->
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+	
+	<!-- Stop Web Server -->
+	<function name="stopWebServer" module="HTTP"/>
+
+</test>

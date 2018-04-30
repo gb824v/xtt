@@ -1,0 +1,37 @@
+<test>
+    <function name="writeRemoteFile" module="Remote">
+        <parameter>prefetchREQMOD.xml</parameter>
+        <xml>
+<requestModifications xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="requestmodifications.xsd">
+    <table name="DisableMultipart">
+        <selector>
+            <modifyContext name="FTR_MultipartCompose_Disable" value="'true'"/>
+        </selector>
+    </table>
+    <table name="DisablePrefetch">
+        <selector urlPattern="*://prefetch2.xtt724.com/prefetchTC009*">
+            <modifyContext name="FTR_Prefetch_Disable" value="'true'"/>
+        </selector>
+        <selector>
+            <modifyContext name="FTR_Prefetch_Disable" value="'false'"/>
+        </selector>
+    </table>
+    <table name="DisableCache">
+        <selector urlPattern="*://prefetch3.xtt724.com/prefetchTC010*">
+            <modifyContext name="Skip_CACHE" value="'true'"/>
+        </selector>
+    </table>
+</requestModifications></xml>
+    </function>
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>
+            <parameter>load data prefetchREQMOD.xml</parameter>
+        </parameter>
+    </function>
+
+    <function name="queryResponse" module="Remote">
+        <parameter>^Loaded requestmodifications.*</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+</test>

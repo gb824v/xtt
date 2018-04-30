@@ -1,0 +1,44 @@
+<test>	
+    <name>XTT.ICAP-TC.001</name>
+    <description>ICAP server, RESPMOD GET with override body</description>
+
+	<function name="disableFullStreaming" module="ICAP">
+    	<parameter>true</parameter>
+    </function> 	
+
+	<function name="startICAPServer" module="ICAP"/>
+
+        <function name="setVariableLines" module="Basic">
+            <parameter>1</parameter>
+            <parameter>headers</parameter>
+            <parameter>HTTP/1.1 200 OK</parameter>
+            <parameter>Date: Tue, 27 Mar 2007 11:11:11 GMT</parameter>
+            <parameter>Server: XTT Test Server Header</parameter>
+            <parameter>ETag: "abcde-1234-09876543"</parameter>
+            <parameter>Content-Type: text/plain</parameter>
+            <parameter>Content-Length: 52</parameter>
+        </function>
+        
+	<function name="setServerOverrideResponse" module="ICAP">
+		<variable>headers</variable>
+		<base64encode>This is the replacement data not that of a server!!!</base64encode>
+		<parameter>3</parameter>
+	</function>  
+
+	<function name="sendTextPacket" module="TCP">
+		<parameter>127.0.0.1</parameter>
+		<configuration>ICAPSERVER/PORT</configuration>		
+		<file>icap_respmod_1.txt</file>
+	</function>  
+	
+    <function name="queryTextResponse" module="TCP">
+    	<parameter>dev/null</parameter>
+    	<parameter>ICAP</parameter>
+    </function> 	
+    <function name="queryTextResponse" module="TCP">
+    	<parameter>dev/null</parameter>
+    	<parameter>\r\n11\r\nThis is the repla\r\n11\r\ncement data not t\r\n12\r\nhat of a server!!!\r\n0\r\n\r\n</parameter>
+    </function> 	
+
+	<function name="stopICAPServer" module="ICAP"/>
+</test>

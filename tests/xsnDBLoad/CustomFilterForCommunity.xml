@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<dbupdates> 
+<!-- Filters -->
+<!-- XSN.DBLoad.Filter.TC009.0 (Prerequisite data xml)"	Set custom Filter to a Community -->
+<!-- Prerequisite for xsn filters tag -->
+<subscribers> 
+	<add subscriber="1234577" > </add>  
+	<add subscriber="1234578" > </add> 
+	<add subscriber="1234579" > </add> 
+	<add subscriber="1234580" > </add> 
+</subscribers>
+
+<communities> 
+	<add name="FamilyOne/Parents/Children" /> 
+	<add name="FamilyOne/Parents" /> 
+	<add name="FamilyOne" /> 
+</communities>
+
+<communityAdmins>
+	<add community="FamilyOne" subscriber="1234577" /> 
+</communityAdmins>
+
+<communityMembers> 
+	<add community="FamilyOne/Parents" subscriber="1234578" /> 
+	<add community="FamilyOne/Parents" subscriber="1234579" /> 
+	<add community="FamilyOne/Parents/Children" subscriber="1234580" /> 
+</communityMembers>
+
+	<!-- Scheme:Categories Tag -->	
+<!-- XSN.DBLoad.FilterCommCustCat.TC009.1	Set customFilter to various levels of  Community to block exisiting categories in CustomFilters	-->
+
+<xsnFilters>
+	<set community="FamilyOne" scheme="customFilters" >
+		<categories>
+			<block category="Violence" />
+		</categories>
+	</set>
+	<set community="FamilyOne/Parents" scheme="customFilters" >
+		<categories>
+			<block category="Gambling" />
+		</categories>
+	</set>
+	<set community="FamilyOne/Parents/Children" scheme="customFilters" >
+		<categories>
+			<block category="Games" />
+		</categories>
+	</set>
+</xsnFilters>
+ 
+<!-- XSN.DBLoad.FilterCommCustCat.TC009.2	Set customFilter to a Community to block non exisiting categories	-->
+
+<xsnFilters>
+	<set community="FamilyOne"
+		scheme="customFilters" >
+		<categories>
+			<block category="XYZ" />
+		</categories>
+	</set>
+</xsnFilters>
+ 
+<!-- XSN.DBLoad.FilterCommCustCat.TC009.3	Unblock category to a Community	 -->
+
+<xsnFilters>
+	<set community="FamilyOne"
+		scheme="customFilters" >
+	</set>
+</xsnFilters>
+
+ 
+<!-- XSN.DBLoad.FilterCommCustInt.TC009.4	Set customFilter - internetFilters to a Community to block url patterns. -->
+
+<xsnFilters>
+	<set community="FamilyOne/Parents" scheme="customFilters" >
+		<internetFilters> <block urlPattern="yahoo.com" />
+		</internetFilters>
+	</set>
+	<set community="FamilyOne/Parents/Children" scheme="customFilters" >
+		<internetFilters> <block urlPattern="google.*" />
+		</internetFilters>
+	</set>
+</xsnFilters>
+ 
+<!-- XSN.DBLoad.FilterCommCustInt.TC009.5	Set customFilter - internetFilters to a Community for exceptions to block url patterns.	-->
+
+<xsnFilters>
+	<set community="FamilyOne/Parents" scheme="customFilters" >
+		<internetFilters>
+		<exception urlPattern="mail.yahoo.com/" />
+		</internetFilters>
+	</set>
+	<set community="FamilyOne/Parents/Children" scheme="customFilters" >
+		<internetFilters>
+		<exception urlPattern="google.ch/" />
+		</internetFilters>
+	</set>
+</xsnFilters>
+ 
+	<!-- mms filter	-->
+<!-- XSN.DBLoad.FilterCommCustMms.TC009.6	"Set customFilter - mmsFilters to a Community to block url patterns. With use of wild card -->
+
+<xsnFilters>
+	<set community="FamilyOne/Parents" scheme="customFilters" >
+		<mmsFilters>
+			<block shortcodePattern="666*" />
+		</mmsFilters>
+	</set>
+	<set community="FamilyOne/Parents/Children" scheme="customFilters" >
+		<mmsFilters>
+		<block shortcodePattern="777*" />
+		</mmsFilters>
+	</set>
+</xsnFilters>
+ 
+<!-- XSN.DBLoad.FilterCommCustMms.TC009.7	Use wild card	Tested above -->
+<!-- XSN.DBLoad.FilterCommCustMms.TC009.8	Uniqueness check is not present	-->
+
+<xsnFilters>
+	<set community="FamilyOne/Parents" scheme="customFilters" >
+		<mmsFilters>
+			<block shortcodePattern="666*" />
+		</mmsFilters>
+	</set>
+</xsnFilters>
+ 
+<!-- XSN.DBLoad.FilterCommCustMms.TC009.9	Set customFilter - mmsFilters to a Community for exceptions to block keyword or shortcode patterns -->
+
+<xsnFilters>
+	<set community="FamilyOne/Parents" scheme="customFilters" >
+		<mmsFilters>
+			<exception shortcodePattern="444*" />
+		</mmsFilters>
+	</set>
+	<set community="FamilyOne/Parents/Children" scheme="customFilters" >
+		<mmsFilters>
+			<exception keywords="help" />
+		</mmsFilters>
+	</set>
+</xsnFilters>
+ 
+	<!-- sms  filter	-->
+<!-- XSN.DBLoad.FilterCommCustSms.TC009.10	Set customFilter - smsFilters to a Community to block keyword or shortcode  patterns. -->
+
+<xsnFilters>
+	<set community="FamilyOne/Parents" scheme="customFilters" >
+		<smsFilters>
+			<block keywords="lottery" />
+			<block shortcodePattern="4*4*" />
+		</smsFilters>
+	</set>
+	<set community="FamilyOne/Parents/Children" scheme="customFilters" >
+		<smsFilters>
+			<block keywords="mickey mou*e" />
+			<block shortcodePattern="4444" />
+		</smsFilters>
+	</set>
+</xsnFilters>
+ 
+<!-- XSN.DBLoad.FilterCommCustSms.TC009.11	Set customFilter - smsFilters to a Community for exceptions to block keyword or shortcode  patterns.	-->
+
+<xsnFilters>
+	<set community="FamilyOne/Parents" scheme="customFilters" >
+		<smsFilters>
+			<exception shortcodePattern="4646" keywords="lottery *" />
+		</smsFilters>
+	</set>
+	<set community="FamilyOne/Parents/Children" scheme="customFilters" >
+		<smsFilters>
+			<exception shortcodePattern="4444" keywords="play *" />
+			<exception keywords="play shop" />
+		</smsFilters>
+	</set>
+</xsnFilters>
+ 
+<!-- XSN.DBLoad.FilterCommCustAll.TC009.12	Set filters for CustomFilter Scheme for Categories, sms,mms and internetFilters. -->
+<xsnFilters>
+	<set community="FamilyOne"
+		scheme="customFilters" >
+		<categories>
+			<block category="XYZ" />
+			<block category="violence" />
+		</categories>
+	</set>
+
+	<set community="FamilyOne/Parents" scheme="customFilters" >
+		<internetFilters> 
+			<block urlPattern="yahoo.com" />
+			<exception urlPattern="mail.yahoo.com/" />
+		</internetFilters>
+		<mmsFilters>
+			<block shortcodePattern="666*" />
+			<exception shortcodePattern="*" keywords="help" />
+		</mmsFilters>
+		<smsFilters>
+			<block shortcodePattern="335*" keywords="lottery" />
+			<block shortcodePattern="4545" />
+			<exception shortcodePattern="4646" keywords="lottery *" />
+		</smsFilters>
+	</set>
+
+	<set community="FamilyOne/Parents/Children" scheme="customFilters" >
+		<internetFilters> 
+			<block urlPattern="google.*" />
+			<exception urlPattern="google.ch/" />
+		</internetFilters>
+		<mmsFilters>
+			<block shortcodePattern="777*" />
+			<exception shortcodePattern="*" keywords="help" />
+		</mmsFilters>
+		<smsFilters>
+			<block shortcodePattern="555*" keywords="mickey mou*e" />
+			<block shortcodePattern="4444" />
+			<exception shortcodePattern="4444" keywords="play *" />
+		</smsFilters>
+	</set>
+
+</xsnFilters>
+
+</dbupdates>

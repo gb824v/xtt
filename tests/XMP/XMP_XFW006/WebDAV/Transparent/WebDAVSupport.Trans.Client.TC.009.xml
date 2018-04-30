@@ -1,0 +1,73 @@
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+WebDAVSupport.Trans.Client.TC.009  - Validate MOVE Request and its Response are successfully proxied by XMP.
+
+Test Description:
+ 1. Disable Proxy.
+ 2. Radius Logon
+ 3. Send MOVE request to server.
+ 4. Compare response string
+ 5. Radius Logoff
+ 
+Expected Result:
+ -  XMP should process the MOVE request and response through Transperant Proxy.
+
+XTT Commands:
+      
+ 1.  - Radius log-ON
+
+ 2.  - sendFreeRequest 		"HTTP" MOVE method to SERVER/IP {configure in XTT config.xml}
+
+ 3.  - compareString	
+
+ 4.  - Radius log-OFF
+      
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- Test Start  -->
+
+<test>
+    <name>WebDAVSupport.Trans.Client.TC.009</name>
+
+    <description>Validate MOVE Request and its Response are successfully proxied by XMP during transparent proxy</description>
+
+	<function name="disableProxy" module="HTTP" />
+
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+	<function name="setHeader" module="HTTP">
+        <parameter>Destination</parameter>
+        <parameter>http://www.example.com/othercontainer/</parameter>
+    </function>
+
+    <function name="setHeader" module="HTTP">
+        <parameter>Overwrite</parameter>
+        <parameter>F</parameter>
+    </function>
+
+    <function name="sendFreeRequest" module="HTTP">
+        <parameter>MOVE</parameter>
+        <parameter>false</parameter>
+        <parameter>
+            <parameter>http://</parameter>
+            <configuration>SERVER/IP</configuration>
+            <parameter>:</parameter>
+            <configuration>WEBSERVER/PORT</configuration>
+            <parameter>/file</parameter>
+        </parameter>
+        <parameter>response</parameter>
+    </function>
+
+    <!-- Compare the response returned by XMP with actual response -->
+    <function name="compareString" module="Basic">
+        <variable>response/PLAIN</variable>
+        <file>Response_MOVE.xml</file>
+    </function>
+
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+</test>

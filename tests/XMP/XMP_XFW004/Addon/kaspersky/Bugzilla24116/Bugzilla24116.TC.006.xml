@@ -1,0 +1,164 @@
+<test>
+	<function name="testName" module="Basic">
+		<parameter>Bugzilla24116.TC.006</parameter>
+	</function>
+
+	<description>Validate the statistics values of KSPRSKY component / Create at least a few events whose statistics are calculated [KSPRSKY_STATS_Stats.skippedCondition]</description>
+
+	 <!-- Validate KSPRSKY_STATS_Stats.skippedCondition statistic-->
+
+    <function name="disableFollowRedirects" module="HTTP"/>
+
+	<!-- Start Web Server -->
+	<function name="startWebServer" module="HTTP" />
+
+	<!-- Radius Login -->
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+    <!-- Start & Stop TCP-ROUTER process -->
+	<!-- Get the name of TCP-ROUTER.1 process -->
+	<function name="activeProcessToVar" module="Remote">
+		<parameter><configuration>HttpProxy/ProcessName</configuration><parameter>.*\.1</parameter></parameter>
+		<parameter>Name_Of_Tcp_Router_Process</parameter>
+	</function>
+
+	<!-- Restart TCP-ROUTER -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>restart process </parameter>
+			<variable>Name_Of_Tcp_Router_Process</variable>
+		</parameter>
+	</function>
+
+	<function name="sleep" module="Basic">
+		<parameter>5000</parameter>
+	</function> 
+    
+	<!-- updated value of RequestCondition -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>run command cmu -C KSPRSKY_CFG_RequestCondition </parameter>
+			<variable>Name_Of_Tcp_Router_Process</variable>
+			<parameter> [Internal_NAI] matches 'NOTHINGSHOULDMATCH'</parameter>
+		</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>KSPRSKY_CFG_RequestCondition[\s]++:[\s]++\[Internal_NAI\][\s]++matches[\s]++'NOTHINGSHOULDMATCH'</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>Update successful</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Prepare the Request Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>REQMOD_Bugzilla24113.TC.009.xml</parameter>
+			<xml>
+				<requestModifications xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="requestmodifications.xsd">
+					<table name="Set_KSPRSKY_Operation" phase="httpRequest" >
+						<selector>
+							<modifyContext name="KSPRSKY_Operation" value="'REQUEST'"  />
+						</selector>
+					</table>
+				</requestModifications>
+		</xml>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>REQMOD_Bugzilla24113.TC.009.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded requestmodifications.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	
+	<function name="setBase64PostData" module="HTTP">
+			<base64decode><file>base64virus.bin</file></base64decode>
+	</function>
+
+	<function name="setCacheFile" module="HTTP">
+		<parameter>virus.bin</parameter>
+		<base64decode><base64decode><file>base64virus.bin</file></base64decode></base64decode>
+	</function>
+
+		<!-- Send virus Infected data in HTTP Get Proxy Request -->
+	<function name="sendPostRequest" module="HTTP">
+		<parameter>
+			<parameter>http://</parameter>
+			<configuration>SYSTEM/IP</configuration>
+			<parameter>/virus.bin</parameter>
+		</parameter>
+	</function>
+
+	<!-- Validate Response Code Send by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	 <function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>run command cmu -O KSPRSKY -d </parameter>
+			<variable>Name_Of_Tcp_Router_Process</variable>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>KSPRSKY_STATS_Stats.skippedCondition[\s]++:[\s]++1</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Radius Logoff -->
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+	<!-- Stop Web Server -->
+	<function name="stopWebServer" module="HTTP"/>
+
+	<!-- updated value of RequestCondition -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>run command cmu -C KSPRSKY_CFG_RequestCondition </parameter>
+			<variable>Name_Of_Tcp_Router_Process</variable>
+			<parameter> [Internal_NAI] matches '.*'</parameter>
+		</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>KSPRSKY_CFG_RequestCondition[\s]++:[\s]++\[Internal_NAI\][\s]++matches[\s]++'.*'</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>Update successful</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Set empty Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>REQMOD_Empty.xml</parameter>
+			<xml>
+				<requestModifications xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="requestmodifications.xsd">
+				</requestModifications>
+		</xml>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>REQMOD_Empty.xml</parameter>
+		</parameter>
+	</function>
+	
+</test>

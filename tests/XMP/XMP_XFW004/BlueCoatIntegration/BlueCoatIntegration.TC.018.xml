@@ -1,0 +1,233 @@
+<test>
+<name>BlueCoatIntegration.TC.018</name>
+<qcid></qcid>
+<description>
+BlueCoat returns 403 Forbidden / X-vf-categories-policy: [Illegal1], X-vf-categories-local: [Illegal2], X-vf-categories-bluecoat: [Illegal3], X-vf-category: [Illegal4] / XMP should allow
+</description>
+<steps>
+Radius/radiusLogon
+HTTP/startWebServer
+HTTP/startWebServer
+HTTP/setServerDelayms
+HTTP/setServerReturnCode
+HTTP/setServerReturnMessage
+HTTP/setServerHeader
+HTTP/setServerHeader
+HTTP/setServerHeader
+HTTP/setServerHeader
+Thread: HTTP/waitForRequests
+Thread: HTTP/checkServerURL
+Thread: HTTP/checkServerHeader
+Thread: HTTP/checkServerHeader
+Thread: HTTP/checkServerHeader
+Thread: HTTP/setServerHeader
+Thread: HTTP/setServerHeader
+Thread: HTTP/setServerHeader
+Thread: HTTP/setServerHeader
+Thread: HTTP/setServerReturnCode
+Thread: HTTP/setServerReturnMessage
+Thread: HTTP/setCacheFile
+HTTP/sendGetRequest
+HTTP/checkResponseCode
+HTTP/queryBody
+HTTP/stopWebServer
+Radius/radiusLogoff
+</steps>
+<designer>guyb </designer>
+<creationdate>2012-03-29 15:17:09 </creationdate>
+<testlevel>---</testlevel>
+<xfwVersion>XMP_XFW006</xfwVersion>
+<mandatory>false</mandatory>
+<stepname>Radius/radiusLogon</stepname>
+<stepid>1</stepid>
+<function name="radiusLogon" module="Radius">
+<parameter>xttuser</parameter>
+<parameter>12346</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/startWebServer</stepname>
+<stepid>2</stepid>
+<function name="startWebServer" module="HTTP">
+<parameter>80</parameter>
+<testpath></testpath>
+<parameter>30000</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/startWebServer</stepname>
+<stepid>3</stepid>
+<function name="startWebServer" module="HTTP">
+<parameter>8444</parameter>
+<testpath></testpath>
+<parameter>30000</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/setServerDelayms</stepname>
+<stepid>4</stepid>
+<function name="setServerDelayms" module="HTTP">
+<parameter>3000</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/setServerReturnCode</stepname>
+<stepid>5</stepid>
+<function name="setServerReturnCode" module="HTTP">
+<parameter>403</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/setServerReturnMessage</stepname>
+<stepid>6</stepid>
+<function name="setServerReturnMessage" module="HTTP">
+<parameter> Forbidden</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/setServerHeader</stepname>
+<stepid>7</stepid>
+<function name="setServerHeader" module="HTTP">
+<parameter>X-vf-categories-policy</parameter>
+<parameter>otc_Illegal_Category_001</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/setServerHeader</stepname>
+<stepid>8</stepid>
+<function name="setServerHeader" module="HTTP">
+<parameter>X-vf-categories-local</parameter>
+<parameter>Illegal Category 002</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/setServerHeader</stepname>
+<stepid>9</stepid>
+<function name="setServerHeader" module="HTTP">
+<parameter>X-vf-categories-bluecoat</parameter>
+<parameter>Illegal Category 003</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/setServerHeader</stepname>
+<stepid>10</stepid>
+<function name="setServerHeader" module="HTTP">
+<parameter>X-vf-category</parameter>
+<parameter>Illegal Category 004</parameter>
+</function>
+<threadname>Thread</threadname>
+<thread>
+<mandatory>false</mandatory>
+<stepname>HTTP/waitForRequests</stepname>
+<stepid>11.1</stepid>
+<function name="waitForRequests" module="HTTP">
+<parameter>1</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/checkServerURL</stepname>
+<stepid>11.2</stepid>
+<function name="checkServerURL" module="HTTP">
+<parameter>
+<parameter>http://</parameter>
+<configuration>system/ip</configuration>
+<parameter>/page018.html</parameter>
+</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/checkServerHeader</stepname>
+<stepid>11.3</stepid>
+<function name="checkServerHeader" module="HTTP">
+<parameter>Host</parameter>
+<configuration>system/ip</configuration>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/checkServerHeader</stepname>
+<stepid>11.4</stepid>
+<function name="checkServerHeader" module="HTTP">
+<parameter>User-Agent</parameter>
+<parameter>VF Access Layer</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/checkServerHeader</stepname>
+<stepid>11.5</stepid>
+<function name="checkServerHeader" module="HTTP">
+<parameter>X-vf-category-only</parameter>
+<parameter>CAT-AL</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/setServerHeader</stepname>
+<stepid>11.6</stepid>
+<function name="setServerHeader" module="HTTP">
+<parameter>X-vf-categories-policy</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/setServerHeader</stepname>
+<stepid>11.7</stepid>
+<function name="setServerHeader" module="HTTP">
+<parameter>X-vf-categories-local</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/setServerHeader</stepname>
+<stepid>11.8</stepid>
+<function name="setServerHeader" module="HTTP">
+<parameter>X-vf-categories-bluecoat</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/setServerHeader</stepname>
+<stepid>11.9</stepid>
+<function name="setServerHeader" module="HTTP">
+<parameter>X-vf-category</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/setServerReturnCode</stepname>
+<stepid>11.10</stepid>
+<function name="setServerReturnCode" module="HTTP">
+<parameter>200</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/setServerReturnMessage</stepname>
+<stepid>11.11</stepid>
+<function name="setServerReturnMessage" module="HTTP">
+<parameter> OK</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/setCacheFile</stepname>
+<stepid>11.12</stepid>
+<function name="setCacheFile" module="HTTP">
+<parameter>page018.html</parameter>
+<xml>&lt;?xml version="1.0"?&gt;
+<html>
+  <body>
+This is the contents of page018.html... Enjoy it.
+</body>
+</html>
+
+</xml>
+</function>
+</thread>
+<mandatory>false</mandatory>
+<stepname>HTTP/sendGetRequest</stepname>
+<stepid>12</stepid>
+<function name="sendGetRequest" module="HTTP">
+<parameter>
+<parameter>http://</parameter>
+<configuration>system/ip</configuration>
+<parameter>/page018.html</parameter>
+</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/checkResponseCode</stepname>
+<stepid>13</stepid>
+<function name="checkResponseCode" module="HTTP">
+<parameter>200</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/queryBody</stepname>
+<stepid>14</stepid>
+<function name="queryBody" module="HTTP">
+<parameter>dev/null</parameter>
+<parameter>This is the contents of page018.html... Enjoy it.</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/stopWebServer</stepname>
+<stepid>15</stepid>
+<function name="stopWebServer" module="HTTP"/>
+<mandatory>false</mandatory>
+<stepname>Radius/radiusLogoff</stepname>
+<stepid>16</stepid>
+<function name="radiusLogoff" module="Radius">
+<parameter>xttuser</parameter>
+<parameter>12346</parameter>
+</function>
+</test>

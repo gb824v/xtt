@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- License file created by lfcu program. Do not edit -->
+<modifications xmlns="http://www.xmldb.org/xupdate" version="1.0">
+    <append select="//component[@name='CEE']/CEECFG">
+        <element name="License">
+            <element name="number">724-internal-1155561871</element>
+            <element name="type">B</element>
+            <element name="issuer">Gavin Cattell, 724 Solutions Inc., Bahnhofstrasse 15, CH-5600 Lenzburg</element>
+            <element name="issuedOn">2006-08-14T13:24:31Z</element>
+            <element name="licensee">XSN Bali Expired License</element>
+            <element name="product">XSN</element>
+            <element name="platform">linux</element>
+            <element name="version">724Solutions CEE </element>
+            <element name="validFrom">2006-08-14</element>
+            <element name="validUntil">2006-01-01</element>
+            <element name="signature">FBC579FCD6A8DBA056B207A92822144E12873366C04AD1060F1D13DBDDFCEDEC</element>
+            <element name="machines">
+                <element name="string">bali</element>
+            </element>
+            <element name="features">
+            </element>
+        </element>
+    </append>
+    <append select="//component-view">
+        <element name="license">
+            <attribute name="number">724-internal-1155561871</attribute>
+            <attribute name="type">B</attribute>
+            <attribute name="issuer">Gavin Cattell, 724 Solutions Inc., Bahnhofstrasse 15, CH-5600 Lenzburg</attribute>
+            <attribute name="issuedOn">2006-08-14T13:24:31Z</attribute>
+            <attribute name="licensee">XSN Bali Expired License</attribute>
+            <attribute name="product">XSN</attribute>
+            <attribute name="platform">linux</attribute>
+            <attribute name="version">724Solutions CEE </attribute>
+            <attribute name="validFrom">2006-08-14</attribute>
+            <attribute name="validUntil">2006-01-01</attribute>
+            <attribute name="signature">FBC579FCD6A8DBA056B207A92822144E12873366C04AD1060F1D13DBDDFCEDEC</attribute>
+                <element name="machine">
+                <attribute name="name">bali</attribute>
+                </element>
+        </element>
+    </append>
+</modifications>

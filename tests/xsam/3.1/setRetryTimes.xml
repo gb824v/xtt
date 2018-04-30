@@ -1,0 +1,37 @@
+<test>
+    <name>RETRY.INITIALIZE</name>
+    <description>Change retry time delays to 1 minute in database</description>
+    
+    <function name="openConnection" module="SQL">
+        <parameter>SQL1</parameter>
+        <configuration>xsam/sql/driver</configuration>
+        <configuration>xsam/sql/jdbcconnection</configuration>
+        <configuration>xsam/sql/database</configuration>
+        <configuration>xsam/sql/password</configuration>
+    </function>
+    
+    <function name="update" module="SQL">
+        <parameter>SQL1</parameter>
+        <parameter>insert1</parameter>
+        <parameter>UPDATE SAM_CONFIGPROPS SET CONFIGVALUE='1' WHERE CONFIGNAME='SUB_FIRST_RETRY_TIME_DELAY'</parameter>
+    </function>
+    <function name="update" module="SQL">
+        <parameter>SQL1</parameter>
+        <parameter>insert2</parameter>
+        <parameter>UPDATE SAM_CONFIGPROPS SET CONFIGVALUE='1' WHERE CONFIGNAME='SUB_SECOND_RETRY_TIME_DELAY'</parameter>
+    </function>
+    <function name="update" module="SQL">
+        <parameter>SQL1</parameter>
+        <parameter>insert3</parameter>
+        <parameter>UPDATE SAM_CONFIGPROPS SET CONFIGVALUE='1' WHERE CONFIGNAME='SUB_THIRD_RETRY_TIME_DELAY'</parameter>
+    </function>
+
+    <function name="closeConnection" module="SQL">
+        <parameter>SQL1</parameter>
+    </function>
+
+	<function name="restartProcess" module="Remote">
+		<parameter>WFE</parameter>
+	</function>  
+
+</test>

@@ -1,0 +1,9 @@
+REQMOD icap://icap.xtt724.com/content-filter ICAP/1.0
+Host: icap.xtt724.com
+Encapsulated: req-hdr=0, null-body=119
+
+GET /naughty-content HTTP/1.1
+Host: www.naughty-site.com
+Accept: text/html, text/plain
+Accept-Encoding: compress
+

@@ -1,0 +1,6 @@
+<xupdate:modifications xmlns:xupdate="http://www.xmldb.org/xupdate" version="1.0">
+	<xupdate:update select="//processgroup[starts-with(@name,'HTTP-PROXY.')]//CEERMI_CFG/WorkerThreads">400</xupdate:update>
+	<xupdate:update select="//processgroup[starts-with(@name,'HTTP-PROXY.')]//CEERMI_CFG/CallQueueLength">2000</xupdate:update>
+	<xupdate:update select="//processgroup[starts-with(@name,'TCP-ROUTER.')]//CEERMI_CFG/WorkerThreads">400</xupdate:update>
+	<xupdate:update select="//processgroup[starts-with(@name,'TCP-ROUTER.')]//CEERMI_CFG/CallQueueLength">2000</xupdate:update>
+</xupdate:modifications>

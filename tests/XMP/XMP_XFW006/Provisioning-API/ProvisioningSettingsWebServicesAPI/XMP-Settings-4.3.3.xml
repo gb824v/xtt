@@ -1,0 +1,69 @@
+<test>
+       
+      <description> SOAP-API-Settings{(getSubscriberProfile( )}: Testing for Exiting User Id. </description>
+      
+	 <function name="testName" module="Basic">
+		<parameter>XMP-Settings-4.3.3.0</parameter>
+	</function>
+
+	<function name="SOAPClient" module="SOAP_API" >
+		<parameter>
+			 <configuration>XMP/PROTOCOL</configuration>
+			<configuration>XMP/IP</configuration>
+			<parameter>:</parameter>
+			<configuration>XMP/PORT/</configuration>
+			<parameter>/jaxws-provisioning-core/provisioning</parameter>
+		</parameter>
+		<file>adduser.xml</file>
+		<parameter>Body/return</parameter>
+	</function>
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+
+	<function name="SOAPClient" module="SOAP_API" >
+		<parameter>
+			<configuration>XMP/PROTOCOL</configuration>
+			<configuration>XMP/IP</configuration>
+			<parameter>:</parameter>
+			<configuration>XMP/PORT/</configuration>
+			 <parameter>/jaxws-policy-settings/settings</parameter>
+		</parameter>
+		<file>setSubscriberFilter-resetting-existingFilter.xml</file>
+		<parameter>Body/return</parameter>
+	</function>
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+
+	<function name="SOAPClient" module="SOAP_API" >
+		<parameter>
+			 <configuration>XMP/PROTOCOL</configuration>
+			<configuration>XMP/IP</configuration>
+			<parameter>:</parameter>
+			<configuration>XMP/PORT/</configuration>
+			 <parameter>/jaxws-policy-settings/settings</parameter>
+		</parameter>
+		<file>getSubscriberProfile-existingSubscriber.xml</file>
+		<parameter>Body/return</parameter>
+	</function>
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+
+	<function name="SOAPClient" module="SOAP_API" >
+		<parameter>
+			<configuration>XMP/PROTOCOL</configuration>
+			<configuration>XMP/IP</configuration>
+			<parameter>:</parameter>
+			<configuration>XMP/PORT/</configuration>
+			<parameter>/jaxws-provisioning-core/provisioning</parameter>
+		</parameter>
+		<file>removeuser.xml</file>
+		<parameter>Body/return</parameter>
+	</function>
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>200</parameter>
+	</function>
+        
+ </test>

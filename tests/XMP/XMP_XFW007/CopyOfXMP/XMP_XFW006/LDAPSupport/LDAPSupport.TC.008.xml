@@ -1,0 +1,96 @@
+<!-- 
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+LDAPSupport.TC.008  - Validate the robustness of XMP when LDAP Server returns a corrupted response
+
+Test Description:
+ 1. Load Request Modification File
+ 2. Send  HTTP Get Proxy Request
+ 3. Load Request Modification File with required rule
+ 4. Load Empty Request Modification File
+ 5. Ipaddress attribute removed from the ldapconfig_TC8.xml file.
+ 
+Expected Result:
+ -  Verify that XMP sends 403 Forbidden to the Subscriber's HTTP User Agent.
+
+XTT Commands:
+      startWebServer
+	  startLDAPServer
+ 1.   - Load Request Modification File
+ 2.   - sendGetRequest 	 "http://ldap1.xtt724.com"
+ 3.   - checkResponseCode	 "HTTP 403"
+ 4. - Load Empty Request Modification File
+      stopLDAPServer
+      stopWebServer
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  --> 
+<!--  Test Start     --> 
+<test>
+	<name>LDAPSupport.TC.008</name>
+    <description>Validate the robustness of XMP when LDAP Server returns a corrupted response</description>
+
+			<function name="setVariable" module="Basic">
+				<parameter>ldapconfig</parameter>
+				<file>ldapconfig_TC8.xml</file>
+			</function>
+			
+			<function name="replace" module="Basic">
+				<parameter>ldapconfig</parameter>
+				<parameter>IPADDRESSTOKEN</parameter>
+				<configuration>SYSTEM/IP</configuration>
+			</function>
+
+
+	<!-- Start Target Web Server -->
+            <function name="startWebServer" module="HTTP">
+                <parameter>80</parameter>
+                <testpath/>
+                <parameter>30000</parameter>
+            </function>
+
+	<!-- Define The Content in the Target Web Server -->
+	<function name="setCacheFile" module="HTTP">
+			<parameter>index/test1.html</parameter>
+<xml><html>
+<body>
+This is the contents of the page... Enjoy it.
+</body>
+</html>
+</xml>
+	</function>
+
+				<!--   Start LDAP Server	-->
+				<function name="startLDAPServer" module="LDAP">
+					<variable>ldapconfig</variable>
+				</function>
+
+					
+				<function name="sendGetRequest" module="HTTP">
+                    <parameter>http://www.724xtt.com/index/test1.html</parameter>
+                </function>
+
+				<function name="waitForBind" module="LDAP">
+						<parameter>cn=Manager,o=wap_ext</parameter>
+			   </function>
+
+				<function name="waitForSearchRequests" module="LDAP">
+					<parameter>1</parameter>
+					<parameter>
+						<parameter>login-ip=</parameter>
+						<configuration>SYSTEM/IP</configuration>
+					</parameter>
+				</function>
+
+				<function name="checkResponseCode" module="HTTP">
+					<parameter>403</parameter>
+				</function>
+
+			
+			<!--   Stop LDAP Server	-->
+			<function name="stopLDAPServer" module="LDAP"/>
+
+
+			<!--   Stop Web Server Server	-->
+			<function name="stopWebServer" module="HTTP"/>
+
+</test>
+

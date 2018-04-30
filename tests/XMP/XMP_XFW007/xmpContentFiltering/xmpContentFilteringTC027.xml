@@ -1,0 +1,41 @@
+<test>
+    <function name="testName" module="Basic">
+        <parameter>XMP.CONTENTFILTERING.TC.027</parameter>
+     </function>
+	
+    <description>Standard Filter: Dating / minAge=18 / www.meetic.ch is in Dating by means of urlList, User is NOT in DB, URL is NOT accessible / Redirection Page#2</description>
+        
+    <!-- Radius logon - User not in DB -->
+    <function name="radiusLogon" module="Radius">
+	<parameter>0787367499</parameter>
+	<parameter>0787367499</parameter>
+	<configuration>system/Ip</configuration>
+    </function> 
+      
+    <!-- Redirected to /XMPBlocked/ageIsUnknown.html -->  
+    <!-- XMP forwards blocked request to its WebServer -->
+    <function name="disableFollowRedirects" module="HTTP" />
+
+    <!-- http://www.meetic.ch/ : urlCategories : Dating (451)  -->
+    <function name="sendGetRequest" module="HTTP">
+	 <parameter>http://www.meetic.ch/</parameter>
+    </function>
+	
+    <function name="checkResponseCode" module="HTTP">
+	<parameter>302</parameter>
+    </function>
+	
+    <function name="queryHeader" module="HTTP">
+	 <parameter>dev/null</parameter>
+	 <parameter>location</parameter>
+         <parameter>XMPBlocked/ageIsUnknown.html$</parameter>		
+    </function>		
+    
+    
+    <!-- Radius logoff - User not in DB -->
+    <function name="radiusLogoff" module="Radius">
+	<parameter>0787367499</parameter>
+	<parameter>0787367499</parameter>
+	<configuration>system/Ip</configuration>
+    </function> 
+</test>

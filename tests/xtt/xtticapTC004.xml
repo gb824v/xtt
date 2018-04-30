@@ -1,0 +1,19 @@
+<test>
+    <name>XTT.ICAP-TC.001</name>
+    <description>ICAP server, OPTIONS</description>
+
+	<function name="startICAPServer" module="ICAP"/>
+
+
+	<function name="sendTextPacket" module="TCP">
+		<parameter>127.0.0.1</parameter>
+		<configuration>ICAPSERVER/PORT</configuration>
+		<file>icap_options.txt</file>
+	</function>
+    <function name="queryTextResponse" module="TCP">
+    	<parameter>dev/null</parameter>
+    	<parameter>ICAP</parameter>
+    </function>
+
+	<function name="stopICAPServer" module="ICAP"/>
+</test>

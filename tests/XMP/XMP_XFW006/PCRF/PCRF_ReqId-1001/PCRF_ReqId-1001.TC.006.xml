@@ -1,0 +1,87 @@
+<test>
+
+	<name>PCRF_ReqId-1001.TC.006.xml</name>
+
+	<description>Validate CC-Request (CCR very long AVP value DIAMETER_INVALID_AVP_LENGTH (MessagesAndAvps.rtf 2.1/2.2)</description>
+
+	<!-- create connection at client -->
+	<function name="createConnection" module="Diameter">
+		<parameter>one</parameter>
+		<configuration>DIAMETERCLIENT/IP</configuration>
+		<configuration>DIAMETERCLIENT/PORT</configuration>
+	</function>
+
+	<!--  Exchange of CER/CEA -->
+	<function name="sendDiameterRequest" module="Diameter">
+		<parameter>one</parameter>
+		<xml>
+			<CAPABILITIES_EXCHANGE_REQUEST version="1"	overrideCommandCode="257" applicationID="16777238" hopbyhopID="456" endtoendID="789" proxiable="true" error="false" tretr="false">
+				<ORIGIN_HOST           value="ORIGIN_HOST"        mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<ORIGIN_REALM           value="ORIGIN_REALM"        mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<VENDOR_ID               value="10415" mandatory="true" protected="false" vendorspecific="false" vendorID="" />
+				<PRODUCT_NAME           value="PRODUCT_NAME" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<SUPPORTED_VENDOR_ID    value="10415" mandatory="true" protected="false" vendorspecific="false"  vendorID="" />
+				<AUTH_APPLICATION_ID    value="16777238" mandatory="true" protected="false" vendorspecific="false"  vendorID="" />
+				<HOST_IP_ADDRESS        value="0001AC140983" mandatory="true" protected="false" vendorspecific="false"  vendorID="" />
+			</CAPABILITIES_EXCHANGE_REQUEST>
+		</xml>
+		<parameter>STORERESULT</parameter>
+	</function>
+
+	<!-- Headers validation of CEA commandcode 257-->
+	<function name="compareString" module="Basic">
+		<variable>DIAMETER/one/HEADER/commandcode</variable >
+		<parameter>257</parameter>
+	</function>
+
+	<function name="sleep" module="Basic">
+		<parameter>1000</parameter>
+	</function>
+
+	<!-- Exchange of CCR/CCA -->
+	<function name="sendDiameterRequest" module="Diameter">
+		<parameter>one</parameter>
+		<xml>
+			<CREDIT_CONTROL_REQUEST version="1"	overrideCommandCode="272" applicationID="16777238" hopbyhopID="456" endtoendID="789" proxiable="true" error="false" tretr="false">
+				<SESSION_ID             value="SESSION_ID"/>
+				<ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<ORIGIN_REALM           value="ORIGIN_REALM" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/> 
+				<DESTINATION_REALM           value="DESTINATION_REALM" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<AUTH_APPLICATION_ID    value="16777238" mandatory="true" protected="false" vendorspecific="false"  vendorID="" />
+				<CC_REQUEST_TYPE        value="INITIAL_REQUEST"   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<CC_REQUEST_NUMBER      value="777979" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<FRAMED_IP_ADDRESS      value="0a043c34" overrideavpcode="8" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				<SUBSCRIPTION_ID         mandatory="true" protected="false" vendorspecific="false"  vendorID="">
+					<SUBSCRIPTION_ID_TYPE  value="00000000"   mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+					<SUBSCRIPTION_ID_DATA  value="0787367400"       mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+				</SUBSCRIPTION_ID>
+				<!-- Putting AVP IP_CAN_TYPE value as very long beyond its suppport-->
+				<IP_CAN_TYPE value="1111111111111111111111111111" overrideavpcode="1027" mandatory="false" protected="false" vendorspecific="true" vendorID="10415"/>
+				<RAT_TYPE               value="00010000" overrideavpcode="1032" mandatory="false" protected="false" vendorspecific="true"  vendorID="10415"/>
+			</CREDIT_CONTROL_REQUEST>
+		</xml>
+		<parameter>STORERESULT</parameter>
+	</function>
+
+	<!-- Headers validation of CCA commandcode 272 -->
+	<function name="compareString" module="Basic">
+		<variable>DIAMETER/one/HEADER/commandcode</variable >
+		<parameter>272</parameter>
+	</function>
+
+<!-- AVP validation of CCA -->
+	<function name="compareString" module="Basic">
+		<variable>DIAMETER/one/AVP/RESULT_CODE</variable>
+		<parameter>5004</parameter>
+	</function>
+
+	<function name="compareString" module="Basic">
+		<variable>DIAMETER/one/AVP/ERROR_MESSAGE</variable>
+		<parameter>Permanent Failure:INVALID_AVP_VALUE</parameter>
+	</function>
+
+	<function name="closeConnection" module="Diameter">
+		<parameter>one</parameter>
+	</function>
+
+</test>

@@ -1,0 +1,34 @@
+<test>
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>
+            <configuration>remote/command</configuration>
+            <parameter>
+                <parameter>pse3cli da! TI:F.CEE.PSE:PSE3</parameter>
+            </parameter>
+        </parameter>
+    </function>
+    <function name="queryResponse" module="Remote">
+        <parameter>(Deleted \d++ entries)|(pse3cli: no entries deleted)</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+	<!--function name="sleep" module="Basic">
+	    <configuration>LDAPSERVER/SESSIONTIMEOUT</configuration>
+	</function-->
+    <function name="stopProcesses" module="Remote">
+        <parameter>SERVICE</parameter>
+    </function>
+    <function name="checkProcessStatus" module="Remote">
+        <parameter>SERVICE</parameter>
+        <parameter>Stopped</parameter>
+    </function>
+    <function name="startProcesses" module="Remote">
+        <parameter>SERVICE</parameter>
+    </function>
+    <function name="checkProcessStatus" module="Remote">
+        <parameter>SERVICE</parameter>
+        <parameter>Running</parameter>
+        <parameter>*Running</parameter>
+    </function>
+
+</test>

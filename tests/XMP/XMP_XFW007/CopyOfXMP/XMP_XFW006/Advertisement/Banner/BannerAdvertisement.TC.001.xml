@@ -1,0 +1,106 @@
+<!-- 
+BannerAdvertisement.TC.001  - Validate Banner Advertisement use case.
+
+Test Description:
+ 1. Radius Logon
+ 2. Start Web Server for http request.
+ 3. Send Get request for advert page.
+ 4. Stop Web Server.
+ 5. Send Get request for banner page.
+ 6. Send Get request for clickthrough page.
+ 7. Radius Logoff
+ 
+Expected Result:
+ -  XMP should process the Banner request and click through URL request with proper response code.
+
+XTT Commands:
+      
+ 1.  - Radius log-ON
+ 2.  - startWebServer
+ 3.  - sendGetRequest				   for advert page. { Create advert.html and store in XTT webroot directory with following tags
+														<a href="xmp-clickthrough?12345" >
+														<img src="xmp-banner?12345" width="500" height="200">
+														</a> }
+ 4.  - stopWebServer
+ 5.  - sendGetRequest              for banner page.
+ 6.  - sendGetRequest              for clickthrough page.
+ 7.  - Radius log-OFF      
+-->
+
+<test>
+
+	<function name="testName" module="Basic">
+		<parameter>BannerAdvertisement.TC.001</parameter>
+	</function>
+
+	<description>Validate Banner Advertisement use case</description>
+
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12345</parameter>
+	</function>
+
+	<function name="startWebServer"	module="HTTP"/>
+
+	<function name="sendGetRequest"	module="HTTP">
+		<parameter>
+			<parameter>http://</parameter>
+			<configuration>system/ip</configuration>
+			<parameter>:</parameter>
+			<configuration>webserver/port</configuration>
+			<parameter>/advert.html</parameter>
+		</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<function name="sleep" module="Basic">
+		<parameter>3000</parameter>
+	</function>
+
+	<function name="stopWebServer" module="HTTP"/>
+
+	<function name="sendGetRequest"	module="HTTP">
+		<parameter>
+			<parameter>http://</parameter>
+			<configuration>system/ip</configuration>
+			<parameter>:</parameter>
+			<configuration>webserver/port</configuration>
+			<parameter>/xmp-banner?12345</parameter>
+		</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<function name="sleep" module="Basic">
+		<parameter>3000</parameter>
+	</function>
+
+	<function name="sendGetRequest"	module="HTTP">
+		<parameter>
+			<parameter>http://</parameter>
+			<configuration>system/ip</configuration>
+			<parameter>:</parameter>
+			<configuration>webserver/port</configuration>
+			<parameter>/xmp-clickthrough?12345</parameter>
+		</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12345</parameter>
+	</function>
+
+        <function name="sleep" module="Basic">
+                <parameter>20000</parameter>
+        </function>
+
+</test>

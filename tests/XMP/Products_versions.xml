@@ -1,0 +1,20 @@
+<test>
+<name>Products_versions</name>
+<qcid>33</qcid>
+<description>
+33
+</description>
+<steps>
+Interceptor version
+</steps>
+<designer>guyb </designer>
+<creationdate>2012-03-29 13:55:50 </creationdate>
+<testlevel>Integration</testlevel>
+<xfwVersion>XMP_XFW006</xfwVersion>
+<mandatory>false</mandatory>
+<stepname>Interceptor version</stepname>
+<stepid>1</stepid>
+<function name="executeRemoteCommand" module="Remote">
+<parameter>echo "XMP version: `/opt/xmp/bin/xms sh ver | head -1 | awk -F' ' '{ print $4 }'`"; echo "Interceptor version: `rpm -qa| grep intercept | cut -c13-`"; echo "Titanium version: `cd /opt/titanium/bin/; ./tiversion tiversion | cut -d" " -f5`"; echo "Base plugin: `rpm -qa| grep mx_p`"; echo "Video plugin: `rpm -qa| grep mx_v`"; echo "Ad plugin: `rpm -qa| grep mx_ad`"; echo "OS: `cat /etc/redhat-release`"; echo "Kernel version: `uname -a | cut -d" " -f3`"; echo "hostname: `hostname`"</parameter>
+</function>
+</test>

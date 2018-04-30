@@ -1,0 +1,93 @@
+<test>
+    <configuration>xsnDeliverReqConfig.xml</configuration>
+    <configuration>xsnUserConfig.xml</configuration>
+    <function name="testName" module="Basic">
+        <parameter>XSN.DERE.MM7.TC.001</parameter>
+    </function>
+    <description>Unblocked MMS for unknown VASP/Recipient</description>
+
+    <function name="startMMSCServer" module="MMSC"/>
+
+    <function name="createMM7Soap" module="VASP">
+        <parameter>DeliverReq</parameter>
+    </function>
+    <function name="setMessageBoundary" module="VASP">
+        <parameter>000001message</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='DeliverReq']</parameter>
+        <parameter>SenderIdentification</parameter>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='DeliverReq']</parameter>
+        <parameter>MM7Version</parameter>
+        <configuration>VASP/MM7Version</configuration>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='DeliverReq']</parameter>
+        <parameter>Sender</parameter>
+    </function>
+    <!--<function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='Recipients']</parameter>
+        <parameter>To</parameter>
+    </function>-->
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='Sender'][last()]</parameter>
+        <parameter>Number</parameter>
+        <configuration>noCommunity/UnknownUser</configuration>
+    </function>
+    <function name="setSoapData" module="VASP">
+        <parameter>//*[local-name()='DeliverReq']</parameter>
+        <parameter>Content</parameter>
+    </function>
+    <function name="setSoapAttribute" module="VASP">
+        <parameter>//*[local-name()='Content']</parameter>
+        <parameter>href</parameter>
+        <parameter>cid:xtt-test002</parameter>
+    </function>
+    <function name="addContent" module="VASP">
+        <file>sendMM7data2.txt</file>
+    </function>
+    <!--function name="previewRequest" module="VASP" /-->
+    <function name="sendPostRequest" module="VASP"/>
+    <function name="checkResponseCode" module="VASP">
+        <parameter>200</parameter>
+    </function>
+	<function name="validateXML" module="XML">
+	    <variable>HTTP/BODY/PLAIN</variable>
+ 	    <parameter></parameter>
+        <configuration>MMSCSERVER/XMLNSENV</configuration>
+        <configuration>MMSCSERVER/SOAPXSD</configuration>
+        <configuration>MMSCSERVER/XMLNSMM7</configuration>
+        <configuration>MMSCSERVER/MM7XSD</configuration>
+    </function>    
+    <function name="queryBody" module="VASP">
+        <parameter>dev/null</parameter>
+        <parameter>&lt;StatusCode&gt;1000&lt;/StatusCode&gt;</parameter>
+    </function>
+
+    <function name="waitForRequests" module="MMSC">
+        <parameter>1</parameter>
+    </function>
+	<function name="validateXML" module="XML">
+	    <variable>MMSCSERVER/MM7/SOAP</variable>
+ 	    <parameter></parameter>
+        <configuration>VASP/XMLNSENV</configuration>
+        <configuration>VASP/SOAPXSD</configuration>
+        <configuration>VASP/XMLNSMM7</configuration>
+        <configuration>VASP/MM7XSD</configuration>
+    </function>
+
+    <function name="queryText" module="Basic">
+        <variable>MMSCSERVER/MM7/SOAP</variable>
+        <parameter>dev/null</parameter>
+        <parameter>
+            <parameter>&lt;Number&gt;</parameter>
+            <configuration>noCommunity/UnknownUser</configuration>
+            <parameter>&lt;/Number&gt;</parameter>
+        </parameter>
+    </function>
+
+    <function name="stopMMSCServer" module="MMSC"/>
+
+</test>

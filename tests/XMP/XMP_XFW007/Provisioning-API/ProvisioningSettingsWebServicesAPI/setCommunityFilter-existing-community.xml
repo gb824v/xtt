@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://policy.intf.mobixell.com/">
+  <soap:Body>
+    <tns:setCommunityFilter>
+      <arg0>Fabulous</arg0>
+      <arg1>
+        <scheme>2</scheme>
+        <blockedCategories>myTravel</blockedCategories>
+        <blockedUrls>http://travel*.com</blockedUrls>
+        <exceptionUrls>http://travel123.com</exceptionUrls>
+      </arg1>
+    </tns:setCommunityFilter>
+  </soap:Body>
+</soap:Envelope>

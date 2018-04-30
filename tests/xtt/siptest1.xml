@@ -1,0 +1,51 @@
+<test>
+	<function name="testName" module="Basic">
+		<parameter>SIP.TEST.TC.001</parameter>
+	</function>
+	<function name="startSIPServer" module="SIP"/>
+    <function name="setVariable" module="Basic">
+        <parameter>body</parameter>
+        <parameter>This is some test text</parameter>
+    </function>
+    
+    <function name="waitForVariable" module="Basic">
+        <parameter>SIP/UDP/PUBLISH/xttudp@172.20.14.1/Via</parameter>
+    </function>
+
+    <function name="sleep" module="Basic">
+        <parameter>500</parameter>
+    </function>
+    
+	<!--function name="stop" module="xtt"/-->
+    <function name="setVariableLines" module="Basic">
+        <parameter>2</parameter>
+        <parameter>headers</parameter>
+        <parameter>MESSAGE sip:xttudp@172.20.14.1 SIP/2.0</parameter><parameter></parameter>
+        <parameter>Call-ID: </parameter>            <parameter>36eb76969536ce1a78c541b6c9914010@0.0.0.0</parameter>
+        <parameter>CSeq: </parameter>               <parameter>12345678 MESSAGE</parameter>
+        <parameter>From: </parameter>               <parameter>"alala" &lt;sip:alalala@172.20.14.1&gt;;tag=8a671324</parameter>
+        <parameter>To: </parameter>                 <parameter>&lt;sip:xttudp@172.20.14.1&gt;</parameter>
+        <parameter>Via: </parameter>                <parameter>SIP/2.0/UDP 172.20.14.1:5060;branch=z9hG4bK9146f746bd0659b85c59a57dbffdab8</parameter>
+        <parameter>Max-Forwards: </parameter>       <parameter>70</parameter>
+        <parameter>Content-Type: </parameter>       <parameter>text/plain</parameter>
+        <parameter>Content-Encoding: </parameter>   <parameter>UTF-8</parameter>
+        <parameter>Content-Length: </parameter>     <bytelength><variable>body</variable></bytelength>
+        <parameter></parameter><parameter></parameter>
+    </function>
+
+    <function name="queryText" module="Basic">
+        <variable>SIP/UDP/PUBLISH/xttudp@172.20.14.1/Via</variable>
+        <parameter>toPort</parameter>
+        <parameter>\:(\d+);</parameter>
+    </function>
+
+    <function name="sendFreeRequest" module="SIP">
+        <parameter>172.20.14.1</parameter>
+        <variable>toPort</variable>
+        <parameter>UDP</parameter>
+        <variable>headers</variable>
+        <base64encode><variable>body</variable></base64encode>
+    </function>
+	<function name="stop" module="xtt"/>
+	<function name="stopSIPServer" module="SIP"/>
+</test>

@@ -1,0 +1,88 @@
+<test>
+
+    <configuration>xsnhttp.xml</configuration>
+
+	<function name="testName" module="Basic">
+		<parameter>XSN.HTTP.TC.009</parameter>
+	</function>
+	
+	<description>Check Always Allow and Always Block rules.</description>
+    
+    <function name="disableFollowRedirects" module="HTTP" />
+    
+    <function name="setHeader" module="HTTP">
+        <parameter>SubscriberIdHdr</parameter>
+        <configuration>xsn/subscribers/over18alwaysBlockTest</configuration>
+    </function>
+    
+	<!--function name="sendGetRequest" module="HTTP">
+		<parameter>http://www.gnu.org/</parameter>
+	</function>
+	
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+	
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://news.bbc.co.uk/</parameter>
+	</function>
+	
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function-->	
+	
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://www.thesun.co.uk/</parameter>
+	</function>
+	
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>302</parameter>
+	</function>
+	
+	<function name="queryHeader" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>location</parameter>
+        <parameter>
+            <parameter>^</parameter>
+            <configuration>xsn/redirect/url</configuration>
+            <parameter>/</parameter>
+            <configuration>xsn/redirect/alwaysBlockScreen</configuration>
+        </parameter>		
+	</function>		
+	
+    <function name="setHeader" module="HTTP">
+        <parameter>SubscriberIdHdr</parameter>
+        <configuration>xsn/subscribers/over18alwaysAllowTest</configuration>
+    </function>
+    
+	<!--function name="sendGetRequest" module="HTTP">
+		<parameter>http://www.gnu.org/</parameter>
+	</function>
+	
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://www.playboy.com/</parameter>
+	</function>
+	
+	<function name="queryHeader" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>location</parameter>
+        <parameter>
+            <parameter>^</parameter>
+            <configuration>xsn/redirect/url</configuration>
+            <parameter>/</parameter>
+            <configuration>xsn/redirect/blockedBySystemFiltersScreen</configuration>
+        </parameter>		
+	</function-->		
+	
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://www.page3.com/</parameter>
+	</function>
+	
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>		
+</test>

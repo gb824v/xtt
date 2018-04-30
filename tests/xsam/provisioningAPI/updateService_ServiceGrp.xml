@@ -1,0 +1,119 @@
+<test>
+    <configuration>provTestConfig.xml</configuration>
+    <name>XML.TEST</name>
+    
+    <function name="setVariable" module="Basic">
+        <parameter>numGroups</parameter>
+        <parameter>100802</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+        <parameter>numServices</parameter>
+        <parameter>2</parameter>
+    </function>
+    
+
+<loop name="serviceGroupNo" start="100800" stop="numGroups" step="1">
+        <function name="createDocument" module="XML">
+            <parameter>groupAddSoap</parameter>
+            <parameter>
+            <parameter>&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://messagebroker.intf.mobilgw.com/"&gt;
+    &lt;soap:Body&gt;
+        &lt;tns:updateServiceGroup&gt;
+            &lt;serviceGroupName&gt;</parameter>
+            <variable>serviceGroupNo</variable>
+            <parameter>&lt;/serviceGroupName&gt;
+			</parameter><parameter>
+            <file>updateServiceGrp.xml</file>
+			</parameter>
+			<parameter>
+            &lt;signature&gt;11111&lt;/signature&gt;
+	        &lt;/tns:updateServiceGroup&gt;
+			&lt;/soap:Body&gt;
+			&lt;/soap:Envelope&gt;
+			</parameter>
+            </parameter>
+        </function>
+
+        <function name="setHeader" module="XML">
+            <parameter>groupAddSoap</parameter>
+            <parameter>content-type</parameter>
+            <parameter>text/xml</parameter>
+        </function>
+
+    	<function name="sendPostRequest" module="XML">
+    	    <parameter>groupAddSoap</parameter>
+     	    <parameter>groupAddSoapResp</parameter>
+     	    <parameter>
+     	        <configuration>provisioningURL</configuration>
+     	    </parameter>
+        </function>    
+        <function name="checkResponseCode" module="XML">
+     	    <parameter>groupAddSoapResp</parameter>
+            <parameter>200</parameter>
+        </function>
+        
+    	<function name="documentToVariable" module="XML">
+    	    <parameter>groupAddSoapResp</parameter>
+     	    <parameter>groupAddSoapResp</parameter>
+        </function>    
+    	<function name="info" module="Basic">
+    	    <variable>groupAddSoapResp</variable>
+        </function>    
+ <loop name="serviceNo" start="0" stop="numServices" step="1">
+        
+        <function name="createDocument" module="XML">
+            <parameter>serviceAddSoap</parameter>
+            <parameter>
+            <parameter>&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://messagebroker.intf.mobilgw.com/"&gt;
+  &lt;soap:Body&gt;
+    &lt;tns:updateService&gt;
+      &lt;serviceName&gt;</parameter>
+            <variable>serviceGroupNo</variable>
+            <parameter>SV</parameter>
+            <variable>serviceNo</variable>
+            <parameter>&lt;/serviceName&gt;
+      &lt;serviceType&gt;SmsSubmit&lt;/serviceType&gt;
+      &lt;serviceGroupName&gt;10</parameter>
+            <variable>serviceGroupNo</variable>
+            <parameter>&lt;/serviceGroupName&gt;
+			</parameter>
+			<parameter>
+            <file>updateService.xml</file>
+	   </parameter>
+            <parameter>
+		&lt;signature/&gt;
+		 &lt;/tns:updateService&gt;
+		&lt;/soap:Body&gt;
+		&lt;/soap:Envelope&gt;
+            </parameter>
+            </parameter>
+        </function>
+        <function name="setHeader" module="XML">
+            <parameter>serviceAddSoap</parameter>
+            <parameter>content-type</parameter>
+            <parameter>text/xml</parameter>
+        </function>
+
+    	<function name="sendPostRequest" module="XML">
+    	    <parameter>serviceAddSoap</parameter>
+     	    <parameter>serviceAddSoapResp</parameter>
+     	    <parameter>
+     	        <configuration>provisioningURL</configuration>
+     	    </parameter>
+        </function>    
+        <function name="checkResponseCode" module="XML">
+            <parameter>serviceAddSoapResp</parameter>
+            <parameter>200</parameter>
+        </function>
+        
+    	<function name="documentToVariable" module="XML">
+    	    <parameter>serviceAddSoapResp</parameter>
+     	    <parameter>serviceAddSoapResp</parameter>
+        </function>    
+    	<function name="info" module="Basic">
+    	    <variable>serviceAddSoapResp</variable>
+        </function>
+    </loop>
+</loop>
+
+</test>

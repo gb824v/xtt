@@ -1,0 +1,66 @@
+<test>
+    <name>XMP.CCS.TC.001</name>
+    <description>CCS http POST callout</description>
+
+    <function name="startWebServer" module="HTTP"/>
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+    <function name="setCacheFile" module="HTTP">
+		<parameter>ccs.html</parameter>
+        <parameter>
+            <parameter>&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;Hello world&lt;/body&gt;&lt;/html&gt;</parameter>
+        </parameter>
+    </function>
+    <function name="setServerReturnCode" module="HTTP">
+        <parameter>204</parameter>
+    </function>
+
+
+    <function name="setHeader" module="HTTP">
+        <parameter>User-Agent</parameter>
+        <parameter>
+            <parameter>XTT/callout=</parameter>
+            <configuration>SYSTEM/IP</configuration>
+            <parameter>:</parameter>
+            <configuration>WEBSERVER/PORT</configuration>
+        </parameter>
+    </function>
+    <function name="sendGetRequest" module="HTTP">
+        <parameter>http://ccs2.xtt724.com/ccs.html</parameter>
+    </function>
+    <function name="checkResponseCode" module="HTTP">
+        <parameter>204</parameter>
+    </function>
+
+    <function name="waitForPOSTs" module="HTTP">
+        <parameter>1</parameter>
+    </function>
+
+    <function name="setHeader" module="HTTP">
+        <parameter>User-Agent</parameter>
+        <parameter>
+            <parameter>XTT/callout=</parameter>
+            <configuration>SYSTEM/IP</configuration>
+            <parameter>:</parameter>
+            <configuration>WEBSERVER/PORT</configuration>
+        </parameter>
+    </function>
+    <function name="sendGetRequest" module="HTTP">
+        <parameter>http://ccs99.xtt724.com/ccs.html</parameter>
+    </function>
+    <function name="checkResponseCode" module="HTTP">
+        <parameter>204</parameter>
+    </function>
+
+    <function name="waitForPOSTs" module="HTTP">
+        <parameter>2</parameter>
+    </function>
+
+    <function name="stopWebServer" module="HTTP"/>
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function> 
+</test>

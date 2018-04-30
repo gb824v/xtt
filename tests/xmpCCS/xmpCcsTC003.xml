@@ -1,0 +1,52 @@
+<test>
+    <name>XMP.CCS.TC.001</name>
+    <description>CCS delay</description>
+
+    <function name="startWebServer" module="HTTP"/>
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+    <function name="setCacheFile" module="HTTP">
+		<parameter>ccs.html</parameter>
+        <parameter>
+            <parameter>&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;Hello world&lt;/body&gt;&lt;/html&gt;</parameter>
+        </parameter>
+    </function>
+
+    <function name="setHeader" module="HTTP">
+        <parameter>User-Agent</parameter>
+        <parameter>
+            <parameter>XTT/delay=120000</parameter>
+        </parameter>
+    </function>
+    <loop name="overload" start="1" stop="100" step="1">
+        <function name="sendGetRequest" module="HTTP">
+            <parameter>http://ccs2.xtt724.com/ccs.html</parameter>
+        </function>
+        <function name="checkResponseCode" module="HTTP">
+            <parameter>200</parameter>
+        </function>
+    </loop>
+    <function name="waitForRequests" module="HTTP">
+        <parameter>99</parameter>
+    </function>
+    <function name="waitForTraps" module="SNMP">
+        <parameter>1</parameter>
+        <parameter>1.3.6.1.4.1.12702.1.10006.3</parameter>
+    </function>
+    <function name="sleep" module="Basic">
+        <parameter>99000</parameter>
+    </function>
+    <function name="waitForTraps" module="SNMP">
+        <parameter>1</parameter>
+        <parameter>1.3.6.1.4.1.12702.1.10006.4</parameter>
+    </function>
+
+    <function name="stopWebServer" module="HTTP"/>
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function> 
+
+</test>

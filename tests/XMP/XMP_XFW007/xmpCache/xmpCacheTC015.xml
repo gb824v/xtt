@@ -1,0 +1,68 @@
+<test>
+	<name>XMP.CACHE.TC.015</name>
+	<description>One file retrieved from cache - Validation of maxCacheItemSize Configuration</description>
+<!-- Maximum Size of Cache = 1 MB
+     Maximum Size of Item = 1 KB
+-->
+<!-- POSTPONED
+	<subtest>deleteCacheAll.xml</subtest>
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+	<function name="startWebServer" module="HTTP"/>
+	<function name="setServerHeader" module="HTTP">
+		<parameter>Last-Modified</parameter>
+		<parameter>Wed, 15 Nov 1995 04:58:08 GMT</parameter>
+	</function>
+	<function name="setCacheFile" module="HTTP">
+		<parameter>cacheTC001.html</parameter>
+		<file>1025ByteFile.txt</file>
+	</function>
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>
+			<parameter>http://</parameter>
+			<configuration>system/ip</configuration>
+			<parameter>/cacheTC001.html</parameter>
+		</parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+	<function name="queryBody" module="HTTP">
+		<parameter>dev/null</parameter>
+		<file>1025ByteFile.txt</file>
+	</function>
+	<function name="setCacheFile" module="HTTP">
+		<parameter>cacheTC001.html</parameter>
+		<xml>
+			<html>
+				<body>Should Be New Cache Content</body>
+			</html>
+		</xml>
+	</function>
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>
+			<parameter>http://</parameter>
+			<configuration>system/ip</configuration>
+			<parameter>/cacheTC001.html</parameter>
+		</parameter>
+	</function>
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+	<function name="queryBody" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>Should Be New Cache Content</parameter>
+	</function>
+	<function name="queryBodyNegative" module="HTTP">
+		<parameter>dev/null</parameter>
+		<file>1025ByteFile.txt</file>
+	</function>
+	<function name="stopWebServer" module="HTTP"/>
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+-->
+</test>

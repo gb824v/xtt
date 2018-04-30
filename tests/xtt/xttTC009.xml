@@ -1,0 +1,52 @@
+<test>
+    <name>XTT.TC.009</name>
+    <description>Test WebServerExtension mechanism</description>
+    
+    <function name="startWebServer" module="HTTP"/>
+
+	<function name="sendGetRequest" module="HTTP">
+ 	    <parameter>http://127.0.0.1/?extension=com.mobilgw.xtt.WebWorkerExtensionTest</parameter>
+    </function>
+
+	<function name="checkResponseCode" module="HTTP">
+	    <parameter>200</parameter>
+    </function>
+
+	<function name="checkHeader" module="HTTP">
+	    <parameter>x-xtt-extension</parameter>
+ 	    <parameter>true</parameter>
+    </function>
+    
+	<function name="sendGetRequest" module="HTTP">
+ 	    <parameter>http://127.0.0.1/</parameter>
+    </function>
+
+	<function name="checkResponseCode" module="HTTP">
+	    <parameter>200</parameter>
+    </function>
+
+	<function name="checkHeaderNot" module="HTTP">
+	    <parameter>x-xtt-extension</parameter>
+ 	    <parameter>true</parameter>
+    </function>
+
+	<function name="setDefaultWebWorkerExtension" module="HTTP">
+	    <configuration>WEBSERVER/PORT</configuration>
+ 	    <parameter>com.mobilgw.xtt.WebWorkerExtensionTest</parameter>
+    </function>
+
+	<function name="sendGetRequest" module="HTTP">
+ 	    <parameter>http://127.0.0.1/</parameter>
+    </function>
+
+	<function name="checkResponseCode" module="HTTP">
+	    <parameter>200</parameter>
+    </function>
+
+	<function name="checkHeader" module="HTTP">
+	    <parameter>x-xtt-extension</parameter>
+ 	    <parameter>true</parameter>
+    </function>
+            
+    <function name="stopWebServer" module="HTTP"/>
+</test>

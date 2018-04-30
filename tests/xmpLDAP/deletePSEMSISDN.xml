@@ -1,0 +1,21 @@
+<test>
+    <!--loop name="current" start="0" stop="deletePSEMSISDN" step="1">
+        <function name="executeRemoteXMSCommand" module="Remote">
+            <parameter>
+                <configuration>remote/command</configuration>
+                <parameter>
+                    <parameter>pse3cli -e 4 -e 8 -n </parameter>
+                    <localvariable>
+                        <parameter>deletePSEMSISDN/</parameter>
+                        <localvariable>current</localvariable>
+                    </localvariable>
+                    <parameter> ic TI:F.CEE.PSE:PSE3</parameter>
+                </parameter>
+            </parameter>
+        </function>
+        <function name="queryResponse" module="Remote">
+            <parameter>(InvalidateCache: sessions affected \d++)|(pse3cli: no entries deleted)</parameter>
+            <parameter>dev/null</parameter>
+        </function>
+    </loop-->
+</test>

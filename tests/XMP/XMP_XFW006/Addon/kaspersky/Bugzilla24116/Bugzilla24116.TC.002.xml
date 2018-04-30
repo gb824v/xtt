@@ -1,0 +1,100 @@
+<test>
+	<function name="testName" module="Basic">
+		<parameter>Bugzilla24116.TC.002</parameter>
+	</function>
+
+	<description>Validate the statistics values of KSPRSKY component / Create at least a few events whose statistics are calculated 
+	[KSPRSKY_STATS_Stats.scanningFailures]</description>
+
+    <!-- Validate KSPRSKY_STATS_Stats.scanningFailures statistic-->
+
+	<function name="disableFollowRedirects" module="HTTP"/>
+
+	<!-- Start Web Server -->
+	<function name="startWebServer" module="HTTP" />
+
+	<!-- Radius Login -->
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+	<!-- Get the name of TCP-ROUTER.1 process -->
+	<function name="activeProcessToVar" module="Remote">
+		<parameter><configuration>HttpProxy/ProcessName</configuration><parameter>.*1</parameter></parameter>
+		<parameter>Name_Of_Tcp_Router_Process</parameter>
+	</function>
+	<!-- Restart TCP-ROUTER -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>restart process </parameter>
+			<variable>Name_Of_Tcp_Router_Process</variable>
+		</parameter>
+	</function>
+
+	<!-- Get the name of KASPERSKY-DAEMON process -->
+	<function name="activeProcessToVar" module="Remote">
+		<parameter>KASPERSKY-DAEMON.*</parameter>
+		<parameter>Name_Of_Kaspersky_Daemon_Process</parameter>
+	</function>
+
+    <!-- Stop KASPERSKY-DAEMON process -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>stop process </parameter>
+			<variable>Name_Of_Kaspersky_Daemon_Process</variable>
+		</parameter>
+	</function>
+
+	<function name="sleep" module="Basic">
+		<parameter>5000</parameter>
+	</function>
+
+	<function name="setCacheFile" module="HTTP">
+		<parameter>virus.bin</parameter>
+		<base64decode><base64decode><file>base64virus.bin</file></base64decode></base64decode>
+	</function>
+
+	<!-- Send virus Infected data in HTTP Get Proxy Request -->
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>
+			<parameter>http://</parameter>
+			<configuration>SYSTEM/IP</configuration>
+			<parameter>/virus.bin</parameter>
+		</parameter>
+	</function>
+
+	<!-- Validate Response Code Send by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>run command cmu -O KSPRSKY -d </parameter>
+			<variable>Name_Of_Tcp_Router_Process</variable>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>KSPRSKY_STATS_Stats.scanningFailures[\s]++:[\s]++1</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	
+    <!-- Start KASPERSKY-DAEMON process -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>start process </parameter>
+			<variable>Name_Of_Kaspersky_Daemon_Process</variable>
+		</parameter>
+	</function>
+	<!-- Radius Logoff -->
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+	<!-- Stop Web Server -->
+	<function name="stopWebServer" module="HTTP"/>
+
+</test>

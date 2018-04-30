@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dbupdates> 
+
+<!-- XSN.DBLoad.CommAdmMod.TC006.14	Modify Name and Audit and Notification attribute of admin	-->
+<subscribers> 
+	<remove subscriber="1234574" /> 
+	<add subscriber="1234574" > </add> 
+</subscribers>
+
+<communities> 
+	<remove name="Fire"/> 
+	<add name="Fire" /> 
+</communities> 
+<communityAdmins>
+	
+	<remove community="Fire" subscriber="1234574" />
+	<add community="Fire"
+		name="Fanna"
+		subscriber="1234574"
+		wantAudit="Yes"
+		wantNotifications="Yes" />
+	<modify community="Fire"
+		subscriber="1234574"
+		name="Freddie"
+		wantAudit="No"/>
+</communityAdmins>
+
+<!-- XSN.DBLoad.CommAdmMod.TC006.15	Modify Admin where Sub Id is not the admin of a community. -->
+
+<communityAdmins>
+	<modify community="Fire"
+	subscriber="1234573"
+	name="Freddie"
+	wantAudit="No"
+	wantNotifications="No" />
+</communityAdmins>
+
+
+<!-- XSN.DBLoad.CommAdmMod.TC006.16	Modify to add non existing SubId as Admin	-->
+<communityAdmins>
+	<modify community="Fire"
+	subscriber="1234"
+	name="Freddie"
+	wantAudit="No"
+	wantNotifications="No" />
+</communityAdmins>
+
+				<!-- Remove Community Admin tag	 -->
+
+<!-- XSN.DBLoad.CommAdmRem.TC006.16	Remove admin of a single community.	-->
+<communityAdmins>
+	<remove community="Fire"
+	subscriber="1234574" />
+</communityAdmins>
+
+<!-- XSN.DBLoad.CommAdmRem.TC006.17	Remove Admin only from Top hierarchy of community.	-->
+<communityAdmins>
+	<remove community="Flower"
+	subscriber="1234573" />
+</communityAdmins>
+
+
+<!-- XSN.DBLoad.CommAdmRem.TC006.18	Remove an Admin having wrong SubID	-->
+<communityAdmins>
+	<remove community="Fire"
+	subscriber="1234573" />
+</communityAdmins>
+
+<!-- XSN.DBLoad.CommAdmRem.TC006.19	Remove an Admin of non existing Community  -->
+<communities> 
+	<remove name="Fire" /> 
+</communities> 
+<communityAdmins>
+	<remove community="Ice"
+	subscriber="1234574" />
+</communityAdmins>
+
+
+</dbupdates>

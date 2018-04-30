@@ -1,0 +1,204 @@
+<test>
+<configuration>xsam_config.xml</configuration>
+    <function name="testName" module="Basic">
+        <parameter>TC_10</parameter>
+    </function>
+
+<description> SMPP-replace_sm (CP To SMSC)		
+ ----------------------------------------------------------------------
+Step 1: Set up a CP Simulator XTT tool, configure proper TCP settings by providing the Remote  IP address / port with the IP/port (Incoming Channel) on which the XSAM is listening for connections.
+Step 2: Simulate a SMSC using XTT Tool listening for incoming connections. 
+Step 3: Create "bind_transceiver"  message PDU from the CP XTT tool and verify that all the properties have correct values i.e. password etc.
+Step 4: Send "bind_transceiver" message. Connection should be established.
+Step 5: Send "replace_sm" message from CP Simulator to SMSC
+--------------------------------------------------------------------
+</description>
+   
+	<function name="startSMSCServer" module="SMS">
+		<configuration>SMSCServer/SMPPPort</configuration>
+		<parameter>SMPP</parameter>
+	</function>
+
+	
+	<function name="openConnection" module="SMPP">
+            <parameter>connection</parameter>
+            <configuration>XSAM/IP</configuration>
+            <configuration>XSAM/SMPPPort</configuration>
+        </function>
+
+
+        <function name="sendSMPPPacket" module="SMPP">
+            <parameter>connection</parameter>
+            <parameter>BIND_TRANSCEIVER</parameter>
+            <parameter>internal</parameter>
+            <parameter>systemid</parameter>
+            <parameter>password</parameter>
+            <parameter>system_type</parameter>
+            <parameter>0x50</parameter>
+            <parameter>0</parameter>
+            <parameter>0</parameter>
+            <configuration>XSAM/SMPPSHORTCODE</configuration>
+			<parameter>0</parameter>
+        </function>
+       
+       <function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/system_id</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/system_id</variable>
+            <parameter>XTT-724-SMSC</parameter>
+        </function>
+
+        <function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_status</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_status</variable>
+            <parameter>0x00000000</parameter>
+        </function>
+
+          <function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_id</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_id</variable>
+            <parameter>0x80000009</parameter>
+        </function>
+
+       <function name="sendSMPPPacket" module="SMPP">
+            <parameter>connection</parameter><!--connection-->
+            <parameter>SUBMIT_SM</parameter><!--commandID-->
+            <parameter>internal</parameter><!--sequence-->
+            <parameter>STYP</parameter><!--service type-->
+            <parameter>0</parameter><!--source_addr_ton-->
+            <parameter>0</parameter><!--source_addr_npi-->
+            <Configuration>/XSAM/SMPPShortcode</Configuration><!--source_address-->
+            <parameter>0</parameter><!--dest_addr_ton-->
+            <parameter>0</parameter><!--dest_addr_npi-->
+            <parameter>SMSCServer/MSISDN</parameter><!--destination_addr-->
+            <parameter>0</parameter><!--esm_class-->
+            <parameter>0</parameter><!--protocol_id-->
+            <parameter>0</parameter><!--priority_flag-->
+            <parameter></parameter><!--schedule_delivery_time-->
+            <parameter>0</parameter><!--validity_period-->
+            <parameter>0</parameter><!--CP Submits Delivery Receipt by registered_delivery parameter-->
+            <parameter>0</parameter><!--replace_if_present_flag-->
+            <parameter>0</parameter><!--data_coding-->
+            <parameter>0</parameter><!--sm_default_msg_id-->
+            <parameter>This is the Message</parameter><!--short_message-->
+            </function> 
+
+        <function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/system_id</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/system_id</variable>
+            <parameter>XTT-724-SMSC</parameter>
+        </function>
+
+        <function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_status</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_status</variable>
+            <parameter>0x00000000</parameter>
+        </function>
+
+          <function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_id</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_id</variable>
+            <parameter>0x80000004</parameter>
+        </function>
+
+		 <function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/message_id</variable>
+        </function>
+
+	    <function name="setVariable" module="BASIC">
+            <parameter>submit_sm_message_id</parameter>
+            <variable>SMSC/SMPP/connection/message_id</variable>
+        </function>
+
+
+    	<function name="sendSMPPPacket" module="SMPP">
+            <parameter>connection</parameter><!--connection-->
+            <parameter>REPLACE_SM</parameter><!--commandID-->
+            <parameter>internal</parameter><!--sequence-->
+            <variable>SMSC/SMPP/connection/message_id</variable><!--sm_default_msg_id-->
+            <parameter>0</parameter><!--source_addr_ton-->
+            <parameter>0</parameter><!--source_addr_npi-->
+            <parameter>XSAM/SMPPSHORTCODE</parameter><!--source_address-->
+	        <parameter></parameter><!--scheduled deliverytime"YYMMDDhhmmsstnnp"-->
+	        <parameter>0</parameter><!--validity_period-->
+	        <parameter>0</parameter><!--registered_delivery-->
+	        <parameter>1234</parameter><!--new_sm_default_msg_id-->
+            <parameter>This is new replaced message</parameter><!--New short_message to be replaced-->
+	    </function>
+
+       <function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/system_id</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/system_id</variable>
+            <parameter>XTT-724-SMSC</parameter>
+        </function>
+
+        <function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_status</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_status</variable>
+            <parameter>0x00000000</parameter>
+        </function>
+
+          <function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_id</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_id</variable>
+            <parameter>0x80000007</parameter>
+        </function>
+
+        
+        <function name="sendSMPPPacket" module="SMPP">
+            <parameter>connection</parameter>
+            <parameter>UNBIND</parameter>
+            <parameter>internal</parameter>
+        </function>
+
+       <function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_status</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_status</variable>
+            <parameter>0x00000000</parameter>
+        </function>
+
+          <function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_id</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_id</variable>
+            <parameter>0x80000006</parameter>
+        </function>
+
+        <function name="closeConnection" module="SMPP">
+            <parameter>connection</parameter>
+        </function>
+    
+    <function name="stopSMSCServer" module="SMS"/>
+
+</test>

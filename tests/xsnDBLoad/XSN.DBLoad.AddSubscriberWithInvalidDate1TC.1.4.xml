@@ -1,0 +1,33 @@
+<test>
+	<function name="testName" module="Basic">
+	
+	<parameter>XSN.DBLoad.AddSubscriberWithInvalidDate1.1.4.xml</parameter>
+	</function>
+	
+	<description>Add Subscriber with invalid date </description>
+   
+    <function name="sendRemoteCommand" module="Remote">
+    
+    	<parameter>writeFile AddSubscriberWithInvalidDate1.xml </parameter>
+         
+        <file>AddSubscriberWithInvalidDate1.xml</file>
+    
+    </function>
+    
+    <function name="sendRemoteCommand" module="Remote">
+    
+        <configuration>xsn/path</configuration>
+        <configuration>xsn/xms</configuration>
+    
+        
+        <parameter>load db AddSubscriberWithInvalidDate1.xml</parameter>
+    
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        
+    <parameter>ERROR: XML upload encountered problems and ended prematurely</parameter>
+    <parameter>dev/null</parameter>
+    </function>    
+    
+  </test>

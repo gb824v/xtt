@@ -1,0 +1,60 @@
+<test>
+	<function name="testName" module="Basic">
+		<parameter>CONNECT.TC.001</parameter>
+	</function>
+	
+    <description>A gnu.org GET with radius logon/logoff</description>	
+	
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+	    <parameter>12346</parameter>
+    </function>
+
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://www.gnu.org/</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<function name="setPostData" module="HTTP">
+		<parameter>postfield</parameter>
+		<parameter>postdata</parameter>
+	</function>
+
+	<function name="sendPostRequest" module="HTTP">
+		<parameter>http://www.gnu.org/</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+    <function name="connectGateway" module="WAP"> </function>
+
+    <function name="sendGetRequest" module="WAP">
+        <parameter>http://m.ebay.com/</parameter>
+    </function>
+
+    <function name="checkResponseCode" module="WAP">
+        <parameter>200</parameter>
+    </function>
+
+    <function name="sendPostRequest" module="WAP">
+        <parameter>text/plain</parameter>
+	<parameter>testdata</parameter>
+	<parameter>http://m.ebay.com/</parameter>
+    </function>
+
+    <function name="checkResponseCode" module="WAP">
+        <parameter>200</parameter>
+    </function>
+
+    <function name="disconnectGateway" module="WAP" />
+
+	<function name="radiusLogoff" module="Radius">
+	    <parameter>xttuser</parameter>
+	    <parameter>12346</parameter>
+    </function>
+</test>

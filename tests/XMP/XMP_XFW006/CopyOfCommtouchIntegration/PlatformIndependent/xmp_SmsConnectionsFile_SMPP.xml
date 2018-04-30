@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmpSmsConnections>
+    <channels>
+
+<!-- Make sure you set maxSegmentPduSize to the maximum segment size (in bytes) 
+     supported by the target SMSCs. -->
+
+        <connectChannel name="SmsChannel" maxSegmentPduSize="127" policy="backup" protocol="SMPP3.4" settings="SmppSettings" >
+            <connection name="SmsConnection" address="2222" username="724" password="" />
+            <remoteAddress ipAddress=""
+                           port="" />
+
+        </connectChannel>
+    </channels>
+    <settings>
+        <smppSettings name="SmppSettings" 
+                      linkDownMaxRetries="3"
+                      linkDownRetryTimeoutSeconds="12"
+                      maxConcurrentReq="12"
+                      maxMessagesPerSecond="10"
+                      maxPduSize="4096"
+                      passive="false"
+                      singleTransmitterSession="true" >
+            <smppConnectionOptions addrNpi="1" 
+                                   addrRange=""
+                                   addrTon="6" 
+                                   smscSystemId="" 
+                                   systemId=""
+                                   systemType="test" />
+            <smppMessageOptionSets>
+                <smppMessageOptionSet optionSetName="DEFAULT"
+                                    dataPdu="true"
+                                    registeredDelivery="0"
+                                    dataCoding="4"
+                                    destAddrNpi="1" 
+                                    destAddrTon="1"
+                                    esmClass="64"
+                                    priorityFlag="0"
+                                    protocolId="0" />
+            </smppMessageOptionSets>
+        </smppSettings>
+    </settings>
+</xmpSmsConnections>

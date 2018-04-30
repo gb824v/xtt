@@ -1,0 +1,109 @@
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+WebDAVSupport.TC.006  - Validate Delete Request and its Response are successfully proxied by XMP.
+
+Test Description:
+ 1. Radius Logon
+ 2. Send Delete Request
+ 3. Check Response 
+ 4. Radius Logoff
+ 
+Expected Result:
+ -  XMP should process the PUT request and response through Non Transperant Proxy.
+
+XTT Commands:
+
+1. -  startWebServer
+     
+2.  - Radius log-ON
+
+3.  - setCacheFile
+
+4. -  setTextPostData
+
+5.  - sendFreeRequest 		"HTTP" DELETE method to SERVER/IP {configure in XTT config.xml}
+
+6.  - waitForRequests
+
+7.  - Radius log-OFF
+
+8.  - stopWebServer
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- Test Start  -->
+
+<test>
+    <name>WebDAVSupport.TC.006</name>
+
+    <description>WebDAV - DELETE</description>
+
+    <function name="startWebServer" module="HTTP"/>
+
+	<function name="radiusLogon" module="Radius">
+	    <parameter>xttuser</parameter>
+	    <parameter>12346</parameter>
+    </function>
+
+    <function name="setServerHeader" module="HTTP">
+        <parameter>content-type</parameter>
+        <parameter>text/xml; charset="utf-8"</parameter>
+    </function>
+
+    <function name="setServerReturnCode" module="HTTP">
+        <parameter>404</parameter>
+    </function>
+
+    <function name="setServerReturnMessage" module="HTTP">
+        <parameter> Not Found</parameter>
+    </function>
+
+<!-- Received response from server using setCacheFile -->
+
+    <function name="setCacheFile" module="HTTP">
+        <parameter>/file</parameter>
+        <parameter>
+            <crlf>&lt;?xml version="1.0" encoding="utf-8" ?&gt;</crlf>
+            <crlf>&lt;d:multistatus xmlns:d="DAV:"&gt;</crlf>
+            <crlf>    &lt;d:response&gt;</crlf>
+            <crlf>        &lt;d:href&gt;http://www.example.com/container/resource3&lt;/d:href&gt;</crlf>
+            <crlf>        &lt;d:status&gt;HTTP/1.1 423 Locked&lt;/d:status&gt;</crlf>
+            <crlf>        &lt;d:error&gt;</crlf>
+            <crlf>            &lt;d:lock-token-submitted/&gt;</crlf>
+            <crlf>        &lt;/d:error&gt;</crlf>
+            <crlf>    &lt;/d:response&gt;</crlf>
+            <crlf>    &lt;D:responsedescription&gt;There has been an error, the resource was not deleted.</crlf>
+            <crlf>    &lt;/D:responsedescription&gt;</crlf>
+            <crlf>&lt;/d:multistatus&gt;</crlf>
+        </parameter>
+    </function>
+
+    <function name="setHeader" module="HTTP">
+        <parameter>Content-Type</parameter>
+        <parameter>text/xml; charset="utf-8"</parameter>
+    </function>
+
+<!-- Send Delete request to XMP -->
+
+    <function name="sendFreeRequest" module="HTTP">
+        <parameter>DELETE</parameter>
+        <parameter>false</parameter>
+        <parameter>
+            <parameter>http://</parameter>
+            <configuration>SYSTEM/IP</configuration>
+            <parameter>:</parameter>
+            <configuration>WEBSERVER/PORT</configuration>
+            <parameter>/file</parameter>
+        </parameter>
+        <parameter>response</parameter>
+    </function>
+
+    <function name="waitForRequests" module="HTTP">
+        <parameter>1</parameter>
+    </function>
+
+    <function name="radiusLogoff" module="Radius">
+	    <parameter>xttuser</parameter>
+	    <parameter>12346</parameter>
+    </function>
+
+    <function name="stopWebServer" module="HTTP"/>
+
+</test>

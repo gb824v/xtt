@@ -1,0 +1,16 @@
+<test>
+<name>NewTest</name>
+<qcid>44</qcid>
+<description>
+asdas
+</description>
+<steps>
+HTTP/clearHeader
+</steps>
+<designer>guyb </designer>
+<creationdate>2012-01-18 13:28:30 </creationdate>
+<testlevel>Integration</testlevel>
+<xfwVersion>XMP_XFW006</xfwVersion>
+<stepname>HTTP/clearHeader</stepname>
+<function name="clearHeader" module="HTTP"/>
+</test>

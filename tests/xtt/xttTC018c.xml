@@ -1,0 +1,110 @@
+<test>
+	<name>XTT.TC.018</name>
+	<description>This test was used to create the xttTC018.multipart2.bin file</description>
+
+    <function name="setVariable" module="Basic">
+        <parameter>boundary</parameter>
+        <parameter>
+            <crlf/>
+            <parameter>--TESTBOUNDARY00002</parameter>
+        </parameter>
+    </function>
+
+
+    <function name="writeBase64File" module="Basic">
+        <parameter>xttTC018.multipart2.bin</parameter>
+        <base64encode>
+            <parameter>This is BEFORE the Multipart</parameter>
+            <crlf><variable>boundary</variable></crlf>
+            <crlf>Content-Type: text/plain; name=test2.txt; charset=us-ascii</crlf>
+            <crlf>Content-Transfer-Encoding: 7bit</crlf>
+            <crlf>Content-Disposition: attachment; filename=test2.txt</crlf>
+            <crlf>Content-ID: &lt;test2.txt&gt;</crlf>
+            <crlf/>
+        </base64encode>
+    </function>
+
+    <function name="writeBase64File" module="Basic">
+        <parameter>xttTC018.multipart2.bin</parameter>
+        <base64file>xttTC018.bin</base64file>
+        <parameter>true</parameter>
+    </function>
+
+    <function name="writeBase64File" module="Basic">
+        <parameter>xttTC018.multipart2.bin</parameter>
+        <base64encode>
+            <crlf><variable>boundary</variable><parameter>      </parameter></crlf>
+            <crlf>Content-Type: text/plain; name=test3.txt; charset=us-ascii</crlf>
+            <crlf>Content-Transfer-Encoding: base64</crlf>
+            <crlf>Duplicate-Header: value1</crlf>
+            <crlf>duplicate-header: value2</crlf>
+            <crlf>Content-Disposition: attachment; filename=test3.txt</crlf>
+            <crlf>Content-ID: &lt;test3.txt&gt;</crlf>
+            <crlf>Duplicate-header: value3</crlf>
+            <crlf/>
+        </base64encode>
+        <parameter>true</parameter>
+    </function>
+
+    <function name="writeBase64File" module="Basic">
+        <parameter>xttTC018.multipart2.bin</parameter>
+        <base64encode><base64file>xttTC018.bin</base64file></base64encode>
+        <parameter>true</parameter>
+    </function>
+
+    <function name="writeBase64File" module="Basic">
+        <parameter>xttTC018.multipart2.bin</parameter>
+        <base64encode>
+            <crlf><variable>boundary</variable><parameter>&#x09;&#x09;&#x09;</parameter></crlf>
+            <crlf>Content-Type: image/jpg; name=picture2.jpg</crlf>
+            <crlf>Content-Transfer-Encoding: base64</crlf>
+            <crlf>Content-Disposition: attachment; filename=picture2.jpg</crlf>
+            <crlf>Content-ID: &lt;picture2.jpg&gt;</crlf>
+            <crlf/>
+        </base64encode>
+        <parameter>true</parameter>
+    </function>
+
+    <function name="writeBase64File" module="Basic">
+        <parameter>xttTC018.multipart2.bin</parameter>
+        <base64encode><base64file>xttTC018.jpg</base64file></base64encode>
+        <parameter>true</parameter>
+    </function>
+
+    <function name="writeBase64File" module="Basic">
+        <parameter>xttTC018.multipart2.bin</parameter>
+        <base64encode>
+            <crlf><variable>boundary</variable></crlf>
+            <crlf>Content-Type: image/jpg; name=picture1.jpg</crlf>
+            <crlf>Content-Transfer-Encoding: binary</crlf>
+            <crlf>Content-Disposition: attachment; filename=picture1.jpg</crlf>
+            <crlf>Content-ID: &lt;picture1.jpg&gt;</crlf>
+            <crlf/>
+        </base64encode>
+        <parameter>true</parameter>
+    </function>
+
+    <function name="writeBase64File" module="Basic">
+        <parameter>xttTC018.multipart2.bin</parameter>
+        <base64file>xttTC018.jpg</base64file>
+        <parameter>true</parameter>
+    </function>
+
+    <function name="writeBase64File" module="Basic">
+        <parameter>xttTC018.multipart2.bin</parameter>
+        <base64encode>
+            <parameter>
+                <variable>boundary</variable>
+                <parameter>--</parameter>
+            </parameter>
+            <crlf/>
+            <crlf>This is AFTER the Multipart</crlf>
+        </base64encode>
+        <parameter>true</parameter>
+    </function>
+
+
+
+
+
+</test>

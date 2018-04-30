@@ -1,0 +1,44 @@
+<test>
+    <configuration>xsam_config.xml</configuration>
+    <function name="testName" module="Basic">
+        <parameter>TC_1.7.3</parameter>
+    </function>
+    <description>Update SMPP service  (New WAP push flag is not valid.)</description> 
+
+    <function name="SOAPClient" module="SOAP_API" >
+		<configuration>XSAM/PROVISIONINGURL</configuration>
+		<xml><soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsdl="http://www.724solutions.com/wsdl">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <wsdl:updateSMPPProxyService soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+         <String_1 xsi:type="xsd:string">4444</String_1>
+         <String_2 xsi:type="xsd:string">SMPP_PROXY</String_2>
+         <String_3 xsi:type="xsd:string">Z</String_3>
+      </wsdl:updateSMPPProxyService>
+   </soapenv:Body>
+</soapenv:Envelope></xml>
+		<parameter>Body/return</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="SOAP_API">
+		 <parameter>500</parameter>
+	</function>
+
+	<function name="info" module="BASIC">
+		 <variable>SOAP_API/BODY/PLAIN</variable>
+	</function>
+
+	
+	<function name="queryText" module="BASIC">
+		<variable>SOAP_API/BODY/PLAIN</variable>
+		<parameter>dev/null</parameter>
+		<parameter>&lt;errorCode.*&gt;111&lt;/errorCode&gt;</parameter>
+	</function>
+	
+	<function name="queryText" module="BASIC">
+		<variable>SOAP_API/BODY/PLAIN</variable>
+		<parameter>dev/null</parameter>
+		<parameter>&lt;message.*&gt;*.*Possible values for WAP Push flag  are Y , N and blank(No value)*.*&lt;/message&gt;</parameter>
+	</function>
+
+</test>

@@ -1,0 +1,59 @@
+POST / HTTP/1.1
+accept: */*
+accept-charset: utf-8
+SOAPAction: ""
+Via: HTTP/1.0 suts07 (XMG 724Solutions HTG MAIN_M0_B019 20061201.135706)
+Transfer-Encoding: chunked
+content-type: multipart/related; boundary="NP_000_0028_01C19839.84698430"; type=text/xml; start="<mm7-submit>"
+Connection: close
+Host: 172.20.14.13:6667
+
+431
+--NP_000_0028_01C19839.84698430
+Content-Type: text/xml; charset="utf-8"
+Content-ID: <mm7-submit>
+
+<?xml version="1.0" ?>
+<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+<env:Header>
+<mm7:TransactionID xmlns:mm7="http://www.3gpp.org/ftp/Specs/archive/23_series/23.140/schema/REL-6-MM7-1-4" env:mustUnderstand="1">dummy id</mm7:TransactionID>
+</env:Header>
+<env:Body>
+<SubmitReq xmlns="http://www.3gpp.org/ftp/Specs/archive/23_series/23.140/schema/REL-6-MM7-1-4">
+<MM7Version>6.5.0</MM7Version>
+<SenderIdentification>
+ <VASPID>007</VASPID>
+ <VASID>MM7</VASID>
+ <SenderAddress><Number>Roebi</Number></SenderAddress>
+</SenderIdentification>
+<Recipients>
+ <To><Number>41792279254</Number></To>
+ <To><Number>41792279255</Number></To>
+</Recipients>
+<TimeStamp>2006-12-15T10:10:29Z</TimeStamp>
+<Subject>MmsSubmit</Subject>
+<Content href="cid:7EB187B109F740047A0951348C91C00"/>
+</SubmitReq>
+</env:Body>
+</env:Envelope>
+
+--NP_000_0028_01C19839.84698430
+Content-Type: multipart/mixed; boundary="----=_Part_0_9734221.1166177404578"
+
+
+f7
+------=_Part_0_9734221.1166177404578
+content-type: text/plain; charset="utf-8"
+content-transfer-encoding: binary
+content-id: <cid:7EB187B109F740047A0951348C91C00>
+content-location: cont-1.txt
+
+cont-1
+------=_Part_0_9734221.1166177404578--
+
+25
+
+--NP_000_0028_01C19839.84698430--
+
+0
+

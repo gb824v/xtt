@@ -1,0 +1,145 @@
+<test>
+    <name>MBSPPB.Error.MO.TC.014</name>
+    <configuration>../configXSAM.xml</configuration>
+
+    <description>[SMS->TPI] Value Rules do not Pass / SMSC invocation failed after successful DIRECT-DEBIT / Successful REFUND invocation towards ISCP / No REFUND CDR Required</description>
+
+    <function name="setVariable" module="Basic">
+        <parameter>MSISDN</parameter>
+        <parameter>41790000005</parameter>
+    </function>
+    <function name="restartProcess" module="Remote">
+        <parameter>LOGGER</parameter>
+    </function> 
+    <function name="startSMSCServer" module="SMS">
+        <configuration>SMSCSERVER/PORT</configuration>
+        <parameter>UCP</parameter>
+    </function>
+    <function name="setOverridePattern" module="SMS">
+        <variable>MSISDN</variable>
+    </function> 
+
+    <function name="startDiameterServer" module="Diameter"/>
+    <subtest>../sisSTART.xml</subtest>
+
+    <function name="waitForSpecificRequests" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT</configuration>
+        <parameter>CAPABILITIES_EXCHANGE_REQUEST</parameter>
+        <parameter>1</parameter>
+    </function>
+
+    <function name="startWebServer" module="HTTP">
+        <configuration>VASP/PORT</configuration>
+        <configuration>WEBSERVER/ROOT</configuration>
+        <configuration>WEBSERVER/TIMEOUT</configuration>
+    </function>
+
+    <function name="setCacheFile" module="HTTP">
+        <configuration>VASP/DIRECTORY</configuration>
+        <xml>
+            <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <soapenv:Header>
+            <request-type soapenv:actor="tpi" soapenv:mustUnderstand="0" xsi:type="xsd:string">MMSDELIVER.RESP</request-type>
+            <version soapenv:actor="tpi" soapenv:mustUnderstand="0" xsi:type="xsd:string">1.0-b18 built on 2007-05-31 @ 12:26:18</version>
+            </soapenv:Header>
+            <soapenv:Body>
+            <MMSDeliverResponse>
+                <transaction-id>thisdoesnotseamtomatter</transaction-id>
+                <state>1000</state>
+                <state-text>Success</state-text>
+                <tpi-version>1.0-b18 built on 2007-05-31 @ 12:26:18</tpi-version>
+                <message-type>MMSDeliverResponse</message-type>
+            </MMSDeliverResponse>
+            </soapenv:Body>
+            </soapenv:Envelope>
+        </xml>
+    </function>
+    <function name="setServerHeader" module="HTTP">
+        <parameter>content-type</parameter>
+        <parameter>text/xml</parameter>
+    </function>
+
+    <function name="waitForBind" module="SMS">
+        <parameter>
+            <configuration>XSAM/SERVICEGROUPPREFIX</configuration>
+            <configuration>XSAM/SERVICEGROUPNOSMSMO</configuration>
+        </parameter>
+    </function>
+
+    <function name="getConnection" module="UCP">
+        <parameter>connection</parameter>
+        <parameter>
+            <configuration>XSAM/SERVICEGROUPPREFIX</configuration>
+            <configuration>XSAM/SERVICEGROUPNOSMSMO</configuration>
+        </parameter>
+    </function>
+    <function name="sendSMSCUCPPackets" module="UCP">
+        <parameter>connection</parameter>
+        <parameter>internal</parameter>
+        <parameter>O</parameter>
+        <parameter>52</parameter>
+        <parameter>
+            <parameter>/</parameter>
+            <configuration>XSAM/SERVICEGROUPPREFIX</configuration>
+            <configuration>XSAM/SERVICEGROUPNOSMSMO</configuration>
+            <parameter>/</parameter>
+            <variable>MSISDN</variable>
+            <parameter>/////////1/</parameter>
+            <parameter>///////3//</parameter>
+            <bytestringencode>FSMS3 failed message</bytestringencode>
+            <parameter>/////////////</parameter>
+        </parameter>
+    </function>
+
+
+    <function name="waitForSISCalls" module="SIS">
+        <parameter>1</parameter>
+    </function>
+    <thread>
+        <function name="waitForSpecificRequests" module="Diameter">
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>CREDIT_CONTROL_REQUEST</parameter>
+            <parameter>1</parameter>
+        </function>
+        <function name="waitForSpecificRequests" module="Diameter">
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>CREDIT_CONTROL_REQUEST</parameter>
+            <parameter>2</parameter>
+        </function>
+        <function name="waitForTimeoutSpecificRequests" module="Diameter">
+            <configuration>DIAMETERSERVER/PORT</configuration>
+            <parameter>CREDIT_CONTROL_REQUEST</parameter>
+            <parameter>3</parameter>
+        </function>
+    </thread>
+    <function name="waitForTimeoutRequests" module="HTTP">
+        <configuration>DIAMETERSERVER/WAITTIMEOUT</configuration>
+        <parameter>0</parameter>
+    </function>
+    <function name="waitForMessages" module="SMS">
+        <parameter>1</parameter>
+    </function>
+    <function name="waitOnThreads" module="Basic"/>
+    <subtest>../logscan.xml</subtest>
+
+    <function name="queryresponse" module="Remote">
+        <parameter>
+    	    <parameter>(\d+;</parameter>
+            <variable>MSISDN</variable>
+    	    <parameter>;2001;NIL;diameter.xtt724.com;gy01;4;1;1;0;999;true;True;Y)</parameter>
+        </parameter>
+	    <parameter>dev/null</parameter>
+    </function>
+    <function name="queryresponse" module="Remote">
+        <parameter>
+    	    <parameter>(\d+;</parameter>
+            <variable>MSISDN</variable>
+    	    <parameter>;2001;2001;diameter.xtt724.com;gy01;4;1;1;0;999;true;True;Y)</parameter>
+        </parameter>
+	    <parameter>dev/null</parameter>
+    </function>
+    <subtest>../sisSTOP.xml</subtest>
+    <function name="stopSMSCServer" module="SMS"/>
+    <function name="stopDiameterServer" module="Diameter"/>
+    <function name="stopWebServer" module="HTTP"/>
+</test>

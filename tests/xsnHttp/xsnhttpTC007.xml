@@ -1,0 +1,82 @@
+<test>
+
+    <configuration>xsnhttp.xml</configuration>
+
+	<function name="testName" module="Basic">
+		<parameter>XSN.HTTP.TC.007</parameter>
+	</function>
+	
+	<description>Check to see if sites are blocked.</description>
+    
+    <function name="disableFollowRedirects" module="HTTP" />
+    
+    <function name="setHeader" module="HTTP">
+        <parameter>SubscriberIdHdr</parameter>
+        <configuration>xsn/subscribers/over18multipleCommunities</configuration>
+    </function>
+    
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://www.gnu.org/</parameter>
+	</function>
+	
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+	
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://www.us.gov/</parameter>
+	</function>
+	
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>302</parameter>
+	</function>
+
+	<function name="queryHeader" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>location</parameter>
+        <parameter>
+            <parameter>^</parameter>
+            <configuration>xsn/redirect/url</configuration>
+            <parameter>/</parameter>
+            <configuration>xsn/redirect/blockedByCommunityFiltersScreen</configuration>
+        </parameter>		
+	</function>	
+	
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://news.bbc.co.uk/</parameter>
+	</function>
+	
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>302</parameter>
+	</function>
+
+	<function name="queryHeader" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>location</parameter>
+        <parameter>
+            <parameter>^</parameter>
+            <configuration>xsn/redirect/url</configuration>
+            <parameter>/</parameter>
+            <configuration>xsn/redirect/blockedByCommunityFiltersScreen</configuration>
+        </parameter>		
+	</function>	
+	
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://www.expedia.com/</parameter>
+	</function>
+	
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>302</parameter>
+	</function>	
+	
+	<function name="queryHeader" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>location</parameter>
+        <parameter>
+            <parameter>^</parameter>
+            <configuration>xsn/redirect/url</configuration>
+            <parameter>/</parameter>
+            <configuration>xsn/redirect/blockedByCommunityFiltersScreen</configuration>
+        </parameter>		
+	</function>			
+</test>

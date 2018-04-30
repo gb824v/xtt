@@ -1,0 +1,84 @@
+<test>
+    <function name="testName" module="Basic">
+        <parameter>FAIL.TC.002</parameter>
+    </function>
+    <description>Start and stop single processes on a machine</description>
+
+    <function name="stopProcesses" module="Remote">
+        <configuration>HttpProxy/ProcessName</configuration>
+    </function>
+    <function name="checkProcessStatus" module="Remote">
+        <configuration>HttpProxy/ProcessName</configuration>
+        <parameter>Stopped</parameter>
+    </function>
+    <function name="startProcesses" module="Remote">
+        <configuration>HttpProxy/ProcessName</configuration>
+    </function>
+    <function name="checkProcessStatus" module="Remote">
+        <configuration>HttpProxy/ProcessName</configuration>
+        <parameter>Running</parameter>
+        <parameter>*Running</parameter>
+    </function>
+
+    <function name="stopProcesses" module="Remote">
+        <parameter>CONFIGSERVER.1</parameter>
+    </function>
+    <function name="checkProcessStatus" module="Remote">
+        <parameter>CONFIG</parameter>
+        <parameter>Stopped</parameter>
+	<parameter>Running</parameter>
+    </function>
+    <function name="startProcesses" module="Remote">
+        <parameter>CONFIGSERVER.1</parameter>
+    </function>
+
+    <function name="checkProcessStatus" module="Remote">
+        <parameter>CONFIGSERVER.1</parameter>
+        <parameter>Running</parameter>
+        <parameter>*Running</parameter>
+    </function>
+
+    <function name="stopProcesses" module="Remote">
+        <parameter>PM</parameter>
+    </function>
+    <!-- you should not be able to stop PM -->
+    <function name="checkProcessStatus" module="Remote">
+        <parameter>PM</parameter>
+        <parameter>Running</parameter>
+    </function>
+
+    <function name="stopProcesses" module="Remote">
+        <parameter>RADIUS</parameter>
+    </function>
+    <function name="checkProcessStatus" module="Remote">
+        <parameter>RADIUS</parameter>
+        <parameter>Stopped</parameter>
+    </function>
+    <function name="startProcesses" module="Remote">
+        <parameter>RADIUS</parameter>
+    </function>
+    <function name="checkProcessStatus" module="Remote">
+        <parameter>RADIUS</parameter>
+        <parameter>Running</parameter>
+        <parameter>*Running</parameter>
+    </function>
+
+    <function name="stopProcesses" module="Remote">
+        <parameter>PRESENCE-STORE</parameter>
+    </function>
+    <function name="checkProcessStatus" module="Remote">
+        <parameter>PRESENCE-STORE</parameter>
+        <parameter>Stopped</parameter>
+	<parameter>Running</parameter>
+    </function>
+    <function name="startProcesses" module="Remote">
+        <parameter>PRESENCE-STORE</parameter>
+    </function>
+
+    <function name="checkProcessStatus" module="Remote">
+        <parameter>PRESENCE-STORE</parameter>
+        <parameter>Running</parameter>
+        <parameter>*Running</parameter>
+    </function>
+
+</test>

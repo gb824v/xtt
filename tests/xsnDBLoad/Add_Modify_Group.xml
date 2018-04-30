@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dbupdates> 
+
+<!-- XSN.DBLoad.GroupAdd.TC007.1	Add new Group with description.	-->
+<groups>
+<add name="MyGroup"
+description="This is group has been created for testing Sentinel" />
+</groups>
+ 
+<!-- XSN.DBLoad.GroupAdd.TC007.2	Unique Group Name	 -->
+<groups>
+<add name="GoldGroup"/>
+<add name="GoldGroup"/>
+</groups>
+ 
+ 
+<!-- XSN.DBLoad.GroupAdd.TC007.4	"The Group name can contain only alphanumeric characters and
+underscores and not start with underscore"	-->
+<!-- <groups>
+<add name="_SilverGroup:,;@#$%*-+="/>
+</groups>
+-->
+
+<!-- XSN.DBLoad.GroupAdd.TC007.5	"The Group name should begin with a letter of the alphabet and can have alpha num chars"	 -->
+<groups>
+<add name="SilverGroup123"/>
+</groups>
+ 
+<!-- XSN.DBLoad.GroupAdd.TC007.6	The Group name is case sensitive.	 -->
+<groups>
+<add name="GoldGroup"/>  
+<add name="goldgroup"/> 
+</groups>
+ 
+<!-- XSN.DBLoad.GroupMod.TC007.7	Modify Group description	 -->
+<groups>
+<modify name="MyGroup"
+description="This description is has undergone a change" />
+</groups>
+ 
+<!-- XSN.DBLoad.GroupMod.TC007.8	Modify Group description of non existing group	 -->
+<groups>
+<modify name="MoonGroup"
+description="This description is has undergone a change" />
+</groups>
+ 
+<!-- XSN.DBLoad.GroupRem.TC007.9	Remove Group	 -->
+<groups>
+<remove name="goldgroup"/>
+</groups>
+ 
+<!-- XSN.DBLoad.GroupRem.TC007.10	Remove non-existing group	 -->
+<groups>
+<remove name="Moongroup"/>
+</groups>
+ 
+				<!-- 	GroupMember	   -->
+<!-- XSN.DBLoad.GroupMemAdd.TC008.1	Add a subscriber to a group and set his group expiry time -->
+<subscribers> 
+	<remove subscriber="1234575" /> 
+	<add subscriber="1234575"> 	</add> 
+</subscribers>
+<groupMembers>
+	<add group="MyGroup"
+	subscriber="1234575"
+	expiry="2007-05-27T23:00:00-08:00" />
+</groupMembers>
+
+<!-- XSN.DBLoad.GroupMemAdd.TC008.2	Expiry date can be of past	-->
+<groupMembers>
+<add group="MyGroup"
+subscriber="1234575"
+expiry="2005-05-27T23:00:00-08:00" />
+</groupMembers>
+ 
+
+<!-- XSN.DBLoad.GroupMemAdd.TC008.8	Add a SubId without any Group expiry date	 -->
+
+<subscribers> <add subscriber="1234576" > </add> </subscribers>
+<groupMembers>
+<add group="MyGroup"
+subscriber="1234576" />
+</groupMembers>
+ 
+<!-- XSN.DBLoad.GroupMemAdd.TC008.9	Add a non existing Sub ID to a Group.	-->
+<groupMembers>
+<add group="MyGroup"
+subscriber="Not_present" />
+</groupMembers>
+
+<!-- XSN.DBLoad.GroupMemAdd.TC008.10	Add a subscriber to a non exisiting Group.	-->
+<groupMembers>
+<add group="MoonGroup"
+subscriber="1234576" />
+</groupMembers>
+
+<!-- XSN.DBLoad.GroupMemMod.TC008.12	Modify a Group members ,change the date and time when a subscribers membership of a group expires.	-->
+
+ <groupMembers>
+<modify group="MyGroup"
+subscriber="1234575"
+expiry="2008-05-27T00:00:00" />
+</groupMembers>
+
+
+<!-- XSN.DBLoad.GroupMemMod.TC008.13	Expiry date can be in past	-->
+<groupMembers>
+<modify group="MyGroup"
+subscriber="1234575"
+expiry="2005-05-27T23:00:00-08:00" />
+</groupMembers>
+ 
+ 
+<!-- XSN.DBLoad.GroupMemMod.TC008.19	Modify a SubId without any expiry date	 -->
+<groupMembers>
+<modify group="MyGroup"
+subscriber="1234575" />
+</groupMembers>
+ 
+<!-- XSN.DBLoad.GroupMemMod.TC008.20	modify a non existing Sub ID of a Group.	 -->
+<groupMembers>
+<modify group="MyGroup"
+subscriber="Not_present" />
+</groupMembers>
+ 
+<!-- XSN.DBLoad.GroupMemMod.TC008.21	modify a subscriber of a non existing Group.	 -->
+
+<groupMembers>
+<modify group="MoonGroup"
+subscriber="1234575"/>
+</groupMembers>
+
+
+
+
+				<!-- Remove Group -->
+<!-- XSN.DBLoad.GroupMemRem.TC008.22	Remove a non existing Sub ID of a Group. -->
+<groupMembers>
+<remove group="MyGroup" subscriber="Not_present" />
+</groupMembers>
+
+<!-- XSN.DBLoad.GroupMemRem.TC008.23	Remove a subscriber of a non existing Group.	-->
+<groupMembers>
+<remove group="MoonGroup" subscriber="1234575"/>
+</groupMembers>
+
+<!-- XSN.DBLoad.GroupMemRem.TC008.24	Remove a subscriber from a Group.	-->
+
+<groupMembers>
+<remove group="MyGroup"  subscriber="1234575"/> 
+</groupMembers>
+
+</dbupdates>

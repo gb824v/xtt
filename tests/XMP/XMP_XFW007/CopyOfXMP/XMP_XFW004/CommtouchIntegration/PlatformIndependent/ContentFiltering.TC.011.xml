@@ -1,0 +1,229 @@
+<test>
+	<function name="testName" module="Basic">
+		<parameter>ContentFiltering.TC.011.xml</parameter>
+	</function>
+
+    <description>Standard Filter: Gambling (444) / subscriberFilterable=false, User is in DB [age=24], URL is accessible</description>
+	
+	<!-- Get the name of CONTENT-CATEGORIZER process -->
+	<function name="activeProcessToVar" module="Remote">
+		<parameter>CONTENT-CATEGORIZER</parameter>
+		<parameter>Name_Of_Content_Categorizer_Process</parameter>
+	</function>
+	
+	<!-- Get the name of TCP-ROUTER.1 process -->
+	<function name="activeProcessToVar" module="Remote">
+		<parameter><configuration>HttpProxy/ProcessName</configuration><parameter>.*1</parameter></parameter>
+		<parameter>Name_Of_Tcp_Router_Process</parameter>
+	</function>
+	
+	<!-- Copy and Rename xmp_ctengine_cache.file -->
+	<function name="executeRemoteCommand" module="Remote">
+		<parameter>
+			<parameter>cp </parameter>
+			<configuration>remote/path</configuration>
+			<parameter>examples/xmp_ctengine_cache.file urlf.cache</parameter>
+		</parameter>
+	</function>
+	
+	<!-- Load urlf.cache -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>load file urlf.cache /ctengine/urlf.cache</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded '/ctengine/urlf.cache' from 'urlf.cache'</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	
+	<function name="sleep" module="Basic">
+		<parameter>2500</parameter>
+	</function>
+		
+	<!-- Check CFG_FileTable to make sure that urlf.cache is loaded-->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>run command cmu -c -d </parameter>
+			<variable>Name_Of_Content_Categorizer_Process</variable>
+		</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>CONFIGSERVER_FILE_CFG_FileTable\[.*\].Filename.*: /ctengine/urlf.cache</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>CONFIGSERVER_FILE_CFG_FileTable\[.\].ContentType              : octet_stream</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+		
+	<!-- Prepare & Load the Request Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>Reqmod_ContentFiltering.TC.xml</parameter>
+		<xml>
+			<requestModifications xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="requestmodifications.xsd">
+				<table name="Add Category to the HTTP Header" phase="httpResponse">
+					<selector>
+						<modifyContext name="HTA_RespHdr_CCF_Categories" value="CCF_Categories"/>
+						<modifyContext name="HTA_RespHdr_Internal_Categories" value="Internal_Categories"/>
+						<modifyContext name="Skip_CACHE" value="'true'"/>
+						<modifyContext name="Skip_VIRUSSCANNER" value="'true'"/>
+						<modifyContext name="FTR_HtmlTidyDisable" value="'true'"/>
+						<modifyContext name="Skip_COOKIE" value="'true'"/>
+						<modifyContext name="Skip_ICC" value="'true'"/>
+						<modifyContext name="FTR_MultipartCompose_Disable" value="'true'"/>
+						<modifyContext name="FTR_Prefetch_Disable" value="'true'"/>
+						<modifyContext name="FTR_Deflate_Disable" value="'true'"/>
+						<modifyContext name="FTR_Gzip_Disable" value="'true'"/>
+					</selector>
+				</table>
+			</requestModifications>
+		</xml>
+	</function>
+	
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>Reqmod_ContentFiltering.TC.xml</parameter>
+		</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded requestmodifications.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	
+	<!-- Prepare & Load the Categories File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>CategoriesFileForCtengine_ContentFiltering.TC.xml</parameter>
+		<xml>
+  			<xmpCategories>
+				<categories>
+					<category name="Unknown external category" subscriberFilterable="false"/>
+					<category name="No external category" subscriberFilterable="false"/>
+					<category name="Internal Unknown" subscriberFilterable="false"/>
+					<category name="Internal News" subscriberFilterable="false" standardFilter="block" minAge="200"/>
+					<category name="alwaysBlock" subscriberFilterable="false"/>
+					<category name="alwaysAllow" subscriberFilterable="false"/>
+					<category name="Gambling" subscriberFilterable="false" />
+				</categories>
+				<categoryMappings>
+					<map externalName="*" category="Unknown external category"/>
+					<map externalName=""  category="No external category"/>
+					<map externalName="Unknown"  category="Internal Unknown"/>
+					<map externalName="News"  category="Internal News"/>
+					<map externalName="Gambling"  category="Gambling"/>
+				</categoryMappings>
+				<urlCategories>
+					<urlCategory name="alwaysAllow" urlPattern="http://www.telco.com/Blocked/*"/>
+					<urlCategory name="alwaysAllow" urlPattern="http://www.google.com/*"/>
+					<urlCategory name="alwaysAllow" urlPattern="http://www.yahoo.com/*"/>
+				</urlCategories>				
+			</xmpCategories>
+		</xml>
+	</function>
+		
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>CategoriesFileForCtengine_ContentFiltering.TC.xml</parameter>
+		</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded xmpcategories.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	
+	<!-- Invalidate ASP_CFG_CacheInvalidate -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>run command cmu -C ASP_CFG_CacheInvalidate </parameter>
+			<variable>Name_Of_Tcp_Router_Process</variable>
+			<parameter> true</parameter>
+		</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>ASP_CFG_CacheInvalidate                                     : true</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+		
+    <!-- Radius logon - User is in DB[ Age = 24] -->
+    <function name="radiusLogon" module="Radius">
+		<parameter>0787367502</parameter>
+		<parameter>0787367502</parameter>
+		<configuration>system/Ip</configuration>
+    </function> 
+
+    <!-- http://www.gamblingin.co.uk/ : urlCategories : Gambling (444) --> 
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>http://www.gamblingin.co.uk/</parameter>
+    </function>
+	
+    <function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+    </function>
+
+	<!-- http://www.poker.com : category="Gambling" : URL is accessible -->
+    <function name="sendGetRequest" module="HTTP">
+		 <parameter>http://www.poker.com/</parameter>
+    </function>
+	
+    <function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+    </function>
+    
+    <!-- http://www.pokerhouse.de : category="Gambling" : URL is accessible -->
+    <function name="sendGetRequest" module="HTTP">
+		<parameter>http://www.pokerhouse.de/</parameter>
+    </function>
+	
+    <function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+    </function>
+    
+    <!-- http://www.theedgepoker.com : category="Gambling" : URL is accessible -->
+    <function name="sendGetRequest" module="HTTP">
+		<parameter>http://www.theedgepoker.com/</parameter>
+    </function>
+	
+    <function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+    </function>
+      
+    <!-- Radius logoff - User is in DB[ Age = 24] -->
+    <function name="radiusLogoff" module="Radius">
+		<parameter>0787367502</parameter>
+		<parameter>0787367502</parameter>
+		<configuration>system/Ip</configuration>
+    </function> 
+	
+	<!-- Radius Accounting Stop for the Subscriber -->
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function> 
+	
+	<!-- Load Empty Request Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>reqmodTCemptyrules.xml</parameter>
+		<parameter>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;requestModifications&gt;&lt;/requestModifications&gt;</parameter>
+	</function>
+	
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>load data reqmodTCemptyrules.xml</parameter>
+	</function>
+	
+	<function name="queryResponse" module="Remote">
+		<parameter>Loaded requestmodifications</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+	
+	<!-- Delete Previously Loaded Cache File -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>delete file /ctengine/urlf.cache</parameter>
+	</function>
+
+</test>

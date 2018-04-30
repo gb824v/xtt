@@ -1,0 +1,181 @@
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+Description: 
+This test case is intend to verify that the context element "HTG_BytesOut"
+is written to the log with the right value.
+
+Test steps:
+1. Start session
+2. Upload reqmod and logging data files.
+3. Set client headers
+4. Send GET request
+5. Spill the logscan into x.log (temp file)
+6. grep HTG_BytesOut x.log
+7. Verify the correct response (by queryResponse function)
+8. Remove x.log (temp file)
+9. Close session
+
+Wrote by Oren Bodner at 23/01/2011
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+<test>
+	<name>xmpLog_HTG_BytesOut_HTTP.TC.001</name>
+	<description>HTG_BytesOut_HTTP</description>
+
+	<!-- start server and session -->
+	<function name="startWebServer" module="HTTP"/>
+	<!-- Prepare the Logging data File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>Logging_LogICC_TC001.xml</parameter>
+		<xml>
+<logging>
+  <process namePattern="^HTTP-PROXY|^TCP-ROUTER|^WAP1-PROXY">
+    <includeElements>
+            <element name="*"/>
+            <element name="HTG_*"/>
+    </includeElements>
+  </process>
+  <process namePattern="^PRESENCE-STORE">
+    <includeElements>
+      <element name="PSE_*"/>
+    </includeElements>
+    <excludeElements>
+      <element name="PSE_ALREADY_LOGGED_ON"/>
+    </excludeElements>
+  </process>
+  <process namePattern="^STATS-COLLECTOR">
+    <includeElements>
+      <element name="STATMON_*"/>
+    </includeElements>
+  </process>
+  <process namePattern="^DASHBOARD">
+    <includeElements>
+      <element name="TCP_RemoteAddress"/>
+    </includeElements>
+  </process>
+</logging>
+		</xml>
+    </function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>Logging_LogICC_TC001.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded logging.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Prepare the Request Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>REQMOD_LogICC_TC001.xml</parameter>
+		<xml>
+<requestModifications xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="requestmodifications.xsd">
+<table name="authentication" phase="authentication">
+        <selector urlPattern="*://*/*" >
+                <modifyContext name="FTR_AuthenticationType" value="'none'" />
+                <modifyContext name="FTR_SubscriberId" value="TCP_RemoteIpAddress" />
+        </selector>
+</table>
+<table name="DisableThings" phase="httpRequest">
+	<selector>
+		<modifyContext name="Skip_CACHE" value="'true'" />
+		<modifyContext name="FTR_RemoveInterlacing" value="'true'" />
+		<modifyContext name="Skip_VIRUSSCANNER" value="'true'" />
+		<modifyContext name="FTR_HtmlTidyDisable" value="'true'" />
+		<modifyContext name="Skip_COOKIE" value="'true'" />
+		<modifyContext name="Skip_ICC" value="'false'" />
+		<modifyContext name="FTR_MultipartCompose_Disable" value="'true'" />
+		<modifyContext name="FTR_Prefetch_Disable" value="'true'" />
+		<modifyContext name="FTR_Deflate_Disable" value="'false'" />
+		<modifyContext name="FTR_Gzip_Disable" value="'false'" />
+		<modifyContext name="TCP_HideSourceAddress" value="'false'"/>
+	</selector>
+</table>
+  <table name="ImageReductions_one" phase="httpRequest" >
+    <selector urlPattern="http://*/*" >
+            <modifyContext name="FTR_MaxImageHeight" 
+                           value="'500'" />
+            <modifyContext name="FTR_MaxImageWidth" 
+                           value="'800'" />
+			      <modifyContext name="FTR_MaxImageColors" 
+                           value="'30'" />
+            <modifyContext name="FTR_MaxImageGreyscale" 
+                           value="'true'" />
+            <modifyContext name="FTR_JpegQfactor_Max" 
+                           value="'15'" />
+            <modifyContext name="FTR_JpegQfactor_Percent" 
+                           value="'50'" /> 						   
+    </selector>
+	</table>
+</requestModifications>
+		</xml>
+    </function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>REQMOD_LogICC_TC001.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded requestmodifications.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- is not actually nececarry but set it to something that is not in a wurfl. -->
+	<function name="setHeader" module="HTTP">
+		<parameter>User-Agent</parameter>
+		<parameter>XTT/convert</parameter>
+	</function>
+
+<!-- set the accept to the converted type so conversion has to take place -->
+	<function name="setHeader" module="HTTP">
+		<parameter>Accept</parameter>
+		<parameter>image/gif</parameter>
+	</function> 
+	
+<!-- download the file system independent -->
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>
+			<parameter>http://</parameter>
+			<configuration>system/ip</configuration>
+			<parameter>/images/100KB.jpg</parameter>
+		</parameter>
+	</function>
+
+	<!-- a http response code of 200 is expected -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>	
+	
+    <function name="sleep" module="Basic">
+        <parameter>2000</parameter>
+    </function>
+
+<!--  save the latest logscan into temp log file  -->
+    <function name="getNewestRemoteFileName" module="Remote">
+        <parameter>newestlogfile</parameter>
+	    <configuration>remote/logpath</configuration>
+        <parameter>XMP</parameter>
+    </function>
+    <function name="executeRemoteXMSCommand" module="Remote">
+    	<parameter>
+            <configuration>remote/command</configuration>
+    	    <parameter>logscan -in </parameter>
+    	    <variable>newestlogfile</variable>
+            <parameter> | /bin/grep HTG_BytesOut | /usr/bin/tail -1</parameter>
+    	</parameter>
+    </function>
+<!-- check the value of HTG_BytesOut param -->
+	<function name="queryResponse" module="Remote">
+		<parameter>390</parameter>
+		<parameter>data</parameter>
+	</function>
+
+</test>

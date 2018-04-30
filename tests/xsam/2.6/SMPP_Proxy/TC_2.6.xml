@@ -1,0 +1,107 @@
+<test>
+<configuration>xsam_config.xml</configuration>
+    <function name="testName" module="Basic">
+        <parameter>TC_2.6</parameter>
+    </function>
+<description>Session Timeout Test		
+------------------------------------------------------------------------------------------------------------
+Step1: An Outgoing Channel should be provisioned in XSAM.
+Step2: An Incoming Channel should be provisioned in XSAM.
+Step3: Simulate the CP Using XTT Client Simulator.
+Step4: Simulate SMSC for Outgoing channel Using XTT Client Simulator
+Step5: Create SMPP Proxy Service for Outgoing Channel. SMPP Proxy Service created for this test should be active. 
+Step6: Establish connection between CP Simulator and SMSC by sending  "bind_transceiver" from CP Simulator.
+Step7: The  connection idle timeout in XSAM is fixed to 10 minutes.
+Variation: Run the above test with Live SMSC with following scenarios:
+1. Session Timeout configured in Live SMSC(Typically 5 Minutes). In this case, Step4 should Simulate SMSC for Outgoing Channel using Live SMSC.
+------------------------------------------------------------------------------------------------------------------
+</description>
+
+<!--Start SMSC Server on port PORT-->
+<function name="startSMSCServer" module="SMS">
+        <configuration>SMSCSERVER/SMPPPORT</configuration>
+        <parameter>SMPP</parameter>
+		<!-- <parameter>maxrequestcount</parameter> -->
+
+    </function>       
+
+          <function name="openConnection" module="SMPP">
+            <parameter>connection</parameter>
+            <configuration>XSAM/IP</configuration>
+            <configuration>XSAM/SMPPPort</configuration>
+        </function>
+
+         <function name="sendSMPPPacket" module="SMPP">
+        <parameter>connection</parameter>
+        <parameter>BIND_TRANSCEIVER</parameter>
+        <parameter>internal</parameter>
+        <parameter>systemid</parameter> <!--system_id, parameter[4]-->
+        <parameter>password</parameter> <!--password, parameter[5]-->
+        <parameter>system_type</parameter> <!--system_type, parameter[6]-->
+        <parameter>0x50</parameter><!--version, parameter[7]-->
+        <parameter>0</parameter><!--addr_ton, parameter[8]-->
+        <parameter>0</parameter><!--addr_npi,parameter[9]-->
+        <configuration>XSAM/SMPPSHORTCODE</configuration>
+        <parameter>0</parameter>
+        </function>
+
+		<function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/system_id</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/system_id</variable>
+            <parameter>XTT-724-SMSC</parameter>
+        </function>
+        
+
+		 <function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_status</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_status</variable>
+            <parameter>0x00000000</parameter>
+        </function>
+
+          <function name="info" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_id</variable>
+        </function>
+
+		<function name="compareString" module="BASIC">
+            <variable>SMSC/SMPP/connection/command_id</variable>
+            <parameter>0x80000009</parameter>
+        </function>
+
+		<function name="getServerConnection" module="SMPP">
+            <parameter>serverconnection</parameter>
+		    <parameter>0</parameter>
+           </function>
+  
+
+	     <function name="sleep" module="Basic">
+         <parameter>300000</parameter>
+         </function>
+
+		    
+			<!-- after 5 mins the CP connection should be open since XSAM will drop the connection after 10 mins -->
+		   <function name="checkConnection" module="SMPP">
+            <parameter>connection</parameter>
+            <parameter>open</parameter>
+            </function>
+
+	     <function name="sleep" module="Basic">
+         <parameter>310000</parameter>
+         </function>
+		   
+		   <function name="checkConnection" module="SMPP">
+            <parameter>connection</parameter>
+            <parameter>closed</parameter>
+            </function>
+
+
+			
+
+    <function name="stopSMSCServer" module="SMS"/>
+
+</test>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wurfl>
+	<version>
+		<ver>Wireless Universal Resource File v_2.0.2-empty</ver>
+		<last_updated>Mar 01, 2006</last_updated>
+		<official_url>http://wurfl.sourceforge.net/</official_url>
+		<maintainers>
+			<maintainer name="724 Testgroup" email="none@724.com" home_page="http://724.com/"/>
+		</maintainers>
+		<authors>
+			<author name="Roger Soder" email="rsoder@724.com" home_page="http://724.com"/>
+		</authors>
+		<contributors>
+			<contributor name="724 Testgroup" email="none@724.com"/>
+		</contributors>
+		<statement><![CDATA[
+Dear Developer,
+
+This is a empty WURFL test file for XTT testing.
+
+Thank you
+
+]]></statement>
+	</version>
+	<devices>
+	   <device fall_back="root" id="generic" user_agent=""/>
+	</devices>
+</wurfl>

@@ -1,0 +1,34 @@
+<test>
+    <function name="testName" module="Basic">
+        <parameter>XMP.LOAD.REQMOD</parameter>
+     </function>
+	
+    <description>Load the reqmod dynamic configuration files</description>
+
+    <configuration>config.xml</configuration>
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>
+           <parameter>load data </parameter>
+           <configuration>REMOTE/PATH</configuration>
+           <configuration>XMP41/EXAMPLESDIR</configuration>
+           <configuration>XMP41/REQMODFILE</configuration>
+        </parameter>
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        <parameter>^Loaded requestmodifications</parameter>
+        <parameter>response</parameter>
+    </function>
+
+    <!-- xms show data -->
+    <function name="executeRemoteXMSCommand" module="Remote">
+            <parameter>show data</parameter>
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        <parameter>requestmodifications</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+
+</test>

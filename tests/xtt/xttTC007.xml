@@ -1,0 +1,39 @@
+<test>	
+    <configuration>xttTC007cfg.xml</configuration>
+    <name>XTT.TC.007</name>
+    <description>Test chunked encoded post</description>
+
+    <function name="startMMSCServer" module="MMSC"/>
+
+    <!--function name="sendTextPacket" module="TCP">
+        <parameter>127.0.0.1</parameter>
+        <configuration>MMSCServer/PORT</configuration>
+        <file>xttTC007-text.txt</file>
+    </function-->
+
+    <function name="sendPacket" module="TCP">
+        <parameter>127.0.0.1</parameter>
+        <configuration>MMSCServer/PORT</configuration>
+        <file>xttTC007-hex.txt</file>
+    </function>
+
+    <function name="openConnection" module="TCP">
+        <parameter>127.0.0.1</parameter>
+        <configuration>MMSCServer/PORT</configuration>
+    </function>
+    <function name="sendPacket" module="TCP">
+        <file>xttTC007-hex2.txt</file>
+    </function>
+    <function name="sendPacket" module="TCP">
+        <file>xttTC007-hex3.txt</file>
+    </function>
+    <function name="closeConnection" module="TCP">
+    </function>
+
+    <function name="sleep" module="Basic">
+        <parameter>1000</parameter>
+    </function>
+
+    <function name="stopMMSCServer" module="MMSC"/>
+
+</test>

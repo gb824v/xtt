@@ -1,0 +1,31 @@
+<test>
+    <configuration>configXSAM.xml</configuration>
+
+    <function name="writeRemoteFile" module="Remote">
+        <parameter>select-billing-call.sql</parameter>
+        <file>select-billing-call.sql</file>
+    </function>
+    
+    <function name="writeRemoteFile" module="Remote">
+        <parameter>runSqlScript.sh</parameter>
+        <file>runSqlScript.sh</file>
+    </function>
+
+    <function name="executeRemoteCommand" module="Remote">
+    	    <parameter>chmod ugo+rx runSqlScript.sh</parameter>
+    </function>
+
+    <function name="executeRemoteCommand" module="Remote">
+        <parameter>
+    	    <parameter>sh runSqlScript.sh </parameter>
+            <configuration>xsam/sql/database</configuration>
+    	    <parameter> </parameter>
+            <configuration>xsam/sql/password</configuration>
+    	    <parameter> </parameter>
+            <configuration>xsam/sql/server</configuration>
+    	    <parameter> </parameter>
+    	    <parameter>select-billing-call.sql </parameter>
+        </parameter>
+    </function>
+
+</test>

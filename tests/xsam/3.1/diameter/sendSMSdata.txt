@@ -1,0 +1,7 @@
+--000000000000000000000001-message
+Content-Type: text/plain; name=test1.txt; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment; filename=test1.txt
+Content-ID: <test1.txt>
+
+this is a text content file which has just one line

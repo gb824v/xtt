@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<license xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="license.xsd"
+         number="724-internal-1155812848"
+         type="A"
+         issuer="Gavin Cattell, 724 Solutions Inc., Bahnhofstrasse 15, CH-5600 Lenzburg"
+         issuedOn="2006-08-17T11:07:28Z"
+         licensee="XSN Bali Base license"
+         product="XSN"
+         platform="linux"
+         version="724Solutions CEE "
+         validFrom="2006-08-17"
+         validUntil="2007-01-01"
+         signature="97BBA503163B77D07EB359581E517525246A1D1D1DBF1714C1C539B72ABF6E22">
+    <machine name="bali"/>
+</license>

@@ -1,0 +1,328 @@
+
+<!-- for Testting purpose changing the default value (604800) to (60) in cxpdl file, and again restoring the default value through test case-->
+
+<test>
+
+	<function name="testName" module="Basic">
+		<parameter>XMPVideoOptCoreFunctionality.TC.041</parameter>
+	</function>
+
+	<description>Validate video optimization uses the default value (604800) of videoOptimizationFailureRetentionSecs parameter if it isn't specified in the workflow constants file</description>
+
+	<!-- Start Web Server on different port to make failed optimization -->
+	<function name="startWebServer" module="HTTP">
+		<parameter>1211</parameter>
+	</function>
+
+	<function name="setClientTimeout" module="HTTP">
+		<parameter>120000</parameter>
+	</function>
+
+	<function name="disableKeepAlive" module="HTTP"/>
+
+	<function name="setServerHeader" module="HTTP">
+		<parameter>content-type</parameter>
+		<parameter>video/x-flv</parameter>
+	</function>
+
+	<function name="setServerReturnCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<!-- Delete Message Store -->
+	<subtest>deleteMediaStoreAll.xml</subtest>
+
+	<!--  Back up of default workflow constant file -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>xms extract data </parameter>
+			<parameter>workflowconstants default_workflowconstants.xml</parameter>
+		</parameter>
+	</function>
+	
+	<!--  Read the workflow contsnts in a variable from the Backed Up workflow constant file -->
+	<function name="readRemoteFile" module="Remote">
+		<parameter>default_workflowconstants.xml</parameter>
+		<parameter>test_workflowconstants</parameter>
+	</function>
+
+	<!--  Replace the Value of the constant "videoOptimizationFailureRetentionSecs" in the variable specific to the test -->
+	<function name="replace" module="Basic">
+		<parameter>test_workflowconstants</parameter>
+		<parameter>&lt;workflowConstant name="videoOptimizationFailureRetentionSecs"&gt;(\d++)&lt;/workflowConstant&gt;</parameter>
+		<parameter> </parameter>
+	</function>
+
+	<!-- Write a remote file with the chaged values in the variable -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>loadworkflowconstants.xml</parameter>
+		<variable>test_workflowconstants</variable>
+	</function>
+
+	<!-- Load the updated workflow file specific to the test -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>load data loadworkflowconstants.xml</parameter>
+	</function>
+
+	<!-- Check for the success of the loading  -->
+	<function name="queryResponse" module="Remote">
+		<parameter>Loaded workflowconstants</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!--  Back up of default workflow XPDL file -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>extract data </parameter>
+			<parameter>xpdl default_xmp.cxpdl</parameter>
+		</parameter>
+	</function>
+
+	<!--  Read the XPDL in a variable from the Backed Up workflow XPDL file -->
+	<function name="readRemoteFile" module="Remote">
+		<parameter>default_xmp.cxpdl</parameter>
+		<parameter>test_xpdl</parameter>
+	</function>
+
+	<!--  Replace the Value of the ActualParameter '604800' in the variable specific to the test -->
+	<function name="replace" module="Basic">
+		<parameter>test_xpdl</parameter>
+		<parameter>&lt;xpdl:ActualParameter&gt;'604800'&lt;/xpdl:ActualParameter&gt;</parameter>
+		<parameter>&lt;xpdl:ActualParameter&gt;'60'&lt;/xpdl:ActualParameter&gt;</parameter>
+	</function>
+
+	<!-- Write a remote file with the chaged values in the variable -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>loadxmp.cxpdl</parameter>
+		<variable>test_xpdl</variable>
+	</function>
+
+	<!-- Load the updated workflow file specific to the test -->  
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>load data loadxmp.cxpdl</parameter>
+	</function>
+
+	<!-- Check for the success of the loading  -->
+	<function name="queryResponse" module="Remote">
+		<parameter>Loaded xpdl</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Query the name of the active MEDIA-STORE process -->
+	<function name="activeProcessToVar" module="Remote">
+		<parameter>MEDIA-STORE</parameter>
+		<parameter>Media_Store_Process_Name</parameter>
+	</function>
+
+	<!-- Prepare the ContextStatistics File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>vo_ContextStatistics.xml</parameter>
+		<xml>
+		<contextStatistics>
+			<contextStatistic condition="FTR_OptimizeVideo is true"
+			statisticName="VideoOptimization"
+			key="MSR_Name"
+			maxCounters="100"
+			rateIntervalSeconds="180" />
+		</contextStatistics>
+		</xml>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>vo_ContextStatistics.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded contextstatistics.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Prepare the Request Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>vo_reqmod_online_opt.xml</parameter>
+		<xml>
+		<requestModifications xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="requestmodifications.xsd">
+			<table name="DisableThings" phase="httpRequest">
+				<selector>
+					<modifyContext name="Skip_CACHE" value="'true'"/>
+					<modifyContext name="Skip_VIRUSSCANNER" value="'true'"/>
+					<modifyContext name="FTR_HtmlTidyDisable" value="'true'"/>
+					<modifyContext name="Skip_COOKIE" value="'true'"/>
+					<modifyContext name="Skip_ICC" value="'true'"/>
+					<modifyContext name="FTR_MultipartCompose_Disable" value="'true'"/>
+					<modifyContext name="FTR_Prefetch_Disable" value="'true'"/>
+					<modifyContext name="FTR_Deflate_Disable" value="'true'"/>
+					<modifyContext name="FTR_Gzip_Disable" value="'true'"/>
+				</selector>
+			</table>
+			<table name="XTT_videoOptimization" phase="httpRequest">
+				<selector urlPattern="http://*/videos/{.*\.flv}">
+					<modifyContext name="FTR_OptimizeVideo" value="'true'"/>
+					<modifyContext name="FTR_WaitForOptimizedContent" value="'true'"/>
+				</selector>
+			</table>
+		</requestModifications>
+		</xml>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>vo_reqmod_online_opt.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded requestmodifications.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Radius Login -->
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+	<!-- Send the video retrieval request -->
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>
+			<parameter>http://</parameter>
+			<configuration>system/ip</configuration>
+			<parameter>/videos/Tarabonner-FlightControl637.flv</parameter>
+		</parameter>
+	</function>
+
+	<!-- Validate Response Code Send by XMP, should be 503 due to wrong port assigned for webserver-->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>503</parameter>
+	</function>
+
+	<!-- amocli search for failed optimized Video in Media Store -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>run command amocli -e "MS_Status=='failed'" -m0 search TI:F.CEE.</parameter>
+			<variable>Media_Store_Process_Name</variable>
+			<parameter>:AMO</parameter>
+		</parameter>
+	</function>
+
+	<!-- Check for video status which stored in the Media Store, it should be in "failed" status-->
+	<function name="queryResponse" module="Remote">
+		<parameter>MS_Status=failed</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Check for High priority item associated with the real-time use case-->
+	<function name="queryResponse" module="Remote">
+		<parameter>MS_Priority=99</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Check for MS_Url & MS_Name-->
+	<function name="queryResponse" module="Remote">
+		<parameter>
+			<parameter>MS_Url=http://</parameter>
+			<configuration>system/ip</configuration>
+			<parameter>/videos/Tarabonner-FlightControl637.flv</parameter>
+		</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>
+			<parameter>MS_Name=http://</parameter>
+			<configuration>system/ip</configuration>
+			<parameter>/videos/Tarabonner-FlightControl637.flv</parameter>
+		</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Radius Logoff -->
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+
+	<!-- Sleep a while until failed item removed as per videoOptimizationFailureRetentionSecs configured in CXPDL file. -->
+	<function name="sleep" module="Basic">
+		<parameter>60000</parameter>
+	</function>
+
+	<!-- Check for removal of failed items stored in media store-->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>run command amocli -k count TI:F.CEE.</parameter>
+			<variable>Media_Store_Process_Name</variable>
+			<parameter>:AMO</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>amocli: 0 items counted</parameter>
+		<parameter>response</parameter>
+	</function>
+
+	<!-- Purge the Request Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>REQMOD_EmptyRules.xml</parameter>
+		<parameter>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;requestModifications&gt;&lt;/requestModifications&gt;</parameter>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>REQMOD_EmptyRules.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded requestmodifications.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Purge the ContextStatistics File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>vo_EmptyContextStatistics.xml</parameter>
+		<parameter>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;contextStatistics&gt;&lt;/contextStatistics&gt;</parameter>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>load data </parameter>
+			<parameter>vo_EmptyContextStatistics.xml</parameter>
+		</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>^Loaded contextstatistics.*</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Load the default cxpdl to undo the xpdl changes done specific to the test -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>load data loadxmp.cxpdl</parameter>
+	</function>
+
+	<!-- Check for the success of the loading  -->
+	<function name="queryResponse" module="Remote">
+		<parameter>Loaded xpdl</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Load the default workflow to undo the workflow constants changes done specific to the test -->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>load data default_workflowconstants.xml</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>Loaded workflowconstants</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+	<!-- Stop Web Server -->
+	<function name="stopWebServer" module="HTTP"/>
+
+</test>

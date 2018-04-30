@@ -1,0 +1,61 @@
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+PSEWebServiceAPI.TC005  - Retrieve PSE Entry for a given non-existent user name (MSISDN) / Error Response should be returned to the Caller.
+
+Test Description:
+ 1. Radius Logon
+ 2. Send SOAP Request
+ 3. Check Response
+ 4. Radius Logoff
+
+Expected Result:
+ -  XMP should hadle the SOAP request and with proper response .
+
+XTT Commands:
+
+1.  - radiusLogon
+2.  - SOAP Request - Using getByName method send request to XMP/PORT {configure in XTT config.xml}
+3.  - checkResponseCode
+4.  - radiusLogoff
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+        <!-- Test Start  -->
+
+<test>
+    <name>PSEWebServiceAPI.TC005.xml</name>
+    <description>Retrieve PSE Entry for a given non-existent user name (MSISDN) / Error Response should be returned to the Caller</description>
+
+    <function name="testName" module="Basic">
+        <parameter>PSEWebServiceAPI.TC005</parameter>
+    </function>
+
+    <function name="radiusLogon" module="Radius">
+        <parameter>xttuser</parameter>
+        <parameter>12345678</parameter>
+        <parameter>172.20.5.45</parameter>
+    </function>
+
+    <!--  using getByName method send request to XMP -->
+
+    <function name="SOAPClient" module="SOAP_API">
+        <parameter>
+            <parameter>http://</parameter>
+            <configuration>XMP/IP</configuration>
+            <parameter>:</parameter>
+            <configuration>XMP/PORT</configuration>
+            <parameter>/jaxws-presenceservice/presenceservice</parameter>
+        </parameter>
+        <file>getByName005.xml</file>
+        <parameter>Body/return</parameter>
+    </function>
+
+    <function name="radiusLogoff" module="Radius">
+        <parameter>xttuser</parameter>
+        <parameter>12345678</parameter>
+        <parameter>172.20.5.45</parameter>
+    </function>
+
+    <function name="checkResponseCode" module="SOAP_API">
+        <parameter>200</parameter>
+    </function>
+
+</test>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<requestModifications>
+
+	<table name="InsertInterstitialAdverts" phase="httpRequest">
+		<selector urlPattern="http://*/*">
+		<modifyContext name="FTR_Advert" value="'interstitial'"/>
+		</selector>
+	</table>
+
+</requestModifications>

@@ -1,0 +1,36 @@
+<test>
+    <name>MBSPPB.ErrorScenarios.MT.TC.002</name>
+    <configuration>../configXSAM.xml</configuration>
+
+    <description>[TPI->SMS] Each MBS machine should establish two ISCP connections. One connection to the primary ISCP and One connection to the backup ISCP</description>
+
+    <subtest>../startSecondProcess.xml</subtest>
+    <function name="setVariable" module="Basic">
+        <parameter>AMOUNT</parameter>
+        <parameter>3.456</parameter>
+    </function>
+    <function name="setVariable" module="Basic">
+         <parameter>SKIP_DIAMETER</parameter>
+         <parameter>true</parameter>
+    </function>
+
+    <function name="startDiameterServer" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT</configuration>
+    </function>
+    <function name="startDiameterServer" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT2</configuration>
+    </function>
+    <function name="waitForSpecificRequests" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT</configuration>
+        <parameter>CAPABILITIES_EXCHANGE_REQUEST</parameter>
+        <parameter>1</parameter>
+    </function>
+     <function name="waitForSpecificRequests" module="Diameter">
+        <configuration>DIAMETERSERVER/PORT2</configuration>
+        <parameter>CAPABILITIES_EXCHANGE_REQUEST</parameter>
+        <parameter>1</parameter>
+    </function>
+
+    <function name="stopDiameterServer" module="Diameter"/>
+    <subtest>../startFirstProcess.xml</subtest>
+</test>

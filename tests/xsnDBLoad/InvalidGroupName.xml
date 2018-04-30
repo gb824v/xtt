@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dbupdates> 
+
+<!-- XSN.DBLoad.GroupAdd.TC007.4	"The Group name can contain only alphanumeric characters and
+underscores and not start with underscore"	-->
+<groups>
+<add name="_SilverGroup:,;@#$%*-+="/>
+</groups>
+
+</dbupdates> 

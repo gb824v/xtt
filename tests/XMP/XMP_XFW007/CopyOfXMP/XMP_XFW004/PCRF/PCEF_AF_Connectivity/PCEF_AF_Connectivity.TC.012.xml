@@ -1,0 +1,81 @@
+<test>
+
+	<name>PCEF_AF_Connectivity.TC.012.xml</name>
+	<description>Validate the connectivity (CER) fails with timeout. CER initiated by PCRF.</description>
+
+	<!-- start DIAMETER Server -->
+	<!--  Exchange of CER/CEA: CER initiated by DIAMETER-OUT PCRF and automatically responded with CEA by XTT Server. -->
+	<function name="startDiameterServer" module="Diameter">
+		<configuration>DiameterServer/PORT</configuration>
+		<xml>
+			<Diameter>
+				<response>
+					<CAPABILITIES_EXCHANGE_REQUEST proxiable="true" error="false" tretr="false">
+						<RESULT_CODE            value="DIAMETER_SUCCESS"    mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<ORIGIN_HOST            value="diameter.xtt724.com" mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<ORIGIN_REALM           value="ORIGIN_REALM"        mandatory="true" protected="false" vendorspecific="false"  vendorID=""/>
+						<VENDOR_ID              request="VENDOR_ID" />
+						<PRODUCT_NAME           request="PRODUCT_NAME" />
+						<SUPPORTED_VENDOR_ID    request="SUPPORTED_VENDOR_ID" />
+						<AUTH_APPLICATION_ID    request="AUTH_APPLICATION_ID" />
+					</CAPABILITIES_EXCHANGE_REQUEST>
+				</response>
+			</Diameter>
+		</xml>
+		<!--
+		<configuration>DIAMETERSERVER/Timeout</configuration>
+		-->
+		<parameter>120000</parameter>
+	</function>
+
+	<!-- Setting response delay more then configured in CV file -->
+	<function name="setPerWorkerDelay" module="Diameter">
+		<parameter>5000</parameter>
+	</function>
+
+	<!-- Wait for Timedout CER Message -->
+	<function name="waitForTimeoutSpecificRequests" module="Diameter">
+		<parameter>6868</parameter>
+		<parameter>257</parameter>
+		<parameter>1</parameter>
+	</function>
+
+	<function name="sleep" module="BASIC">
+		<parameter>3000</parameter>
+	</function>
+
+	<!-- Wait for CER Message initiated by DIAMETER-OUT PCRF-->
+	<function name="waitForSpecificRequests" module="Diameter">
+		<parameter>6868</parameter>
+		<parameter>257</parameter>
+		<parameter>1</parameter>
+	</function>
+
+	<!-- Headers validation of CER initiated by PCRF -->
+	<function name="compareString" module="Basic">
+		<variable>DIAMETER/HEADER/commandcode</variable >
+		<parameter>257</parameter>
+	</function>
+
+	<!-- AVP validation of CER -->
+	<function name="compareString" module="Basic">
+		<variable>DIAMETER/AVP/ORIGIN_REALM</variable>
+		<parameter>originalRealm</parameter>
+	</function>
+
+	<!-- AVP validation of CER -->
+	<function name="compareString" module="Basic">
+		<variable>DIAMETER/AVP/PRODUCT_NAME</variable>
+		<parameter>XMP</parameter>
+	</function>
+
+	<!-- AVP validation of CER -->
+	<function name="compareString" module="Basic">
+		<variable>DIAMETER/AVP/VENDOR_ID</variable>
+		<parameter>12702</parameter>
+	</function>
+
+	<!-- Stopping Diameter Server -->
+	<function name="stopDiameterServer" module="Diameter" />
+
+</test>

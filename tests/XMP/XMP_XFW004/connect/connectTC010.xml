@@ -1,0 +1,14 @@
+<test>	    
+	<name>XMP.CONNECT.RADIUS</name>
+	<description>XMP.CONNECT.RADIUS.002 / Accounting Stop</description>
+
+	<!--function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function-->
+
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function> 
+</test>

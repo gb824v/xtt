@@ -1,0 +1,73 @@
+<test>	    
+	<name>XMP.ICAP.TC.035</name>
+    <description>WAP1 GET with REQMOD, ADD/CHANGE header</description>
+
+    <subtest name="loadReqmod" file="loadReqmod.xml"/>
+
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function>
+	<function name="startICAPServer" module="ICAP"/>
+	<function name="startWebServer" module="HTTP"/>
+
+	<function name="setHeader" module="WAP">
+		<parameter>XTTAddedOne</parameter>
+		<parameter>unchanged</parameter>
+	</function>	
+	<function name="setHeader" module="WAP">
+		<parameter>XTTAddedTwo</parameter>
+		<parameter>unchanged</parameter>
+	</function>	
+	<function name="setServerREQHeader" module="ICAP">
+		<parameter>XTTAddedTwo</parameter>
+		<parameter>replaced</parameter>
+	</function>	
+	<function name="setServerREQHeader" module="ICAP">
+		<parameter>XTTAddedThree</parameter>
+		<parameter>added</parameter>
+	</function>	
+
+    <function name="connectGateway" module="WAP"/>
+	<function name="sendGetRequest" module="WAP">
+        <parameter>
+    		<parameter>http://icap2.xtt724.com/</parameter>
+        </parameter>
+	</function>
+	<function name="checkResponseCode" module="WAP">
+		<parameter>200</parameter>
+	</function>	
+    <function name="disconnectGateway" module="WAP" />
+	<function name="checkServerREQHeader" module="ICAP">
+		<parameter>XTTAddedOne</parameter>
+		<parameter>unchanged</parameter>
+	</function>	
+	<function name="checkServerREQHeader" module="ICAP">
+		<parameter>XTTAddedTwo</parameter>
+		<parameter>unchanged</parameter>
+	</function>	
+	<function name="checkServerHeader" module="HTTP">
+		<parameter>XTTAddedOne</parameter>
+		<parameter>unchanged</parameter>
+	</function>	
+	<function name="checkServerHeader" module="HTTP">
+		<parameter>XTTAddedTwo</parameter>
+		<parameter>replaced</parameter>
+	</function>	
+	<function name="checkServerHeader" module="HTTP">
+		<parameter>XTTAddedThree</parameter>
+		<parameter>added</parameter>
+	</function>	
+	<function name="waitForREQMOD" module="ICAP">
+		<parameter>1</parameter>
+	</function>	
+
+    <subtest name="unloadReqmod" file="unloadReqmod.xml"/>
+
+	<function name="stopWebServer" module="HTTP"/>
+	<function name="stopICAPServer" module="ICAP"/>
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12346</parameter>
+	</function> 
+</test>

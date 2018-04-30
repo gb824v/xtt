@@ -1,0 +1,69 @@
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+	This test case check for core files in the processes directory and
+	then restarting the xmp and removing it's data
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+<test>
+	<function name="testName" module="Basic">
+		<parameter>INTEGRATION.TC.999</parameter>
+	</function>
+    <description>Restart and initialize the XMP</description>
+
+	<function name="executeRemoteCommand" module="Remote">
+        <parameter>
+           <parameter>find </parameter>
+           <configuration>XMG/PROCPATH</configuration>
+           <parameter> -name *.core</parameter>
+        </parameter>
+    </function>
+
+    <function name="queryResponse" module="Remote">
+    	<parameter></parameter>
+    	<parameter>result</parameter>
+    </function>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	This function is stoppinging the xmp and the titaium, delete the log and 
+	processes directories, initialize the xmp, starting it and load data files:
+  xms sto sys; sm stop; rm -rf /var/xmp/log /var/xmp/processes; xms init mach -allowroot cv-pv_xtt_update3.xml; xms sta sys cv-pv_xtt_update3.xml; /xms_load_data
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!--
+        <function name="writeRemoteFile" module="Remote">
+                <parameter>xms_load_data</parameter>
+                <file>xms_load_data.sh</file>
+	</function>
+-->
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>
+			<parameter>xms sto sys; sm stop; rm -rf </parameter>
+			<configuration>XMG/PROCPATH</configuration>
+			<parameter> </parameter>
+			<configuration>XMG/LOGPATH</configuration>
+			<parameter>; xms init mach -allowroot </parameter>
+                        <configuration>XMP/CONFIGDIR</configuration>
+			<configuration>XMP/CV</configuration>
+			<parameter>; xms sta sys </parameter>
+			<configuration>XMP/CONFIGDIR</configuration>
+                        <configuration>XMP/CV</configuration>
+                        <parameter>;</parameter>
+                        <configuration>XMP/CONFIGDIR</configuration>
+                        <parameter>xms_load_data</parameter>
+                </parameter>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+              <parameter>show data | grep Name | wc -l</parameter>
+        </function>
+    <function name="queryResponse" module="Remote">
+    	<parameter>7</parameter>
+    	<parameter>data</parameter>
+    </function>
+
+
+    <function name="checkAllProcessesStatus" module="Remote">
+        <parameter>Running</parameter>
+    </function>
+
+	<function name="stopDNSServer" module="DNS"/>
+
+</test>

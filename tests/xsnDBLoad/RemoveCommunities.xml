@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<dbupdates> 
+
+<!-- XSN.DBLoad.CommRem.TC004.10 Remove Single Community	-->
+
+<communities>
+
+<add name="Europe" />
+<remove name = "Europe" />
+</communities> 
+
+<!-- XSN.DBLoad.CommRem.TC004.11 Remove Single Community having Sub Community. The sub communities should not be deleted. -->
+
+<communities>
+<remove name="Euro" />
+<remove name="Euro/South" />
+<remove name="Euro/South/Italy" />
+
+<add name="Euro" />
+<add name="Euro/South" />
+<add name="Euro/South/Italy" />
+<remove name = "Euro" />
+</communities> 
+
+
+</dbupdates>
+

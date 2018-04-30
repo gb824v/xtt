@@ -1,0 +1,16 @@
+<test>
+<name>NewTest</name>
+<qcid>44</qcid>
+<description>
+sdsd
+</description>
+<steps>
+DNS/removeEntry
+</steps>
+<designer>guyb </designer>
+<creationdate>2012-01-18 13:26:11 </creationdate>
+<testlevel>Integration</testlevel>
+<xfwVersion>XMP_XFW006</xfwVersion>
+<stepname>DNS/removeEntry</stepname>
+<function name="removeEntry" module="DNS"/>
+</test>

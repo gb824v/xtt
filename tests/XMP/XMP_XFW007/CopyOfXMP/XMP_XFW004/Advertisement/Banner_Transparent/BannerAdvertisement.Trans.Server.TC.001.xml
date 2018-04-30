@@ -1,0 +1,35 @@
+<!-- 
+BannerAdvertisement.Trans.Server.TC.001  - Start Web-Server to Validate Banner Advertisement use case, during Transparent Proxy Condition.
+
+Test Description:
+ 1. Start Web Server.
+ 2. Wait for get request.
+ 3. Stop Web Server.
+
+Expected Result:
+ -  XMP should process the Banner request and click through URL request with proper response code.
+
+XTT Commands:
+
+ 1.  - startWebServer
+ 2.  - waitForRequests
+ 3.  - stopWebServer
+-->
+
+<test>
+
+	<function name="testName" module="Basic">
+		<parameter>BannerAdvertisement.Trans.Server.TC.001</parameter>
+	</function>
+
+	<description>Start Web-Server to Validate Banner Advertisement use case, during Transparent Proxy Condition.</description>
+
+	<function name="startWebServer" module="HTTP"/>
+
+	<function name="waitForRequests" module="HTTP">
+		<parameter>1</parameter>
+	</function>
+
+	<function name="stopWebServer" module="HTTP"/>
+
+</test>

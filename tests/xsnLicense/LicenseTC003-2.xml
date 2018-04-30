@@ -1,0 +1,47 @@
+<test>
+	<function name="testName" module="Basic">
+		<parameter>License.TC.003.2</parameter>
+	</function>
+	
+	<description>This is an license example test for a base license(type-B) loaded</description>
+   
+    <function name="sendRemoteCommand" module="Remote">
+        <parameter>
+        <configuration>xsn/path</configuration>
+        <configuration>xsn/xms</configuration>
+        <parameter>stop system </parameter>
+        </parameter>
+    </function>
+
+	<function name="sendRemoteCommand" module="Remote">
+        <parameter>writeFile XSN-License-TC003-2.xml </parameter>
+        <file>XSN-License-TC003-2.xml</file>
+    </function>
+    
+	<function name="sendRemoteCommand" module="Remote">
+        <parameter>writeFile LicenseTC003-2-xsn-pv-bali.xml </parameter>
+        <file>LicenseTC003-2-xsn-pv-bali.xml</file>
+    </function>
+
+	<function name="sendRemoteCommand" module="Remote">
+        <parameter>
+        <configuration>xsn/path</configuration>
+        <configuration>xsn/xms</configuration>
+        <parameter>gen conf LicenseTC003-2-xsn-pv-bali.xml LicenseTC003-2-xsn-cv-bali.xml</parameter>
+        </parameter>
+    </function>
+
+	<function name="sendRemoteCommand" module="Remote">
+        <parameter>
+        <configuration>xsn/path</configuration>
+        <configuration>xsn/xms</configuration>
+        <parameter>start system -clean LicenseTC003-2-xsn-cv-bali.xml </parameter>
+        </parameter>
+    </function>
+
+    <function name="queryResponse" module="Remote">
+        <parameter>License details</parameter>
+        <parameter>test1.2</parameter>
+    </function>    
+
+</test>

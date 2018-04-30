@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<configuration>
+    <!-- IP address of the machine -->
+    <MSRPServer>
+        <RemoteIPAddress>127.0.0.1</RemoteIPAddress>
+    </MSRPServer>
+</configuration>
+

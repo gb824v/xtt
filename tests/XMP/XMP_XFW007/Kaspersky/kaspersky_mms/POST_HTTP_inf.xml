@@ -1,0 +1,205 @@
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+This scenario will verify that the scanning, identifying and blocking is done as expected when the 
+MMS is application/vnd.wap.multipart.related.
+
+Test Description:
+ 1. Start web server and MMSC
+ 2. Send virus Infected data in HTTP Get Proxy Request
+ 3. Check Response Code
+ 4. Check body for notification text
+ 5. Check logscan for infection
+ 6. Stop web server and MMSC
+
+Expected Result:
+ -  XMP should Block this request and responed with notification MMS which its text is taken from the component-view file.
+
+XTT Commands:
+        startWebServer
+ 1.   - startMMSCServer
+ 2.   - sendGetRequest 		"HTTP" "http://SYSTEM-IP/viruspage.html"
+ 3.   - checkResponseCode	"HTTP" "200"
+ 4.   - queryBody "HTTP" 
+ 5.   - queryResponse "Remote"
+ 6.   - stopMMSCServer
+        stopWebServer
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+        <!-- Test Start  -->
+
+<test>
+	<function name="testName" module="Basic">
+		<parameter>MMS-Variety_app-vnd-wap_multipart_related_inf</parameter>
+	</function>
+
+	<description>MMS Variety application/vnd.wap.multipart.related infected</description>
+
+<!--	<function name="disableFollowRedirects" module="HTTP"/>-->
+
+	<!-- Start Web Server and MMSC -->
+	<function name="startWebServer" module="HTTP" />
+	<function name="startMMSCServer" module="MMSC" />
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!--	<function name="startSMSCServer" module="SMS"/>  -->
+    
+<!--    <function name="waitForBind" module="SMS"/> -->
+
+     <function name="createMM1Packet" module="SMS">
+        <parameter>sendPacket1</parameter>
+        <parameter>M_SEND_REQ</parameter>
+        <parameter>XTTTRANSACTIONID0001</parameter>
+        <parameter>0x17</parameter>
+        <parameter>11223344</parameter>
+        <parameter>55667788</parameter>
+        <parameter>application/vnd.wap.multipart.mixed</parameter>  -->
+	</function>
+
+    <function name="createMM1PacketOptions" module="SMS">
+        <parameter>sendPacket1</parameter>
+        <parameter>X_MMS_DELIVERY_REPORT</parameter>
+        <parameter>true</parameter>
+    </function>
+
+    <function name="createMM1PacketOptions" module="SMS">
+        <parameter>sendPacket1</parameter>
+        <parameter>X_MMS_READ_REPORT</parameter>
+        <parameter>true</parameter>
+    </function>
+
+    <function name="createMM1PacketOptions" module="SMS">
+        <parameter>sendPacket1</parameter>
+        <parameter>SUBJECT</parameter>
+        <parameter>I wish it will POST !</parameter>
+    </function>
+
+    <function name="createMM1PacketOptions" module="SMS">
+        <parameter>sendPacket1</parameter>
+        <parameter>X_MMS_MESSAGE_CLASS</parameter>
+        <parameter>128</parameter>
+    </function>
+
+    <function name="createMM1PacketOptions" module="SMS">
+        <parameter>sendPacket1</parameter>
+        <parameter>X_MMS_PRIORITY</parameter>
+        <parameter>130</parameter>
+    </function>
+
+    <function name="createMM1PacketOptions" module="SMS">
+        <parameter>sendPacket1</parameter>
+        <parameter>X_MMS_SENDER_VISIBILITY</parameter>
+        <parameter>129</parameter>
+    </function>
+
+    <function name="createMM1PacketContentMultipart" module="SMS">
+        <parameter>sendPacket1</parameter>
+		<base64file>mms\virus111.bin</base64file>
+        <parameter>application/octet-stream</parameter>
+        <parameter>virus.bin</parameter>
+<!--				<parameter>Content-Id</parameter>
+				<parameter>172839</parameter> -->
+    </function>
+
+   <function name="storeMM1Packet" module="SMS">
+        <parameter>sendPacket1Base64</parameter>
+        <parameter>sendPacket1</parameter>
+    </function>
+
+    <function name="decodeMM1Packet" module="SMS">
+        <parameter>PACKET1Request</parameter>
+        <variable>sendPacket1Base64</variable>
+    </function>
+     
+     <function name="setHeader" module="HTTP">
+        <parameter>Content-Type</parameter>
+        <parameter>application/vnd.wap.mms-message</parameter>
+    </function>
+
+     <function name="setHeader" module="HTTP">
+        <parameter>x-up-calling-line-id</parameter>
+        <parameter>393354444444</parameter>
+    </function>
+
+<!--
+	 <function name="setHeader" module="HTTP">
+        <parameter>Content-Length</parameter>
+        <parameter>462</parameter>
+    </function>
+-->
+
+    <function name="setBase64PostData" module="HTTP">
+        <variable>sendPacket1Base64</variable>
+    </function>
+    
+
+     <function name="sendPostRequest" module="HTTP">
+        <parameter>
+            <parameter>http://</parameter>
+            <configuration>SYSTEM/IP</configuration>
+            <parameter>/</parameter>
+        </parameter>
+        <parameter><variable>sendPacket1Base64</variable></parameter>
+    </function>
+
+    <function name="checkResponseCode" module="HTTP">
+        <parameter>200</parameter>
+    </function>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	<!-- Send virus Infected data in HTTP Get Proxy Request -->
+<!--
+	<function name="sendPostRequest" module="WAP">
+			<parameter>application/vnd.wap.mms-message</parameter>
+			<variable>multiPart1base64</variable>
+			<parameter>
+			<parameter>http://</parameter>
+			<configuration>SYSTEM/IP</configuration>
+			<parameter>/virus.bin</parameter>
+		</parameter>
+	</function>
+-->
+	<!-- Validate Response Code Send by XMP -->
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+  <!-- Verify reponse is having the notification text -->
+  	<function name="queryBody" module="HTTP">
+		<parameter>dev/null</parameter>
+		<parameter>Message submission blocked because it was infected by a virus</parameter>
+	</function>
+
+	<function name="sleep" module="Basic">
+		<parameter>1000</parameter>
+	</function>
+
+  <!--  save the latest logscan into temp log file  -->
+    <function name="getNewestRemoteFileName" module="Remote">
+        <parameter>newestlogfile</parameter>
+	    <configuration>remote/logpath</configuration>
+        <parameter>XMP</parameter>
+    </function>
+    <function name="executeRemoteXMSCommand" module="Remote">
+    	<parameter>
+            <configuration>remote/command</configuration>
+    	    <parameter>logscan -in </parameter>
+    	    <variable>newestlogfile</variable>
+            <parameter> -out </parameter>
+    	      <parameter>x.log</parameter>
+    	</parameter>
+    </function>
+
+  <!-- verify KAV8_RspResult param is exist -->
+    <function name="executeRemoteCommand" module="Remote">
+        <parameter>/bin/grep KAV8_ReqResult x.log | tail -1</parameter>
+    </function>
+
+  <!-- check the value of KAV8_RspResult param -->
+	<function name="queryResponse" module="Remote">
+		<parameter>KAV8_ReqResult: INFECTED</parameter>
+		<parameter>data</parameter>
+	</function>
+
+	<!-- Stop Web Server and MMSC -->
+	<function name="stopMMSCServer" module="MMSC" />
+	<function name="stopWebServer" module="HTTP"/>
+
+</test>

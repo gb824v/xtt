@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<requestModifications xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="requestModifications.xsd">
+
+<!-- This table sets up  the   AuthenticationType as  LDAP and  RemoteIpAddress equalsip     -->
+	<table name="authentication" phase="authentication">
+		<!--selector context="TCP_RemoteIpAddress equalsip '%IPADDRESS%'"-->
+		<selector>
+			<modifyContext name="FTR_AuthenticationType" value="'ldap'"/>
+			<!--modifyContext name="FTR_SubscriberId" value="TCP_RemoteIpAddress" /-->
+		</selector>
+	</table>
+
+</requestModifications>

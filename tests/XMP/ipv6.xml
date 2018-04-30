@@ -1,0 +1,43 @@
+<test>
+<name>IPV6</name>
+<qcid></qcid>
+<description>
+IPV6
+</description>
+<steps>
+Proxy/startProxyServer
+HTTP/startWebServer
+HTTP/stopWebServer
+Basic/lessThan
+</steps>
+<designer>root </designer>
+<creationdate>2012-04-15 20:36:23 </creationdate>
+<testlevel>Integration</testlevel>
+<xfwVersion>XMP_XFW006</xfwVersion>
+<mandatory>false</mandatory>
+<stepname>Proxy/startProxyServer</stepname>
+<stepid>1</stepid>
+<function name="startProxyServer" module="Proxy">
+<parameter>[fe80::a112:af71:682d:c121]</parameter>
+<parameter>8081</parameter>
+<parameter>XMP</parameter>
+<parameter>300000</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/startWebServer</stepname>
+<stepid>2</stepid>
+<function name="startWebServer" module="HTTP">
+<parameter>[fe80::a112:af71:682d:c121]</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/stopWebServer</stepname>
+<stepid>3</stepid>
+<function name="stopWebServer" module="HTTP"/>
+<mandatory>false</mandatory>
+<stepname>Basic/lessThan</stepname>
+<stepid>4</stepid>
+<function name="lessThan" module="Basic">
+<parameter>8</parameter>
+<parameter>8</parameter>
+</function>
+</test>

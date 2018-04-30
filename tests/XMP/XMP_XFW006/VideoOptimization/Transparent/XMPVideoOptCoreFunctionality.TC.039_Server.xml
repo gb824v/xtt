@@ -1,0 +1,35 @@
+
+<!-- For this test Product View file should contain following tag with reaperSecs="10800"
+<mediaStore reaperSecs="10800" chunkSizeBytes="8192" firstChunkRequestTimeout="15" chunkRequestTimeout="30" maxMemorySizeMBytes="100"/> -->
+
+<test>
+
+	<function name="testName" module="Basic">
+		<parameter>XMPVideoOptCoreFunctionality.TC.039_Server</parameter>
+	</function>
+
+	<description>Validate that "MS_ExpiryTime" is set to the current time + the value of reaperSecs parameter of mediaStore process configuration when VSM triggers the optimization of video which already exists in the MEDIA-STORE (MSR_WaitForOptimizedContent context: false)</description>
+
+	<!-- Start Web Server -->
+	<function name="startWebServer" module="HTTP"/>
+
+
+	<function name="setServerHeader" module="HTTP">
+		<parameter>content-type</parameter>
+		<parameter>video/x-flv</parameter>
+	</function>
+
+	<function name="setServerReturnCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<!-- Sleep a while until video optimization will start -->
+	<function name="sleep" module="Basic">
+		<parameter>30000</parameter>
+	</function>
+	
+
+	<!-- Stop Web Server -->
+	<function name="stopWebServer" module="HTTP"/>
+
+</test>

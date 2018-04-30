@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<dbupdates> 
+<subscribers>
+	<remove subscriber="+0091-11-123456780"/>
+	<remove subscriber="123456786"/>
+	<remove subscriber="123456797"/>
+	
+	<add subscriber="+0091-11-123456780">
+	<firstName value="First_Name"/>
+	<lastName value="Last_Name"/>
+	<born value="1995-01-21"/>
+	<password value="Hello123"/> </add>
+	<add subscriber="123456786"> <firstName value="Géöèüàärman"/> </add>
+	<add subscriber="123456797"> <born value="2004-02-29"/></add>
+	
+</subscribers>
+</dbupdates>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workflowConstants>
+
+<!-- ageIsUnknownUrl is used by the insertAdvert workflow.
+ 
+     When that workflow decides to insert an interstitial advert, it tells the advert servlet to
+     set the refresh headers in the advert to display the advert for the time specified by this 
+     workflow constant.    -->
+<workflowConstant name="advertDisplaySeconds">2</workflowConstant> 
+
+<!-- ageIsUnknownUrlis used only if you have enabled the content filtering feature.
+
+     It is used by the filterContent workflow. It specifies the URL to which a request is to be 
+     redirected if the request is blocked because the subscriber?s age is not known. -->
+<workflowConstant name="ageIsUnknownUrl">http://www.telco.com/Blocked/AgeUnknown.html</workflowConstant>
+
+<!-- alwaysBlockUrl is used only if you have enabled the content filtering feature.
+
+     It is used by the filterContent workflow. It specifies the URL to which a request is to be 
+     redirected if the request is blocked because it matches a global filter. -->
+<workflowConstant name="alwaysBlockUrl">http://www.telco.com/Blocked/AlwaysBlock.html</workflowConstant>
+
+<!-- bannerPath is used by the replaceBanner workflow. 
+
+     It identifies the servlet that you want to call to supply the banner advert content. This is a 
+     servlet that is running in a WEB-APP process. 
+     The value is what you would normally type as the path on the URL. The rest of the URL is 
+     automatically generated. -->
+<workflowConstant name="bannerPath">advert/banner</workflowConstant> 
+
+<!-- blockedByCommunityFiltersUrl is used only if you have enabled the content filtering feature.
+
+     It is used by the filterContent workflow. It specifies the URL to which a request is to be 
+     redirected if the request is blocked because it matches a community filter. -->
+<workflowConstant name="blockedByCommunityFiltersUrl">http://www.telco.com/Blocked/CommunityFilters.html</workflowConstant>
+
+<!-- blockedByPersonalFiltersUrl is used only if you have enabled the content filtering feature.
+
+     It is used by the filterContent workflow. It specifies the URL to which a request is to be 
+     redirected if the request is blocked because it matches one of the subscriber?s personal filters. -->
+<workflowConstant name="blockedByPersonalFiltersUrl">http://www.telco.com/Blocked/PersonalFilters.html</workflowConstant>
+
+<!-- blockedBySystemFiltersUrl is used only if you have enabled the content filtering feature.
+
+     It is used by the filterContent workflow. It specifies the URL to which a request is to be 
+     redirected if the request is blocked because it matches an age-based filter. -->
+<workflowConstant name="blockedBySystemFiltersUrl">http://www.telco.com/Blocked/SystemFilters.html</workflowConstant>
+
+<!-- blockedByVirusScannerUrl is used only if you have enabled the Kaspersky virus scanner.
+
+     It is used by the handleHttp workflow. It specifies the URL to which a request is to be redirected
+     if the request is blocked because it has a virus.
+     The handleHttp workflow checks whether the value returned in KSPRSKY_Result is "INFECTED" or 
+     "NOT_CURED", and if so, redirects the request to the URL defined by blockedByVirusScannerUrl. -->
+<workflowConstant name="blockedByVirusScannerUrl">http://www.telco.com/Blocked/Virus.html</workflowConstant>
+
+<!-- fdftMinimumThreshold is used only if you have enabled the content filtering feature.
+
+     When FastTracker assigns a topic number to a request, it returns a threshold that says how confident
+     it is that the assigned topic number is correct.
+ 
+     This is the minimum threshold that is needed for the workflow to accept the topic number assigned 
+     by FastTracker. -->
+<workflowConstant name="fdftMinimumThreshold">3</workflowConstant>
+
+<!-- interstitialPath is used by the insertAdvert workflow. 
+
+     It identifies the servlet that you want to call to supply the interstitial advert content. This is a 
+     servlet that is running in a WEB-APP process. 
+
+     The value is what you would normally type as the path on the URL. The rest of the URL is automatically
+     generated. -->
+<workflowConstant name="interstitialPath">advert/interstitial</workflowConstant> 
+
+<!-- ldapGetSubscriberIdKey is used only if you have enabled support for LDAP to be used as the presence feed.
+
+     This constant is used by the getSubscriberId workflow if you use the LDAP presence feed. The workflow 
+     makes an LDAP query called GetSubscriberId to find out the subscriber ID associated with the subscriber?s
+     IP address. 
+
+     This workflow constant says which attribute returned by the LDAP server contains the subscriber ID. The 
+     workflow copies the value of this attribute to the Internal_NAI context element.   --> 
+<workflowConstant name="ldapGetSubscriberIdKey">CHLDAP_QueryLDAPEntries/0/msisdn</workflowConstant>
+
+<!-- ldapValiditySecs is used only if you have enabled support for LDAP to be used as the presence feed.
+
+     It says how long data read from the presence store is valid for, when the data was obtained from an LDAP 
+     server. After this time, the data is read again from the LDAP server. -->
+<!--workflowConstant name="ldapValiditySecs">600</workflowConstant-->
+
+<!-- notificationSmsChannel is used only if you have enabled the content filtering feature.
+
+     It is used by the filterContent workflow. It is the name of the SMS channel to use to deliver SMS 
+     notification messages to community admins. -->
+<workflowConstant name="notificationSmsChannel">SmsChannel</workflowConstant>
+
+<!-- notificationSmsConnection is used only if you have enabled the content filtering feature.
+
+     It is used by the filterContent workflow. It is the name of the SMS connection to use to deliver SMS 
+     notification messages to community admins. -->
+<workflowConstant name="notificationSmsConnection">SmsConnection</workflowConstant>
+
+<!-- notificationSmsMessageOptions is used only if you have enabled the content filtering feature.
+
+     It is used by the filterContent workflow. It is the name of the set of SMS message options to use to
+     deliver SMS notification messages to community admins.. -->
+<workflowConstant name="notificationSmsMessageOptions">DEFAULT</workflowConstant>
+
+<!-- Push_SmsChannel is used only if you have configured push support.
+
+     It is the name of the SMS channel to use to deliver push messages via SMS. -->
+<workflowConstant name="Push_SmsChannel">SmsChannel</workflowConstant>
+
+<!-- Push_SmsConnection is used only if you have configured push support.
+
+     It is the name of the SMS connection to use to deliver push messages via SMS. -->
+<workflowConstant name="Push_SmsConnection">SmsConnection</workflowConstant>
+
+<!-- radiusValiditySecs is used only if you have configured a live RADIUS feed.
+
+     It says how long data read from the presence store is valid for, when the data was obtained from a RADIUS 
+     feed. After this time, the data is read again from the presence store. -->
+<!--workflowConstant name="radiusValiditySecs">600</workflowConstant-->
+
+<!-- subscriberInfoValiditySecs is used by the getSubscriberId workflow.
+
+     It says how long the subscriber profile data is valid for. After this time, the subscriber profile data is 
+     read again, for example from the XMP database. -->
+<!--workflowConstant name="subscriberInfoValiditySecs">600</workflowConstant-->
+
+<!-- LDAP Parameters -->
+ <workflowConstant name="ldapValiditySecs">10</workflowConstant>
+ <workflowConstant name="radiusValiditySecs">60</workflowConstant>
+ <workflowConstant name="subscriberInfoValiditySecs">60</workflowConstant>
+
+
+</workflowConstants>

@@ -1,0 +1,81 @@
+<test>
+    <function name="testName" module="Basic">
+        <parameter>XMS.TC.004</parameter>
+    </function>
+    
+    <function name="sendRemoteCommand" module="Remote">
+        <parameter>writeFile reqmod.xml </parameter>
+        <file>reqmod.xml</file>
+    </function>    
+    
+    <function name="sendRemoteCommand" module="Remote">
+        <parameter>writeFile test.txt </parameter>
+        <file>test.txt</file>
+    </function>     
+    
+    <function name="sendRemoteCommand" module="Remote">
+        <configuration>xmg/path</configuration>
+        <parameter>bin/xms load data reqmod.xml</parameter>
+    </function>
+    
+    <function name="sendRemoteCommand" module="Remote">
+        <configuration>xmg/path</configuration>
+        <parameter>bin/xms load file test.txt</parameter>
+    </function>    
+    
+    <function name="sendRemoteCommand" module="Remote">
+        <configuration>xmg/path</configuration>
+        <parameter>bin/xms show data</parameter>
+    </function>    
+    
+    <function name="queryResponse" module="Remote">
+        <parameter>Name:.*requestmodifications</parameter>
+        <parameter>xmsTC004/temp</parameter>
+    </function>
+
+    <function name="sendRemoteCommand" module="Remote">
+        <configuration>xmg/path</configuration>
+        <parameter>bin/xms show file</parameter>
+    </function> 
+
+    <function name="queryResponse" module="Remote">
+        <parameter>Name:.*test.txt</parameter>
+        <parameter>xmsTC004/temp</parameter>
+    </function>
+
+    <function name="sendRemoteCommand" module="Remote">
+        <configuration>xmg/path</configuration>
+        <parameter>bin/xms stop system</parameter>
+    </function>
+
+    <function name="sendRemoteCommand" module="Remote">
+        <configuration>xmg/path</configuration>
+        <parameter>bin/xms start system </parameter>
+        <configuration>xmg/configurationFile</configuration>
+    </function>    
+    
+    <function name="queryResponse" module="Remote">
+        <parameter>start completed successfully</parameter>
+        <parameter>xmsTC004/temp</parameter>
+    </function>
+
+    <function name="sendRemoteCommand" module="Remote">
+        <configuration>xmg/path</configuration>
+        <parameter>bin/xms show data</parameter>
+    </function>    
+    
+    <function name="queryResponse" module="Remote">
+        <parameter>Name:.*requestmodifications</parameter>
+        <parameter>xmsTC004/temp</parameter>
+    </function>
+
+    <function name="sendRemoteCommand" module="Remote">
+        <configuration>xmg/path</configuration>
+        <parameter>bin/xms show file</parameter>
+    </function> 
+
+    <function name="queryResponse" module="Remote">
+        <parameter>Name:.*test.txt</parameter>
+        <parameter>xmsTC004/temp</parameter>
+    </function>    
+</test>

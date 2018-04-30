@@ -1,0 +1,42 @@
+<!-- 
+BannerAdvertisement.Trans.Server.TC.006  - Start Web-Server to Validate the example workflow does not insert an interstitial advert if the target URL is not a main page During Transparent proxy condition (points to http://261234.xtt.com/images/cat.jpg).
+
+Test Description:
+ 1. Start Web Server.
+ 2. Wait for get request.
+ 3. Stop Web Server.
+
+Expected Result:
+ -  XMP should not insert an interstitial advert if the target URL is not a main page.
+
+XTT Commands:
+
+ 1.  - startWebServer
+ 2.  - waitForRequests
+ 3.  - stopWebServer
+-->
+
+<test>
+
+	<function name="testName" module="Basic">
+		<parameter>InterstitialAdvertisement.Trans.Server.TC.006</parameter>
+	</function>
+
+	<description>Start Web Server to Validate the example workflow does not insert an interstitial advert if the target
+ URL is not a main page During Transparent proxy condition (points to http://261234.xtt.com/images/cat.jpg).</description>
+
+	<function name="startWebServer" module="HTTP"/>
+
+	<function name="waitForRequests" module="HTTP">
+		<parameter>1</parameter>
+	</function>	
+
+	<function name="sleep" module="Basic">
+		<parameter>
+		<parameter>5000</parameter>
+		</parameter>
+	</function>
+
+	<function name="stopWebServer" module="HTTP"/>
+
+</test>

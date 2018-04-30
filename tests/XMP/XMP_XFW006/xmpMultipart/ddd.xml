@@ -1,0 +1,51 @@
+<test>
+<name>Test</name>
+<qcid>33</qcid>
+<description>
+ddd
+</description>
+<steps>
+Remote/writeRemoteFile
+Remote/executeRemoteXMSCommand
+Remote/queryResponse
+Remote/writeRemoteFile
+Remote/executeRemoteXMSCommand
+Remote/queryResponse
+</steps>
+<designer>guyb </designer>
+<creationdate>2012-01-22 13:48:52 </creationdate>
+<testlevel>Integration</testlevel>
+<xfwVersion>XMP_XFW006</xfwVersion>
+<stepname>Remote/writeRemoteFile</stepname>
+<function name="writeRemoteFile" module="Remote">
+<parameter>wurfl.xml</parameter>
+<file>wurfl.xml</file>
+</function>
+<stepname>Remote/executeRemoteXMSCommand</stepname>
+<function name="executeRemoteXMSCommand" module="Remote">
+<parameter>
+<parameter>load data wurfl.xml</parameter>
+</parameter>
+</function>
+<stepname>Remote/queryResponse</stepname>
+<function name="queryResponse" module="Remote">
+<parameter>^Loaded</parameter>
+<parameter>dev/null</parameter>
+</function>
+<stepname>Remote/writeRemoteFile</stepname>
+<function name="writeRemoteFile" module="Remote">
+<parameter>defaultREQMOD.xml</parameter>
+<file>defaultREQMOD.xml</file>
+</function>
+<stepname>Remote/executeRemoteXMSCommand</stepname>
+<function name="executeRemoteXMSCommand" module="Remote">
+<parameter>
+<parameter>load data defaultREQMOD.xml</parameter>
+</parameter>
+</function>
+<stepname>Remote/queryResponse</stepname>
+<function name="queryResponse" module="Remote">
+<parameter>^Loaded requestmodifications.*</parameter>
+<parameter>dev/null</parameter>
+</function>
+</test>

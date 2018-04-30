@@ -1,0 +1,203 @@
+<test>
+    <name>XTT.TC.009</name>
+    <description>Test XTT Proxy mechanism</description>
+    
+    <function name="startProxyServer" module="Proxy"/>
+
+	<function name="enableProxy" module="HTTP">
+ 	    <configuration>SYSTEM/IP</configuration>
+ 	    <configuration>HTTPPROXY/DEFAULT/PORT</configuration>
+    </function>
+
+	<function name="sendGetRequest" module="HTTP">
+ 	    <parameter>http://www.microsoft.com/</parameter>
+    </function>
+	<function name="checkResponseCode" module="HTTP">
+	    <parameter>200</parameter>
+    </function>
+	<function name="queryHeader" module="HTTP">
+	    <parameter>dev/null</parameter>
+	    <parameter>via</parameter>
+ 	    <configuration>HTTPPROXY/DEFAULT/NAME</configuration>
+    </function>
+            
+	<function name="sendGetRequest" module="HTTP">
+ 	    <parameter>http://www.gnu.org/</parameter>
+    </function>
+	<function name="checkResponseCode" module="HTTP">
+	    <parameter>200</parameter>
+    </function>
+	<function name="queryHeader" module="HTTP">
+	    <parameter>dev/null</parameter>
+	    <parameter>via</parameter>
+ 	    <configuration>HTTPPROXY/DEFAULT/NAME</configuration>
+    </function>
+
+	<function name="sendGetRequest" module="HTTP">
+ 	    <parameter>http://www.cpan.org/</parameter>
+    </function>
+	<function name="checkResponseCode" module="HTTP">
+	    <parameter>200</parameter>
+    </function>
+	<function name="queryHeader" module="HTTP">
+	    <parameter>dev/null</parameter>
+	    <parameter>via</parameter>
+ 	    <configuration>HTTPPROXY/DEFAULT/NAME</configuration>
+    </function>
+
+	<function name="sendGetRequest" module="HTTP">
+ 	    <parameter>http://www.apple.com/</parameter>
+    </function>
+	<function name="checkResponseCode" module="HTTP">
+	    <parameter>200</parameter>
+    </function>
+	<function name="queryHeader" module="HTTP">
+	    <parameter>dev/null</parameter>
+	    <parameter>via</parameter>
+ 	    <configuration>HTTPPROXY/DEFAULT/NAME</configuration>
+    </function>
+
+	<function name="sendGetRequest" module="HTTP">
+ 	    <parameter>http://www.page3.com/</parameter>
+    </function>
+	<function name="checkResponseCode" module="HTTP">
+	    <parameter>200</parameter>
+    </function>
+	<function name="queryHeader" module="HTTP">
+	    <parameter>dev/null</parameter>
+	    <parameter>via</parameter>
+ 	    <configuration>HTTPPROXY/DEFAULT/NAME</configuration>
+    </function>
+
+
+
+    <function name="stopProxyServer" module="Proxy"/>
+    <function name="disableKeepAlive" module="HTTP"/>
+    <function name="startProxyServer" module="Proxy"/>
+
+
+
+	<function name="sendGetRequest" module="HTTP">
+ 	    <parameter>http://www.microsoft.com/</parameter>
+    </function>
+	<function name="checkResponseCode" module="HTTP">
+	    <parameter>200</parameter>
+    </function>
+	<function name="queryHeader" module="HTTP">
+	    <parameter>dev/null</parameter>
+	    <parameter>via</parameter>
+ 	    <configuration>HTTPPROXY/DEFAULT/NAME</configuration>
+    </function>
+            
+	<function name="sendGetRequest" module="HTTP">
+ 	    <parameter>http://www.microsoft.com/</parameter>
+    </function>
+	<function name="checkResponseCode" module="HTTP">
+	    <parameter>200</parameter>
+    </function>
+	<function name="queryHeader" module="HTTP">
+	    <parameter>dev/null</parameter>
+	    <parameter>via</parameter>
+ 	    <configuration>HTTPPROXY/DEFAULT/NAME</configuration>
+    </function>
+
+	<function name="sendGetRequest" module="HTTP">
+ 	    <parameter>http://www.gnu.org/</parameter>
+    </function>
+	<function name="checkResponseCode" module="HTTP">
+	    <parameter>200</parameter>
+    </function>
+	<function name="queryHeader" module="HTTP">
+	    <parameter>dev/null</parameter>
+	    <parameter>via</parameter>
+ 	    <configuration>HTTPPROXY/DEFAULT/NAME</configuration>
+    </function>
+
+	<function name="sendGetRequest" module="HTTP">
+ 	    <parameter>http://www.gnu.org/</parameter>
+    </function>
+	<function name="checkResponseCode" module="HTTP">
+	    <parameter>200</parameter>
+    </function>
+	<function name="queryHeader" module="HTTP">
+	    <parameter>dev/null</parameter>
+	    <parameter>via</parameter>
+ 	    <configuration>HTTPPROXY/DEFAULT/NAME</configuration>
+    </function>
+
+	<function name="sendGetRequest" module="HTTP">
+ 	    <parameter>http://www.cpan.org/</parameter>
+    </function>
+	<function name="checkResponseCode" module="HTTP">
+	    <parameter>200</parameter>
+    </function>
+	<function name="queryHeader" module="HTTP">
+	    <parameter>dev/null</parameter>
+	    <parameter>via</parameter>
+ 	    <configuration>HTTPPROXY/DEFAULT/NAME</configuration>
+    </function>
+
+	<function name="sendGetRequest" module="HTTP">
+ 	    <parameter>http://www.cpan.org/</parameter>
+    </function>
+	<function name="checkResponseCode" module="HTTP">
+	    <parameter>200</parameter>
+    </function>
+	<function name="queryHeader" module="HTTP">
+	    <parameter>dev/null</parameter>
+	    <parameter>via</parameter>
+ 	    <configuration>HTTPPROXY/DEFAULT/NAME</configuration>
+    </function>
+
+	<function name="sendGetRequest" module="HTTP">
+ 	    <parameter>http://www.apple.com/</parameter>
+    </function>
+	<function name="checkResponseCode" module="HTTP">
+	    <parameter>200</parameter>
+    </function>
+	<function name="queryHeader" module="HTTP">
+	    <parameter>dev/null</parameter>
+	    <parameter>via</parameter>
+ 	    <configuration>HTTPPROXY/DEFAULT/NAME</configuration>
+    </function>
+
+	<function name="sendGetRequest" module="HTTP">
+ 	    <parameter>http://www.apple.com/</parameter>
+    </function>
+	<function name="checkResponseCode" module="HTTP">
+	    <parameter>200</parameter>
+    </function>
+	<function name="queryHeader" module="HTTP">
+	    <parameter>dev/null</parameter>
+	    <parameter>via</parameter>
+ 	    <configuration>HTTPPROXY/DEFAULT/NAME</configuration>
+    </function>
+
+	<function name="sendGetRequest" module="HTTP">
+ 	    <parameter>http://www.page3.com/</parameter>
+    </function>
+	<function name="checkResponseCode" module="HTTP">
+	    <parameter>200</parameter>
+    </function>
+	<function name="queryHeader" module="HTTP">
+	    <parameter>dev/null</parameter>
+	    <parameter>via</parameter>
+ 	    <configuration>HTTPPROXY/DEFAULT/NAME</configuration>
+    </function>
+
+	<function name="sendGetRequest" module="HTTP">
+ 	    <parameter>http://www.page3.com/</parameter>
+    </function>
+	<function name="checkResponseCode" module="HTTP">
+	    <parameter>200</parameter>
+    </function>
+	<function name="queryHeader" module="HTTP">
+	    <parameter>dev/null</parameter>
+	    <parameter>via</parameter>
+ 	    <configuration>HTTPPROXY/DEFAULT/NAME</configuration>
+    </function>
+
+	<function name="enableKeepAlive" module="HTTP"/>
+
+    <function name="stopProxyServer" module="Proxy"/>
+</test>

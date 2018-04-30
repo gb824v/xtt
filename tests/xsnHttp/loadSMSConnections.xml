@@ -1,0 +1,19 @@
+<test>
+
+    <function name="sendRemoteCommand" module="Remote">
+        <parameter>writeFile xtt-xsn-smsconnections.xml </parameter>
+        <file>xtt-xsn-smsconnections.xml</file>
+    </function>
+    
+    <function name="sendRemoteCommand" module="Remote">
+        <configuration>xsn/path</configuration>
+        <configuration>xsn/xms</configuration>
+        <parameter>load data xtt-xsn-smsconnections.xml</parameter>
+    </function>    
+    
+    <function name="queryResponse" module="Remote">
+        <parameter>^Loaded</parameter>
+        <parameter>response</parameter>
+    </function>
+
+</test>

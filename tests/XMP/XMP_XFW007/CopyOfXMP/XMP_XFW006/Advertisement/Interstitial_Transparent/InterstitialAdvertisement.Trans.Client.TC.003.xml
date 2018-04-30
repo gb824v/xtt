@@ -1,0 +1,202 @@
+<!--
+InterstitialAdvertisement.Trans.Client.TC.003  - Validate the example workflow inserts an interstitial advert at most once every 30 seconds in a user session during Transparent proxy condition [7 requests to XMP].
+
+Test Description:
+ 1. Disable Proxy.
+ 2. Radius Logon
+ 3. Send Get request 7 times.
+ 4. Check Response code.
+ 5. Radius Logoff
+ 
+Expected Result:
+ -  XMP workflow should insert an interstitial advert at once every 30 seconds in a user session [7 requests to XMP].
+
+XTT Main Commands:
+
+ 1.  - Radius log-ON
+ 2.  - startWebServer
+ 3.  - sendGetRequest  to http://872381.724xtt.com up to 3 times.
+ 4.  - checkResponseCode
+ 5.  - Radius log-OFF
+-->
+
+<test>
+
+	<function name="testName" module="Basic">
+		<parameter>InterstitialAdvertisement.TC.003</parameter>
+	</function>
+
+	<description>Validate the example workflow inserts an interstitial advert at most once every 30 seconds in a user session [7 requests to XMP].</description>
+
+	<function name="disableProxy" module="HTTP" />
+
+	<function name="radiusLogon" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12345</parameter>
+	</function>
+
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>
+		<parameter>http://</parameter>
+			<configuration>SERVER/IP</configuration>
+			<parameter>:</parameter>
+			<configuration>WEBSERVER/PORT</configuration>
+			<parameter>/</parameter>
+		</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<function name="setVariable" module="Basic">
+		<parameter>seconds</parameter>
+		<parameter>seconds</parameter>
+	</function>
+
+	<function name="queryText" module="Basic">
+		<variable>HTTP/BODY/PLAIN</variable>
+		<variable>seconds</variable>
+		<parameter>content=\n"(\d+)</parameter>
+	</function>
+
+	<function name="setVariable" module="Basic">
+		<parameter>image</parameter>
+		<parameter>image</parameter>
+	</function>
+
+	<function name="queryText" module="Basic">
+		<variable>HTTP/BODY/PLAIN</variable>
+		<variable>image</variable>
+		<parameter>&lt;div&gt;&lt;img src=(.*)"&gt;&lt;/div&gt;</parameter>
+	</function>
+
+	<function name="setVariable" module="Basic">
+		<parameter>click</parameter>
+		<parameter>click</parameter>
+	</function>
+
+	<function name="queryBody" module="HTTP">
+		<variable>click</variable>
+		<parameter>&lt;a href="(.*)"</parameter>
+	</function>
+	
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>
+		<variable>click</variable>
+		</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<function name="sleep" module="Basic">
+		<parameter>
+			<variable>seconds</variable>
+			<parameter>000</parameter>
+		</parameter>
+	</function>
+
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>
+		<parameter>http://</parameter>
+			<configuration>SERVER/IP</configuration>
+			<parameter>:</parameter>
+			<configuration>WEBSERVER/PORT</configuration>
+			<parameter>/</parameter>
+		</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<function name="sleep" module="Basic">
+		<parameter>
+		<parameter>15000</parameter>
+		</parameter>
+	</function>
+
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>
+		<parameter>http://</parameter>
+			<configuration>SERVER/IP</configuration>
+			<parameter>:</parameter>
+			<configuration>WEBSERVER/PORT</configuration>
+			<parameter>/</parameter>
+		</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<function name="sleep" module="Basic">
+		<parameter>
+		<parameter>20000</parameter>
+		</parameter>
+	</function>
+
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>
+		<parameter>http://</parameter>
+			<configuration>SERVER/IP</configuration>
+			<parameter>:</parameter>
+			<configuration>WEBSERVER/PORT</configuration>
+			<parameter>/</parameter>
+		</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<function name="setVariable" module="Basic">
+		<parameter>image</parameter>
+		<parameter>image</parameter>
+	</function>
+
+	<function name="queryText" module="Basic">
+		<variable>HTTP/BODY/PLAIN</variable>
+		<variable>image</variable>
+		<parameter>&lt;div&gt;&lt;img src=(.*)"&gt;&lt;/div&gt;</parameter>
+	</function>
+
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>
+		<variable>click</variable>
+		</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<function name="sleep" module="Basic">
+		<parameter>
+		<variable>seconds</variable>
+		<parameter>000</parameter>
+		</parameter>
+	</function>
+
+	<function name="sendGetRequest" module="HTTP">
+		<parameter>
+		<parameter>http://</parameter>
+			<configuration>SERVER/IP</configuration>
+			<parameter>:</parameter>
+			<configuration>WEBSERVER/PORT</configuration>
+			<parameter>/</parameter>
+		</parameter>
+	</function>
+
+	<function name="checkResponseCode" module="HTTP">
+		<parameter>200</parameter>
+	</function>
+
+	<function name="radiusLogoff" module="Radius">
+		<parameter>xttuser</parameter>
+		<parameter>12345</parameter>
+	</function>
+
+</test>

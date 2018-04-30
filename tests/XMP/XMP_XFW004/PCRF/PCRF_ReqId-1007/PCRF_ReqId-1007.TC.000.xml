@@ -1,0 +1,103 @@
+<test>  
+
+    <name>PCRF_ReqId-1007.TC.000.xml</name>
+    <description>load Dynamic Configuration Files</description>
+
+    <!-- Load pcc_rules file -->
+    <function name="writeRemoteFile" module="Remote">
+        <parameter>pcc_rules.xml</parameter>
+        <xml>
+            <!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by Daniel Kaufmann (724 Solutions Inc.) -->
+            <pccrules xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="x:\source\xsd\pccrules.xsd">
+                <ruleSet name="Default_Rule">
+                    <Charging-Rule-Install Charging-Rule-Name="Default_Rule"/>
+<!--TEMP SOLUTION -->                   <Event-Trigger value="OUT_OF_CREDIT"/>   <!--(1001) notify on threshold -->
+                    <Event-Trigger value="REVALIDATION_TIMEOUT"/>   <!--(17) notify on revalidation timeout -->
+                    <AVP name="Usage-Volume" nodeId="usagevolume" value="0"/> <!-- will be overriten taken from user profile -->
+                </ruleSet>
+                
+                <ruleSet name="Controlled_QoS">
+                    <Charging-Rule-Remove Charging-Rule-Name="Default_Rule"/>
+                    <Charging-Rule-Install Charging-Rule-Name="Controlled_QoS"/>
+                    <AVP name="Usage-Volume" nodeId="usagevolume" value="0"/> <!-- pcccmodification for ControlledQoS will set this value -->
+                </ruleSet>
+                
+                <ruleSet name="Some_Rule">
+                    <Charging-Rule-Install Charging-Rule-Name="Some_Rule"/>
+                </ruleSet>
+            </pccrules>
+        </xml>
+    </function>
+        
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>
+            <parameter>load data </parameter>
+            <parameter>pcc_rules.xml</parameter>
+        </parameter>
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        <parameter>Loaded pccrules</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+
+    <!-- Load pcc_modifications file -->
+    <function name="writeRemoteFile" module="Remote">
+        <parameter>pcc_modifications.xml</parameter>
+        <xml>
+            <pccModifications xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                <selector context="(Internal_SubscriberAttributesClass == 'GOLD') and
+                        (WF_DiameterEvent == 'CCR_UpdateRequest')  and
+                        (WF_EventTriggers contains 'REVALIDATION_TIMEOUT')" 
+                    ruleName="Controlled_QoS" >
+                    <setParameter nodeId="usagevolume" attributeName="value" attributeValue="Internal_SubscriberAttributesUsageVolume - [DIAMCTX_Request/Avps/@Usage-Volume]"/>
+                </selector>
+                <selector context="Internal_SubscriberAttributesClass == 'GOLD'" ruleName="Default_Rule" revalidationTime="10"> <!-- revalidate after 10s -->
+                    <setParameter nodeId="usagevolume" attributeName="value" attributeValue="Internal_SubscriberAttributesUsageVolume"/>
+                </selector>
+                <selector ruleName="Some_Rule"/>
+            </pccModifications>
+        </xml>
+    </function>
+        
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>
+            <parameter>load data </parameter>
+            <parameter>pcc_modifications.xml</parameter>
+        </parameter>
+    </function>
+    
+    <function name="queryResponse" module="Remote">
+        <parameter>Loaded pccmodifications</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+
+
+
+    
+    <!-- Load Subscriber DB Update File -->
+    <function name="setVariable" module="Basic">
+        <parameter>xmp_pcrf_DatabaseUpdateFile</parameter>
+        <file>../xmp_pcrf_DatabaseUpdateFile.xml</file>
+    </function>
+
+
+    <function name="writeRemoteFile" module="Remote">
+        <parameter>xmp_pcrf_DatabaseUpdateFile.xml</parameter>
+        <variable>xmp_pcrf_DatabaseUpdateFile</variable>
+    </function>
+
+    <function name="executeRemoteXMSCommand" module="Remote">
+        <parameter>
+            <parameter>load db </parameter>
+            <parameter>xmp_pcrf_DatabaseUpdateFile.xml</parameter>
+        </parameter>
+    </function>     
+    
+    <function name="queryResponse" module="Remote">
+        <parameter>SUCCESS: XML upload completed</parameter>
+        <parameter>dev/null</parameter>
+    </function>
+    
+</test>
+

@@ -1,0 +1,21 @@
+<test>
+
+	<name>InterstitialAdvertisement.Integration.TC.999</name>
+	<description>Rollback Interstitial test Environment</description>
+
+	<!-- Load Empty Request Modification File -->
+	<function name="writeRemoteFile" module="Remote">
+		<parameter>REQMOD_EmptyRules.xml </parameter>
+		<parameter>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;requestModifications&gt;&lt;/requestModifications&gt;</parameter>
+	</function>
+
+	<function name="executeRemoteXMSCommand" module="Remote">
+		<parameter>load data REQMOD_EmptyRules.xml</parameter>
+	</function>
+
+	<function name="queryResponse" module="Remote">
+		<parameter>Loaded requestmodifications</parameter>
+		<parameter>dev/null</parameter>
+	</function>
+
+</test>

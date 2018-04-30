@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<dbupdates>
+<subscribers>
+<add subscriber="1000100001">
+	
+	<attribute name="FirstName" value="Homer"/>
+	<attribute name="LastName" value="Simpson"/>
+    <attribute name="DateOfBirth" value="1978-06-28"/>
+	<attribute name="Address1" value="Street1"/>
+	<attribute name="Address2" value="Street2"/>
+
+</add>
+<add subscriber="1000100002">
+	
+	<attribute name="FirstName" value="Jane"/>
+	<attribute name="LastName" value="Simpson"/>
+    <attribute name="DateOfBirth" value="1978-06-28"/>
+	<attribute name="Address1" value="Street3"/>
+	<attribute name="Address2" value="Street6"/>
+
+</add>
+<add subscriber="1000100003">
+	
+	<attribute name="FirstName" value="Ben"/>
+	<attribute name="LastName" value="Simpson"/>
+    <attribute name="DateOfBirth" value="1978-06-28"/>
+	<attribute name="Address1" value="Street5"/>
+	<attribute name="Address2" value="Street2"/>
+
+</add>
+<add subscriber="1000100004">
+	
+	<attribute name="FirstName" value="Rob"/>
+	<attribute name="LastName" value="Simpson"/>
+    <attribute name="DateOfBirth" value="1978-06-28"/>
+	<attribute name="Address1" value="Street7"/>
+	<attribute name="Address2" value="Street9"/>
+
+</add>
+<add subscriber="1000100005">
+	
+	<attribute name="FirstName" value="Ted"/>
+	<attribute name="LastName" value="Simpson"/>
+    <attribute name="DateOfBirth" value="1978-06-28"/>
+	<attribute name="Address1" value="Street6"/>
+	<attribute name="Address2" value="Street8"/>
+
+</add>
+</subscribers>
+</dbupdates>
+
+
+

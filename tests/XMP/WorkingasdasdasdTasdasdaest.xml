@@ -1,0 +1,87 @@
+<test>
+<name>WorkingTest</name>
+<qcid>3333</qcid>
+<description>
+asas
+</description>
+<steps>
+CopyOfCopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf Thread1 Basic/lessThan (1,2)
+CopyOfCopyOfCopyOfCopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf Thread1 Basic/lessThan (1,2)
+CopyOf CopyOfCopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf Thread1 Basic/lessThan (1,2)
+CopyOfCopyOfCopyOfCopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf Thread1 Basic/lessThan (1,2)
+CopyOfCopyOfCopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf Thread1 Basic/lessThan (1,2)
+CopyOfCopyOfCopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf Thread1 Basic/lessThan (1,2)
+CopyOfCopyOfCopyOfCopyOfCopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf Thread1 Basic/lessThan (1,2)
+CopyOfCopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf Thread1 Basic/lessThan (1,2)
+HTTP/startWebServer
+HTTP/stopWebServer
+</steps>
+<designer>guyb </designer>
+<creationdate>2012-03-29 10:53:13 </creationdate>
+<testlevel>Integration</testlevel>
+<xfwVersion>XMP_XFW006</xfwVersion>
+<mandatory>false</mandatory>
+<stepname>CopyOfCopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf Thread1 Basic/lessThan (1,2)</stepname>
+<stepid>1</stepid>
+<function name="lessThan" module="Basic">
+<parameter>1</parameter>
+<parameter>2</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>CopyOfCopyOfCopyOfCopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf Thread1 Basic/lessThan (1,2)</stepname>
+<stepid>2</stepid>
+<function name="lessThan" module="Basic">
+<parameter>1</parameter>
+<parameter>2</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>CopyOf CopyOfCopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf Thread1 Basic/lessThan (1,2)</stepname>
+<stepid>3</stepid>
+<function name="lessThan" module="Basic">
+<parameter>1</parameter>
+<parameter>2</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>CopyOfCopyOfCopyOfCopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf Thread1 Basic/lessThan (1,2)</stepname>
+<stepid>4</stepid>
+<function name="lessThan" module="Basic">
+<parameter>1</parameter>
+<parameter>2</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>CopyOfCopyOfCopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf Thread1 Basic/lessThan (1,2)</stepname>
+<stepid>5</stepid>
+<function name="lessThan" module="Basic">
+<parameter>1</parameter>
+<parameter>2</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>CopyOfCopyOfCopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf Thread1 Basic/lessThan (1,2)</stepname>
+<stepid>6</stepid>
+<function name="lessThan" module="Basic">
+<parameter>1</parameter>
+<parameter>2</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>CopyOfCopyOfCopyOfCopyOfCopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf Thread1 Basic/lessThan (1,2)</stepname>
+<stepid>7</stepid>
+<function name="lessThan" module="Basic">
+<parameter>1</parameter>
+<parameter>2</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>CopyOfCopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf CopyOf Thread1 Basic/lessThan (1,2)</stepname>
+<stepid>8</stepid>
+<function name="lessThan" module="Basic">
+<parameter>1</parameter>
+<parameter>2</parameter>
+</function>
+<mandatory>false</mandatory>
+<stepname>HTTP/startWebServer</stepname>
+<stepid>9</stepid>
+<function name="startWebServer" module="HTTP"/>
+<mandatory>false</mandatory>
+<stepname>HTTP/stopWebServer</stepname>
+<stepid>10</stepid>
+<function name="stopWebServer" module="HTTP"/>
+</test>
